@@ -1,7 +1,7 @@
 // import React, { useEffect } from "react";
 
 import { Select } from "@/types/interfaces/form";
-import AboutYou from "./components/AboutYou";
+import AboutYouQuestions from "./components/AboutYouQuestions";
 
 const ABoutYou = () => {
   // useEffect(() => {
@@ -18,7 +18,7 @@ const ABoutYou = () => {
 
   return (
     <div>
-      <AboutYou></AboutYou>
+      <AboutYouQuestions></AboutYouQuestions>
     </div>
   );
 };

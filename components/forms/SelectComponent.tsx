@@ -1,4 +1,5 @@
 "use client";
+import { useId } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { Select } from "@/types/interfaces/form";
 
@@ -13,21 +14,27 @@ const SelectComponent = ({
   register: UseFormRegister<any>;
   errors: FieldErrors;
 }) => {
-  const errorMessage = errors[selectConfig.name]?.message as string | undefined; // Ensure the type is string
+  const dynamicId = useId();
 
   return (
     <div>
-      <label htmlFor={selectConfig.name}>{selectConfig.lable}</label>
+      <label htmlFor={dynamicId}>{selectConfig.lable}</label>
 
-      <select {...register(selectConfig.name, selectConfig.validation)}>
+      <select
+        id={dynamicId}
+        {...register(dynamicId, selectConfig.validation)}
+        {...selectConfig.eventHandlers}
+      >
         {selectConfig.options.map((option, i) => (
           <option key={i} value={option.value}>
             {option.display}
           </option>
         ))}
       </select>
-
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {selectConfig.hint?.text && <div>{selectConfig.hint.text}</div>}
+      {errors[dynamicId] && (
+        <p style={{ color: "red" }}>{errors[dynamicId]?.message as string}</p>
+      )}
     </div>
   );
 };
