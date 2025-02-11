@@ -7,7 +7,7 @@ export interface Select {
   hint?: { text: string };
   lable: string;
   name: string;
-  options: { value: string; display: string; selected?: boolean }[];
+  options: { value: string | null; display: string; selected?: boolean }[];
   validation?: {};
 }
 
