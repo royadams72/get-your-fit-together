@@ -1,5 +1,4 @@
 "use client";
-import { useId } from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { CheckBox } from "@/types/interfaces/form";
 
@@ -14,20 +13,20 @@ const CheckBoxComponent = ({
   register: UseFormRegister<any>;
   errors: FieldErrors;
 }) => {
-  const checkboxId = useId();
-
   return (
     <div className={className}>
-      <label htmlFor={checkboxId}>{checkboxConfig.lable}</label>
+      <label htmlFor={checkboxConfig.name}>{checkboxConfig.lable}</label>
       <input
         type="checkbox"
-        id={checkboxId}
-        {...register(checkboxId, checkboxConfig.validation)}
+        id={checkboxConfig.name}
+        {...register(checkboxConfig.name, checkboxConfig.validation)}
         {...checkboxConfig.eventHandlers}
       />
       {checkboxConfig.hint?.text && <div>{checkboxConfig.hint.text}</div>}
-      {errors[checkboxId] && (
-        <p style={{ color: "red" }}>{errors[checkboxId]?.message as string}</p>
+      {errors[checkboxConfig.name] && (
+        <p style={{ color: "red" }}>
+          {errors[checkboxConfig.name]?.message as string}
+        </p>
       )}
     </div>
   );

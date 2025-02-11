@@ -1,9 +1,9 @@
 // import React, { useEffect } from "react";
 
-import { Select } from "@/types/interfaces/form";
 import AboutYouQuestions from "./components/AboutYouQuestions";
+import StoreProvider from "@/app/StoreProvider";
 
-const ABoutYou = () => {
+const ABoutYou = async () => {
   // useEffect(() => {
   //   (async () => {
   //     const response = await fetch("http://localhost:3000/api/get-plan/", {
@@ -17,9 +17,11 @@ const ABoutYou = () => {
   // }, []);
 
   return (
-    <div>
-      <AboutYouQuestions></AboutYouQuestions>
-    </div>
+    <StoreProvider>
+      <div>
+        <AboutYouQuestions></AboutYouQuestions>
+      </div>
+    </StoreProvider>
   );
 };
 

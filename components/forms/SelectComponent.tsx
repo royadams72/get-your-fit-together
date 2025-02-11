@@ -1,7 +1,7 @@
 "use client";
-import { useId } from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldErrors, useForm } from "react-hook-form";
 import { Select } from "@/types/interfaces/form";
+import React, { useEffect } from "react";
 
 const SelectComponent = ({
   className,
@@ -14,26 +14,48 @@ const SelectComponent = ({
   register: UseFormRegister<any>;
   errors: FieldErrors;
 }) => {
-  const dynamicId = useId();
+  const { setValue, trigger } = useForm();
 
+  const handleChange = async (
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
+      | React.MouseEvent<HTMLInputElement, MouseEvent>
+  ) => {
+    selectConfig?.eventHandlers?.onChange?.(
+      e as React.ChangeEvent<HTMLSelectElement>
+    );
+    // extraOnChangeEvent?.(e);
+    const { name } = e.target as
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement;
+
+    const isFieldValid = await trigger(name); // Triggers validation for the specific field
+    console.log(`${name} is ${isFieldValid ? "valid" : "invalid"}`);
+  };
   return (
     <div>
-      <label htmlFor={dynamicId}>{selectConfig.lable}</label>
+      <label htmlFor={selectConfig.name}>{selectConfig.lable}</label>
 
       <select
-        id={dynamicId}
-        {...register(dynamicId, selectConfig.validation)}
+        id={selectConfig.name}
+        {...register(selectConfig.name, selectConfig.validation)}
         {...selectConfig.eventHandlers}
+        onChange={handleChange}
       >
         {selectConfig.options.map((option, i) => (
-          <option key={i} value={option.value}>
+          <option key={i} value={option.value as string}>
             {option.display}
           </option>
         ))}
       </select>
       {selectConfig.hint?.text && <div>{selectConfig.hint.text}</div>}
-      {errors[dynamicId] && (
-        <p style={{ color: "red" }}>{errors[dynamicId]?.message as string}</p>
+      {errors[selectConfig.name] && (
+        <p style={{ color: "red" }}>
+          {errors[selectConfig.name]?.message as string}
+        </p>
       )}
     </div>
   );
