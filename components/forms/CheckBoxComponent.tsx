@@ -15,7 +15,7 @@ const CheckBoxComponent = ({
 }) => {
   return (
     <div className={className}>
-      <label htmlFor={checkboxConfig.name}>{checkboxConfig.lable}</label>
+      <label htmlFor={checkboxConfig.name}>{checkboxConfig.label}</label>
       <input
         type="checkbox"
         id={checkboxConfig.name}

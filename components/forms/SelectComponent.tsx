@@ -1,61 +1,59 @@
 "use client";
-import { UseFormRegister, FieldErrors, useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+
 import { Select } from "@/types/interfaces/form";
-import React, { useEffect } from "react";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
 const SelectComponent = ({
   className,
-  selectConfig,
-  register,
-  errors,
+  config,
+  dispatchEvent,
 }: {
-  selectConfig: Select;
+  config: Select;
   className?: string;
-  register: UseFormRegister<any>;
-  errors: FieldErrors;
+  dispatchEvent: ActionCreatorWithPayload<any, string>;
 }) => {
-  const { setValue, trigger } = useForm();
+  const {
+    register,
+    trigger,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+  const dispatch = useAppDispatch();
 
-  const handleChange = async (
-    e:
-      | React.ChangeEvent<
-          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
-      | React.MouseEvent<HTMLInputElement, MouseEvent>
-  ) => {
-    selectConfig?.eventHandlers?.onChange?.(
-      e as React.ChangeEvent<HTMLSelectElement>
-    );
-    // extraOnChangeEvent?.(e);
-    const { name } = e.target as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement;
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // Add any onChange event handlers from config
+    config?.eventHandlers?.onChange?.(e);
+    const { name, value } = e.target;
+
+    setValue(name, value);
 
     const isFieldValid = await trigger(name); // Triggers validation for the specific field
-    console.log(`${name} is ${isFieldValid ? "valid" : "invalid"}`);
+    if (isFieldValid) {
+      dispatch(dispatchEvent({ name, value }));
+    }
   };
+
   return (
     <div>
-      <label htmlFor={selectConfig.name}>{selectConfig.lable}</label>
+      <label htmlFor={config.name}>{config.label}</label>
 
       <select
-        id={selectConfig.name}
-        {...register(selectConfig.name, selectConfig.validation)}
-        {...selectConfig.eventHandlers}
-        onChange={handleChange}
+        id={config.name}
+        {...register(config.name, config.validation)}
+        {...config.eventHandlers}
+        onChange={(e) => handleChange(e)}
       >
-        {selectConfig.options.map((option, i) => (
+        {config.options.map((option, i) => (
           <option key={i} value={option.value as string}>
             {option.display}
           </option>
         ))}
       </select>
-      {selectConfig.hint?.text && <div>{selectConfig.hint.text}</div>}
-      {errors[selectConfig.name] && (
-        <p style={{ color: "red" }}>
-          {errors[selectConfig.name]?.message as string}
-        </p>
+      {config.hint?.text && <div>{config.hint.text}</div>}
+      {errors[config.name] && (
+        <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}
     </div>
   );

@@ -1,11 +1,11 @@
-import { CheckBox, Select } from "@/types/interfaces/form";
-import { useForm } from "react-hook-form";
+import { AboutYouQuestions } from "@/types/enums/about-you.enum";
+import { CheckBox, Radio, Select } from "@/types/interfaces/form";
 
 export const experienceConfig: Select = {
-  name: "experienceLevel",
-  lable: "Experience Level",
+  name: AboutYouQuestions.experienceLevel,
+  label: "Experience Level",
   options: [
-    { value: null, display: "Select an option" },
+    { value: "", display: "Select an option" },
     {
       value: "beginner",
       display:
@@ -38,10 +38,38 @@ export const experienceConfig: Select = {
   },
   eventHandlers: { onChange: (e) => console.log("changed") },
 };
+export const ageConfig: Select = {
+  name: AboutYouQuestions.age,
+  label: "Age:",
+  options: [
+    { value: "18-24", display: "18-24" },
+    { value: "25-34", display: "25-34" },
+    { value: "35-44", display: "35-44" },
+    { value: "45-54", display: "45-54" },
+    { value: "55+", display: "55+" },
+  ],
+  validation: {
+    required: "Please select an option",
+  },
+  eventHandlers: {},
+};
+
+export const genderConfig: Radio = {
+  name: AboutYouQuestions.gender,
+  legend: "Gender:",
+  options: [
+    { value: "male", label: "Male", id: "male" },
+    { value: "female", label: "Female", id: "female" },
+  ],
+  validation: {
+    required: "Please select an option",
+  },
+  eventHandlers: {},
+};
 
 export const alcoholConfig: CheckBox = {
-  name: "alcoholConsumption",
-  lable: "Alcohol Consumption per week (Units)",
+  name: AboutYouQuestions.alcoholConsumption,
+  label: "Alcohol Consumption per week (Units)",
   validation: {
     required: "Please select an option",
   },

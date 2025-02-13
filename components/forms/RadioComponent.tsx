@@ -1,0 +1,65 @@
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { useFormContext } from "react-hook-form";
+
+import { Radio } from "@/types/interfaces/form";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
+
+const RadioComponent = ({
+  className,
+  config,
+  dispatchEvent,
+}: {
+  config: Radio;
+  className?: string;
+  dispatchEvent?: ActionCreatorWithPayload<any, string>;
+}) => {
+  const {
+    register,
+    trigger,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+  const dispatch = useAppDispatch();
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Add any onChange event handlers from config
+    const { name, value } = e.target;
+    config?.eventHandlers?.onChange?.(e);
+
+    setValue(name, value);
+
+    const isFieldValid = await trigger(name); // Triggers validation for the specific field
+    if (isFieldValid && dispatchEvent) {
+      dispatch(dispatchEvent({ name, value }));
+    }
+  };
+  return (
+    <fieldset className="radio-group">
+      <legend>{config.legend}</legend>
+      {config.options.map((option, i) => {
+        return (
+          <div key={i}>
+            <input
+              {...register(config.name, config.validation)}
+              {...config.eventHandlers}
+              onChange={(e) => handleChange(e)}
+              type="radio"
+              id={option.id}
+              name={config.name}
+              value={option.value}
+            />
+            <label htmlFor={option.id}>{option.label}</label>
+            {config.hint?.text && <div>{config.hint.text}</div>}
+            {errors[config.name] && (
+              <p style={{ color: "red" }}>
+                {errors[config.name]?.message as string}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </fieldset>
+  );
+};
+
+export default RadioComponent;
