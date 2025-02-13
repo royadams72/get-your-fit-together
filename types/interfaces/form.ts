@@ -5,7 +5,7 @@ export interface Select {
     onFocus?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   };
   hint?: { text: string };
-  lable: string;
+  label: string;
   name: string;
   options: { value: string | null; display: string; selected?: boolean }[];
   validation?: {};
@@ -19,8 +19,21 @@ export interface CheckBox {
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
   hint?: { text: string };
-  lable: string;
+  label: string;
   name: string;
+  validation?: {};
+}
+
+export interface Radio {
+  eventHandlers?: {
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  hint?: { text: string };
+  legend: string;
+  name: string;
+  options: { value: string; id: string; label: string; selected?: boolean }[];
   validation?: {};
 }
 
@@ -32,7 +45,7 @@ export interface Input {
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
   hint?: { text: string };
-  lable: string;
+  label: string;
   name: string;
   placeHolder?: string;
   validation?: {};
