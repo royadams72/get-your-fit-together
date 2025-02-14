@@ -3,14 +3,21 @@ import { setAboutYou } from "@/lib/features/about-you/aboutYouSlice";
 import SelectComponent from "@/components/forms/SelectComponent";
 import CheckBoxComponent from "@/components/forms/CheckBoxComponent";
 import {
+  ageConfig,
   alcoholConfig,
   experienceConfig,
   genderConfig,
-} from "@/app/questions/about-you/form-config/config";
+  heightConfig,
+} from "@/app/questions/about-you/form-configs/config";
 import FormProvider from "@/context/FormProvider";
 import RadioComponent from "@/components/forms/RadioComponent";
+import { useState } from "react";
+import { HeightUnit } from "../form-configs/heightOptions";
 
 const AboutYouQuestions = () => {
+  const [aboutYou, setAboutYouState] = useState({
+    height: { unit: "Ft" as HeightUnit, value: "" },
+  });
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
   };
@@ -20,7 +27,15 @@ const AboutYouQuestions = () => {
       <FormProvider onSubmit={onSubmit}>
         <SelectComponent
           dispatchEvent={setAboutYou}
-          config={experienceConfig}
+          config={experienceConfig()}
+        ></SelectComponent>
+        <SelectComponent
+          dispatchEvent={setAboutYou}
+          config={ageConfig}
+        ></SelectComponent>
+        <SelectComponent
+          dispatchEvent={setAboutYou}
+          config={heightConfig({ unit: aboutYou.height.unit })}
         ></SelectComponent>
         <RadioComponent
           config={genderConfig}

@@ -8,6 +8,7 @@ export interface Select {
   label: string;
   name: string;
   options: { value: string | null; display: string; selected?: boolean }[];
+  toggleOptions?: { value: string; label: string; toggleOption: any }[];
   validation?: {};
 }
 

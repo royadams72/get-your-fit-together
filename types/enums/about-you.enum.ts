@@ -3,4 +3,5 @@ export enum AboutYouQuestions {
   alcoholConsumption = "alcoholConsumption",
   gender = "gender",
   age = "age",
+  height = "height",
 }
