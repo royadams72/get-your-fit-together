@@ -1,25 +1,18 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { AboutYouQuestions } from "@/types/enums/about-you.enum";
-
-export interface aboutYouStore {
-  experienceLevel: string;
-  alcholConsumption: string;
-  gender: string;
-  age: string;
-  height: { unit: string; value: string };
-}
-
-export interface aboutYouState {
-  aboutYou: aboutYouStore;
-}
+import { aboutYouState, aboutYouStore } from "@/types/interfaces/about-you";
 
 export const aboutYouInitialState: aboutYouState = {
   aboutYou: {
     experienceLevel: "",
-    alcholConsumption: "",
+    alcoholConsumption: "",
     gender: "",
     age: "",
-    height: { unit: "", value: "" },
+    height: "",
+    weight: "",
+    bodyType: "",
+    stressLevel: "",
+    smoking: "",
+    activityLevel: "",
   },
 };
 
@@ -28,8 +21,13 @@ export const aboutYouSlice = createAppSlice({
   initialState: aboutYouInitialState,
   reducers: {
     setAboutYou: (state, action) => {
-      const { name, value }: { name: keyof aboutYouStore; value: any } =
-        action.payload;
+      const {
+        name,
+        value,
+      }: {
+        name: keyof aboutYouStore;
+        value: string;
+      } = action.payload;
       state.aboutYou[name] = value;
     },
   },

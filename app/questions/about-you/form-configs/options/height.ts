@@ -1,8 +1,3 @@
-export type HeightUnit = "heightOptionsFt" | "heightOptionsCm";
-export interface Units {
-  value: string;
-  label: string;
-}
 export const enum units {
   feet = "feet",
   cm = "cm",
@@ -28,7 +23,7 @@ export const heightOptionsFt = [
   { value: "6'2", display: "6'2" },
   { value: "6'3", display: "6'3" },
   { value: "6'4", display: "6'4" },
-  { value: "over 6'4", display: "over 6'4" },
+  { value: "over6'4", display: "over 6'4" },
 ];
 
 export const heightOptionsCm = [
@@ -44,7 +39,7 @@ export const heightOptionsCm = [
   { value: "190cm", display: "190 cm" },
   { value: "195cm", display: "195 cm" },
   { value: "200cm", display: "200 cm" },
-  { value: "over 200cm", display: "over 200 cm" },
+  { value: "over200cm", display: "over 200 cm" },
 ];
 
 export const heightTogglgOptions = [

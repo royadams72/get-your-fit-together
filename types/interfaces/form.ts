@@ -15,14 +15,17 @@ export interface Select {
 export interface CheckBox {
   defaultChecked?: boolean;
   eventHandlers?: {
-    onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    // onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
   hint?: { text: string };
   label: string;
-  name: string;
+  name?: string;
+  value?: any;
   validation?: {};
+  groupName?: string;
 }
 
 export interface Radio {
