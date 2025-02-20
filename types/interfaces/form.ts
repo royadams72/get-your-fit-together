@@ -8,20 +8,37 @@ export interface Select {
   label: string;
   name: string;
   options: { value: string | null; display: string; selected?: boolean }[];
+  toggleOptions?: { value: string; label: string; toggleOption: any }[];
   validation?: {};
 }
 
 export interface CheckBox {
   defaultChecked?: boolean;
   eventHandlers?: {
-    onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    // onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
   hint?: { text: string };
   label: string;
   name: string;
+  value?: any;
   validation?: {};
+  groupName?: string;
+}
+
+export interface CheckBoxGroup {
+  checkboxes: { label: string; value: boolean }[];
+  eventHandlers?: {
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  legend?: string;
+  requiredError?: string;
+  name: string;
+  validation?: any;
 }
 
 export interface Radio {

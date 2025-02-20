@@ -1,0 +1,18 @@
+export enum PreferencesQuestions {
+  cardio = "cardio",
+  hiit = "hiit",
+  strengthTraining = "strengthTraining",
+  yogaFlexibility = "yogaFlexibility",
+  pilatesCoreTraining = "pilatesCoreTraining",
+  bodyweightCalisthenics = "bodyweightCalisthenics",
+  crossFitCircuitTraining = "crossFitCircuitTraining",
+  sportsSpecificTraining = "sportsSpecificTraining",
+  danceAerobicWorkouts = "danceAerobicWorkouts",
+  combatSports = "combatSports",
+  outdoorWorkoutsHiking = "outdoorWorkoutsHiking ",
+  equipmentAvailability = "equipmentAvailability",
+  timePerSession = "timePerSession",
+  daysPerWeek = "daysPerWeek",
+  workoutTime = "workoutTime",
+  socialPreference = "socialPreference",
+}
