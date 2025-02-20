@@ -9,12 +9,10 @@ const CheckBoxComponent = ({
   className,
   config,
   dispatchEvent,
-  handleGroupChange,
 }: {
   config: CheckBox;
   className?: string;
   dispatchEvent?: ActionCreatorWithPayload<any, string>;
-  handleGroupChange?: () => void;
 }) => {
   const {
     register,
@@ -25,17 +23,14 @@ const CheckBoxComponent = ({
   const dispatch = useAppDispatch();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Add any onChange event handlers from config
-
     const { name, checked: value } = e.target;
-    handleGroupChange?.();
     config?.eventHandlers?.onChange?.(e);
     console.log(name);
 
     setValue(name, value);
 
-    const isFieldValid = await trigger(name); // Triggers validation for the specific field
-    if (isFieldValid && dispatchEvent) {
+    await trigger(name); // Triggers validation for the specific field
+    if (dispatchEvent) {
       dispatch(dispatchEvent({ name, value }));
     }
   };

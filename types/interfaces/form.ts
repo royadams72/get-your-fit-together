@@ -22,10 +22,23 @@ export interface CheckBox {
   };
   hint?: { text: string };
   label: string;
-  name?: string;
+  name: string;
   value?: any;
   validation?: {};
   groupName?: string;
+}
+
+export interface CheckBoxGroup {
+  checkboxes: { label: string; value: boolean }[];
+  eventHandlers?: {
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  legend?: string;
+  requiredError?: string;
+  name: string;
+  validation?: any;
 }
 
 export interface Radio {

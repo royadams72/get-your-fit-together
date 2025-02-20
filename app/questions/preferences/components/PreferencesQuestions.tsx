@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import FormProvider from "@/context/FormProvider";
-import CheckBoxGroup from "@/components/forms/checkbox/CheckBoxGroup";
-import { workoutTypeGroup } from "../form-configs/config";
+import CheckBoxGroupComponent from "@/components/forms/checkbox/CheckBoxGroupComponent";
+import { workoutType } from "../form-configs/config";
 import { setPreference } from "@/lib/features/preferences/preferencesSlice";
 
 const PreferencesQuestions = () => {
@@ -16,13 +16,12 @@ const PreferencesQuestions = () => {
   return (
     <FormProvider
       onSubmit={onSubmit}
-      defaultValues={{ workoutType: workoutTypeGroup }}
+      defaultValues={{ workoutType: workoutType.checkboxes }}
     >
-      {/* First checkbox group for workout type */}
-      <CheckBoxGroup
-        name="workoutType" // Unique name for the first checkbox group
-        checkboxes={workoutTypeGroup} // The options for workout types
-        groupName="workoutTypeGroup" // Group name for validation
+      <CheckBoxGroupComponent
+        name={workoutType.name}
+        config={workoutType}
+        required={true}
       />
 
       <button type="submit">Submit</button>

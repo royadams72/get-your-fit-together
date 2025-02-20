@@ -9,7 +9,7 @@ export const upperBodyOptions = [
   },
   {
     value: "elbow-pain",
-    display: "Elbow Pain (Tennis/Golfer’s Elbow, Tendonitis, etc.)",
+    display: "Elbow Pain (Tennis/Golfer's Elbow, Tendonitis, etc.)",
   },
   {
     value: "wrist-hand-issues",
@@ -72,12 +72,12 @@ export const medicalRestrictionsOptions = [
   { value: "chronic-fatigue", display: "Chronic Fatigue / Adrenal Fatigue" },
   {
     value: "neurological-conditions",
-    display: "Neurological Conditions (Multiple Sclerosis, Parkinson’s, etc.)",
+    display: "Neurological Conditions (Multiple Sclerosis, Parkinson's, etc.)",
   },
   { value: "obesity", display: "Obesity (BMI 30+)" },
   {
     value: "digestive-issues",
-    display: "Digestive Issues (IBS, Crohn’s, GERD, etc.)",
+    display: "Digestive Issues (IBS, Crohn's, GERD, etc.)",
   },
 ];
 
