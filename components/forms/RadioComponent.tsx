@@ -49,7 +49,7 @@ const RadioComponent = ({
               value={option.value}
             />
             <label htmlFor={option.id}>{option.label}</label>
-            {config.hint?.text && <div>{config.hint.text}</div>}
+            {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
             {errors[config.name] && (
               <p style={{ color: "red" }}>
                 {errors[config.name]?.message as string}

@@ -4,7 +4,7 @@ export interface Select {
     onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   };
-  hint?: { text: string };
+  hint?: { __html: string };
   label: string;
   name: string;
   options: { value: string | null; display: string; selected?: boolean }[];
@@ -16,11 +16,9 @@ export interface CheckBox {
   defaultChecked?: boolean;
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    // onClick?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
-  hint?: { text: string };
+  hint?: { __html: string };
   label: string;
   name: string;
   value?: any;
@@ -32,9 +30,9 @@ export interface CheckBoxGroup {
   checkboxes: { label: string; value: boolean }[];
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
+  hint?: { __html: string };
   legend?: string;
   requiredError?: string;
   name: string;
@@ -47,7 +45,7 @@ export interface Radio {
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
-  hint?: { text: string };
+  hint?: { __html: string };
   legend: string;
   name: string;
   options: { value: string; id: string; label: string; selected?: boolean }[];
@@ -61,7 +59,7 @@ export interface Input {
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
-  hint?: { text: string };
+  hint?: { __html: string };
   label: string;
   name: string;
   placeHolder?: string;

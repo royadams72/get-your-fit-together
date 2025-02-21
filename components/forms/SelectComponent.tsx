@@ -21,11 +21,11 @@ const SelectComponent = ({
     setValue,
     formState: { errors },
   } = useFormContext();
+
   const dispatch = useAppDispatch();
   const [optionList, setOptionList] = useState(config.options);
+
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // Add any onChange event handlers from config
-    config?.eventHandlers?.onChange?.(e);
     const { name, value } = e.target;
     setValue(name, value);
 
@@ -33,11 +33,14 @@ const SelectComponent = ({
     if (isFieldValid) {
       dispatch(dispatchEvent({ name, value }));
     }
+    // Add any onChange event handlers from config
+    config?.eventHandlers?.onChange?.(e);
   };
 
   return (
     <div>
       <label htmlFor={config.name}>{config.label}</label>
+      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 
       <select
         id={config.name}
@@ -51,7 +54,6 @@ const SelectComponent = ({
           </option>
         ))}
       </select>
-      {config.hint?.text && <div>{config.hint.text}</div>}
       {errors[config.name] && (
         <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}

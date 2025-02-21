@@ -37,6 +37,7 @@ const CheckBoxComponent = ({
   return (
     <div className={className}>
       <label htmlFor={config.name}>{config.label}</label>
+      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
       <input
         type="checkbox"
         id={config.name}
@@ -46,7 +47,6 @@ const CheckBoxComponent = ({
           handleChange(e);
         }}
       />
-      {config.hint?.text && <div>{config.hint.text}</div>}
       {errors[config.name] && (
         <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}

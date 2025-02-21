@@ -1,17 +1,20 @@
 "use client";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { CheckBoxGroup } from "@/types/interfaces/form";
-import React, { useEffect } from "react";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
+
 import { useFormContext, useFieldArray } from "react-hook-form";
 
 const CheckBoxGroupComponent = ({
-  name,
   config,
   required,
+  dispatchEvent,
 }: {
-  name: string;
   config: CheckBoxGroup;
   required: boolean;
+  dispatchEvent: ActionCreatorWithPayload<any, string>;
 }) => {
+  const dispatch = useAppDispatch();
   const {
     control,
     register,
@@ -19,9 +22,10 @@ const CheckBoxGroupComponent = ({
     trigger,
     formState: { errors },
   } = useFormContext();
+
   const { fields } = useFieldArray({
     control,
-    name,
+    name: config.name,
     rules: {
       validate: (fieldArrayValues: any) => {
         if (!required) return;
@@ -49,30 +53,34 @@ const CheckBoxGroupComponent = ({
     index: number,
     checked: boolean
   ) => {
-    config?.eventHandlers?.onChange?.(e);
-
     if (!required) return;
 
+    const value = config.checkboxes[index].label;
     const updatedValues = [...config.checkboxes];
     updatedValues[index].value = checked;
 
     setValue(config.name, updatedValues);
 
     await trigger(config.name);
+
+    dispatch(dispatchEvent({ name: config.name, value }));
+    // Custom onChange set is config files
+    config.eventHandlers?.onChange?.(e);
   };
 
   return (
-    <div>
+    <fieldset>
+      <legend>{config.legend}</legend>
+      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
       {combinedFields.map((item, index) => (
         <div key={item.id}>
-          {/* Register each checkbox with a unique index */}
+          <label>{item.label}</label>
           <input
-            {...register(`${name}[${index}].value`)} // Register with the correct index
+            {...register(`${config.name}[${index}].value`)}
             type="checkbox"
-            checked={item.value} // Use `value` from combined data
+            checked={item.value}
             onChange={(e) => handleCheckboxChange(e, index, e.target.checked)}
           />
-          <label>{item.label}</label>
         </div>
       ))}
       {errors[config.name] && (
@@ -80,7 +88,7 @@ const CheckBoxGroupComponent = ({
           {errors[config.name]?.root?.message?.toString()}
         </p>
       )}
-    </div>
+    </fieldset>
   );
 };
 
