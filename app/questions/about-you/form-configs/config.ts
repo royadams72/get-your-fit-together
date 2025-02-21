@@ -26,7 +26,7 @@ export const experienceConfig = (): Select => {
     name: AboutYouQuestions.experienceLevel,
     label: "Experience Level",
     options: experienceLevelOptions,
-    hint: { text: "this is a hint" },
+    hint: { __html: "this is a hint" },
     validation: {
       required: "Please select an option for experience",
     },

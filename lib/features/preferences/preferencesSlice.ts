@@ -7,16 +7,7 @@ import {
 
 export const preferencesInitialState: preferencesState = {
   preferences: {
-    [PreferencesQuestions.cardio]: "",
-    [PreferencesQuestions.hiit]: "",
-    [PreferencesQuestions.yogaFlexibility]: "",
-    [PreferencesQuestions.pilatesCoreTraining]: "",
-    [PreferencesQuestions.bodyweightCalisthenics]: "",
-    [PreferencesQuestions.crossFitCircuitTraining]: "",
-    [PreferencesQuestions.sportsSpecificTraining]: "",
-    [PreferencesQuestions.danceAerobicWorkouts]: "",
-    [PreferencesQuestions.combatSports]: "",
-    [PreferencesQuestions.outdoorWorkoutsHiking]: "",
+    [PreferencesQuestions.preferredWorkoutType]: "",
     [PreferencesQuestions.equipmentAvailability]: "",
     [PreferencesQuestions.timePerSession]: "",
     [PreferencesQuestions.daysPerWeek]: "",
@@ -37,7 +28,25 @@ export const preferencesSlice = createAppSlice({
         name: keyof preferencesStore;
         value: string;
       } = action.payload;
-      state.preferences[name] = value;
+      if (name === PreferencesQuestions.preferredWorkoutType) {
+        let stateValue = state.preferences[name];
+        let inState = state.preferences[name].indexOf(value) != -1;
+        console.log(inState);
+
+        if (inState) {
+          console.log(state.preferences[name]);
+          state.preferences[name] = state.preferences[name].replace(
+            new RegExp(`(^|, )${value}(, |$)`, "g"),
+            ""
+          );
+        } else {
+          const val = state.preferences[name] === "" ? value : `, ${value}`;
+          state.preferences[name] += val;
+        }
+      } else {
+        state.preferences[name] = value;
+      }
+      console.log(state.preferences[name]);
     },
   },
 });

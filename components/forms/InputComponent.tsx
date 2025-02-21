@@ -5,11 +5,11 @@ import { CheckBox } from "@/types/interfaces/form";
 
 const InputComponent = ({
   className,
-  inputConfig,
+  config,
   register,
   errors,
 }: {
-  inputConfig: CheckBox;
+  config: CheckBox;
   className?: string;
   register: UseFormRegister<any>;
   errors: FieldErrors;
@@ -18,14 +18,14 @@ const InputComponent = ({
 
   return (
     <div className={className}>
-      <label htmlFor={inputId}>{inputConfig.lable}</label>
+      <label htmlFor={inputId}>{config.label}</label>
       <input
         type="input"
         id={inputId}
-        {...register(inputId, inputConfig.validation)}
-        {...inputConfig.eventHandlers}
+        {...register(inputId, config.validation)}
+        {...config.eventHandlers}
       />
-      {inputConfig.hint?.text && <div>{inputConfig.hint.text}</div>}
+      {config.hint && <div dangerouslySetInnerHTML={config.hint} />}
       {errors[inputId] && (
         <p style={{ color: "red" }}>{errors[inputId]?.message as string}</p>
       )}
