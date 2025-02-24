@@ -1,6 +1,6 @@
 import { InjuriesQuestions } from "../enums/injuries.enum";
 
-export interface injuriesStore {
+export interface InjuriesStore {
   [InjuriesQuestions.upperBody]: string;
   [InjuriesQuestions.lowerBody]: string;
   [InjuriesQuestions.generalConditions]: string;
@@ -9,6 +9,6 @@ export interface injuriesStore {
   [InjuriesQuestions.otherSensitivities]: string;
 }
 
-export interface injuriesState {
-  injuries: injuriesStore;
+export interface InjuriesState {
+  injuries: InjuriesStore;
 }

@@ -1,7 +1,9 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { aboutYouState, aboutYouStore } from "@/types/interfaces/about-you";
+import { AboutYouState, AboutYouStore } from "@/types/interfaces/about-you";
 
-export const aboutYouInitialState: aboutYouState = {
+export const aboutYouSliceName = "aboutYou";
+
+export const aboutYouInitialState: AboutYouState = {
   aboutYou: {
     experienceLevel: "",
     alcoholConsumption: "",
@@ -17,7 +19,7 @@ export const aboutYouInitialState: aboutYouState = {
 };
 
 export const aboutYouSlice = createAppSlice({
-  name: "aboutYou",
+  name: aboutYouSliceName,
   initialState: aboutYouInitialState,
   reducers: {
     setAboutYou: (state, action) => {
@@ -25,7 +27,7 @@ export const aboutYouSlice = createAppSlice({
         name,
         value,
       }: {
-        name: keyof aboutYouStore;
+        name: keyof AboutYouStore;
         value: string;
       } = action.payload;
       state.aboutYou[name] = value;
