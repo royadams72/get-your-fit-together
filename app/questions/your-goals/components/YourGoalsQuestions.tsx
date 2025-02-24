@@ -14,7 +14,7 @@ const YourGoalsQuestions = () => {
   const router = useRouter();
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
-    router.push("http://localhost:3000/questions/preferences");
+    router.push("/questions/preferences");
   };
   return (
     <div>

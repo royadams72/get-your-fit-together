@@ -19,7 +19,7 @@ const InjuriesQuestions = () => {
   const router = useRouter();
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
-    router.push("http://localhost:3000/questions/your-goals");
+    router.push("/questions/your-goals");
   };
   return (
     <div>

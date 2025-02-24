@@ -1,11 +1,13 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { PreferencesQuestions } from "@/types/enums/preferences.enum";
 import {
-  preferencesState,
-  preferencesStore,
+  PreferencesState,
+  PreferencesStore,
 } from "@/types/interfaces/preferences";
 
-export const preferencesInitialState: preferencesState = {
+export const preferencesSliceName = "preferences";
+
+export const preferencesInitialState: PreferencesState = {
   preferences: {
     [PreferencesQuestions.preferredWorkoutType]: "",
     [PreferencesQuestions.equipmentAvailability]: "",
@@ -17,7 +19,7 @@ export const preferencesInitialState: preferencesState = {
 };
 
 export const preferencesSlice = createAppSlice({
-  name: "preferences",
+  name: preferencesSliceName,
   initialState: preferencesInitialState,
   reducers: {
     setPreference: (state, action) => {
@@ -25,7 +27,7 @@ export const preferencesSlice = createAppSlice({
         name,
         value,
       }: {
-        name: keyof preferencesStore;
+        name: keyof PreferencesStore;
         value: string;
       } = action.payload;
       if (name === PreferencesQuestions.preferredWorkoutType) {

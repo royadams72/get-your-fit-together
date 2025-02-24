@@ -1,7 +1,9 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { injuriesState, injuriesStore } from "@/types/interfaces/injuries";
+import { InjuriesState, InjuriesStore } from "@/types/interfaces/injuries";
 
-export const injuriesInitialState: injuriesState = {
+export const injuriesSliceName = "injuries";
+
+export const injuriesInitialState: InjuriesState = {
   injuries: {
     upperBody: "",
     lowerBody: "",
@@ -13,7 +15,7 @@ export const injuriesInitialState: injuriesState = {
 };
 
 export const injuriesSlice = createAppSlice({
-  name: "injuries",
+  name: injuriesSliceName,
   initialState: injuriesInitialState,
   reducers: {
     setInjurie: (state, action) => {
@@ -21,7 +23,7 @@ export const injuriesSlice = createAppSlice({
         name,
         value,
       }: {
-        name: keyof injuriesStore;
+        name: keyof InjuriesStore;
         value: string;
       } = action.payload;
       state.injuries[name] = value;

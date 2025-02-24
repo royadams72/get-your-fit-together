@@ -1,6 +1,6 @@
 import { PreferencesQuestions } from "../enums/preferences.enum";
 
-export interface preferencesStore {
+export interface PreferencesStore {
   [PreferencesQuestions.preferredWorkoutType]: string;
   [PreferencesQuestions.equipmentAvailability]: string;
   [PreferencesQuestions.timePerSession]: string;
@@ -9,6 +9,6 @@ export interface preferencesStore {
   [PreferencesQuestions.socialPreference]: string;
 }
 
-export interface preferencesState {
-  preferences: preferencesStore;
+export interface PreferencesState {
+  preferences: PreferencesStore;
 }

@@ -1,12 +1,12 @@
 import { YourGoalsQuestions } from "../enums/your-goals.enum";
 
-export interface yourGoalsStore {
+export interface YourGoalsStore {
   [YourGoalsQuestions.primaryGoal]: string;
   [YourGoalsQuestions.secondaryGoal]: string;
   [YourGoalsQuestions.motivationLevel]: string;
   [YourGoalsQuestions.targetTimeline]: string;
 }
 
-export interface yourGoalsState {
-  yourGoals: yourGoalsStore;
+export interface YourGoalsState {
+  yourGoals: YourGoalsStore;
 }

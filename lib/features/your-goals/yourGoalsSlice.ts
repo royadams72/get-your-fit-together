@@ -1,7 +1,9 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { yourGoalsState, yourGoalsStore } from "@/types/interfaces/your-goals";
+import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
 
-export const yourGoalsInitialState: yourGoalsState = {
+export const yourGoalsSliceName = "yourGoals";
+
+export const yourGoalsInitialState: YourGoalsState = {
   yourGoals: {
     primaryGoal: "",
     secondaryGoal: "",
@@ -19,7 +21,7 @@ export const yourGoalsSlice = createAppSlice({
         name,
         value,
       }: {
-        name: keyof yourGoalsStore;
+        name: keyof YourGoalsStore;
         value: string;
       } = action.payload;
       state.yourGoals[name] = value;

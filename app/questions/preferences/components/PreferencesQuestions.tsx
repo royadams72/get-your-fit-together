@@ -11,7 +11,7 @@ const PreferencesQuestions = () => {
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
-    router.push("http://localhost:3000/questions/injuries");
+    router.push("/questions/your-custom-fit");
   };
 
   return (

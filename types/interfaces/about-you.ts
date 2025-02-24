@@ -1,6 +1,6 @@
 import { AboutYouQuestions } from "../enums/about-you.enum";
 
-export interface aboutYouStore {
+export interface AboutYouStore {
   [AboutYouQuestions.experienceLevel]: string;
   [AboutYouQuestions.alcoholConsumption]: string;
   [AboutYouQuestions.gender]: string;
@@ -13,6 +13,6 @@ export interface aboutYouStore {
   [AboutYouQuestions.activityLevel]: string;
 }
 
-export interface aboutYouState {
-  aboutYou: aboutYouStore;
+export interface AboutYouState {
+  aboutYou: AboutYouStore;
 }
