@@ -29,7 +29,11 @@ export const injuriesSlice = createAppSlice({
       state.injuries[name] = value;
     },
   },
+  selectors: {
+    getInjuriesState: (state: InjuriesState) => state.injuries,
+  },
 });
 
 export const { setInjurie } = injuriesSlice.actions;
 export const injuriesReducer = injuriesSlice.reducer;
+export const { getInjuriesState } = injuriesSlice.selectors;

@@ -27,7 +27,11 @@ export const yourGoalsSlice = createAppSlice({
       state.yourGoals[name] = value;
     },
   },
+  selectors: {
+    getYourGoalsState: (state: YourGoalsState) => state.yourGoals,
+  },
 });
 
 export const { setGoal } = yourGoalsSlice.actions;
 export const yourGoalsReducer = yourGoalsSlice.reducer;
+export const { getYourGoalsState } = yourGoalsSlice.selectors;

@@ -33,7 +33,11 @@ export const aboutYouSlice = createAppSlice({
       state.aboutYou[name] = value;
     },
   },
+  selectors: {
+    getAboutYouState: (state: AboutYouState) => state.aboutYou,
+  },
 });
 
 export const { setAboutYou } = aboutYouSlice.actions;
 export const aboutYouReducer = aboutYouSlice.reducer;
+export const { getAboutYouState } = aboutYouSlice.selectors;

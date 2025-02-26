@@ -1,26 +1,28 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { setAboutYou } from "@/lib/features/about-you/aboutYouSlice";
-
 import {
-  activityLevelConfig,
-  ageConfig,
-  alcoholConsumptionConfig,
-  bodyTypeConfig,
-  experienceConfig,
-  genderConfig,
-  heightConfig,
-  smokingConfig,
-  stressLevelConfig,
-  weightConfig,
-} from "@/app/questions/about-you/form-configs/config";
+  getAboutYouState,
+  setAboutYou,
+} from "@/lib/features/about-you/aboutYouSlice";
+
+import { config } from "@/app/questions/about-you/form-configs/config";
 
 import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
 import RadioComponent from "@/components/forms/RadioComponent";
+import { useEffect } from "react";
+import { useAppSelector } from "@/lib/hooks/storeHooks";
+import { isNotEmpty } from "@/lib/utils/validation";
 
 const AboutYouQuestions = () => {
+  const aboutYou = useAppSelector(getAboutYouState);
   const router = useRouter();
+  useEffect(() => {
+    if (isNotEmpty(aboutYou)) {
+      console.log(aboutYou);
+    }
+  }, []);
+
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
     router.push("/questions/injuries");
@@ -31,45 +33,55 @@ const AboutYouQuestions = () => {
       <FormProvider onSubmit={onSubmit}>
         <SelectComponent
           dispatchEvent={setAboutYou}
-          config={experienceConfig()}
+          defaultValue={aboutYou?.experienceLevel}
+          config={config.experienceConfig}
         ></SelectComponent>
         <SelectComponent
           dispatchEvent={setAboutYou}
-          config={ageConfig}
+          defaultValue={aboutYou?.age}
+          config={config.ageConfig}
         ></SelectComponent>
         <RadioComponent
-          config={genderConfig}
+          defaultValue={aboutYou?.gender}
           dispatchEvent={setAboutYou}
+          config={config.genderConfig}
         ></RadioComponent>
         <SelectComponent
           dispatchEvent={setAboutYou}
-          config={heightConfig()}
+          defaultValue={aboutYou?.height}
+          config={config.heightConfig}
         ></SelectComponent>
         <SelectComponent
+          defaultValue={aboutYou?.weight}
           dispatchEvent={setAboutYou}
-          config={weightConfig()}
+          config={config.weightConfig}
         ></SelectComponent>
         <SelectComponent
+          defaultValue={aboutYou?.bodyType}
           dispatchEvent={setAboutYou}
-          config={bodyTypeConfig()}
+          config={config.bodyTypeConfig}
         ></SelectComponent>
         <p>Injuries or Conditions</p>
 
         <SelectComponent
+          defaultValue={aboutYou?.stressLevel}
           dispatchEvent={setAboutYou}
-          config={stressLevelConfig()}
+          config={config.stressLevelConfig}
         ></SelectComponent>
         <RadioComponent
+          defaultValue={aboutYou?.smoking}
           dispatchEvent={setAboutYou}
-          config={smokingConfig()}
+          config={config.smokingConfig}
         ></RadioComponent>
         <SelectComponent
+          defaultValue={aboutYou?.alcoholConsumption}
           dispatchEvent={setAboutYou}
-          config={alcoholConsumptionConfig()}
+          config={config.alcoholConsumptionConfig}
         ></SelectComponent>
         <SelectComponent
+          defaultValue={aboutYou?.activityLevel}
           dispatchEvent={setAboutYou}
-          config={activityLevelConfig()}
+          config={config.activityLevelConfig}
         ></SelectComponent>
         <button type="submit">Submit</button>
       </FormProvider>

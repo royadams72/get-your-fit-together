@@ -1,8 +1,8 @@
 import { YourGoalsQuestions } from "@/types/enums/your-goals.enum";
 import { Select } from "@/types/interfaces/form";
 
-export const primaryGoalConfig = (): Select => {
-  return {
+export const config = {
+  primaryGoalConfig: <Select>{
     name: YourGoalsQuestions.primaryGoal,
     label: "Primary Goal:",
     options: [
@@ -33,11 +33,8 @@ export const primaryGoalConfig = (): Select => {
     validation: {
       required: "Please select a primary goal",
     },
-  };
-};
-
-export const secondaryGoalConfig = (): Select => {
-  return {
+  },
+  secondaryGoalConfig: <Select>{
     name: YourGoalsQuestions.secondaryGoal,
     label: "Secondary Goal:",
     options: [
@@ -80,11 +77,8 @@ export const secondaryGoalConfig = (): Select => {
     validation: {
       required: "Please select a secondary goal",
     },
-  };
-};
-
-export const motivationLevelConfig = (): Select => {
-  return {
+  },
+  motivationLevelConfig: <Select>{
     name: YourGoalsQuestions.motivationLevel,
     label: "Motivation Level:",
     options: [
@@ -118,11 +112,8 @@ export const motivationLevelConfig = (): Select => {
     validation: {
       required: "Please select a motivation level",
     },
-  };
-};
-
-export const targetTimelineConfig = (): Select => {
-  return {
+  },
+  targetTimelineConfig: <Select>{
     name: YourGoalsQuestions.targetTimeline,
     label: "Target Timeline:",
     options: [
@@ -134,5 +125,5 @@ export const targetTimelineConfig = (): Select => {
     validation: {
       required: "Please select a target timeline",
     },
-  };
+  },
 };

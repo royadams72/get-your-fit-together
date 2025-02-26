@@ -9,20 +9,12 @@ import {
   weightTogglgOptions,
 } from "@/app/questions/about-you/form-configs/options/weight";
 import {
-  foodAllergiesOptions,
-  generalConditionsOptions,
-  lowerBodyOptions,
-  medicalRestrictionsOptions,
-  otherSensitivitiesOptions,
-  upperBodyOptions,
-} from "@/app/questions/injuries/components/form-configs/options/conditions";
-import {
   experienceLevelOptions,
   bodyTypeOptions,
 } from "@/app/questions/about-you/form-configs/options/aboutYou";
 
-export const experienceConfig = (): Select => {
-  return {
+export const config = {
+  experienceConfig: <Select>{
     name: AboutYouQuestions.experienceLevel,
     label: "Experience Level",
     options: experienceLevelOptions,
@@ -31,37 +23,42 @@ export const experienceConfig = (): Select => {
       required: "Please select an option for experience",
     },
     eventHandlers: { onChange: (e) => console.log("changed") },
-  };
-};
-export const genderConfig: Radio = {
-  name: AboutYouQuestions.gender,
-  legend: "Gender:",
-  options: [
-    { value: "male", label: "Male", id: "male" },
-    { value: "female", label: "Female", id: "female" },
-  ],
-  validation: {
-    required: "Please select an option for gender",
   },
-};
-export const ageConfig: Select = {
-  name: AboutYouQuestions.age,
-  label: "Age:",
-  options: [
-    { value: "", display: "Select your age" },
-    { value: "18-24", display: "18-24" },
-    { value: "25-34", display: "25-34" },
-    { value: "35-44", display: "35-44" },
-    { value: "45-54", display: "45-54" },
-    { value: "55+", display: "55+" },
-  ],
-  validation: {
-    required: "Please select an option for age",
+  genderConfig: <Radio>{
+    name: AboutYouQuestions.gender,
+    legend: "Gender:",
+    options: [
+      {
+        value: "male",
+        label: "Male",
+        id: "male",
+      },
+      {
+        value: "female",
+        label: "Female",
+        id: "female",
+      },
+    ],
+    validation: {
+      required: "Please select an option for gender",
+    },
   },
-};
-
-export const heightConfig = (): Select => {
-  return {
+  ageConfig: <Select>{
+    name: AboutYouQuestions.age,
+    label: "Age:",
+    options: [
+      { value: "", display: "Select your age" },
+      { value: "18-24", display: "18-24" },
+      { value: "25-34", display: "25-34" },
+      { value: "35-44", display: "35-44" },
+      { value: "45-54", display: "45-54" },
+      { value: "55+", display: "55+" },
+    ],
+    validation: {
+      required: "Please select an option for age",
+    },
+  },
+  heightConfig: <Select>{
     name: AboutYouQuestions.height,
     label: "Height:",
     options: heightOptionsFt,
@@ -69,11 +66,8 @@ export const heightConfig = (): Select => {
     validation: {
       required: "Please select an option for height",
     },
-  };
-};
-
-export const weightConfig = (): Select => {
-  return {
+  },
+  weightConfig: <Select>{
     name: AboutYouQuestions.weight,
     label: "Weight:",
     options: weightOptionsKg,
@@ -81,22 +75,16 @@ export const weightConfig = (): Select => {
     validation: {
       required: "Please select an option for weight",
     },
-  };
-};
-
-export const bodyTypeConfig = (): Select => {
-  return {
+  },
+  bodyTypeConfig: <Select>{
     name: AboutYouQuestions.bodyType,
     label: "Body Type:",
     options: bodyTypeOptions,
     validation: {
       required: "Please select an option for weight body type",
     },
-  };
-};
-
-export const stressLevelConfig = (): Select => {
-  return {
+  },
+  stressLevelConfig: <Select>{
     name: AboutYouQuestions.stressLevel,
     label: "Stress Level:",
     options: [
@@ -112,11 +100,8 @@ export const stressLevelConfig = (): Select => {
     validation: {
       required: "Please select an option for stress level",
     },
-  };
-};
-
-export const smokingConfig = (): Radio => {
-  return {
+  },
+  smokingConfig: <Radio>{
     name: AboutYouQuestions.smoking,
     legend: "Do you smoke?",
     options: [
@@ -126,11 +111,8 @@ export const smokingConfig = (): Radio => {
     validation: {
       required: "Please select an option for smoking",
     },
-  };
-};
-
-export const alcoholConsumptionConfig = (): Select => {
-  return {
+  },
+  alcoholConsumptionConfig: <Select>{
     name: AboutYouQuestions.alcoholConsumption,
     label: "Alcohol Consumption per week (Units):",
     options: [
@@ -145,11 +127,8 @@ export const alcoholConsumptionConfig = (): Select => {
     validation: {
       required: "Please select an option for alcohol consumption",
     },
-  };
-};
-
-export const activityLevelConfig = (): Select => {
-  return {
+  },
+  activityLevelConfig: <Select>{
     name: AboutYouQuestions.activityLevel,
     label: "Activity Level:",
     options: [
@@ -179,5 +158,5 @@ export const activityLevelConfig = (): Select => {
     validation: {
       required: "Please select an option for activity level",
     },
-  };
+  },
 };

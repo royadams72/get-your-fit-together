@@ -1,55 +1,67 @@
 "use client";
 import { useRouter } from "next/navigation";
-
-import { setInjurie } from "@/lib/features/injuries/injuriesSlice";
-
+import { useAppSelector } from "@/lib/hooks/storeHooks";
 import {
-  upperBodyConfig,
-  lowerBodyConfig,
-  generalConditionsConfig,
-  medicalRestrictionsConfig,
-  foodAllergiesConfig,
-  otherSensitivitiesConfig,
-} from "./form-configs/config";
+  setInjurie,
+  getInjuriesState,
+} from "@/lib/features/injuries/injuriesSlice";
+import { config } from "./form-configs/config";
 
 import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
+import { useEffect } from "react";
+import { isNotEmpty } from "@/lib/utils/validation";
 
 const InjuriesQuestions = () => {
+  const injuries = useAppSelector(getInjuriesState);
   const router = useRouter();
+
+  useEffect(() => {
+    if (isNotEmpty(injuries)) {
+      console.log(injuries);
+    }
+  }, []);
+
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
     router.push("/questions/your-goals");
   };
+
   return (
     <div>
       <p>Injuries</p>
       <FormProvider onSubmit={onSubmit}>
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={upperBodyConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.upperBody}
+          config={config.upperBodyConfig}
+        />
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={lowerBodyConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.lowerBody}
+          config={config.lowerBodyConfig}
+        />
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={generalConditionsConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.generalConditions}
+          config={config.generalConditionsConfig}
+        />
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={medicalRestrictionsConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.medicalRestrictions}
+          config={config.medicalRestrictionsConfig}
+        />
         <p>Allergies or Sensitivities</p>
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={foodAllergiesConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.foodAllergies}
+          config={config.foodAllergiesConfig}
+        />
         <SelectComponent
           dispatchEvent={setInjurie}
-          config={otherSensitivitiesConfig()}
-        ></SelectComponent>
+          defaultValue={injuries?.otherSensitivities}
+          config={config.otherSensitivitiesConfig}
+        />
         <button type="submit">Submit</button>
       </FormProvider>
     </div>
