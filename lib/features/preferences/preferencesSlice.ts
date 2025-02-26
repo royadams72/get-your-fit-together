@@ -31,9 +31,7 @@ export const preferencesSlice = createAppSlice({
         value: string;
       } = action.payload;
       if (name === PreferencesQuestions.preferredWorkoutType) {
-        let stateValue = state.preferences[name];
         let inState = state.preferences[name].indexOf(value) != -1;
-        console.log(inState);
 
         if (inState) {
           console.log(state.preferences[name]);
@@ -51,7 +49,11 @@ export const preferencesSlice = createAppSlice({
       console.log(state.preferences[name]);
     },
   },
+  selectors: {
+    getPreferencesState: (state: PreferencesState) => state.preferences,
+  },
 });
 
 export const { setPreference } = preferencesSlice.actions;
 export const preferencesReducer = preferencesSlice.reducer;
+export const { getPreferencesState } = preferencesSlice.selectors;

@@ -7,13 +7,12 @@ export interface Select {
   hint?: { __html: string };
   label: string;
   name: string;
-  options: { value: string | null; display: string; selected?: boolean }[];
+  options: { value: string | null; display: string }[];
   toggleOptions?: { value: string; label: string; toggleOption: any }[];
   validation?: {};
 }
 
 export interface CheckBox {
-  defaultChecked?: boolean;
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -48,12 +47,16 @@ export interface Radio {
   hint?: { __html: string };
   legend: string;
   name: string;
-  options: { value: string; id: string; label: string; selected?: boolean }[];
+  options: {
+    value: string;
+    id: string;
+    label: string;
+    checked?: boolean;
+  }[];
   validation?: {};
 }
 
 export interface Input {
-  defualtValue?: string;
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;

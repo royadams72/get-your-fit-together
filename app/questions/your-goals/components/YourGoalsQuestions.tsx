@@ -1,40 +1,54 @@
 "use client";
 import FormProvider from "@/context/FormProvider";
-import { setGoal } from "@/lib/features/your-goals/yourGoalsSlice";
-import { useRouter } from "next/navigation";
 import {
-  motivationLevelConfig,
-  primaryGoalConfig,
-  secondaryGoalConfig,
-  targetTimelineConfig,
-} from "../form-configs/config";
+  setGoal,
+  getYourGoalsState,
+} from "@/lib/features/your-goals/yourGoalsSlice";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/hooks/storeHooks";
+import { useEffect } from "react";
+import { isNotEmpty } from "@/lib/utils/validation";
+import { config } from "../form-configs/config";
 import SelectComponent from "@/components/forms/SelectComponent";
 
 const YourGoalsQuestions = () => {
+  const goals = useAppSelector(getYourGoalsState);
   const router = useRouter();
+
+  useEffect(() => {
+    if (isNotEmpty(goals)) {
+      console.log(goals);
+    }
+  }, []);
+
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
     router.push("/questions/preferences");
   };
+
   return (
     <div>
       <FormProvider onSubmit={onSubmit}>
         <SelectComponent
           dispatchEvent={setGoal}
-          config={primaryGoalConfig()}
-        ></SelectComponent>
+          defaultValue={goals?.primaryGoal}
+          config={config.primaryGoalConfig}
+        />
         <SelectComponent
           dispatchEvent={setGoal}
-          config={secondaryGoalConfig()}
-        ></SelectComponent>
+          defaultValue={goals?.secondaryGoal}
+          config={config.secondaryGoalConfig}
+        />
         <SelectComponent
           dispatchEvent={setGoal}
-          config={motivationLevelConfig()}
-        ></SelectComponent>
+          defaultValue={goals?.motivationLevel}
+          config={config.motivationLevelConfig}
+        />
         <SelectComponent
           dispatchEvent={setGoal}
-          config={targetTimelineConfig()}
-        ></SelectComponent>
+          defaultValue={goals?.targetTimeline}
+          config={config.targetTimelineConfig}
+        />
         <button type="submit">Submit</button>
       </FormProvider>
     </div>

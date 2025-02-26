@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useFormContext } from "react-hook-form";
 
@@ -8,10 +9,12 @@ const RadioComponent = ({
   className,
   config,
   dispatchEvent,
+  defaultValue,
 }: {
   config: Radio;
   className?: string;
   dispatchEvent?: ActionCreatorWithPayload<any, string>;
+  defaultValue?: string;
 }) => {
   const {
     register,
@@ -19,20 +22,27 @@ const RadioComponent = ({
     setValue,
     formState: { errors },
   } = useFormContext();
+
   const dispatch = useAppDispatch();
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Add any onChange event handlers from config
-    const { name, value } = e.target;
-    config?.eventHandlers?.onChange?.(e);
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(config.name, defaultValue);
+    }
+  }, [defaultValue, setValue, config.name]);
 
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setValue(name, value);
 
     const isFieldValid = await trigger(name); // Triggers validation for the specific field
     if (isFieldValid && dispatchEvent) {
       dispatch(dispatchEvent({ name, value }));
     }
+
+    config?.eventHandlers?.onChange?.(e);
   };
+
   return (
     <fieldset className="radio-group">
       <legend>{config.legend}</legend>
@@ -42,11 +52,12 @@ const RadioComponent = ({
             <input
               {...register(config.name, config.validation)}
               {...config.eventHandlers}
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               type="radio"
               id={option.id}
               name={config.name}
               value={option.value}
+              defaultChecked={defaultValue === option.value}
             />
             <label htmlFor={option.id}>{option.label}</label>
             {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}

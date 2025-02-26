@@ -1,18 +1,21 @@
 "use client";
-import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import { CheckBoxGroup } from "@/types/interfaces/form";
+import { useEffect } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
-
 import { useFormContext, useFieldArray } from "react-hook-form";
+
+import { CheckBoxGroup } from "@/types/interfaces/form";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
 const CheckBoxGroupComponent = ({
   config,
   required,
   dispatchEvent,
+  defaultValue,
 }: {
   config: CheckBoxGroup;
   required: boolean;
   dispatchEvent: ActionCreatorWithPayload<any, string>;
+  defaultValue?: string;
 }) => {
   const dispatch = useAppDispatch();
   const {
@@ -48,6 +51,21 @@ const CheckBoxGroupComponent = ({
     id: field.id,
   }));
 
+  useEffect(() => {
+    if (defaultValue) {
+      const defaultChecked = config.checkboxes.map((checkbox) => {
+        defaultValue.split(",").map((value) => {
+          if (value.trim() === checkbox.label) {
+            checkbox.value = true;
+          }
+        });
+        return checkbox;
+      });
+
+      setValue(config.name, defaultChecked);
+    }
+  }, [defaultValue, setValue, config.name]);
+
   const handleCheckboxChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -58,13 +76,14 @@ const CheckBoxGroupComponent = ({
     const value = config.checkboxes[index].label;
     const updatedValues = [...config.checkboxes];
     updatedValues[index].value = checked;
+    console.log(updatedValues);
 
     setValue(config.name, updatedValues);
 
     await trigger(config.name);
 
     dispatch(dispatchEvent({ name: config.name, value }));
-    // Custom onChange set is config files
+
     config.eventHandlers?.onChange?.(e);
   };
 
