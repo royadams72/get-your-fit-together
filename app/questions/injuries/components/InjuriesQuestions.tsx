@@ -20,7 +20,7 @@ const InjuriesQuestions = () => {
     if (isNotEmpty(injuries)) {
       console.log(injuries);
     }
-  }, []);
+  }, [injuries]);
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);

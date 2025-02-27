@@ -1,5 +1,5 @@
 import { AboutYouQuestions } from "@/types/enums/about-you.enum";
-import { CheckBox, Radio, Select } from "@/types/interfaces/form";
+import { Radio, Select } from "@/types/interfaces/form";
 import {
   heightOptionsFt,
   heightTogglgOptions,

@@ -44,7 +44,7 @@ const RadioComponent = ({
   };
 
   return (
-    <fieldset className="radio-group">
+    <fieldset className={className}>
       <legend>{config.legend}</legend>
       {config.options.map((option, i) => {
         return (
