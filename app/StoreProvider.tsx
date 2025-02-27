@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { makeStore, AppStore, persistor } from "@/lib/store/store";
+import { makeStore, AppStore } from "@/lib/store/store";
 
 export default function StoreProvider({
   children,

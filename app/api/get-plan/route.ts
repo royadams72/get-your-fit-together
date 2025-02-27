@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { setContent } from "../setContent";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const storeArray = ["aboutYou", "injuries", "yourGoals", "preferences"];
 const formatFromSessionStorage = (
   arr: Array<string>,
   sessionData: { [key: string]: string }
 ) => {
   let obj: any;
-  for (let prop of arr) {
+  for (const prop of arr) {
     obj = {
       ...obj,
       ...JSON.parse(decodeURI(sessionData[prop])),
@@ -18,6 +17,7 @@ const formatFromSessionStorage = (
   return obj;
 };
 export async function POST(request: NextRequest) {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   let { sessionData } = await request.json();
   sessionData = JSON.parse(sessionData);
   const store = formatFromSessionStorage(storeArray, sessionData);

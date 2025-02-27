@@ -49,7 +49,7 @@ const SelectComponent = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       <label htmlFor={config.name}>{config.label}</label>
       {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 

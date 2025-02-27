@@ -19,9 +19,9 @@ const PreferencesQuestions = () => {
 
   useEffect(() => {
     if (isNotEmpty(preferences)) {
-      // console.log(preferences);
+      console.log(preferences);
     }
-  }, []);
+  }, [preferences]);
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
