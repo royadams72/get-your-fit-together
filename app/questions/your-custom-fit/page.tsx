@@ -1,7 +1,8 @@
 import React from "react";
+import YourFit from "./components/YourFit";
 
 const YourCustomFit = () => {
-  return <div>YourCustomFit</div>;
+  return <YourFit />;
 };
 
 export default YourCustomFit;
