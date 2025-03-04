@@ -9,7 +9,7 @@ const mapState = (state: RootState) => {
 };
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  let state = await request.json();
+  const state = await request.json();
   console.log("savedState:::::::::::::::::", state);
 
   // state = JSON.parse(state);

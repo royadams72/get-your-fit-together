@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectToDB } from "@/lib/db/mongodb"; // Make sure path is correct
+import { connectToDB } from "@/lib/db/mongodb";
 
 export async function POST(req: Request) {
   try {
@@ -12,8 +12,6 @@ export async function POST(req: Request) {
         user: { userPassword },
       },
     } = savedState;
-
-    console.log("savedState:::::::::::::::::", userPassword, savedState);
 
     await collection.updateOne(
       { userPassword },

@@ -1,10 +1,7 @@
-import { AboutYouState, AboutYouStore } from "@/types/interfaces/about-you";
-import { InjuriesState, InjuriesStore } from "@/types/interfaces/injuries";
-import {
-  PreferencesState,
-  PreferencesStore,
-} from "@/types/interfaces/preferences";
-import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
+import { AboutYouState } from "@/types/interfaces/about-you";
+import { InjuriesState } from "@/types/interfaces/injuries";
+import { PreferencesState } from "@/types/interfaces/preferences";
+import { YourGoalsState } from "@/types/interfaces/your-goals";
 
 interface SessionStore {
   aboutYou: AboutYouState;

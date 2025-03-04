@@ -30,7 +30,7 @@ const YourFit = () => {
     if (isNotEmpty(user)) {
       console.log(user);
     }
-  }, []);
+  }, [user]);
   const onSubmit = async (data: any) => {
     console.log("Form Submitted:", savedState);
 
