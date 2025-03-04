@@ -1,27 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { RootState } from "@/lib/store/store";
 import { setContent } from "../setContent";
 
-const storeArray = ["aboutYou", "injuries", "yourGoals", "preferences"];
-const formatFromSessionStorage = (
-  arr: Array<string>,
-  sessionData: { [key: string]: string }
-) => {
-  let obj: any;
-  for (const prop of arr) {
-    obj = {
-      ...obj,
-      ...JSON.parse(decodeURI(sessionData[prop])),
-    };
-  }
-  return obj;
+const mapState = (state: RootState) => {
+  const { aboutYou, injuries, yourGoals, preferences } = state;
+  return { aboutYou, injuries, yourGoals, preferences };
 };
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  let { sessionData } = await request.json();
-  sessionData = JSON.parse(sessionData);
-  const store = formatFromSessionStorage(storeArray, sessionData);
-  const userContent = await setContent(store);
+  const state = await request.json();
+  console.log("savedState:::::::::::::::::", state);
+
+  // state = JSON.parse(state);
+
+  const mappedState = mapState(state);
+  const userContent = await setContent(mappedState);
   console.log(userContent);
 
   const completion = await openai.chat.completions.create({
@@ -41,4 +35,5 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(completion.choices[0], { status: 200 });
+  // return NextResponse.json(true, { status: 200 });
 }

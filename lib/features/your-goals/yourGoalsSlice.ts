@@ -13,7 +13,7 @@ export const yourGoalsInitialState: YourGoalsState = {
 };
 
 export const yourGoalsSlice = createAppSlice({
-  name: "yourGoals",
+  name: yourGoalsSliceName,
   initialState: yourGoalsInitialState,
   reducers: {
     setGoal: (state, action) => {

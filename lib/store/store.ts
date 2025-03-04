@@ -1,4 +1,4 @@
-import { Action, combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
@@ -10,31 +10,33 @@ import { YourGoalsState } from "@/types/interfaces/your-goals";
 import { PreferencesState } from "@/types/interfaces/preferences";
 
 import {
-  aboutYouInitialState,
   aboutYouReducer,
   aboutYouSliceName,
 } from "@/lib/features/about-you/aboutYouSlice";
 import {
-  yourGoalsInitialState,
   yourGoalsReducer,
   yourGoalsSliceName,
 } from "@/lib/features/your-goals/yourGoalsSlice";
 import {
-  injuriesInitialState,
   injuriesReducer,
   injuriesSliceName,
 } from "@/lib/features/injuries/injuriesSlice";
 import {
-  preferencesInitialState,
   preferencesReducer,
   preferencesSliceName,
 } from "@/lib/features/preferences/preferencesSlice";
+import {
+  userReducer,
+  userSliceName,
+  UserState,
+} from "@/lib/features/user/userSlice";
 
 interface StoreInterface {
   aboutYou: AboutYouState;
   injuries: InjuriesState;
   yourGoals: YourGoalsState;
   preferences: PreferencesState;
+  user: UserState;
 }
 
 const rootReducer = combineReducers({
@@ -42,6 +44,7 @@ const rootReducer = combineReducers({
   injuries: injuriesReducer,
   yourGoals: yourGoalsReducer,
   preferences: preferencesReducer,
+  user: userReducer,
 });
 
 const persistConfig: PersistConfig<StoreInterface> = {
@@ -52,6 +55,7 @@ const persistConfig: PersistConfig<StoreInterface> = {
     injuriesSliceName,
     yourGoalsSliceName,
     preferencesSliceName,
+    userSliceName,
   ],
 };
 
@@ -60,12 +64,13 @@ const persistedReducer = persistReducer<StoreInterface>(
   rootReducer
 );
 
-const defaultState: StoreInterface = {
-  aboutYou: aboutYouInitialState,
-  injuries: injuriesInitialState,
-  yourGoals: yourGoalsInitialState,
-  preferences: preferencesInitialState,
-};
+// const defaultState: StoreInterface = {
+//   aboutYou: aboutYouInitialState,
+//   injuries: injuriesInitialState,
+//   yourGoals: yourGoalsInitialState,
+//   preferences: preferencesInitialState,
+//   user: userInitialState,
+// };
 
 export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
   return configureStore({
