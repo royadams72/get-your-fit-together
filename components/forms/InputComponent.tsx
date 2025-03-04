@@ -1,33 +1,58 @@
 "use client";
 import { useId } from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { CheckBox } from "@/types/interfaces/form";
+import { UseFormRegister, FieldErrors, useFormContext } from "react-hook-form";
+import { Input } from "@/types/interfaces/form";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const InputComponent = ({
   className,
   config,
-  register,
-  errors,
+  dispatchEvent,
+  defaultValue,
 }: {
-  config: CheckBox;
+  config: Input;
   className?: string;
-  register: UseFormRegister<any>;
-  errors: FieldErrors;
+  dispatchEvent?: ActionCreatorWithPayload<any, string>;
+  defaultValue?: string;
 }) => {
-  const inputId = useId();
+  const {
+    register,
+    trigger,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+  const dispatch = useAppDispatch();
 
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (value.length < 3) return;
+    console.log(name);
+
+    setValue(name, value);
+
+    await trigger(name); // Triggers validation for the specific field
+    if (dispatchEvent) {
+      dispatch(dispatchEvent({ name, value }));
+    }
+    config?.eventHandlers?.onChange?.(e);
+  };
   return (
     <div className={className}>
-      <label htmlFor={inputId}>{config.label}</label>
+      <label htmlFor={config.name}>{config.label}</label>
       <input
-        type="input"
-        id={inputId}
-        {...register(inputId, config.validation)}
+        type={config.isPassword ? "password" : "text"}
+        id={config.name}
+        {...register(config.name, config.validation)}
         {...config.eventHandlers}
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        value={defaultValue}
       />
       {config.hint && <div dangerouslySetInnerHTML={config.hint} />}
-      {errors[inputId] && (
-        <p style={{ color: "red" }}>{errors[inputId]?.message as string}</p>
+      {errors[config.name] && (
+        <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}
     </div>
   );

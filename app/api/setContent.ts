@@ -1,44 +1,60 @@
-import { AboutYouStore } from "@/types/interfaces/about-you";
-import { InjuriesStore } from "@/types/interfaces/injuries";
-import { PreferencesStore } from "@/types/interfaces/preferences";
-import { YourGoalsStore } from "@/types/interfaces/your-goals";
+import { AboutYouState, AboutYouStore } from "@/types/interfaces/about-you";
+import { InjuriesState, InjuriesStore } from "@/types/interfaces/injuries";
+import {
+  PreferencesState,
+  PreferencesStore,
+} from "@/types/interfaces/preferences";
+import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
 
 interface SessionStore {
-  aboutYou: AboutYouStore;
-  injuries: InjuriesStore;
-  yourGoals: YourGoalsStore;
-  preferences: PreferencesStore;
+  aboutYou: AboutYouState;
+  injuries: InjuriesState;
+  yourGoals: YourGoalsState;
+  preferences: PreferencesState;
 }
 
 export const setContent = async (store: SessionStore) => {
   const {
     aboutYou: {
-      activityLevel,
-      age,
-      alcoholConsumption,
-      bodyType,
-      experienceLevel,
-      gender,
-      height,
-      stressLevel,
-      smoking,
-      weight,
+      aboutYou: {
+        activityLevel,
+        age,
+        alcoholConsumption,
+        bodyType,
+        experienceLevel,
+        gender,
+        height,
+        stressLevel,
+        smoking,
+        weight,
+      },
     },
     injuries: {
-      foodAllergies,
-      generalConditions,
-      lowerBody,
-      medicalRestrictions,
-      otherSensitivities,
-      upperBody,
+      injuries: {
+        foodAllergies,
+        generalConditions,
+        lowerBody,
+        medicalRestrictions,
+        otherSensitivities,
+        upperBody,
+      },
     },
     preferences: {
-      daysPerWeek,
-      equipmentAvailability,
-      timePerSession,
-      workoutType,
+      preferences: {
+        daysPerWeek,
+        equipmentAvailability,
+        timePerSession,
+        workoutType,
+      },
     },
-    yourGoals: { motivationLevel, primaryGoal, secondaryGoal, targetTimeline },
+    yourGoals: {
+      yourGoals: {
+        motivationLevel,
+        primaryGoal,
+        secondaryGoal,
+        targetTimeline,
+      },
+    },
   } = store;
 
   const aboutMe = `About me:

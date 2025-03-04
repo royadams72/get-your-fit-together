@@ -29,12 +29,20 @@ import {
   preferencesReducer,
   preferencesSliceName,
 } from "@/lib/features/preferences/preferencesSlice";
+import {
+  userInitialState,
+  userReducer,
+  userSliceName,
+  UserState,
+} from "@/lib/features/user/userSlice";
+import { useAppSelector } from "../hooks/storeHooks";
 
 interface StoreInterface {
   aboutYou: AboutYouState;
   injuries: InjuriesState;
   yourGoals: YourGoalsState;
   preferences: PreferencesState;
+  user: UserState;
 }
 
 const rootReducer = combineReducers({
@@ -42,6 +50,7 @@ const rootReducer = combineReducers({
   injuries: injuriesReducer,
   yourGoals: yourGoalsReducer,
   preferences: preferencesReducer,
+  user: userReducer,
 });
 
 const persistConfig: PersistConfig<StoreInterface> = {
@@ -52,6 +61,7 @@ const persistConfig: PersistConfig<StoreInterface> = {
     injuriesSliceName,
     yourGoalsSliceName,
     preferencesSliceName,
+    userSliceName,
   ],
 };
 
@@ -65,6 +75,7 @@ const defaultState: StoreInterface = {
   injuries: injuriesInitialState,
   yourGoals: yourGoalsInitialState,
   preferences: preferencesInitialState,
+  user: userInitialState,
 };
 
 export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
@@ -74,6 +85,10 @@ export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }),
   });
+};
+
+export const getState = () => {
+  return useAppSelector((state: RootState) => state);
 };
 
 export const persistor = persistStore(makeStore());

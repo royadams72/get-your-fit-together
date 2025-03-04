@@ -63,6 +63,7 @@ export interface Input {
     onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   };
   hint?: { __html: string };
+  isPassword?: boolean;
   label: string;
   name: string;
   placeHolder?: string;
