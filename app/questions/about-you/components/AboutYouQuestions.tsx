@@ -21,7 +21,7 @@ const AboutYouQuestions = () => {
     if (isNotEmpty(aboutYou)) {
       console.log(aboutYou);
     }
-  }, []);
+  }, [aboutYou]);
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);

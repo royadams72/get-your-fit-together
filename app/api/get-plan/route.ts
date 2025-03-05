@@ -10,7 +10,6 @@ const extractState = (state: RootState) => {
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const state = await request.json();
-  // state = JSON.parse(state);
 
   const mappedState = extractState(state);
   const userContent = await setContent(mappedState);
@@ -30,6 +29,12 @@ export async function POST(request: NextRequest) {
     model: "gpt-4o",
     store: true,
   });
-
+  // {
+  //   finish_reason: "stop",
+  //   index: 0,
+  //   logprobs: 0,
+  //   message: { content: "fitnes stuff", refusal: "", role: "something" },
+  // },
+  //
   return NextResponse.json(completion.choices[0], { status: 200 });
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { RootState } from "@/lib/store/store";
-import { useAppSelector } from "@/lib/hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { config } from "@/lib/form-configs/userConfig";
 
@@ -20,12 +20,16 @@ interface AIResponse {
 }
 
 const YourFit = () => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(getUserState);
   const state = useAppSelector((state: RootState) => state);
-  const [yourFitPlan, setYourFitPlan] = useState<any>(null);
   const { _persist, ...savedState } = state;
+
+  const [yourFitPlan, setYourFitPlan] = useState<any>(null);
+
   const methods = useForm();
   const { reset } = methods;
-  const user = useAppSelector(getUserState);
+
   useEffect(() => {
     if (isNotEmpty(user)) {
       console.log(user);
@@ -45,30 +49,37 @@ const YourFit = () => {
       if (responseData.success) {
         console.log("Data saved successfully!");
         reset();
+        setYourFitPlan(null);
       }
     } catch (error) {
       console.error("Error saving data:", error);
     }
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       console.log("savedState:", savedState);
-  //       const response = await fetch("http://localhost:3000/api/get-plan", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(savedState),
-  //       });
-  //       const responseData: AIResponse = await response.json();
-  //       console.log("responseData:", responseData);
-
-  //       setYourFitPlan(responseData.message.content);
-  //     } catch (error) {
-  //       console.error("Error saving data:", error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("savedState:", savedState);
+        const response = await fetch("http://localhost:3000/api/get-plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: AIResponse = await response.json();
+        console.log("responseData:", responseData);
+        const { content: fitnessPlan } = responseData.message;
+        dispatch(
+          setUser({
+            name: "userFitnessPlan",
+            value: fitnessPlan,
+          })
+        );
+        setYourFitPlan(fitnessPlan);
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    })();
+  }, []);
 
   return (
     <div>
@@ -80,11 +91,8 @@ const YourFit = () => {
       )}
 
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <InputComponent
-          defaultValue={user.userPassword}
-          dispatchEvent={setUser}
-          config={config().password}
-        />
+        <InputComponent dispatchEvent={setUser} config={config().userName} />
+        <InputComponent dispatchEvent={setUser} config={config().password} />
         <button type="submit">Submit</button>
       </FormProvider>
     </div>

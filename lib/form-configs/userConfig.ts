@@ -1,12 +1,15 @@
 import { Input } from "@/types/interfaces/form";
 
-export const config = (isOnRetrievePage?: boolean) => ({
+export const config = () => ({
   password: <Input>{
     name: "userPassword",
     isPassword: true,
-    label: isOnRetrievePage
-      ? "Enter your password to retrieve your personal plan:"
-      : "Enter a password to save your personal plan:",
+    label: "Password:",
     validation: { required: "Please enter a password" },
+  },
+  userName: <Input>{
+    name: "userName",
+    label: "Full name",
+    validation: { required: "Please enter your name" },
   },
 });

@@ -1,17 +1,13 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
+import { UserState, UserStore } from "@/types/enums/user.enums";
 
 export const userSliceName = "user";
 
-export interface UserStore {
-  userPassword: string;
-}
-export interface UserState {
-  user: UserStore;
-}
 export const userInitialState: UserState = {
   user: {
+    userName: "",
     userPassword: "",
+    userFitnessPlan: "",
   },
 };
 

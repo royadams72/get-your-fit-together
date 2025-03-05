@@ -1,14 +1,20 @@
-"use client";
-import { useForm } from "react-hook-form";
-
-import { config } from "@/lib/form-configs/userConfig";
-import InputComponent from "@/components/forms/InputComponent";
-import FormProvider from "@/context/FormProvider";
 import { API } from "@/static_routes.config";
 
-const RetrieveYourPlan = () => {
+import React from "react";
+import { useForm } from "react-hook-form";
+import InputComponent from "./InputComponent";
+import FormProvider from "@/context/FormProvider";
+import { config } from "@/lib/form-configs/userConfig";
+
+const UserForm = () => {
   const methods = useForm();
   const { reset } = methods;
+
+  // useEffect(() => {
+  //   if (isNotEmpty(user)) {
+  //     console.log(user);
+  //   }
+  // }, [user]);
 
   const onSubmit = async (data: any) => {
     console.log("Form Submitted:", data);
@@ -37,4 +43,5 @@ const RetrieveYourPlan = () => {
     </FormProvider>
   );
 };
-export default RetrieveYourPlan;
+
+export default UserForm;

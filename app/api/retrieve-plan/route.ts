@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
-import { RootState } from "@/lib/store/store";
 
 export async function POST(req: Request) {
   try {
