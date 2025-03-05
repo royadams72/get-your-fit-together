@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { RootState } from "@/lib/store/store";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 
-import { config } from "@/app/questions/your-custom-fit/form-configs/config";
+import { config } from "@/lib/form-configs/userConfig";
 
 import { getUserState, setUser } from "@/lib/features/user/userSlice";
 import FormProvider from "@/context/FormProvider";
@@ -83,7 +83,7 @@ const YourFit = () => {
         <InputComponent
           defaultValue={user.userPassword}
           dispatchEvent={setUser}
-          config={config.password}
+          config={config().password}
         />
         <button type="submit">Submit</button>
       </FormProvider>

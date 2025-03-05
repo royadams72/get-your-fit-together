@@ -3,20 +3,17 @@ import OpenAI from "openai";
 import { RootState } from "@/lib/store/store";
 import { setContent } from "../setContent";
 
-const mapState = (state: RootState) => {
+const extractState = (state: RootState) => {
   const { aboutYou, injuries, yourGoals, preferences } = state;
   return { aboutYou, injuries, yourGoals, preferences };
 };
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const state = await request.json();
-  console.log("savedState:::::::::::::::::", state);
-
   // state = JSON.parse(state);
 
-  const mappedState = mapState(state);
+  const mappedState = extractState(state);
   const userContent = await setContent(mappedState);
-  console.log(userContent);
 
   const completion = await openai.chat.completions.create({
     messages: [
@@ -35,5 +32,4 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(completion.choices[0], { status: 200 });
-  // return NextResponse.json(true, { status: 200 });
 }

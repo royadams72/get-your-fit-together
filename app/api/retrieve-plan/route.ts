@@ -1,27 +1,21 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
+import { RootState } from "@/lib/store/store";
 
 export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
-    const { savedState } = await req.json();
-    const {
-      user: {
-        user: { userPassword },
-      },
-    } = savedState;
+    const { userPassword } = await req.json();
+    // const {
+    //   user: {
+    //     user: { userPassword },
+    //   },
+    // } = savedState;
 
-    await collection.updateOne(
-      { userPassword },
-      {
-        $set: { userPassword, savedState },
-        $setOnInsert: { createdAt: new Date() },
-        $currentDate: { updatedAt: true },
-      },
-      { upsert: true }
-    );
+    const plan = await collection.findOne({ userPassword });
+    console.log(plan);
 
     return NextResponse.json({ success: true });
   } catch (error) {

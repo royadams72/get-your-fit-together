@@ -5,7 +5,7 @@ import {
   setInjurie,
   getInjuriesState,
 } from "@/lib/features/injuries/injuriesSlice";
-import { config } from "./form-configs/config";
+import { config } from "../form-configs/config";
 
 import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
