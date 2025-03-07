@@ -16,7 +16,10 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       // TODO: Remove this rule once the project is ready
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { ignoreRestSiblings: true },
+      ],
     },
   },
 ];

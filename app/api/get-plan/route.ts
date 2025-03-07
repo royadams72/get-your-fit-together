@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-import { RootState } from "@/lib/store/store";
-import { setContent } from "../setContent";
+
+import { RootState } from "@/types/interfaces/store";
+import { setContent } from "./setContent";
 
 const extractState = (state: RootState) => {
   const { aboutYou, injuries, yourGoals, preferences } = state;

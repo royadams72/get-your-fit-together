@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { State } from "@/types/interfaces/store";
 import { connectToDB } from "@/lib/db/mongodb";
 
 export async function POST(req: Request) {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
       user: {
         user: { userPassword },
       },
-    } = savedState;
+    }: State = savedState;
 
     await collection.updateOne(
       { userPassword },

@@ -8,6 +8,7 @@ import { API } from "@/static_routes.config";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { setStore } from "@/lib/store/store";
+import Link from "next/link";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ const RetrieveYourPlan = () => {
         <div>
           <h1>Your Custom Fit</h1>
           {userFitnessPlan}
+          <Link href="/questions/about-you">Edit your information here</Link>
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>

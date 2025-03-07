@@ -1,5 +1,5 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { UserState, UserStore } from "@/types/enums/user.enums";
+import { UserState, UserStore } from "@/types/interfaces/user";
 
 export const userSliceName = "user";
 

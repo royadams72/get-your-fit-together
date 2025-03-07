@@ -10,7 +10,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 
-import { StoreInterface } from "@/types/interfaces/store";
+import { State } from "@/types/interfaces/store";
 
 import {
   aboutYouInitialState,
@@ -38,7 +38,7 @@ import {
   userSliceName,
 } from "@/lib/features/user/userSlice";
 
-export const defaultState: StoreInterface = {
+export const defaultState: State = {
   aboutYou: aboutYouInitialState,
   injuries: injuriesInitialState,
   yourGoals: yourGoalsInitialState,
@@ -46,7 +46,7 @@ export const defaultState: StoreInterface = {
   user: userInitialState,
 };
 
-export const setStore = createAction<StoreInterface>("store/reset");
+export const setStore = createAction<State>("store/reset");
 
 const rootReducer = combineReducers({
   aboutYou: aboutYouReducer,
@@ -56,7 +56,7 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-const persistConfig: PersistConfig<StoreInterface> = {
+const persistConfig: PersistConfig<State> = {
   key: "root",
   storage,
   whitelist: [
@@ -68,9 +68,9 @@ const persistConfig: PersistConfig<StoreInterface> = {
   ],
 };
 
-const persistedReducer = persistReducer<StoreInterface>(
+const persistedReducer = persistReducer<State>(
   persistConfig,
-  (state: StoreInterface | undefined, action: UnknownAction) => {
+  (state: State | undefined, action: UnknownAction) => {
     if (action.type === setStore.type && isPayInloadAction(action)) {
       return action.payload;
     }
@@ -78,7 +78,7 @@ const persistedReducer = persistReducer<StoreInterface>(
   }
 );
 
-export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
+export const makeStore = (preloadedState?: State & PersistPartial) => {
   return configureStore({
     reducer: persistedReducer,
     preloadedState,
@@ -98,14 +98,9 @@ export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
 };
 
 export const persistor = persistStore(makeStore());
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
 
 function isPayInloadAction(
   action: UnknownAction
-): action is PayloadAction<StoreInterface> {
+): action is PayloadAction<State> {
   return "payload" in action && typeof action.payload === "object";
 }

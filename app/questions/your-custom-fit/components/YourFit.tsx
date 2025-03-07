@@ -2,15 +2,14 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { RootState } from "@/lib/store/store";
+import { RootState } from "@/types/interfaces/store";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { config } from "@/lib/form-configs/userConfig";
 
-import { getUserState, setUser } from "@/lib/features/user/userSlice";
+import { setUser } from "@/lib/features/user/userSlice";
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
-import { isNotEmpty } from "@/lib/utils/validation";
 
 interface AIResponse {
   finish_reason: string;
@@ -21,7 +20,6 @@ interface AIResponse {
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(getUserState);
   const state = useAppSelector((state: RootState) => state);
   const { _persist, ...savedState } = state;
 
@@ -30,7 +28,7 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     try {
       const response = await fetch("/api/save-plan", {
         method: "POST",
@@ -81,11 +79,7 @@ const YourFit = () => {
       )}
 
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <InputComponent
-          defaultValue={user?.userName}
-          dispatchEvent={setUser}
-          config={config().userName}
-        />
+        <InputComponent dispatchEvent={setUser} config={config().userName} />
         <InputComponent dispatchEvent={setUser} config={config().password} />
         <button type="submit">Submit</button>
       </FormProvider>

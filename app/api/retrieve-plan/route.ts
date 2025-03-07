@@ -1,18 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
-interface DbResponse {
-  _id: string;
-  userPassword: string;
-  createdAt: Date;
-  savedState: {
-    aboutYou: { aboutYou: any };
-    injuries: { injuries: any };
-    yourGoals: { yourGoals: any };
-    preferences: { preferences: any };
-    user: { user: any };
-  };
-  updatedAt: Date;
-}
+import { DbResponse } from "@/types/interfaces/api";
+
 export async function POST(req: Request) {
   try {
     const db = await connectToDB();
