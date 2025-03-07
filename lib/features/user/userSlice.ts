@@ -28,9 +28,10 @@ export const userSlice = createAppSlice({
   },
   selectors: {
     getUserState: (state: UserState) => state.user,
+    getUserFitnessPlan: (state: UserState) => state.user.userFitnessPlan,
   },
 });
 
 export const { setUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
-export const { getUserState } = userSlice.selectors;
+export const { getUserState, getUserFitnessPlan } = userSlice.selectors;
