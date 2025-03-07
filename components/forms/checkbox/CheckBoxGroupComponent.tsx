@@ -64,7 +64,7 @@ const CheckBoxGroupComponent = ({
 
       setValue(config.name, defaultChecked);
     }
-  }, [defaultValue, setValue, config.name]);
+  }, [defaultValue, setValue, config.name, config.checkboxes]);
 
   const handleCheckboxChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -76,7 +76,6 @@ const CheckBoxGroupComponent = ({
     const value = config.checkboxes[index].label;
     const updatedValues = [...config.checkboxes];
     updatedValues[index].value = checked;
-    console.log(updatedValues);
 
     setValue(config.name, updatedValues);
 

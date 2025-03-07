@@ -25,11 +25,10 @@ const CheckBoxComponent = ({
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked: value } = e.target;
     config?.eventHandlers?.onChange?.(e);
-    console.log(name);
 
     setValue(name, value);
 
-    await trigger(name); // Triggers validation for the specific field
+    await trigger(name);
     if (dispatchEvent) {
       dispatch(dispatchEvent({ name, value }));
     }

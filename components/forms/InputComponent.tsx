@@ -25,9 +25,7 @@ const InputComponent = ({
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("handleChange", { name, value });
     if (value.length < 3) return;
-    console.log(name);
 
     setValue(name, value);
 

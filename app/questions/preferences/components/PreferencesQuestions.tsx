@@ -10,21 +10,12 @@ import { config } from "../form-configs/config";
 import FormProvider from "@/context/FormProvider";
 import CheckBoxGroupComponent from "@/components/forms/checkbox/CheckBoxGroupComponent";
 import SelectComponent from "@/components/forms/SelectComponent";
-import { useEffect } from "react";
-import { isNotEmpty } from "@/lib/utils/validation";
 
 const PreferencesQuestions = () => {
   const preferences = useAppSelector(getPreferencesState);
   const router = useRouter();
 
-  useEffect(() => {
-    if (isNotEmpty(preferences)) {
-      console.log(preferences);
-    }
-  }, [preferences]);
-
   const onSubmit = (data: any) => {
-    console.log("Form Submitted:", data);
     router.push("/questions/your-custom-fit");
   };
 

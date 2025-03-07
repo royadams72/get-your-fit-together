@@ -30,14 +30,7 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  useEffect(() => {
-    if (isNotEmpty(user)) {
-      console.log(user);
-    }
-  }, [user]);
   const onSubmit = async (data: any) => {
-    console.log("Form Submitted:", savedState);
-
     try {
       const response = await fetch("/api/save-plan", {
         method: "POST",
@@ -47,7 +40,6 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        console.log("Data saved successfully!");
         reset();
         setYourFitPlan(null);
       }
@@ -59,14 +51,12 @@ const YourFit = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log("savedState:", savedState);
         const response = await fetch("http://localhost:3000/api/get-plan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(savedState),
         });
         const responseData: AIResponse = await response.json();
-        console.log("responseData:", responseData);
         const { content: fitnessPlan } = responseData.message;
         dispatch(
           setUser({
@@ -91,7 +81,11 @@ const YourFit = () => {
       )}
 
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <InputComponent dispatchEvent={setUser} config={config().userName} />
+        <InputComponent
+          defaultValue={user?.userName}
+          dispatchEvent={setUser}
+          config={config().userName}
+        />
         <InputComponent dispatchEvent={setUser} config={config().password} />
         <button type="submit">Submit</button>
       </FormProvider>

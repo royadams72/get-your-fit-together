@@ -1,13 +1,10 @@
 export const isEmpty = (obj: any = {}): boolean => {
   if (Object?.keys?.(obj)?.length > 0) {
-    let index = 0;
     let noValue = 0;
     for (const value of Object.values(obj)) {
-      console.log("value::", !value);
       if (!value) {
         noValue++;
       }
-      index++;
     }
     if (Object?.keys?.(obj)?.length === noValue) {
       return true;

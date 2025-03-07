@@ -10,15 +10,7 @@ const UserForm = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  // useEffect(() => {
-  //   if (isNotEmpty(user)) {
-  //     console.log(user);
-  //   }
-  // }, [user]);
-
   const onSubmit = async (data: any) => {
-    console.log("Form Submitted:", data);
-
     try {
       const response = await fetch(`${API.RETRIEVE}`, {
         method: "POST",
@@ -28,7 +20,6 @@ const UserForm = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        console.log("Data saved successfully!");
         reset();
       }
     } catch (error) {

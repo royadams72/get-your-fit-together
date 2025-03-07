@@ -32,7 +32,6 @@ export async function POST(req: Request) {
     );
     if (plan) {
       const { savedState } = plan;
-      console.log("savedState:", savedState);
 
       return NextResponse.json(savedState, { status: 200 });
     } else {

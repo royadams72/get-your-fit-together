@@ -1,6 +1,5 @@
 export const getEnv = (key: string): any => {
   const value = process.env[key];
-  console.log("value:", value);
 
   if (typeof value === "undefined") {
     throw new Error(`Environment variable ${key} is not defined`);

@@ -16,8 +16,6 @@ const RetrieveYourPlan = () => {
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
-    console.log("Form Submitted:", data);
-
     try {
       const response = await fetch(`${API.RETRIEVE}`, {
         method: "POST",
@@ -25,7 +23,6 @@ const RetrieveYourPlan = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-      console.log("responseData::", responseData);
       dispatch(setStore(responseData));
       reset();
     } catch (error) {
