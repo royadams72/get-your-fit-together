@@ -11,6 +11,8 @@ interface SessionStore {
 }
 
 export const setContent = async (store: SessionStore) => {
+  console.log("store", store);
+
   const {
     aboutYou: {
       aboutYou: {

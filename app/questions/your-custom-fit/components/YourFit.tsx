@@ -7,9 +7,12 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { config } from "@/lib/form-configs/userConfig";
 
-import { setUser } from "@/lib/features/user/userSlice";
+import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
+import { API } from "@/static_routes.config";
+import { defaultState, setStore } from "@/lib/store/store";
+import { isEmpty } from "@/lib/utils/validation";
 
 interface AIResponse {
   finish_reason: string;
@@ -21,16 +24,15 @@ interface AIResponse {
 const YourFit = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state);
+  const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const { _persist, ...savedState } = state;
-
-  const [yourFitPlan, setYourFitPlan] = useState<any>(null);
 
   const methods = useForm();
   const { reset } = methods;
 
   const onSubmit = async () => {
     try {
-      const response = await fetch("/api/save-plan", {
+      const response = await fetch(`${API.SAVE_PLAN}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ savedState }),
@@ -39,7 +41,7 @@ const YourFit = () => {
 
       if (responseData.success) {
         reset();
-        setYourFitPlan(null);
+        dispatch(setStore(defaultState));
       }
     } catch (error) {
       console.error("Error saving data:", error);
@@ -47,9 +49,10 @@ const YourFit = () => {
   };
 
   useEffect(() => {
+    if (isEmpty(savedState)) return;
     (async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/get-plan", {
+        const response = await fetch(`${API.GET_PLAN}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(savedState),
@@ -62,7 +65,6 @@ const YourFit = () => {
             value: fitnessPlan,
           })
         );
-        setYourFitPlan(fitnessPlan);
       } catch (error) {
         console.error("Error saving data:", error);
       }
@@ -71,10 +73,10 @@ const YourFit = () => {
 
   return (
     <div>
-      {yourFitPlan && (
+      {userFitnessPlan && (
         <div>
           <h1>Your Custom Fit</h1>
-          {yourFitPlan}
+          {userFitnessPlan}
         </div>
       )}
 
