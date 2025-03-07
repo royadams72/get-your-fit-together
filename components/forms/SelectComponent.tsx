@@ -41,7 +41,6 @@ const SelectComponent = ({
     const isFieldValid = await trigger(name);
     if (isFieldValid) {
       dispatch(dispatchEvent({ name, value }));
-      console.log({ name, value });
     }
 
     // Add any onChange event handlers from config

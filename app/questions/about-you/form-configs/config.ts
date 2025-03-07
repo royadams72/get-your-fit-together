@@ -22,7 +22,6 @@ export const config = {
     validation: {
       required: "Please select an option for experience",
     },
-    eventHandlers: { onChange: (e) => console.log("changed") },
   },
   genderConfig: <Radio>{
     name: AboutYouQuestions.gender,

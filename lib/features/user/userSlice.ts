@@ -1,17 +1,13 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
+import { UserState, UserStore } from "@/types/interfaces/user";
 
 export const userSliceName = "user";
 
-export interface UserStore {
-  userPassword: string;
-}
-export interface UserState {
-  user: UserStore;
-}
 export const userInitialState: UserState = {
   user: {
+    userName: "",
     userPassword: "",
+    userFitnessPlan: "",
   },
 };
 
@@ -32,9 +28,10 @@ export const userSlice = createAppSlice({
   },
   selectors: {
     getUserState: (state: UserState) => state.user,
+    getUserFitnessPlan: (state: UserState) => state.user.userFitnessPlan,
   },
 });
 
 export const { setUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
-export const { getUserState } = userSlice.selectors;
+export const { getUserState, getUserFitnessPlan } = userSlice.selectors;

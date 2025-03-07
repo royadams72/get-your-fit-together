@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
+import { State } from "@/types/interfaces/store";
 import { connectToDB } from "@/lib/db/mongodb";
 
 export async function POST(req: Request) {
   try {
-    const db = await connectToDB(); // Now `db` is a `Db` instance
-    const collection = db.collection("reduxStates"); // ✅ This will now work
+    const db = await connectToDB();
+    const collection = db.collection("reduxStates");
 
     const { savedState } = await req.json();
     const {
       user: {
         user: { userPassword },
       },
-    } = savedState;
+    }: State = savedState;
 
     await collection.updateOne(
       { userPassword },

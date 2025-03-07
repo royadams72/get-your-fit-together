@@ -31,10 +31,9 @@ export const preferencesSlice = createAppSlice({
         value: string;
       } = action.payload;
       if (name === PreferencesQuestions.preferredWorkoutType) {
-        let inState = state.preferences[name].indexOf(value) != -1;
+        const inState = state.preferences[name].indexOf(value) != -1;
 
         if (inState) {
-          console.log(state.preferences[name]);
           state.preferences[name] = state.preferences[name].replace(
             new RegExp(`(^|, )${value}(, |$)`, "g"),
             ""
@@ -46,7 +45,6 @@ export const preferencesSlice = createAppSlice({
       } else {
         state.preferences[name] = value;
       }
-      console.log(state.preferences[name]);
     },
   },
   selectors: {

@@ -1,6 +1,5 @@
 "use client";
-import { useId } from "react";
-import { UseFormRegister, FieldErrors, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { Input } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -27,7 +26,6 @@ const InputComponent = ({
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (value.length < 3) return;
-    console.log(name);
 
     setValue(name, value);
 

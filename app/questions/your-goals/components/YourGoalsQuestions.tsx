@@ -15,14 +15,7 @@ const YourGoalsQuestions = () => {
   const goals = useAppSelector(getYourGoalsState);
   const router = useRouter();
 
-  useEffect(() => {
-    if (isNotEmpty(goals)) {
-      console.log(goals);
-    }
-  }, []);
-
   const onSubmit = (data: any) => {
-    console.log("Form Submitted:", data);
     router.push("/questions/preferences");
   };
 

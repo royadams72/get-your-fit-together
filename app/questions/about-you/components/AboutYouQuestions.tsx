@@ -10,21 +10,13 @@ import { config } from "@/app/questions/about-you/form-configs/config";
 import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
 import RadioComponent from "@/components/forms/RadioComponent";
-import { useEffect } from "react";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
-import { isNotEmpty } from "@/lib/utils/validation";
 
 const AboutYouQuestions = () => {
   const aboutYou = useAppSelector(getAboutYouState);
   const router = useRouter();
-  useEffect(() => {
-    if (isNotEmpty(aboutYou)) {
-      console.log(aboutYou);
-    }
-  }, []);
 
-  const onSubmit = (data: any) => {
-    console.log("Form Submitted:", data);
+  const onSubmit = () => {
     router.push("/questions/injuries");
   };
   return (

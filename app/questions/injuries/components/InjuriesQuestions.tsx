@@ -5,25 +5,16 @@ import {
   setInjurie,
   getInjuriesState,
 } from "@/lib/features/injuries/injuriesSlice";
-import { config } from "./form-configs/config";
+import { config } from "../form-configs/config";
 
 import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
-import { useEffect } from "react";
-import { isNotEmpty } from "@/lib/utils/validation";
 
 const InjuriesQuestions = () => {
   const injuries = useAppSelector(getInjuriesState);
   const router = useRouter();
 
-  useEffect(() => {
-    if (isNotEmpty(injuries)) {
-      console.log(injuries);
-    }
-  }, [injuries]);
-
-  const onSubmit = (data: any) => {
-    console.log("Form Submitted:", data);
+  const onSubmit = () => {
     router.push("/questions/your-goals");
   };
 

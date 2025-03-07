@@ -1,43 +1,52 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  createAction,
+  PayloadAction,
+  UnknownAction,
+} from "@reduxjs/toolkit";
 
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 
-import { AboutYouState } from "@/types/interfaces/about-you";
-import { InjuriesState } from "@/types/interfaces/injuries";
-import { YourGoalsState } from "@/types/interfaces/your-goals";
-import { PreferencesState } from "@/types/interfaces/preferences";
+import { State } from "@/types/interfaces/store";
 
 import {
+  aboutYouInitialState,
   aboutYouReducer,
   aboutYouSliceName,
 } from "@/lib/features/about-you/aboutYouSlice";
 import {
+  yourGoalsInitialState,
   yourGoalsReducer,
   yourGoalsSliceName,
 } from "@/lib/features/your-goals/yourGoalsSlice";
 import {
+  injuriesInitialState,
   injuriesReducer,
   injuriesSliceName,
 } from "@/lib/features/injuries/injuriesSlice";
 import {
+  preferencesInitialState,
   preferencesReducer,
   preferencesSliceName,
 } from "@/lib/features/preferences/preferencesSlice";
 import {
+  userInitialState,
   userReducer,
   userSliceName,
-  UserState,
 } from "@/lib/features/user/userSlice";
 
-interface StoreInterface {
-  aboutYou: AboutYouState;
-  injuries: InjuriesState;
-  yourGoals: YourGoalsState;
-  preferences: PreferencesState;
-  user: UserState;
-}
+export const defaultState: State = {
+  aboutYou: aboutYouInitialState,
+  injuries: injuriesInitialState,
+  yourGoals: yourGoalsInitialState,
+  preferences: preferencesInitialState,
+  user: userInitialState,
+};
+
+export const setStore = createAction<State>("store/reset");
 
 const rootReducer = combineReducers({
   aboutYou: aboutYouReducer,
@@ -47,7 +56,7 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-const persistConfig: PersistConfig<StoreInterface> = {
+const persistConfig: PersistConfig<State> = {
   key: "root",
   storage,
   whitelist: [
@@ -59,31 +68,39 @@ const persistConfig: PersistConfig<StoreInterface> = {
   ],
 };
 
-const persistedReducer = persistReducer<StoreInterface>(
+const persistedReducer = persistReducer<State>(
   persistConfig,
-  rootReducer
+  (state: State | undefined, action: UnknownAction) => {
+    if (action.type === setStore.type && isPayInloadAction(action)) {
+      return action.payload;
+    }
+    return rootReducer(state, action);
+  }
 );
 
-// const defaultState: StoreInterface = {
-//   aboutYou: aboutYouInitialState,
-//   injuries: injuriesInitialState,
-//   yourGoals: yourGoalsInitialState,
-//   preferences: preferencesInitialState,
-//   user: userInitialState,
-// };
-
-export const makeStore = (preloadedState?: StoreInterface & PersistPartial) => {
+export const makeStore = (preloadedState?: State & PersistPartial) => {
   return configureStore({
     reducer: persistedReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }),
+      getDefaultMiddleware({
+        serializableCheck: false,
+        ignoredActions: [
+          "persist/PERSIST",
+          "persist/REHYDRATE",
+          "persist/PAUSE",
+          "persist/PURGE",
+          "persist/FLUSH",
+          "persist/REGISTER",
+        ],
+      }),
   });
 };
 
 export const persistor = persistStore(makeStore());
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+
+function isPayInloadAction(
+  action: UnknownAction
+): action is PayloadAction<State> {
+  return "payload" in action && typeof action.payload === "object";
+}

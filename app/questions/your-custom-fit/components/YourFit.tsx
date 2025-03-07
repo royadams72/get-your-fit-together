@@ -2,15 +2,14 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { RootState } from "@/lib/store/store";
-import { useAppSelector } from "@/lib/hooks/storeHooks";
+import { RootState } from "@/types/interfaces/store";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
-import { config } from "@/app/questions/your-custom-fit/form-configs/config";
+import { config } from "@/lib/form-configs/userConfig";
 
-import { getUserState, setUser } from "@/lib/features/user/userSlice";
+import { setUser } from "@/lib/features/user/userSlice";
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
-import { isNotEmpty } from "@/lib/utils/validation";
 
 interface AIResponse {
   finish_reason: string;
@@ -20,20 +19,16 @@ interface AIResponse {
 }
 
 const YourFit = () => {
+  const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state);
-  const [yourFitPlan, setYourFitPlan] = useState<any>(null);
   const { _persist, ...savedState } = state;
+
+  const [yourFitPlan, setYourFitPlan] = useState<any>(null);
+
   const methods = useForm();
   const { reset } = methods;
-  const user = useAppSelector(getUserState);
-  useEffect(() => {
-    if (isNotEmpty(user)) {
-      console.log(user);
-    }
-  }, [user]);
-  const onSubmit = async (data: any) => {
-    console.log("Form Submitted:", savedState);
 
+  const onSubmit = async () => {
     try {
       const response = await fetch("/api/save-plan", {
         method: "POST",
@@ -43,32 +38,36 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        console.log("Data saved successfully!");
         reset();
+        setYourFitPlan(null);
       }
     } catch (error) {
       console.error("Error saving data:", error);
     }
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       console.log("savedState:", savedState);
-  //       const response = await fetch("http://localhost:3000/api/get-plan", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(savedState),
-  //       });
-  //       const responseData: AIResponse = await response.json();
-  //       console.log("responseData:", responseData);
-
-  //       setYourFitPlan(responseData.message.content);
-  //     } catch (error) {
-  //       console.error("Error saving data:", error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/get-plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: AIResponse = await response.json();
+        const { content: fitnessPlan } = responseData.message;
+        dispatch(
+          setUser({
+            name: "userFitnessPlan",
+            value: fitnessPlan,
+          })
+        );
+        setYourFitPlan(fitnessPlan);
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    })();
+  }, []);
 
   return (
     <div>
@@ -80,11 +79,8 @@ const YourFit = () => {
       )}
 
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <InputComponent
-          defaultValue={user.userPassword}
-          dispatchEvent={setUser}
-          config={config.password}
-        />
+        <InputComponent dispatchEvent={setUser} config={config().userName} />
+        <InputComponent dispatchEvent={setUser} config={config().password} />
         <button type="submit">Submit</button>
       </FormProvider>
     </div>

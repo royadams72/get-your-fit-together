@@ -9,7 +9,7 @@ export interface Select {
   name: string;
   options: { value: string | null; display: string }[];
   toggleOptions?: { value: string; label: string; toggleOption: any }[];
-  validation?: {};
+  validation?: object;
 }
 
 export interface CheckBox {
@@ -21,7 +21,7 @@ export interface CheckBox {
   label: string;
   name: string;
   value?: any;
-  validation?: {};
+  validation?: object;
   groupName?: string;
 }
 
@@ -53,7 +53,7 @@ export interface Radio {
     label: string;
     checked?: boolean;
   }[];
-  validation?: {};
+  validation?: object;
 }
 
 export interface Input {
@@ -67,5 +67,5 @@ export interface Input {
   label: string;
   name: string;
   placeHolder?: string;
-  validation?: {};
+  validation?: object;
 }
