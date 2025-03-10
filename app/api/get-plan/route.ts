@@ -5,6 +5,8 @@ import { RootState } from "@/types/interfaces/store";
 import { setContent } from "./setContent";
 
 const extractState = (state: RootState) => {
+  console.log("state", state);
+
   const { aboutYou, injuries, yourGoals, preferences } = state;
   return { aboutYou, injuries, yourGoals, preferences };
 };
