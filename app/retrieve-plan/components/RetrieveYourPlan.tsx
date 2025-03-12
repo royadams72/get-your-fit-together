@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { config } from "@/lib/form-configs/userConfig";
 import InputComponent from "@/components/forms/InputComponent";
 import FormProvider from "@/context/FormProvider";
-import { API } from "@/static_routes.config";
+import { ABOUT_YOU_PATH, API, QUESTIONS_PATH } from "@/routes.config";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { setStore } from "@/lib/store/store";
@@ -36,7 +36,7 @@ const RetrieveYourPlan = () => {
         <div>
           <h1>Your Custom Fit</h1>
           {userFitnessPlan}
-          <Link href="/questions/about-you">Edit your information here</Link>
+          <Link href={`${ABOUT_YOU_PATH}`}>Edit your information here</Link>
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>

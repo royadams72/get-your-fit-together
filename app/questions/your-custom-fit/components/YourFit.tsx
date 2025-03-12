@@ -10,7 +10,7 @@ import { config } from "@/lib/form-configs/userConfig";
 import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
-import { API } from "@/static_routes.config";
+import { API } from "@/routes.config";
 import { defaultState, setStore } from "@/lib/store/store";
 import { isEmpty } from "@/lib/utils/validation";
 

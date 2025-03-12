@@ -1,36 +1,29 @@
-// import React, { ReactNode } from "react";
-// import { useForm, FormProvider as RHFProvider } from "react-hook-form";
-
-// const FormProvider = ({
-//   onSubmit,
-//   children,
-//   defaultValues,
-// }: {
-//   children: ReactNode;
-//   onSubmit: any;
-//   defaultValues?: any; // Default values for form fields (optional)
-// }) => {
-//   const methods = useForm({ defaultValues });
-//   return (
-//     <RHFProvider {...methods}>
-//       <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
-//     </RHFProvider>
-//   );
-// };
-
-// export default FormProvider;
-
 "use client";
 
+import React, { createContext, useContext, ReactNode } from "react";
 import {
   FormProvider as RHFProvider,
   useForm,
   UseFormReturn,
 } from "react-hook-form";
 
+// Create a FormContext to expose the submit function
+const FormContext = createContext<{
+  handleSubmit: (path: string) => void;
+  getValues: any;
+  formState: any;
+} | null>(null);
+
+export const useFormContext = () => {
+  const context = useContext(FormContext);
+  if (!context)
+    throw new Error("useFormContext must be used within a FormProvider");
+  return context;
+};
+
 interface FormProviderProps {
-  children: React.ReactNode;
-  methods?: UseFormReturn<any>; // Accept external methods (including reset)
+  children: ReactNode;
+  methods?: UseFormReturn<any>;
   onSubmit: (data: any) => void;
   defaultValues?: any;
 }
@@ -41,13 +34,23 @@ const FormProvider = ({
   onSubmit,
   defaultValues,
 }: FormProviderProps) => {
-  const internalMethods = useForm({ defaultValues }); // If no external methods, use internal
+  const internalMethods = useForm({ defaultValues });
   const formMethods = methods || internalMethods;
 
+  const submitForm = () => {
+    formMethods.handleSubmit(onSubmit)(); // ✅ Ensure onSubmit is called correctly
+  };
+  const contextValue = {
+    handleSubmit: submitForm,
+    getValues: formMethods.getValues,
+    formState: formMethods.formState,
+  };
   return (
-    <RHFProvider {...formMethods}>
-      <form onSubmit={formMethods.handleSubmit(onSubmit)}>{children}</form>
-    </RHFProvider>
+    <FormContext.Provider value={contextValue}>
+      <RHFProvider {...formMethods}>
+        <form onSubmit={formMethods.handleSubmit(onSubmit)}>{children}</form>
+      </RHFProvider>
+    </FormContext.Provider>
   );
 };
 

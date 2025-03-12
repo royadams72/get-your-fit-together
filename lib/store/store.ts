@@ -37,6 +37,16 @@ import {
   userReducer,
   userSliceName,
 } from "@/lib/features/user/userSlice";
+import {
+  uiDataInitialState,
+  uiDataReducer,
+  uiDataSliceName,
+} from "../features/ui-data/uiDataSlice";
+import {
+  journeyInitialState,
+  journeyReducer,
+  journeySliceName,
+} from "../features/journey/journeySlice";
 
 export const defaultState: State = {
   aboutYou: aboutYouInitialState,
@@ -44,6 +54,8 @@ export const defaultState: State = {
   yourGoals: yourGoalsInitialState,
   preferences: preferencesInitialState,
   user: userInitialState,
+  uiData: uiDataInitialState,
+  journey: journeyInitialState,
 };
 
 export const setStore = createAction<State>("store/reset");
@@ -54,6 +66,8 @@ const rootReducer = combineReducers({
   yourGoals: yourGoalsReducer,
   preferences: preferencesReducer,
   user: userReducer,
+  uiData: uiDataReducer,
+  journey: journeyReducer,
 });
 
 const persistConfig: PersistConfig<State> = {
@@ -65,6 +79,8 @@ const persistConfig: PersistConfig<State> = {
     yourGoalsSliceName,
     preferencesSliceName,
     userSliceName,
+    uiDataSliceName,
+    journeySliceName,
   ],
 };
 
