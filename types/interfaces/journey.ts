@@ -13,4 +13,5 @@ export interface JourneyState {
 export interface JourneyData {
   name: string;
   isComplete: boolean;
+  canNavigate: boolean;
 }

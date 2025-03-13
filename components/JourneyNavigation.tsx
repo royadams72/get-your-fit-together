@@ -5,10 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useFormState } from "react-hook-form";
 
-import { QUESTIONS_PATH } from "@/routes.config";
+import { JOURNEY_PATHS, QUESTIONS_PATH } from "@/routes.config";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
-import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
+import {
+  getJourneyData,
+  getRoutes,
+  navigate,
+} from "@/lib/features/journey/journeySlice";
 
 import { useFormContext } from "@/context/FormProvider";
 
@@ -17,29 +21,18 @@ const JourneyNavigation = ({
 }: {
   isValid: (boolean: boolean) => void;
 }) => {
-  const dispatch = useAppDispatch();
+  const { handleSubmit, formState } = useFormContext();
 
-  const pathName = usePathname().split("/")[2];
-  const state = useFormState();
-  const { handleSubmit } = useFormContext();
   const { nextRoute, prevRoute } = useAppSelector(getRoutes);
 
   useEffect(() => {
-    isValid(state.isValid);
-  }, [state.isValid, isValid]);
-
-  useEffect(() => {
-    dispatch(navigate({ route: pathName }));
-  }, [pathName, dispatch]);
-
-  // const goBack = () => {
-  //   dispatch(navigate(pathName));
-  // };
+    isValid(formState.isValid);
+  }, [formState.isValid, isValid]);
 
   return (
     <nav>
       {nextRoute && (
-        <Link href="#" onClick={() => handleSubmit(pathName)}>
+        <Link href="#" onClick={() => handleSubmit}>
           Go To {nextRoute}
         </Link>
       )}

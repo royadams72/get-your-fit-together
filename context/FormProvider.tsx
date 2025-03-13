@@ -24,7 +24,7 @@ export const useFormContext = () => {
 interface FormProviderProps {
   children: ReactNode;
   methods?: UseFormReturn<any>;
-  onSubmit: (data: any) => void;
+  onSubmit: (path: string) => void;
   defaultValues?: any;
 }
 
@@ -37,8 +37,8 @@ const FormProvider = ({
   const internalMethods = useForm({ defaultValues });
   const formMethods = methods || internalMethods;
 
-  const submitForm = () => {
-    formMethods.handleSubmit(onSubmit)(); // ✅ Ensure onSubmit is called correctly
+  const submitForm = (path: string) => {
+    formMethods.handleSubmit(() => onSubmit(path))(); // ✅ Ensure onSubmit is called correctly
   };
   const contextValue = {
     handleSubmit: submitForm,

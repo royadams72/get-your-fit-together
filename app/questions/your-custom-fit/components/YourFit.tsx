@@ -80,11 +80,8 @@ const YourFit = () => {
         </div>
       )}
 
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <InputComponent dispatchEvent={setUser} config={config().userName} />
-        <InputComponent dispatchEvent={setUser} config={config().password} />
-        <button type="submit">Submit</button>
-      </FormProvider>
+      <InputComponent dispatchEvent={setUser} config={config().userName} />
+      <InputComponent dispatchEvent={setUser} config={config().password} />
     </div>
   );
 };
