@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { RootState } from "@/types/interfaces/store";
@@ -82,6 +82,7 @@ const YourFit = () => {
 
       <InputComponent dispatchEvent={setUser} config={config().userName} />
       <InputComponent dispatchEvent={setUser} config={config().password} />
+      <button type="submit">Submit</button>
     </div>
   );
 };
