@@ -1,4 +1,4 @@
-import { API } from "@/static_routes.config";
+import { API } from "@/routes.config";
 
 import React from "react";
 import { useForm } from "react-hook-form";

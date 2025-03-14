@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 import {
   setPreference,
@@ -7,23 +7,14 @@ import {
 } from "@/lib/features/preferences/preferencesSlice";
 import { config } from "../form-configs/config";
 
-import FormProvider from "@/context/FormProvider";
 import CheckBoxGroupComponent from "@/components/forms/checkbox/CheckBoxGroupComponent";
 import SelectComponent from "@/components/forms/SelectComponent";
 
 const PreferencesQuestions = () => {
   const preferences = useAppSelector(getPreferencesState);
-  const router = useRouter();
-
-  const onSubmit = (data: any) => {
-    router.push("/questions/your-custom-fit");
-  };
 
   return (
-    <FormProvider
-      onSubmit={onSubmit}
-      defaultValues={{ workoutType: config.workoutType.checkboxes }}
-    >
+    <div>
       <CheckBoxGroupComponent
         config={config.workoutType}
         required={true}
@@ -55,8 +46,7 @@ const PreferencesQuestions = () => {
         dispatchEvent={setPreference}
         defaultValue={preferences?.socialPreference}
       />
-      <button type="submit">Submit</button>
-    </FormProvider>
+    </div>
   );
 };
 

@@ -4,6 +4,8 @@ import { AboutYouState } from "./about-you";
 import { InjuriesState } from "./injuries";
 import { PreferencesState } from "./preferences";
 import { YourGoalsState } from "./your-goals";
+import { UiDataState } from "./uiData";
+import { JourneyState } from "./journey";
 
 export interface State {
   aboutYou: AboutYouState;
@@ -11,6 +13,8 @@ export interface State {
   yourGoals: YourGoalsState;
   preferences: PreferencesState;
   user: UserState;
+  uiData: UiDataState;
+  journey: JourneyState;
 }
 
 export type AppStore = ReturnType<typeof makeStore>;
