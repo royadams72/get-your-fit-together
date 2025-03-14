@@ -1,18 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { useFormState } from "react-hook-form";
+import {} from "react-hook-form";
 
-import { JOURNEY_PATHS, QUESTIONS_PATH } from "@/routes.config";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { QUESTIONS_PATH } from "@/routes.config";
+import { useAppSelector } from "@/lib/hooks/storeHooks";
 
-import {
-  getJourneyData,
-  getRoutes,
-  navigate,
-} from "@/lib/features/journey/journeySlice";
+import { getRoutes } from "@/lib/features/journey/journeySlice";
 
 import { useFormContext } from "@/context/FormProvider";
 
@@ -32,9 +27,9 @@ const JourneyNavigation = ({
   return (
     <nav>
       {nextRoute && (
-        <Link href="#" onClick={() => handleSubmit}>
+        <button type="button" onClick={handleSubmit}>
           Go To {nextRoute}
-        </Link>
+        </button>
       )}
       {prevRoute && (
         <Link href={`${QUESTIONS_PATH}/${prevRoute}`}>Go To {prevRoute}</Link>

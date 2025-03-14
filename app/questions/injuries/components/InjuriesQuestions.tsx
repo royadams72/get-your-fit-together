@@ -1,23 +1,20 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 import {
   setInjurie,
   getInjuriesState,
 } from "@/lib/features/injuries/injuriesSlice";
+
 import { config } from "../form-configs/config";
 
-import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
 
 const InjuriesQuestions = () => {
   const injuries = useAppSelector(getInjuriesState);
-  const router = useRouter();
 
   return (
     <div>
       <p>Injuries</p>
-      {/* <FormProvider onSubmit={onSubmit}> */}
       <SelectComponent
         dispatchEvent={setInjurie}
         defaultValue={injuries?.upperBody}
@@ -49,8 +46,6 @@ const InjuriesQuestions = () => {
         defaultValue={injuries?.otherSensitivities}
         config={config.otherSensitivitiesConfig}
       />
-      {/* <button type="submit">Submit</button> */}
-      {/* </FormProvider> */}
     </div>
   );
 };

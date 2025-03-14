@@ -14,7 +14,6 @@ const YourGoalsQuestions = () => {
 
   return (
     <div>
-      {/* <FormProvider onSubmit={onSubmit}> */}
       <SelectComponent
         dispatchEvent={setGoal}
         defaultValue={goals?.primaryGoal}
@@ -35,8 +34,6 @@ const YourGoalsQuestions = () => {
         defaultValue={goals?.targetTimeline}
         config={config.targetTimelineConfig}
       />
-      {/* <button type="submit">Submit</button> */}
-      {/* </FormProvider> */}
     </div>
   );
 };

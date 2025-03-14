@@ -7,9 +7,8 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 
-// Create a FormContext to expose the submit function
 const FormContext = createContext<{
-  handleSubmit: (path: string) => void;
+  handleSubmit: () => void;
   getValues: any;
   formState: any;
 } | null>(null);
@@ -24,8 +23,8 @@ export const useFormContext = () => {
 interface FormProviderProps {
   children: ReactNode;
   methods?: UseFormReturn<any>;
-  onSubmit: (path: string) => void;
-  defaultValues?: any;
+  onSubmit: (data: any) => void;
+  defaultValues?: object;
 }
 
 const FormProvider = ({
@@ -34,11 +33,11 @@ const FormProvider = ({
   onSubmit,
   defaultValues,
 }: FormProviderProps) => {
-  const internalMethods = useForm({ defaultValues });
+  const internalMethods = useForm({ defaultValues: defaultValues || {} });
   const formMethods = methods || internalMethods;
 
-  const submitForm = (path: string) => {
-    formMethods.handleSubmit(() => onSubmit(path))(); // ✅ Ensure onSubmit is called correctly
+  const submitForm = () => {
+    formMethods.handleSubmit(onSubmit)(); // ✅ Ensure onSubmit is called correctly
   };
   const contextValue = {
     handleSubmit: submitForm,

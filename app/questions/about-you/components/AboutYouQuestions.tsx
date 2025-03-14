@@ -1,8 +1,6 @@
 "use client";
-import { useEffect } from "react";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { useAppSelector } from "@/lib/hooks/storeHooks";
 
 import {
   getAboutYouState,
@@ -11,33 +9,15 @@ import {
 
 import { config } from "@/app/questions/about-you/form-configs/config";
 
-import {
-  getUiDataIsLoaded,
-  setUiData,
-} from "@/lib/features/ui-data/uiDataSlice";
-
-import FormProvider from "@/context/FormProvider";
 import SelectComponent from "@/components/forms/SelectComponent";
 import RadioComponent from "@/components/forms/RadioComponent";
 
 const AboutYouQuestions = () => {
-  const dispatch = useAppDispatch();
   const aboutYou = useAppSelector(getAboutYouState);
-  const isLoaded = useAppSelector(getUiDataIsLoaded);
-  const router = useRouter();
-  const pathname = usePathname();
-  const page = pathname.split("/")[2];
-  // console.log("pathname", pathname.split("/")[2]);
-  // useEffect(() => {
-  //   if (isLoaded) return;
-  //   // TODO: needs to be in a higher component or service
-  //   dispatch(setUiData({ name: "isLoaded", value: true }));
-  // });
 
   return (
     <div>
       AboutYouQuestions questions
-      {/* <FormProvider onSubmit={onSubmit}> */}
       <SelectComponent
         dispatchEvent={setAboutYou}
         defaultValue={aboutYou?.experienceLevel}
@@ -89,8 +69,6 @@ const AboutYouQuestions = () => {
         dispatchEvent={setAboutYou}
         config={config.activityLevelConfig}
       ></SelectComponent>
-      {/* <button type="submit">Submit</button> */}
-      {/* </FormProvider> */}
     </div>
   );
 };

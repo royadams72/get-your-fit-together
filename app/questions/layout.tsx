@@ -14,24 +14,27 @@ import {
 } from "@/lib/features/journey/journeySlice";
 import { usePathname, useRouter } from "next/navigation";
 import { JOURNEY_PATHS, QUESTIONS_PATH } from "@/routes.config";
+
 export default function QuestionsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const defaultValues =
-  // pathname === "/questions/preferences"
-  //   ? { workoutType: config?.workoutType?.checkboxes }
-  //   : undefined; //
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const pathName = usePathname().split("/")[2];
+  const routeName = usePathname().split("/")[2];
   const { nextRoute } = useAppSelector(getRoutes);
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(true);
 
   const journeyData: JourneyData[] = useAppSelector(getJourneyData);
+
+  const defaultValues =
+    routeName === "preferences"
+      ? { workoutType: config?.workoutType?.checkboxes }
+      : undefined;
+
   const formValid = (bool: boolean) => {
     setIsFormValid(bool);
   };
@@ -39,7 +42,7 @@ export default function QuestionsLayout({
   useEffect(() => {
     const canNavigate = isNotEmpty(
       journeyData.find(
-        (route) => route.name === pathName && route.canNavigate === true
+        (route) => route.name === routeName && route.canNavigate === true
       )
     );
     const lastCompletedRoute = journeyData.findLast(
@@ -54,14 +57,13 @@ export default function QuestionsLayout({
       console.log("cannot navigate", `${lastCompletedRoute}`);
     } else {
       setIsRedirecting(false);
-      dispatch(navigate({ route: pathName }));
-      console.log("navigated::::::");
+      dispatch(navigate({ route: routeName }));
     }
-  }, [journeyData, router, pathName, dispatch]);
+  }, [journeyData, router, routeName, dispatch]);
 
-  const onSubmit = (path: any) => {
+  const onSubmit = () => {
     if (isFormValid) {
-      dispatch(navigate({ route: pathName, isFormSubmit: true }));
+      dispatch(navigate({ route: routeName, isFormSubmit: true }));
       router.push(`${QUESTIONS_PATH}/${nextRoute}`);
     }
   };
@@ -69,10 +71,7 @@ export default function QuestionsLayout({
   if (isRedirecting) return null;
 
   return (
-    <FormProvider
-      onSubmit={onSubmit}
-      defaultValues={{ workoutType: config?.workoutType?.checkboxes }}
-    >
+    <FormProvider onSubmit={onSubmit} defaultValues={defaultValues}>
       <section>
         {children}
 
