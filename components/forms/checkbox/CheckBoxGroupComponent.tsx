@@ -32,7 +32,7 @@ const CheckBoxGroupComponent = ({
     rules: {
       validate: (fieldArrayValues: any) => {
         if (!required) return;
-        const isAnySelected = fieldArrayValues.some(
+        const isAnySelected = fieldArrayValues?.some(
           (field: any) => field.value
         );
 

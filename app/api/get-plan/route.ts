@@ -4,12 +4,16 @@ import OpenAI from "openai";
 import { RootState } from "@/types/interfaces/store";
 import { setContent } from "./setContent";
 
-const extractState = (state: RootState) => {
+export const extractState = (state: RootState, isSaving?: boolean) => {
   console.log("state", state);
 
-  const { aboutYou, injuries, yourGoals, preferences } = state;
-  return { aboutYou, injuries, yourGoals, preferences };
+  const { aboutYou, injuries, yourGoals, preferences, user } = state;
+
+  return isSaving
+    ? { aboutYou, injuries, yourGoals, preferences, user }
+    : { aboutYou, injuries, yourGoals, preferences };
 };
+
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const state = await request.json();

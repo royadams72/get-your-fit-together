@@ -1,3 +1,5 @@
+import { RegisterOptions } from "react-hook-form";
+
 export interface Select {
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -9,7 +11,7 @@ export interface Select {
   name: string;
   options: { value: string | null; display: string }[];
   toggleOptions?: { value: string; label: string; toggleOption: any }[];
-  validation?: object;
+  validation?: RegisterOptions;
 }
 
 export interface CheckBox {
@@ -22,7 +24,7 @@ export interface CheckBox {
   name: string;
   value?: any;
   validation?: object;
-  groupName?: string;
+  groupName?: RegisterOptions;
 }
 
 export interface CheckBoxGroup {
@@ -35,7 +37,7 @@ export interface CheckBoxGroup {
   legend?: string;
   requiredError?: string;
   name: string;
-  validation?: any;
+  validation?: RegisterOptions;
 }
 
 export interface Radio {
@@ -53,7 +55,7 @@ export interface Radio {
     label: string;
     checked?: boolean;
   }[];
-  validation?: object;
+  validation?: RegisterOptions;
 }
 
 export interface Input {
@@ -67,5 +69,5 @@ export interface Input {
   label: string;
   name: string;
   placeHolder?: string;
-  validation?: object;
+  validation?: RegisterOptions;
 }
