@@ -44,6 +44,9 @@ export const journeySlice = createAppSlice({
         state.journey.journeyData[currentIndex + 1].canNavigate = true;
       }
     },
+    setCanNavigateTrue: (state) => {
+      state.journey.journeyData.map((route) => (route.canNavigate = true));
+    },
   },
   selectors: {
     getRoutes: (state: JourneyState) => state.journey.routes,
@@ -51,7 +54,8 @@ export const journeySlice = createAppSlice({
   },
 });
 
-export const { setJourney, navigate } = journeySlice.actions;
+export const { setJourney, navigate, setCanNavigateTrue } =
+  journeySlice.actions;
 export const journeyReducer = journeySlice.reducer;
 export const { getRoutes, getJourneyData } = journeySlice.selectors;
 // Utils

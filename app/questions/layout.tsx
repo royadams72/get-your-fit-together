@@ -20,14 +20,14 @@ export default function QuestionsLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const routeName = usePathname();
+  const dispatch = useAppDispatch();
+
   const { nextRoute } = useAppSelector(getRoutes);
+  const journeyData: JourneyData[] = useAppSelector(getJourneyData);
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(true);
-
-  const journeyData: JourneyData[] = useAppSelector(getJourneyData);
 
   const formValid = (bool: boolean) => {
     setIsFormValid(bool);
