@@ -7,17 +7,19 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
-    const { userPassword } = await req.json();
+    const { userPassword, userName } = await req.json();
+    console.log(userPassword, userName);
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
-        userPassword,
+        "reduxState.user.user.userName": userName,
+        "reduxState.user.user.userPassword": userPassword,
       }
     );
     if (plan) {
-      const { savedState } = plan;
+      const { reduxState } = plan;
 
-      return NextResponse.json(savedState, { status: 200 });
+      return NextResponse.json(reduxState, { status: 200 });
     } else {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
     }

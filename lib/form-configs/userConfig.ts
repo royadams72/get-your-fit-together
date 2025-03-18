@@ -1,6 +1,6 @@
 import { Input } from "@/types/interfaces/form";
 
-export const config = () => ({
+export const config = {
   password: <Input>{
     name: "userPassword",
     isPassword: true,
@@ -20,4 +20,4 @@ export const config = () => ({
       },
     },
   },
-});
+};

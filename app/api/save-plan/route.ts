@@ -11,19 +11,19 @@ export async function POST(req: Request) {
     // console.log("await req.json()::", await req.json());
     const { savedState } = await req.json();
 
-    const { uiData, journey, ...stateToSave }: State = savedState;
+    const { uiData, journey, ...reduxState }: State = savedState;
 
     const {
       user: {
-        user: { userPassword },
+        user: { userName },
       },
-    } = stateToSave;
-    console.log(stateToSave, "userPassword:::", userPassword);
+    } = reduxState;
+    console.log(reduxState, "userName:::", userName);
 
     await collection.updateOne(
-      { userPassword },
+      { "reduxState.user.user.userName": userName },
       {
-        $set: { userPassword, stateToSave },
+        $set: { reduxState },
         $setOnInsert: { createdAt: new Date() },
         $currentDate: { updatedAt: true },
       },

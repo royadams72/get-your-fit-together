@@ -17,6 +17,8 @@ const RetrieveYourPlan = () => {
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
+    console.log(data);
+
     try {
       const response = await fetch(`${API.RETRIEVE}`, {
         method: "POST",
@@ -40,8 +42,8 @@ const RetrieveYourPlan = () => {
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>
-          <InputComponent config={config().userName} />
-          <InputComponent config={config().password} />
+          <InputComponent config={config.userName} />
+          <InputComponent config={config.password} />
           <button type="submit">Submit</button>
         </FormProvider>
       )}

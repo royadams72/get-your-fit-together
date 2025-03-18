@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { RootState } from "@/types/interfaces/store";
@@ -17,6 +17,8 @@ import InputComponent from "@/components/forms/InputComponent";
 import { API } from "@/routes.config";
 
 import FormProvider from "@/context/FormProvider";
+import { isEmpty } from "@/lib/utils/validation";
+import { setStore, defaultState } from "@/lib/store/store";
 
 interface AIResponse {
   finish_reason: string;
@@ -29,12 +31,14 @@ const YourFit = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  const userName = useAppSelector(getUserName);
+  const userName = useAppSelector(getUserName) || "";
   const { _persist, ...savedState } = state;
+
+  const [checkUserMessage, setCheckUserMessage] = useState("");
 
   const methods = useForm();
   const { reset } = methods;
-
+  console.log("userName in Redux:", userName);
   const onSubmit = async (data: any) => {
     console.log(data);
 
@@ -49,52 +53,61 @@ const YourFit = () => {
       if (responseData.success) {
         console.log(responseData);
 
-        // reset();
-        // dispatch(setStore(defaultState));
+        reset();
+        dispatch(setStore(defaultState));
       }
     } catch (error) {
       console.error("Error saving data:", error);
     }
   };
 
-  // useEffect(() => {
-  //   if (userName.length < 6) return;
-  //   (async () => {
-  //     try {
-  //       const response = await fetch(`${API.CHECK_USER}`, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(userName),
-  //       });
-  //       const responseData = await response.json();
-  //     } catch (error) {
-  //       console.error("Error saving data:", error);
-  //     }
-  //   })();
-  // }, [userName]);
+  useEffect(() => {
+    if (userName.length < 6) return;
+    console.log("userName.length::", userName.length, userName);
 
-  // useEffect(() => {
-  //   if (isEmpty(savedState)) return;
-  //   (async () => {
-  //     try {
-  //       const response = await fetch(`${API.GET_PLAN}`, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(savedState),
-  //       });
-  //       const responseData: AIResponse = await response.json();
-  //       const { content: fitnessPlan } = responseData.message;
-  //       dispatch(
-  //         setUser({
-  //           name: "userFitnessPlan",
-  //           value: fitnessPlan,
-  //         })
-  //       );
-  //     } catch (error) {
-  //       console.error("Error saving data:", error);
-  //     }
-  //   })();
-  // }, []);
+    (async () => {
+      try {
+        const response = await fetch(`${API.CHECK_USER}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userName),
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+        if (responseData.error) {
+          setCheckUserMessage(responseData.error);
+        } else {
+          setCheckUserMessage("");
+        }
+      } catch (error) {
+        console.error("Error getting data:", error);
+      }
+    })();
+  }, [userName]);
+
+  useEffect(() => {
+    if (isEmpty(savedState)) return;
+    (async () => {
+      try {
+        const response = await fetch(`${API.GET_PLAN}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: AIResponse = await response.json();
+        const { content: fitnessPlan } = responseData.message;
+        dispatch(
+          setUser({
+            name: "userFitnessPlan",
+            value: fitnessPlan,
+          })
+        );
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    })();
+  }, []);
 
   return (
     <div>
@@ -104,9 +117,14 @@ const YourFit = () => {
           {userFitnessPlan}
         </div>
       )}
-      <FormProvider onSubmit={onSubmit}>
-        <InputComponent dispatchEvent={setUser} config={config().userName} />
-        <InputComponent dispatchEvent={setUser} config={config().password} />
+      <FormProvider defaultValues={{ userName: userName }} onSubmit={onSubmit}>
+        <InputComponent
+          customMessage={checkUserMessage}
+          dispatchEvent={setUser}
+          config={config.userName}
+        />
+        {}
+        <InputComponent dispatchEvent={setUser} config={config.password} />
         <button type="submit">Submit</button>
       </FormProvider>
     </div>

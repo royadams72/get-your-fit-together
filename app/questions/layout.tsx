@@ -12,7 +12,7 @@ import {
   navigate,
 } from "@/lib/features/journey/journeySlice";
 import { usePathname, useRouter } from "next/navigation";
-import { JOURNEY, JOURNEY_PATHS, QUESTIONS_PATH } from "@/routes.config";
+import { JOURNEY, JOURNEY_PATHS } from "@/routes.config";
 
 export default function QuestionsLayout({
   children,
@@ -59,6 +59,7 @@ export default function QuestionsLayout({
       router.push(nextRoute);
     }
   };
+  // Use default values toset checkbox groups and text inputs that get valuse from the DB
   const defaultValues =
     routeName === JOURNEY.PREFERENCES
       ? { workoutType: config?.workoutType?.checkboxes }
