@@ -18,7 +18,7 @@ import { API } from "@/routes.config";
 
 import FormProvider from "@/context/FormProvider";
 import { isEmpty } from "@/lib/utils/validation";
-import { setStore, defaultState } from "@/lib/store/store";
+import { setStore, defaultState, selectState } from "@/lib/store/store";
 
 interface AIResponse {
   finish_reason: string;
@@ -29,10 +29,14 @@ interface AIResponse {
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state: RootState) => state);
+  const savedState = useAppSelector(selectState);
+
+  // const savedState = useAppSelector((state: RootState) => {
+  //   const { _persist, ...rest } = state;
+  //   return rest;
+  // });
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const userName = useAppSelector(getUserName) || "";
-  const { _persist, ...savedState } = state;
 
   const [checkUserMessage, setCheckUserMessage] = useState("");
 
@@ -86,28 +90,28 @@ const YourFit = () => {
     })();
   }, [userName]);
 
-  useEffect(() => {
-    if (isEmpty(savedState)) return;
-    (async () => {
-      try {
-        const response = await fetch(`${API.GET_PLAN}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(savedState),
-        });
-        const responseData: AIResponse = await response.json();
-        const { content: fitnessPlan } = responseData.message;
-        dispatch(
-          setUser({
-            name: "userFitnessPlan",
-            value: fitnessPlan,
-          })
-        );
-      } catch (error) {
-        console.error("Error saving data:", error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   if (isEmpty(savedState)) return;
+  //   (async () => {
+  //     try {
+  //       const response = await fetch(`${API.GET_PLAN}`, {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(savedState),
+  //       });
+  //       const responseData: AIResponse = await response.json();
+  //       const { content: fitnessPlan } = responseData.message;
+  //       dispatch(
+  //         setUser({
+  //           name: "userFitnessPlan",
+  //           value: fitnessPlan,
+  //         })
+  //       );
+  //     } catch (error) {
+  //       console.error("Error saving data:", error);
+  //     }
+  //   })();
+  // }, []);
 
   return (
     <div>

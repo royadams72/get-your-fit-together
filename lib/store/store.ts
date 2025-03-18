@@ -2,6 +2,7 @@ import {
   combineReducers,
   configureStore,
   createAction,
+  createSelector,
   PayloadAction,
   UnknownAction,
 } from "@reduxjs/toolkit";
@@ -10,7 +11,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 
-import { State } from "@/types/interfaces/store";
+import { RootState, State } from "@/types/interfaces/store";
 
 import {
   aboutYouInitialState,
@@ -58,7 +59,7 @@ export const defaultState: State = {
   journey: journeyInitialState,
 };
 
-export const setStore = createAction<State>("store/reset");
+export const setStore = createAction<State>("store/setStore");
 
 const rootReducer = combineReducers({
   aboutYou: aboutYouReducer,
@@ -120,3 +121,10 @@ function isPayInloadAction(
 ): action is PayloadAction<State> {
   return "payload" in action && typeof action.payload === "object";
 }
+
+export const selectState = createSelector(
+  (state: RootState & PersistPartial) => state,
+  (state) => {
+    return { ...state };
+  }
+);
