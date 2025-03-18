@@ -30,11 +30,6 @@ interface AIResponse {
 const YourFit = () => {
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-
-  // const savedState = useAppSelector((state: RootState) => {
-  //   const { _persist, ...rest } = state;
-  //   return rest;
-  // });
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const userName = useAppSelector(getUserName) || "";
 
