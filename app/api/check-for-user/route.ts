@@ -6,22 +6,27 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
+    // console.log(await req.json());
 
-    const { userPassword, userName } = await req.json();
-    console.log(userPassword, userName);
+    const userName = await req.json();
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
-        "reduxState.user.user.userName": userName,
-        "reduxState.user.user.userPassword": userPassword,
+        "stateToSave.user.user.userName": userName,
       }
     );
-    if (plan) {
-      const { reduxState } = plan;
+    console.log(userName, plan);
 
-      return NextResponse.json(reduxState, { status: 200 });
+    if (plan) {
+      return NextResponse.json(
+        { error: "Plan already exists with that user name" },
+        { status: 409 }
+      );
     } else {
-      return NextResponse.json({ error: "Plan not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "No plan wiht that user name" },
+        { status: 200 }
+      );
     }
   } catch (error) {
     console.error("Database error:", error);

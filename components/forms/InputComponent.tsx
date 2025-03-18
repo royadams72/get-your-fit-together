@@ -8,12 +8,12 @@ const InputComponent = ({
   className,
   config,
   dispatchEvent,
-  defaultValue,
+  customMessage,
 }: {
   config: Input;
   className?: string;
   dispatchEvent?: ActionCreatorWithPayload<any, string>;
-  defaultValue?: string;
+  customMessage?: string;
 }) => {
   const {
     register,
@@ -23,13 +23,19 @@ const InputComponent = ({
   } = useFormContext();
   const dispatch = useAppDispatch();
 
+  const minLength =
+    typeof config?.validation?.minLength === "object"
+      ? config?.validation?.minLength?.value || 3
+      : config?.validation?.minLength || 3;
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (value.length < 3) return;
+
+    if (value.length < minLength) return;
 
     setValue(name, value);
 
-    await trigger(name); // Triggers validation for the specific field
+    await trigger(name);
     if (dispatchEvent) {
       dispatch(dispatchEvent({ name, value }));
     }
@@ -46,12 +52,12 @@ const InputComponent = ({
         onChange={(e) => {
           handleChange(e);
         }}
-        value={defaultValue}
       />
       {config.hint && <div dangerouslySetInnerHTML={config.hint} />}
       {errors[config.name] && (
         <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}
+      {customMessage && <p style={{ color: "red" }}>{customMessage}</p>}
     </div>
   );
 };

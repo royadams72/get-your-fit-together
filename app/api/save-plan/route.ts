@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { State } from "@/types/interfaces/store";
 import { connectToDB } from "@/lib/db/mongodb";
+// import { extractState } from "../get-plan/route";
 
 export async function POST(req: Request) {
   try {
@@ -9,16 +10,20 @@ export async function POST(req: Request) {
 
     // console.log("await req.json()::", await req.json());
     const { savedState } = await req.json();
+
+    const { uiData, journey, ...reduxState }: State = savedState;
+
     const {
       user: {
-        user: { userPassword },
+        user: { userName },
       },
-    }: State = savedState;
+    } = reduxState;
+    console.log(reduxState, "userName:::", userName);
 
     await collection.updateOne(
-      { userPassword },
+      { "reduxState.user.user.userName": userName },
       {
-        $set: { userPassword, savedState },
+        $set: { reduxState },
         $setOnInsert: { createdAt: new Date() },
         $currentDate: { updatedAt: true },
       },
