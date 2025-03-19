@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import StoreProvider from "./StoreProvider";
+import { LoaderProvider } from "@/context/Loader/LoaderProvider";
 
 export const metadata: Metadata = {
   title: "Get Your Fit Together",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StoreProvider>{children} </StoreProvider>
+        <LoaderProvider>
+          <StoreProvider>{children} </StoreProvider>
+        </LoaderProvider>
       </body>
     </html>
   );

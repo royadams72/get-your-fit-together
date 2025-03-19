@@ -85,28 +85,28 @@ const YourFit = () => {
     })();
   }, [userName]);
 
-  // useEffect(() => {
-  //   if (isEmpty(savedState)) return;
-  //   (async () => {
-  //     try {
-  //       const response = await fetch(`${API.GET_PLAN}`, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(savedState),
-  //       });
-  //       const responseData: AIResponse = await response.json();
-  //       const { content: fitnessPlan } = responseData.message;
-  //       dispatch(
-  //         setUser({
-  //           name: "userFitnessPlan",
-  //           value: fitnessPlan,
-  //         })
-  //       );
-  //     } catch (error) {
-  //       console.error("Error saving data:", error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    if (isEmpty(savedState)) return;
+    (async () => {
+      try {
+        const response = await fetch(`${API.GET_PLAN}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: AIResponse = await response.json();
+        const { content: fitnessPlan } = responseData.message;
+        dispatch(
+          setUser({
+            name: "userFitnessPlan",
+            value: fitnessPlan,
+          })
+        );
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
+    })();
+  }, []);
 
   return (
     <div>
