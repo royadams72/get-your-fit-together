@@ -1,16 +1,17 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { Injuries } from "@/types/enums/injuries.enum";
 import { InjuriesState, InjuriesStore } from "@/types/interfaces/injuries";
 
 export const injuriesSliceName = "injuries";
 
 export const injuriesInitialState: InjuriesState = {
   injuries: {
-    upperBody: "",
-    lowerBody: "",
-    generalConditions: "",
-    medicalRestrictions: "",
-    foodAllergies: "",
-    otherSensitivities: "",
+    [Injuries.upperBody]: "",
+    [Injuries.lowerBody]: "",
+    [Injuries.generalConditions]: "",
+    [Injuries.medicalRestrictions]: "",
+    [Injuries.foodAllergies]: "",
+    [Injuries.otherSensitivities]: "",
   },
 };
 

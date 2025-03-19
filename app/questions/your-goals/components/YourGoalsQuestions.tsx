@@ -9,7 +9,7 @@ import { useAppSelector } from "@/lib/hooks/storeHooks";
 import { config } from "../form-configs/config";
 import SelectComponent from "@/components/forms/SelectComponent";
 
-const YourGoalsQuestions = () => {
+const YourGoals = () => {
   const goals = useAppSelector(getYourGoalsState);
 
   return (
@@ -38,4 +38,4 @@ const YourGoalsQuestions = () => {
   );
 };
 
-export default YourGoalsQuestions;
+export default YourGoals;

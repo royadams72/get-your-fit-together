@@ -13,6 +13,8 @@ import { selectState, setStore } from "@/lib/store/store";
 
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
+import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { UiData } from "@/types/enums/uiData.enum";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +26,7 @@ const RetrieveYourPlan = () => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
     dispatch(setCanNavigateTrue());
+    dispatch(setUiData({ name: UiData.isEditing, value: true }));
   };
   const methods = useForm();
   const { reset } = methods;

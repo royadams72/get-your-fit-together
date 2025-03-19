@@ -1,11 +1,12 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { UiData } from "@/types/enums/uiData.enum";
 import { UiDataState, UiDataStore } from "@/types/interfaces/uiData";
 
 export const uiDataSliceName = "uiData";
 
 export const uiDataInitialState: UiDataState = {
   uiData: {
-    isLoaded: false,
+    [UiData.isEditing]: false,
   },
 };
 
@@ -21,11 +22,11 @@ export const uiDataSlice = createAppSlice({
     },
   },
   selectors: {
-    getUiDataState: (state: UiDataState) => state.uiData,
-    getUiDataIsLoaded: (state: UiDataState) => state.uiData.isLoaded,
+    getState: (state: UiDataState) => state.uiData,
+    getIsEditing: (state: UiDataState) => state.uiData.isEditing,
   },
 });
 
 export const { setUiData } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
-export const { getUiDataState, getUiDataIsLoaded } = uiDataSlice.selectors;
+export const { getState, getIsEditing } = uiDataSlice.selectors;

@@ -4,14 +4,9 @@ import { useLoader } from "./LoaderProvider";
 
 const GlobalLoader = () => {
   const { isLoading } = useLoader();
+  if (!isLoading) return null;
 
-  // if (!isLoading) return null; // Hide when not loading
-  return (
-    <div>
-      <div className={styles.loader}></div>
-      <div className={styles.LoaderBackground}> </div>
-    </div>
-  );
+  return <div className={styles.loader}></div>;
 };
 
 export default GlobalLoader;

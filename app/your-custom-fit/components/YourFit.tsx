@@ -19,6 +19,7 @@ import { API } from "@/routes.config";
 import FormProvider from "@/context/FormProvider";
 import { isEmpty } from "@/lib/utils/validation";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
+import { useLoader } from "@/context/Loader/LoaderProvider";
 
 interface AIResponse {
   finish_reason: string;
@@ -33,15 +34,17 @@ const YourFit = () => {
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const userName = useAppSelector(getUserName) || "";
 
-  const [checkUserMessage, setCheckUserMessage] = useState("");
-
   const methods = useForm();
   const { reset } = methods;
-  console.log("userName in Redux:", userName);
+  const { setLoading } = useLoader();
+
+  const [checkUserMessage, setCheckUserMessage] = useState("");
+
   const onSubmit = async (data: any) => {
     console.log(data);
 
     try {
+      setLoading(true);
       const response = await fetch(`${API.SAVE_PLAN}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,12 +60,13 @@ const YourFit = () => {
       }
     } catch (error) {
       console.error("Error saving data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (userName.length < 6) return;
-    console.log("userName.length::", userName.length, userName);
 
     (async () => {
       try {
@@ -88,6 +92,7 @@ const YourFit = () => {
   useEffect(() => {
     if (isEmpty(savedState)) return;
     (async () => {
+      setLoading(true);
       try {
         const response = await fetch(`${API.GET_PLAN}`, {
           method: "POST",
@@ -95,6 +100,11 @@ const YourFit = () => {
           body: JSON.stringify(savedState),
         });
         const responseData: AIResponse = await response.json();
+
+        if (!responseData || !responseData.message) {
+          console.error("Invalid API response:", responseData);
+          return;
+        }
         const { content: fitnessPlan } = responseData.message;
         dispatch(
           setUser({
@@ -103,10 +113,12 @@ const YourFit = () => {
           })
         );
       } catch (error) {
-        console.error("Error saving data:", error);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     })();
-  }, []);
+  }, [setLoading]);
 
   return (
     <div>

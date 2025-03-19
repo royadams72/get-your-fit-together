@@ -1,5 +1,5 @@
 import { CheckBoxGroup, Select } from "@/types/interfaces/form";
-import { PreferencesQuestions } from "@/types/enums/preferences.enum";
+import { Preferences } from "@/types/enums/preferences.enum";
 import {
   daysOptions,
   equipmentOptions,
@@ -11,7 +11,7 @@ import {
 
 export const config = {
   workoutType: <CheckBoxGroup>{
-    name: PreferencesQuestions.preferredWorkoutType,
+    name: Preferences.preferredWorkoutType,
     hint: {
       __html:
         "(What types of workouts do you enjoy or prefer?)<br>Select all that apply",
@@ -21,7 +21,7 @@ export const config = {
     checkboxes: workoutCheckboxes,
   },
   equipment: <Select>{
-    name: PreferencesQuestions.equipmentAvailability,
+    name: Preferences.equipmentAvailability,
     label: "Equipment Availability",
     options: equipmentOptions,
     validation: {
@@ -30,7 +30,7 @@ export const config = {
     },
   },
   timePerSession: <Select>{
-    name: PreferencesQuestions.timePerSession,
+    name: Preferences.timePerSession,
     label: "Time per Session",
     options: timeOptions,
     validation: {
@@ -38,7 +38,7 @@ export const config = {
     },
   },
   daysPerWeek: <Select>{
-    name: PreferencesQuestions.daysPerWeek,
+    name: Preferences.daysPerWeek,
     label: "Days per Week",
     options: daysOptions,
     validation: {
@@ -46,7 +46,7 @@ export const config = {
     },
   },
   preferredWorkoutTime: <Select>{
-    name: PreferencesQuestions.workoutTime,
+    name: Preferences.workoutTime,
     label: "Preferred Workout Time",
     options: workoutTimeOptions,
     validation: {
@@ -54,7 +54,7 @@ export const config = {
     },
   },
   socialPreference: <Select>{
-    name: PreferencesQuestions.socialPreference,
+    name: Preferences.socialPreference,
     label: "Social Preference",
     options: socialPreferenceOptions,
     validation: {

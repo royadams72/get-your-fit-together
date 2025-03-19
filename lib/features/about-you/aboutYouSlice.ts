@@ -1,20 +1,21 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { AboutYou } from "@/types/enums/about-you.enum";
 import { AboutYouState, AboutYouStore } from "@/types/interfaces/about-you";
 
 export const aboutYouSliceName = "aboutYou";
 
 export const aboutYouInitialState: AboutYouState = {
   aboutYou: {
-    experienceLevel: "",
-    alcoholConsumption: "",
-    gender: "",
-    age: "",
-    height: "",
-    weight: "",
-    bodyType: "",
-    stressLevel: "",
-    smoking: "",
-    activityLevel: "",
+    [AboutYou.experienceLevel]: "",
+    [AboutYou.alcoholConsumption]: "",
+    [AboutYou.gender]: "",
+    [AboutYou.age]: "",
+    [AboutYou.height]: "",
+    [AboutYou.weight]: "",
+    [AboutYou.bodyType]: "",
+    [AboutYou.stressLevel]: "",
+    [AboutYou.smoking]: "",
+    [AboutYou.activityLevel]: "",
   },
 };
 

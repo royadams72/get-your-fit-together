@@ -1,12 +1,12 @@
-import { PreferencesQuestions } from "../enums/preferences.enum";
+import { Preferences } from "../enums/preferences.enum";
 
 export interface PreferencesStore {
-  [PreferencesQuestions.preferredWorkoutType]: string;
-  [PreferencesQuestions.equipmentAvailability]: string;
-  [PreferencesQuestions.timePerSession]: string;
-  [PreferencesQuestions.daysPerWeek]: string;
-  [PreferencesQuestions.workoutTime]: string;
-  [PreferencesQuestions.socialPreference]: string;
+  [Preferences.preferredWorkoutType]: string;
+  [Preferences.equipmentAvailability]: string;
+  [Preferences.timePerSession]: string;
+  [Preferences.daysPerWeek]: string;
+  [Preferences.workoutTime]: string;
+  [Preferences.socialPreference]: string;
 }
 
 export interface PreferencesState {

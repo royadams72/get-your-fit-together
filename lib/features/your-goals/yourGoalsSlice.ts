@@ -1,14 +1,15 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { YourGoals } from "@/types/enums/your-goals.enum";
 import { YourGoalsState, YourGoalsStore } from "@/types/interfaces/your-goals";
 
 export const yourGoalsSliceName = "yourGoals";
 
 export const yourGoalsInitialState: YourGoalsState = {
   yourGoals: {
-    primaryGoal: "",
-    secondaryGoal: "",
-    motivationLevel: "",
-    targetTimeline: "",
+    [YourGoals.primaryGoal]: "",
+    [YourGoals.secondaryGoal]: "",
+    [YourGoals.motivationLevel]: "",
+    [YourGoals.targetTimeline]: "",
   },
 };
 

@@ -1,5 +1,5 @@
 export interface UiDataStore {
-  isLoaded: boolean;
+  isEditing: boolean;
 }
 export interface UiDataState {
   uiData: UiDataStore;

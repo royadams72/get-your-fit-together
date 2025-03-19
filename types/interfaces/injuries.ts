@@ -1,12 +1,12 @@
-import { InjuriesQuestions } from "../enums/injuries.enum";
+import { Injuries } from "../enums/injuries.enum";
 
 export interface InjuriesStore {
-  [InjuriesQuestions.upperBody]: string;
-  [InjuriesQuestions.lowerBody]: string;
-  [InjuriesQuestions.generalConditions]: string;
-  [InjuriesQuestions.medicalRestrictions]: string;
-  [InjuriesQuestions.foodAllergies]: string;
-  [InjuriesQuestions.otherSensitivities]: string;
+  [Injuries.upperBody]: string;
+  [Injuries.lowerBody]: string;
+  [Injuries.generalConditions]: string;
+  [Injuries.medicalRestrictions]: string;
+  [Injuries.foodAllergies]: string;
+  [Injuries.otherSensitivities]: string;
 }
 
 export interface InjuriesState {

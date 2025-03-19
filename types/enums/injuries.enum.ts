@@ -1,4 +1,4 @@
-export enum InjuriesQuestions {
+export enum Injuries {
   upperBody = "upperBody",
   lowerBody = "lowerBody",
   generalConditions = "generalConditions",

@@ -1,16 +1,16 @@
-import { AboutYouQuestions } from "../enums/about-you.enum";
+import { AboutYou } from "../enums/about-you.enum";
 
 export interface AboutYouStore {
-  [AboutYouQuestions.experienceLevel]: string;
-  [AboutYouQuestions.alcoholConsumption]: string;
-  [AboutYouQuestions.gender]: string;
-  [AboutYouQuestions.age]: string;
-  [AboutYouQuestions.height]: string;
-  [AboutYouQuestions.weight]: string;
-  [AboutYouQuestions.bodyType]: string;
-  [AboutYouQuestions.stressLevel]: string;
-  [AboutYouQuestions.smoking]: string;
-  [AboutYouQuestions.activityLevel]: string;
+  [AboutYou.experienceLevel]: string;
+  [AboutYou.alcoholConsumption]: string;
+  [AboutYou.gender]: string;
+  [AboutYou.age]: string;
+  [AboutYou.height]: string;
+  [AboutYou.weight]: string;
+  [AboutYou.bodyType]: string;
+  [AboutYou.stressLevel]: string;
+  [AboutYou.smoking]: string;
+  [AboutYou.activityLevel]: string;
 }
 
 export interface AboutYouState {
