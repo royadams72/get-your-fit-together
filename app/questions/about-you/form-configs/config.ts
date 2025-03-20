@@ -1,4 +1,4 @@
-import { AboutYouQuestions } from "@/types/enums/about-you.enum";
+import { AboutYou } from "@/types/enums/about-you.enum";
 import { Radio, Select } from "@/types/interfaces/form";
 import {
   heightOptionsFt,
@@ -15,7 +15,7 @@ import {
 
 export const config = {
   experienceConfig: <Select>{
-    name: AboutYouQuestions.experienceLevel,
+    name: AboutYou.experienceLevel,
     label: "Experience Level",
     options: experienceLevelOptions,
     hint: { __html: "this is a hint" },
@@ -24,7 +24,7 @@ export const config = {
     },
   },
   genderConfig: <Radio>{
-    name: AboutYouQuestions.gender,
+    name: AboutYou.gender,
     legend: "Gender:",
     options: [
       {
@@ -43,7 +43,7 @@ export const config = {
     },
   },
   ageConfig: <Select>{
-    name: AboutYouQuestions.age,
+    name: AboutYou.age,
     label: "Age:",
     options: [
       { value: "", display: "Select your age" },
@@ -58,7 +58,7 @@ export const config = {
     },
   },
   heightConfig: <Select>{
-    name: AboutYouQuestions.height,
+    name: AboutYou.height,
     label: "Height:",
     options: heightOptionsFt,
     toggleOptions: heightTogglgOptions,
@@ -67,7 +67,7 @@ export const config = {
     },
   },
   weightConfig: <Select>{
-    name: AboutYouQuestions.weight,
+    name: AboutYou.weight,
     label: "Weight:",
     options: weightOptionsKg,
     toggleOptions: weightTogglgOptions,
@@ -76,7 +76,7 @@ export const config = {
     },
   },
   bodyTypeConfig: <Select>{
-    name: AboutYouQuestions.bodyType,
+    name: AboutYou.bodyType,
     label: "Body Type:",
     options: bodyTypeOptions,
     validation: {
@@ -84,7 +84,7 @@ export const config = {
     },
   },
   stressLevelConfig: <Select>{
-    name: AboutYouQuestions.stressLevel,
+    name: AboutYou.stressLevel,
     label: "Stress Level:",
     options: [
       { value: "", display: "Select Stress Level" },
@@ -101,7 +101,7 @@ export const config = {
     },
   },
   smokingConfig: <Radio>{
-    name: AboutYouQuestions.smoking,
+    name: AboutYou.smoking,
     legend: "Do you smoke?",
     options: [
       { value: "yes", label: "Yes", id: "smoking-yes" },
@@ -112,7 +112,7 @@ export const config = {
     },
   },
   alcoholConsumptionConfig: <Select>{
-    name: AboutYouQuestions.alcoholConsumption,
+    name: AboutYou.alcoholConsumption,
     label: "Alcohol Consumption per week (Units):",
     options: [
       { value: "", display: "Select Alcohol Consumption" },
@@ -128,7 +128,7 @@ export const config = {
     },
   },
   activityLevelConfig: <Select>{
-    name: AboutYouQuestions.activityLevel,
+    name: AboutYou.activityLevel,
     label: "Activity Level:",
     options: [
       { value: "", display: "Select Activity Level" },

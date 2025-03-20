@@ -1,11 +1,8 @@
-import { YourGoalsQuestions } from "../enums/your-goals.enum";
+import { YourGoals } from "../enums/your-goals.enum";
 
-export interface YourGoalsStore {
-  [YourGoalsQuestions.primaryGoal]: string;
-  [YourGoalsQuestions.secondaryGoal]: string;
-  [YourGoalsQuestions.motivationLevel]: string;
-  [YourGoalsQuestions.targetTimeline]: string;
-}
+export type YourGoalsStore = {
+  [key in YourGoals]: string;
+};
 
 export interface YourGoalsState {
   yourGoals: YourGoalsStore;

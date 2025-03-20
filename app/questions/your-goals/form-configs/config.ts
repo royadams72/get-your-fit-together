@@ -1,9 +1,9 @@
-import { YourGoalsQuestions } from "@/types/enums/your-goals.enum";
+import { YourGoals } from "@/types/enums/your-goals.enum";
 import { Select } from "@/types/interfaces/form";
 
 export const config = {
   primaryGoalConfig: <Select>{
-    name: YourGoalsQuestions.primaryGoal,
+    name: YourGoals.primaryGoal,
     label: "Primary Goal:",
     options: [
       { value: "", display: "Select Primary Goal" },
@@ -35,7 +35,7 @@ export const config = {
     },
   },
   secondaryGoalConfig: <Select>{
-    name: YourGoalsQuestions.secondaryGoal,
+    name: YourGoals.secondaryGoal,
     label: "Secondary Goal:",
     options: [
       { value: "", display: "Select Secondary Goal" },
@@ -79,7 +79,7 @@ export const config = {
     },
   },
   motivationLevelConfig: <Select>{
-    name: YourGoalsQuestions.motivationLevel,
+    name: YourGoals.motivationLevel,
     label: "Motivation Level:",
     options: [
       { value: "", display: "Select Motivation Level" },
@@ -114,7 +114,7 @@ export const config = {
     },
   },
   targetTimelineConfig: <Select>{
-    name: YourGoalsQuestions.targetTimeline,
+    name: YourGoals.targetTimeline,
     label: "Target Timeline:",
     options: [
       { value: "", display: "Select Target Timeline" },

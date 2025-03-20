@@ -1,17 +1,8 @@
-import { AboutYouQuestions } from "../enums/about-you.enum";
+import { AboutYou } from "../enums/about-you.enum";
 
-export interface AboutYouStore {
-  [AboutYouQuestions.experienceLevel]: string;
-  [AboutYouQuestions.alcoholConsumption]: string;
-  [AboutYouQuestions.gender]: string;
-  [AboutYouQuestions.age]: string;
-  [AboutYouQuestions.height]: string;
-  [AboutYouQuestions.weight]: string;
-  [AboutYouQuestions.bodyType]: string;
-  [AboutYouQuestions.stressLevel]: string;
-  [AboutYouQuestions.smoking]: string;
-  [AboutYouQuestions.activityLevel]: string;
-}
+export type AboutYouStore = {
+  [key in AboutYou]: string;
+};
 
 export interface AboutYouState {
   aboutYou: AboutYouStore;

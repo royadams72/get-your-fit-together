@@ -1,5 +1,5 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { PreferencesQuestions } from "@/types/enums/preferences.enum";
+import { Preferences } from "@/types/enums/preferences.enum";
 import {
   PreferencesState,
   PreferencesStore,
@@ -9,12 +9,12 @@ export const preferencesSliceName = "preferences";
 
 export const preferencesInitialState: PreferencesState = {
   preferences: {
-    [PreferencesQuestions.preferredWorkoutType]: "",
-    [PreferencesQuestions.equipmentAvailability]: "",
-    [PreferencesQuestions.timePerSession]: "",
-    [PreferencesQuestions.daysPerWeek]: "",
-    [PreferencesQuestions.workoutTime]: "",
-    [PreferencesQuestions.socialPreference]: "",
+    [Preferences.preferredWorkoutType]: "",
+    [Preferences.equipmentAvailability]: "",
+    [Preferences.timePerSession]: "",
+    [Preferences.daysPerWeek]: "",
+    [Preferences.workoutTime]: "",
+    [Preferences.socialPreference]: "",
   },
 };
 
@@ -30,7 +30,7 @@ export const preferencesSlice = createAppSlice({
         name: keyof PreferencesStore;
         value: string;
       } = action.payload;
-      if (name === PreferencesQuestions.preferredWorkoutType) {
+      if (name === Preferences.preferredWorkoutType) {
         const inState = state.preferences[name].indexOf(value) != -1;
 
         if (inState) {

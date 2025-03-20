@@ -28,8 +28,8 @@ const UserForm = () => {
   };
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-      <InputComponent config={config().userName} />
-      <InputComponent config={config().password} />
+      <InputComponent config={config.userName} />
+      <InputComponent config={config.password} />
       <button type="submit">Submit</button>
     </FormProvider>
   );

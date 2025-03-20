@@ -1,4 +1,4 @@
-export enum AboutYouQuestions {
+export enum AboutYou {
   experienceLevel = "experienceLevel",
   alcoholConsumption = "alcoholConsumption",
   gender = "gender",

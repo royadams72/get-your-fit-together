@@ -1,4 +1,4 @@
-export enum PreferencesQuestions {
+export enum Preferences {
   preferredWorkoutType = "workoutType",
   equipmentAvailability = "equipmentAvailability",
   timePerSession = "timePerSession",

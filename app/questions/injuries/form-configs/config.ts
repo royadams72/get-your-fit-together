@@ -1,4 +1,4 @@
-import { InjuriesQuestions } from "@/types/enums/injuries.enum";
+import { Injuries } from "@/types/enums/injuries.enum";
 import { Select } from "@/types/interfaces/form";
 import {
   foodAllergiesOptions,
@@ -11,7 +11,7 @@ import {
 
 export const config = {
   upperBodyConfig: <Select>{
-    name: InjuriesQuestions.upperBody,
+    name: Injuries.upperBody,
     label: "Upper Body Issues:",
     options: upperBodyOptions,
     validation: {
@@ -19,7 +19,7 @@ export const config = {
     },
   },
   lowerBodyConfig: <Select>{
-    name: InjuriesQuestions.lowerBody,
+    name: Injuries.lowerBody,
     label: "Lower Body Issues:",
     options: lowerBodyOptions,
     validation: {
@@ -27,7 +27,7 @@ export const config = {
     },
   },
   generalConditionsConfig: <Select>{
-    name: InjuriesQuestions.generalConditions,
+    name: Injuries.generalConditions,
     label: "General Conditions:",
     options: generalConditionsOptions,
     validation: {
@@ -35,7 +35,7 @@ export const config = {
     },
   },
   medicalRestrictionsConfig: <Select>{
-    name: InjuriesQuestions.medicalRestrictions,
+    name: Injuries.medicalRestrictions,
     label: "Medical Restrictions:",
     options: medicalRestrictionsOptions,
     validation: {
@@ -43,7 +43,7 @@ export const config = {
     },
   },
   foodAllergiesConfig: <Select>{
-    name: InjuriesQuestions.foodAllergies,
+    name: Injuries.foodAllergies,
     label: "Food Allergies:",
     options: foodAllergiesOptions,
     validation: {
@@ -51,7 +51,7 @@ export const config = {
     },
   },
   otherSensitivitiesConfig: <Select>{
-    name: InjuriesQuestions.otherSensitivities,
+    name: Injuries.otherSensitivities,
     label: "Other Sensitivities:",
     options: otherSensitivitiesOptions,
     validation: {
