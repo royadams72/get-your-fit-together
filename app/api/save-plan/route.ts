@@ -8,8 +8,6 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-
-    // console.log("await req.json()::", await req.json());
     const { savedState } = await req.json();
 
     const { _persist, uiData, journey, ...reduxState }: State & PersistPartial =
@@ -20,7 +18,6 @@ export async function POST(req: Request) {
         user: { userName },
       },
     } = reduxState;
-    console.log(reduxState, "userName:::", userName);
 
     await collection.updateOne(
       { "reduxState.user.user.userName": userName },

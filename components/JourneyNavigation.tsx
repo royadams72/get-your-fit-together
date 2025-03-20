@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import {} from "react-hook-form";
 
-import { JOURNEY, QUESTIONS_PATH } from "@/routes.config";
+import { PATHS, QUESTIONS_PATH } from "@/routes.config";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes } from "@/lib/features/journey/journeySlice";
@@ -29,7 +29,7 @@ const JourneyNavigation = ({
       {nextRoute && (
         <button type="button" onClick={handleSubmit}>
           Go To{" "}
-          {nextRoute === JOURNEY.YOUR_FIT ? nextRoute : nextRoute.split("/")[2]}
+          {nextRoute === PATHS.YOUR_FIT ? nextRoute : nextRoute.split("/")[2]}
         </button>
       )}
       {prevRoute && (

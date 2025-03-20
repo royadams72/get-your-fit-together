@@ -12,7 +12,9 @@ import {
   navigate,
 } from "@/lib/features/journey/journeySlice";
 import { usePathname, useRouter } from "next/navigation";
-import { JOURNEY, JOURNEY_PATHS } from "@/routes.config";
+import { PATHS, JOURNEY_PATHS } from "@/routes.config";
+import { UiData } from "@/types/enums/uiData.enum";
+import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 
 export default function QuestionsLayout({
   children,
@@ -20,7 +22,7 @@ export default function QuestionsLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const routeName = usePathname();
+  const pageName = usePathname();
   const dispatch = useAppDispatch();
 
   const { nextRoute } = useAppSelector(getRoutes);
@@ -34,9 +36,20 @@ export default function QuestionsLayout({
   };
 
   useEffect(() => {
+    const index = JOURNEY_PATHS.findIndex((path) => path === PATHS.YOUR_FIT);
+    const paths = JOURNEY_PATHS.slice(0, index);
+    console.log(paths);
+
+    if (paths.includes(pageName)) {
+      dispatch(setUiData({ name: UiData.isEditing, value: true }));
+      console.log({ value: true });
+    }
+  }, [pageName, dispatch]);
+
+  useEffect(() => {
     const canNavigate = isNotEmpty(
       journeyData.find(
-        (route) => route.name === routeName && route.canNavigate === true
+        (route) => route.name === pageName && route.canNavigate === true
       )
     );
     const lastCompletedRoute = journeyData.findLast(
@@ -49,23 +62,23 @@ export default function QuestionsLayout({
       console.log("cannot navigate", `${lastCompletedRoute}`);
     } else {
       setIsRedirecting(false);
-      dispatch(navigate({ route: routeName }));
+      dispatch(navigate({ route: pageName }));
     }
-  }, [journeyData, router, routeName, dispatch]);
+  }, [journeyData, router, pageName, dispatch]);
 
   const onSubmit = () => {
     if (isFormValid) {
-      dispatch(navigate({ route: routeName, isFormSubmit: true }));
+      dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);
     }
   };
   // Use default values toset checkbox groups and text inputs that get valuse from the DB
   const defaultValues =
-    routeName === JOURNEY.PREFERENCES
+    pageName === PATHS.PREFERENCES
       ? { workoutType: config?.workoutType?.checkboxes }
       : {};
 
-  const formKey = `form-${routeName}`;
+  const formKey = `form-${pageName}`;
 
   if (isRedirecting) return null;
 
@@ -77,7 +90,6 @@ export default function QuestionsLayout({
     >
       <section>
         {children}
-
         <JourneyNavigation isValid={formValid} />
       </section>
     </FormProvider>

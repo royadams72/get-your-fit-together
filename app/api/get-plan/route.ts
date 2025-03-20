@@ -5,8 +5,6 @@ import { RootState } from "@/types/interfaces/store";
 import { setContent } from "./setContent";
 
 export const extractState = (state: RootState, isSaving?: boolean) => {
-  console.log("state", state);
-
   const { aboutYou, injuries, yourGoals, preferences, user } = state;
 
   return isSaving
@@ -43,5 +41,7 @@ export async function POST(request: NextRequest) {
   //   message: { content: "fitnes stuff", refusal: "", role: "something" },
   // },
   //
+  console.log("Response from API:::::::::");
+
   return NextResponse.json(completion.choices[0], { status: 200 });
 }

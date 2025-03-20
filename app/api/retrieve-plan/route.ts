@@ -8,7 +8,6 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const { userPassword, userName } = await req.json();
-    console.log(userPassword, userName);
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {

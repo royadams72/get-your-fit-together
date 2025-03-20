@@ -15,7 +15,7 @@ export const JOURNEY_PATHS = [
 
 export const QUESTIONS_PATH = "/questions";
 
-export const JOURNEY = {
+export const PATHS = {
   ABOUT_YOU: JOURNEY_PATHS[0],
   INJURIES: JOURNEY_PATHS[1],
   YOUR_GOALS: JOURNEY_PATHS[2],
