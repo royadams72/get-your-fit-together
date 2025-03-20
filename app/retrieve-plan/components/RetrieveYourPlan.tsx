@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 
-import { API, JOURNEY } from "@/routes.config";
+import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
 import { RootState } from "@/types/interfaces/store";
@@ -56,7 +56,7 @@ const RetrieveYourPlan = () => {
         <div>
           <h1>Your Custom Fit</h1>
           {userFitnessPlan}
-          <Link href={`${JOURNEY.ABOUT_YOU}`}>Edit your information here</Link>
+          <Link href={`${PATHS.ABOUT_YOU}`}>Edit your information here</Link>
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>

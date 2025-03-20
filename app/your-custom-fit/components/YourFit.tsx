@@ -20,7 +20,8 @@ import FormProvider from "@/context/FormProvider";
 import { isEmpty } from "@/lib/utils/validation";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
 import { useLoader } from "@/context/Loader/LoaderProvider";
-import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
+import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { UiData } from "@/types/enums/uiData.enum";
 
 interface AIResponse {
   finish_reason: string;
@@ -43,7 +44,7 @@ const YourFit = () => {
   const [checkUserMessage, setCheckUserMessage] = useState("");
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    // console.log(data);
 
     try {
       setLoading(true);
@@ -55,8 +56,6 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        console.log(responseData);
-
         reset();
         dispatch(setStore(defaultState));
       }
@@ -80,7 +79,7 @@ const YourFit = () => {
         });
 
         const responseData = await response.json();
-        console.log(responseData);
+        // console.log(responseData);
         if (responseData.error) {
           setCheckUserMessage(responseData.error);
         } else {
@@ -93,10 +92,12 @@ const YourFit = () => {
   }, [userName, getUiState.isEditing]);
 
   useEffect(() => {
-    if (isEmpty(savedState)) return;
+    if (!getUiState.isEditing) return;
     (async () => {
       setLoading(true);
       try {
+        console.log("fetching data::");
+
         const response = await fetch(`${API.GET_PLAN}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -109,19 +110,21 @@ const YourFit = () => {
           return;
         }
         const { content: fitnessPlan } = responseData.message;
+        console.log("responseData:: loaded");
         dispatch(
           setUser({
             name: "userFitnessPlan",
             value: fitnessPlan,
           })
         );
+        dispatch(setUiData({ name: UiData.isEditing, value: false }));
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     })();
-  }, [setLoading]);
+  }, []);
 
   return (
     <div>
