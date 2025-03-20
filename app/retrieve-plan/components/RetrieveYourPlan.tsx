@@ -13,14 +13,16 @@ import { selectState, setStore } from "@/lib/store/store";
 
 import FormProvider from "@/context/FormProvider";
 import InputComponent from "@/components/forms/InputComponent";
-import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { UiData } from "@/types/enums/uiData.enum";
+import { useLoader } from "@/context/Loader/LoaderProvider";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-
   const store = useAppSelector(selectState);
+
+  const { setLoading } = useLoader();
 
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
@@ -33,6 +35,7 @@ const RetrieveYourPlan = () => {
 
   const onSubmit = async (data: any) => {
     try {
+      setLoading(true);
       const response = await fetch(`${API.RETRIEVE}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,6 +46,8 @@ const RetrieveYourPlan = () => {
       reset();
     } catch (error) {
       console.error("Error saving data:", error);
+    } finally {
+      setLoading(false);
     }
   };
   return (

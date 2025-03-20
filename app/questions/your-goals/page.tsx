@@ -1,8 +1,8 @@
 import React from "react";
-import YourGoals from "./components/YourGoals";
+import YourGoalsQuestions from "./components/YourGoalsQuestions";
 
 const YouGoals = () => {
-  return <YourGoals />;
+  return <YourGoalsQuestions />;
 };
 
 export default YouGoals;

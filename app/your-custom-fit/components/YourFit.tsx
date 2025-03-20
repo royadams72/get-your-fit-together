@@ -20,6 +20,7 @@ import FormProvider from "@/context/FormProvider";
 import { isEmpty } from "@/lib/utils/validation";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
 import { useLoader } from "@/context/Loader/LoaderProvider";
+import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
 
 interface AIResponse {
   finish_reason: string;
@@ -33,6 +34,7 @@ const YourFit = () => {
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const userName = useAppSelector(getUserName) || "";
+  const getUiState = useAppSelector(getUiDataState);
 
   const methods = useForm();
   const { reset } = methods;
@@ -66,6 +68,7 @@ const YourFit = () => {
   };
 
   useEffect(() => {
+    // if (!getUiState.isEditing) return;
     if (userName.length < 6) return;
 
     (async () => {
@@ -87,7 +90,7 @@ const YourFit = () => {
         console.error("Error getting data:", error);
       }
     })();
-  }, [userName]);
+  }, [userName, getUiState.isEditing]);
 
   useEffect(() => {
     if (isEmpty(savedState)) return;

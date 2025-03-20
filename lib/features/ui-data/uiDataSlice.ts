@@ -22,11 +22,11 @@ export const uiDataSlice = createAppSlice({
     },
   },
   selectors: {
-    getState: (state: UiDataState) => state.uiData,
+    getUiDataState: (state: UiDataState) => state.uiData,
     getIsEditing: (state: UiDataState) => state.uiData.isEditing,
   },
 });
 
 export const { setUiData } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
-export const { getState, getIsEditing } = uiDataSlice.selectors;
+export const { getUiDataState, getIsEditing } = uiDataSlice.selectors;
