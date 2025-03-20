@@ -1,37 +1,47 @@
 import { API } from "@/routes.config";
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import InputComponent from "./InputComponent";
-import FormProvider from "@/context/FormProvider";
-import { config } from "@/lib/form-configs/userConfig";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-const UserForm = () => {
-  const methods = useForm();
-  const { reset } = methods;
+const UserForm = ({
+  config,
+  isYourFitPage,
+  dispatchEvent,
+  customMessage,
+  inputValue,
+}: {
+  config: any;
+  isYourFitPage?: string;
+  dispatchEvent?: ActionCreatorWithPayload<any, string>;
+  customMessage?: string;
+  inputValue?: string;
+}) => {
+  const userArr = ["userName", "password"];
 
-  const onSubmit = async (data: any) => {
-    try {
-      const response = await fetch(`${API.RETRIEVE}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
-
-      if (responseData.success) {
-        reset();
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
-    }
-  };
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      <InputComponent config={config.userName} />
-      <InputComponent config={config.password} />
-      <button type="submit">Submit</button>
-    </FormProvider>
+    <>
+      {userArr.map((elName) => {
+        const isUserName = elName === "userName";
+        const commonProps: any = {
+          config: config[elName],
+          dispatchEvent: isYourFitPage ? dispatchEvent : undefined,
+        };
+
+        if (isYourFitPage && isUserName) {
+          return (
+            <InputComponent
+              {...commonProps}
+              key={elName}
+              customMessage={customMessage}
+              inputValue={inputValue} // Use appropriate value here
+            />
+          );
+        }
+
+        return <InputComponent key={elName} {...commonProps} />;
+      })}
+    </>
   );
 };
 

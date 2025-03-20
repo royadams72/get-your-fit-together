@@ -16,6 +16,7 @@ import InputComponent from "@/components/forms/InputComponent";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { UiData } from "@/types/enums/uiData.enum";
 import { useLoader } from "@/context/Loader/LoaderProvider";
+import UserForm from "@/components/forms/UserForm";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
@@ -52,19 +53,16 @@ const RetrieveYourPlan = () => {
   };
   return (
     <div>
-      {userFitnessPlan ? (
-        <div>
-          <h1>Your Custom Fit</h1>
-          {userFitnessPlan}
-          <Link href={`${PATHS.ABOUT_YOU}`}>Edit your information here</Link>
-        </div>
-      ) : (
-        <FormProvider methods={methods} onSubmit={onSubmit}>
-          <InputComponent config={config.userName} />
-          <InputComponent config={config.password} />
-          <button type="submit">Submit</button>
-        </FormProvider>
-      )}
+      <div>
+        <h1>Your Custom Fit</h1>
+        {userFitnessPlan}
+        <Link href={`${PATHS.ABOUT_YOU}`}>Edit your information here</Link>
+      </div>
+
+      <FormProvider methods={methods} onSubmit={onSubmit}>
+        <UserForm config={config} />
+        <button type="submit">Submit</button>
+      </FormProvider>
     </div>
   );
 };

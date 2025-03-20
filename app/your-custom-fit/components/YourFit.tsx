@@ -42,10 +42,14 @@ const YourFit = () => {
   const { setLoading } = useLoader();
 
   const [checkUserMessage, setCheckUserMessage] = useState("");
+  const [formUserNameVal, setFormUserNameVal] = useState("");
+  console.log(formUserNameVal);
+
+  const inputVal = (val: string) => {
+    setFormUserNameVal(val);
+  };
 
   const onSubmit = async (data: any) => {
-    // console.log(data);
-
     try {
       setLoading(true);
       const response = await fetch(`${API.SAVE_PLAN}`, {
@@ -137,10 +141,10 @@ const YourFit = () => {
       <FormProvider defaultValues={{ userName: userName }} onSubmit={onSubmit}>
         <InputComponent
           customMessage={checkUserMessage}
+          inputValue={inputVal}
           dispatchEvent={setUser}
           config={config.userName}
         />
-        {}
         <InputComponent dispatchEvent={setUser} config={config.password} />
         <button type="submit">Submit</button>
       </FormProvider>
