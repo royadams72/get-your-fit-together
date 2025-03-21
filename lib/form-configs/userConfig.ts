@@ -1,7 +1,7 @@
 import { Input } from "@/types/interfaces/form";
 
 export const config = {
-  password: <Input>{
+  userPassword: <Input>{
     name: "userPassword",
     isPassword: true,
     label: "Password:",
