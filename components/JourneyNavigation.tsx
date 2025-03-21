@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import {} from "react-hook-form";
 
-import { PATHS, QUESTIONS_PATH } from "@/routes.config";
+import { PATHS } from "@/routes.config";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes } from "@/lib/features/journey/journeySlice";

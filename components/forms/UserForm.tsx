@@ -1,37 +1,36 @@
-import { API } from "@/routes.config";
-
 import React from "react";
-import { useForm } from "react-hook-form";
 import InputComponent from "./InputComponent";
-import FormProvider from "@/context/FormProvider";
-import { config } from "@/lib/form-configs/userConfig";
+import { FormValue } from "@/types/interfaces/form";
+import { User } from "@/types/enums/user.enum";
 
-const UserForm = () => {
-  const methods = useForm();
-  const { reset } = methods;
+const UserForm = ({
+  config,
+  isYourFitPage,
+  customMessage,
+  inputValue,
+}: {
+  config: any;
+  isYourFitPage?: boolean;
+  customMessage?: string;
+  inputValue?: (val: FormValue) => void;
+}) => {
+  const userArr = [User.userName, User.userPassword];
 
-  const onSubmit = async (data: any) => {
-    try {
-      const response = await fetch(`${API.RETRIEVE}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
-
-      if (responseData.success) {
-        reset();
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
-    }
-  };
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      <InputComponent config={config.userName} />
-      <InputComponent config={config.password} />
-      <button type="submit">Submit</button>
-    </FormProvider>
+    <>
+      {userArr.map((elName) => {
+        const isUserName = elName === User.userName;
+
+        const inputProps: any = {
+          config: config[elName],
+          inputValue: isYourFitPage ? inputValue : undefined,
+          customMessage:
+            isYourFitPage && isUserName ? customMessage : undefined,
+        };
+
+        return <InputComponent key={elName} {...inputProps} />;
+      })}
+    </>
   );
 };
 

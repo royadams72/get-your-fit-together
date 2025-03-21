@@ -1,27 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { RootState } from "@/types/interfaces/store";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-
 import { config } from "@/lib/form-configs/userConfig";
+import { API, PATHS } from "@/routes.config";
 
-import {
-  getUserFitnessPlan,
-  getUserName,
-  setUser,
-} from "@/lib/features/user/userSlice";
-
-import InputComponent from "@/components/forms/InputComponent";
-import { API } from "@/routes.config";
-
-import FormProvider from "@/context/FormProvider";
-import { isEmpty } from "@/lib/utils/validation";
-import { setStore, defaultState, selectState } from "@/lib/store/store";
-import { useLoader } from "@/context/Loader/LoaderProvider";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { setStore, defaultState, selectState } from "@/lib/store/store";
+
+import { FormValue } from "@/types/interfaces/form";
+import { User } from "@/types/enums/user.enum";
 import { UiData } from "@/types/enums/uiData.enum";
+
+import { useLoader } from "@/context/Loader/LoaderProvider";
+import FormProvider from "@/context/FormProvider";
+import UserForm from "@/components/forms/UserForm";
 
 interface AIResponse {
   finish_reason: string;
@@ -34,7 +30,6 @@ const YourFit = () => {
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  const userName = useAppSelector(getUserName) || "";
   const getUiState = useAppSelector(getUiDataState);
 
   const methods = useForm();
@@ -42,10 +37,13 @@ const YourFit = () => {
   const { setLoading } = useLoader();
 
   const [checkUserMessage, setCheckUserMessage] = useState("");
+  const [userForm, setUserForm] = useState<FormValue>();
 
-  const onSubmit = async (data: any) => {
-    // console.log(data);
+  const inputVal = (val: FormValue) => {
+    setUserForm(val);
+  };
 
+  const onSubmit = async (form: any) => {
     try {
       setLoading(true);
       const response = await fetch(`${API.SAVE_PLAN}`, {
@@ -56,8 +54,12 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
+        for (const [name, value] of Object.entries(form)) {
+          dispatch(setUser({ name, value }));
+        }
         reset();
         dispatch(setStore(defaultState));
+        dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
       }
     } catch (error) {
       console.error("Error saving data:", error);
@@ -67,19 +69,22 @@ const YourFit = () => {
   };
 
   useEffect(() => {
-    // if (!getUiState.isEditing) return;
-    if (userName.length < 6) return;
+    if (
+      !userForm ||
+      userForm.name !== User.userName ||
+      userForm.value.length < 6
+    )
+      return;
 
     (async () => {
       try {
         const response = await fetch(`${API.CHECK_USER}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userName),
+          body: JSON.stringify(userForm.value),
         });
 
         const responseData = await response.json();
-        // console.log(responseData);
         if (responseData.error) {
           setCheckUserMessage(responseData.error);
         } else {
@@ -89,7 +94,7 @@ const YourFit = () => {
         console.error("Error getting data:", error);
       }
     })();
-  }, [userName, getUiState.isEditing]);
+  }, [userForm, getUiState.isEditing]);
 
   useEffect(() => {
     if (!getUiState.isEditing) return;
@@ -113,7 +118,7 @@ const YourFit = () => {
         console.log("responseData:: loaded");
         dispatch(
           setUser({
-            name: "userFitnessPlan",
+            name: User.userFitnessPlan,
             value: fitnessPlan,
           })
         );
@@ -134,16 +139,28 @@ const YourFit = () => {
           {userFitnessPlan}
         </div>
       )}
-      <FormProvider defaultValues={{ userName: userName }} onSubmit={onSubmit}>
-        <InputComponent
-          customMessage={checkUserMessage}
-          dispatchEvent={setUser}
-          config={config.userName}
-        />
-        {}
-        <InputComponent dispatchEvent={setUser} config={config.password} />
-        <button type="submit">Submit</button>
-      </FormProvider>
+      {!getUiState.isSignedUp && (
+        <section>
+          <h1> Create a username and password to save your plan:</h1>
+          <FormProvider onSubmit={onSubmit}>
+            <UserForm
+              config={config}
+              customMessage={checkUserMessage}
+              inputValue={inputVal}
+              isYourFitPage={true}
+            ></UserForm>
+            <button type="submit">Save your plan</button>
+          </FormProvider>
+        </section>
+      )}
+      {getUiState.isSignedUp && !userFitnessPlan && (
+        <div>
+          <h1>Your plan has been saved</h1>
+          <Link href={PATHS.RETRIEVE_PLAN}>
+            You can retrieve your plan here
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

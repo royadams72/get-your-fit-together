@@ -7,6 +7,8 @@ export const uiDataSliceName = "uiData";
 export const uiDataInitialState: UiDataState = {
   uiData: {
     [UiData.isEditing]: false,
+    [UiData.isSignedUp]: false,
+    [UiData.isRetrieving]: false,
   },
 };
 

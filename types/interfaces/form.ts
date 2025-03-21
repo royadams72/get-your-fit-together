@@ -71,3 +71,8 @@ export interface Input {
   placeHolder?: string;
   validation?: RegisterOptions;
 }
+
+export interface FormValue {
+  name: string;
+  value: string;
+}

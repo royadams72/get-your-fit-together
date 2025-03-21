@@ -1,21 +1,23 @@
 "use client";
-import { useForm } from "react-hook-form";
 import Link from "next/link";
+
+import { useForm } from "react-hook-form";
 
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
 import { RootState } from "@/types/interfaces/store";
+import { UiData } from "@/types/enums/uiData.enum";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+
+import { selectState, setStore } from "@/lib/store/store";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
-import { selectState, setStore } from "@/lib/store/store";
+import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 
-import FormProvider from "@/context/FormProvider";
-import InputComponent from "@/components/forms/InputComponent";
-import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
-import { UiData } from "@/types/enums/uiData.enum";
 import { useLoader } from "@/context/Loader/LoaderProvider";
+import FormProvider from "@/context/FormProvider";
+import UserForm from "@/components/forms/UserForm";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +30,8 @@ const RetrieveYourPlan = () => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
     dispatch(setCanNavigateTrue());
-    dispatch(setUiData({ name: UiData.isEditing, value: true }));
+    dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
+    dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
   };
   const methods = useForm();
   const { reset } = methods;
@@ -60,8 +63,7 @@ const RetrieveYourPlan = () => {
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>
-          <InputComponent config={config.userName} />
-          <InputComponent config={config.password} />
+          <UserForm config={config} />
           <button type="submit">Submit</button>
         </FormProvider>
       )}
