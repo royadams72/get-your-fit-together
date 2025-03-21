@@ -24,6 +24,7 @@ import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { UiData } from "@/types/enums/uiData.enum";
 import UserForm from "@/components/forms/UserForm";
 import { FormValue } from "@/types/interfaces/form";
+import { User } from "@/types/enums/user.enum";
 
 interface AIResponse {
   finish_reason: string;
@@ -36,7 +37,6 @@ const YourFit = () => {
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  const userName = useAppSelector(getUserName) || "";
   const getUiState = useAppSelector(getUiDataState);
 
   const methods = useForm();
@@ -44,13 +44,17 @@ const YourFit = () => {
   const { setLoading } = useLoader();
 
   const [checkUserMessage, setCheckUserMessage] = useState("");
-  const [formUserName, setFormUserName] = useState<FormValue>();
+  const [userForm, setUserForm] = useState<FormValue>();
 
   const inputVal = (val: FormValue) => {
-    setFormUserName(val);
+    setUserForm(val);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (form: any) => {
+    for (const [name, value] of Object.entries(form)) {
+      dispatch(setUser({ name, value }));
+    }
+
     try {
       setLoading(true);
       const response = await fetch(`${API.SAVE_PLAN}`, {
@@ -72,15 +76,19 @@ const YourFit = () => {
   };
 
   useEffect(() => {
-    if (!formUserName || formUserName.value.length < 6) return;
-    console.log(formUserName);
+    if (
+      !userForm ||
+      userForm.name !== User.userName ||
+      userForm.value.length < 6
+    )
+      return;
 
     (async () => {
       try {
         const response = await fetch(`${API.CHECK_USER}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formUserName.value),
+          body: JSON.stringify(userForm.value),
         });
 
         const responseData = await response.json();
@@ -93,7 +101,7 @@ const YourFit = () => {
         console.error("Error getting data:", error);
       }
     })();
-  }, [formUserName, getUiState.isEditing]);
+  }, [userForm, getUiState.isEditing]);
 
   useEffect(() => {
     if (!getUiState.isEditing) return;
@@ -117,7 +125,7 @@ const YourFit = () => {
         console.log("responseData:: loaded");
         dispatch(
           setUser({
-            name: "userFitnessPlan",
+            name: User.userFitnessPlan,
             value: fitnessPlan,
           })
         );
@@ -138,14 +146,14 @@ const YourFit = () => {
           {userFitnessPlan}
         </div>
       )}
-      <FormProvider defaultValues={{ userName: userName }} onSubmit={onSubmit}>
+      <FormProvider onSubmit={onSubmit}>
         <UserForm
           config={config}
           customMessage={checkUserMessage}
           inputValue={inputVal}
           isYourFitPage={true}
         ></UserForm>
-        <button type="submit">Submit</button>
+        <button type="submit">Save your plan</button>
       </FormProvider>
     </div>
   );

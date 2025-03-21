@@ -1,6 +1,7 @@
 import React from "react";
 import InputComponent from "./InputComponent";
 import { FormValue } from "@/types/interfaces/form";
+import { User } from "@/types/enums/user.enum";
 
 const UserForm = ({
   config,
@@ -13,32 +14,21 @@ const UserForm = ({
   customMessage?: string;
   inputValue?: (val: FormValue) => void;
 }) => {
-  const userArr = ["userName", "password"];
+  const userArr = [User.userName, User.userPassword];
 
   return (
     <>
       {userArr.map((elName) => {
-        const isUserName = elName === "userName";
-        console.log(isUserName);
+        const isUserName = elName === User.userName;
 
-        const commonProps: any = {
+        const inputProps: any = {
           config: config[elName],
-          // dispatchEvent: isYourFitPage ? dispatchEvent : undefined,
+          inputValue: isYourFitPage ? inputValue : undefined,
+          customMessage:
+            isYourFitPage && isUserName ? customMessage : undefined,
         };
-        console.log(commonProps);
 
-        if (isYourFitPage && isUserName) {
-          return (
-            <InputComponent
-              {...commonProps}
-              key={elName}
-              customMessage={customMessage}
-              inputValue={inputValue} // Use appropriate value here
-            />
-          );
-        }
-
-        return <InputComponent key={elName} {...commonProps} />;
+        return <InputComponent key={elName} {...inputProps} />;
       })}
     </>
   );
