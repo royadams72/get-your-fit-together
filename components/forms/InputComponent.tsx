@@ -15,7 +15,7 @@ const InputComponent = ({
   className?: string;
   dispatchEvent?: ActionCreatorWithPayload<any, string>;
   customMessage?: string;
-  inputValue?: (value: string) => void;
+  inputValue?: ({ name, value }: { name: string; value: string }) => void;
 }) => {
   const {
     register,
@@ -32,7 +32,7 @@ const InputComponent = ({
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    inputValue?.(e.target.value);
+    inputValue?.({ name, value });
     if (value.length < minLength) return;
 
     setValue(name, value);

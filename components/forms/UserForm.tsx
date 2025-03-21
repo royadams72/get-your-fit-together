@@ -1,21 +1,17 @@
-import { API } from "@/routes.config";
 import React from "react";
-import { useForm } from "react-hook-form";
 import InputComponent from "./InputComponent";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { FormValue } from "@/types/interfaces/form";
 
 const UserForm = ({
   config,
   isYourFitPage,
-  dispatchEvent,
   customMessage,
   inputValue,
 }: {
   config: any;
-  isYourFitPage?: string;
-  dispatchEvent?: ActionCreatorWithPayload<any, string>;
+  isYourFitPage?: boolean;
   customMessage?: string;
-  inputValue?: string;
+  inputValue?: (val: FormValue) => void;
 }) => {
   const userArr = ["userName", "password"];
 
@@ -23,10 +19,13 @@ const UserForm = ({
     <>
       {userArr.map((elName) => {
         const isUserName = elName === "userName";
+        console.log(isUserName);
+
         const commonProps: any = {
           config: config[elName],
-          dispatchEvent: isYourFitPage ? dispatchEvent : undefined,
+          // dispatchEvent: isYourFitPage ? dispatchEvent : undefined,
         };
+        console.log(commonProps);
 
         if (isYourFitPage && isUserName) {
           return (

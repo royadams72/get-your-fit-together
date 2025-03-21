@@ -22,6 +22,8 @@ import { setStore, defaultState, selectState } from "@/lib/store/store";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { UiData } from "@/types/enums/uiData.enum";
+import UserForm from "@/components/forms/UserForm";
+import { FormValue } from "@/types/interfaces/form";
 
 interface AIResponse {
   finish_reason: string;
@@ -42,14 +44,13 @@ const YourFit = () => {
   const { setLoading } = useLoader();
 
   const [checkUserMessage, setCheckUserMessage] = useState("");
-  const [formUserNameVal, setFormUserNameVal] = useState("");
-  console.log(formUserNameVal);
+  const [formUserName, setFormUserName] = useState<FormValue>();
 
-  const inputVal = (val: string) => {
-    setFormUserNameVal(val);
+  const inputVal = (val: FormValue) => {
+    setFormUserName(val);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     try {
       setLoading(true);
       const response = await fetch(`${API.SAVE_PLAN}`, {
@@ -71,19 +72,18 @@ const YourFit = () => {
   };
 
   useEffect(() => {
-    // if (!getUiState.isEditing) return;
-    if (userName.length < 6) return;
+    if (!formUserName || formUserName.value.length < 6) return;
+    console.log(formUserName);
 
     (async () => {
       try {
         const response = await fetch(`${API.CHECK_USER}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userName),
+          body: JSON.stringify(formUserName.value),
         });
 
         const responseData = await response.json();
-        // console.log(responseData);
         if (responseData.error) {
           setCheckUserMessage(responseData.error);
         } else {
@@ -93,7 +93,7 @@ const YourFit = () => {
         console.error("Error getting data:", error);
       }
     })();
-  }, [userName, getUiState.isEditing]);
+  }, [formUserName, getUiState.isEditing]);
 
   useEffect(() => {
     if (!getUiState.isEditing) return;
@@ -139,13 +139,12 @@ const YourFit = () => {
         </div>
       )}
       <FormProvider defaultValues={{ userName: userName }} onSubmit={onSubmit}>
-        <InputComponent
+        <UserForm
+          config={config}
           customMessage={checkUserMessage}
           inputValue={inputVal}
-          dispatchEvent={setUser}
-          config={config.userName}
-        />
-        <InputComponent dispatchEvent={setUser} config={config.password} />
+          isYourFitPage={true}
+        ></UserForm>
         <button type="submit">Submit</button>
       </FormProvider>
     </div>
