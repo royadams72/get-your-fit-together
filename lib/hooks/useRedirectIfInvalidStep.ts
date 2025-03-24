@@ -1,11 +1,12 @@
-import { JOURNEY_PATHS } from "@/routes.config";
-
 import { useEffect, useState } from "react";
-import { getJourneyData, navigate } from "../features/journey/journeySlice";
-import { isNotEmpty } from "../utils/validation";
-import { JourneyData } from "@/types/interfaces/journey";
-import { useAppDispatch, useAppSelector } from "./storeHooks";
 import { usePathname, useRouter } from "next/navigation";
+
+import { JOURNEY_PATHS } from "@/routes.config";
+import { JourneyData } from "@/types/interfaces/journey";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+
+import { isNotEmpty } from "@/lib/utils/validation";
+import { getJourneyData, navigate } from "@/lib/features/journey/journeySlice";
 
 const useRedirectIfInvalidStep = () => {
   const router = useRouter();
@@ -22,7 +23,6 @@ const useRedirectIfInvalidStep = () => {
         (route) => route.name === path && route.canNavigate === true
       )
     );
-    console.log("canNavigate", canNavigate);
 
     const lastCompletedRoute = journeyData.findLast(
       (route) => route.canNavigate === true
@@ -31,7 +31,6 @@ const useRedirectIfInvalidStep = () => {
     if (!canNavigate) {
       setIsRedirecting(true);
       router.replace(`${lastCompletedRoute || JOURNEY_PATHS[0]}`);
-      console.log("cannot navigate", `${lastCompletedRoute}`);
     } else {
       setIsRedirecting(false);
       dispatch(navigate({ route: path }));
