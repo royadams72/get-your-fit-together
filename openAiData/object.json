@@ -1,0 +1,54 @@
+{
+  "overview": {
+    "title": "Overview",
+    "copy": "Given your profile and goals, a balanced workout plan focusing on strength training, cardio, and bodyweight exercises is ideal. It's important to listen to your body, especially with neck pain, so adjust the intensity as needed."
+  },
+  "weeklySchedule": {
+    "title": "Weekly Schedule",
+    "days": [
+      {
+        "day": "Day 2",
+        "title": "Cardio and Calisthenics",
+        "exercises": [
+          {
+            "exercise": "Warm-Up (5 minutes):",
+            "action": "Jumping jacks or jogging in place"
+          },
+          {
+            "exercise": "Cardio (10 minutes):",
+            "action": "Treadmill, elliptical, or stair climber at moderate pace"
+          },
+          {
+            "exercise": "Calisthenics (15 minutes)",
+            "action": [
+              { "exercise": "Push-Ups:", "action": "3 sets of 8-12 reps" },
+              { "exercise": "Lunges:", "action": "3 sets of 10 reps per leg" },
+              { "exercise": "Sit-Ups:", "action": "3 sets of 15 reps" },
+              {
+                "exercise": "Burpees:",
+                "video": "https://www.youtube.com/watch?v=siZQH4do7Os"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "nutritionLifestyleTips": {
+    "title": "Nutrition and Lifestyle Tips",
+    "tips": [
+      {
+        "tip": "Neck Pain",
+        "action": "Avoid exercises that strain or stress the neck. Focus on maintaining proper form to prevent aggravation."
+      },
+      {
+        "tip": "Diet",
+        "action": "Focus on a balanced diet rich in protein, healthy fats, and whole grains. Consider consulting with a nutritionist for personalized guidance."
+      }
+    ]
+  },
+  "conclusion": {
+    "title": "Conclusion",
+    "copy": "Follow this routine consistently and adapt as you progress. Remember that rest days are crucial for recovery. Keep track of your progress and adjust the intensity and weights as necessary. Stay motivated by reminding yourself of your goals and the timeline you've set."
+  }
+}

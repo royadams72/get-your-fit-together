@@ -1,10 +1,8 @@
-import { User } from "../enums/user.enum";
-
-export type UserStore = {
-  [key in Exclude<User, "userName" | "password">]: object;
-} & {
-  [key in User]: string;
-};
+export interface UserStore {
+  userName: string;
+  userPassword: string;
+  userFitnessPlan?: object;
+}
 export interface UserState {
   user: UserStore;
 }

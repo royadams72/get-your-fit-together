@@ -3,6 +3,7 @@ import OpenAI from "openai";
 
 import { RootState } from "@/types/interfaces/store";
 import { setContent } from "./setContent";
+import { aiPrompt } from "./ai-prompt";
 
 export const extractState = (state: RootState, isSaving?: boolean) => {
   const { aboutYou, injuries, yourGoals, preferences, user } = state;
@@ -23,8 +24,7 @@ export async function POST(request: NextRequest) {
     messages: [
       {
         role: "developer",
-        content:
-          "You are a personal trainer, you should set out answers in sections and offer no follow up question, when possible supply free youtube video link for exercises",
+        content: aiPrompt,
       },
       {
         role: "user",
@@ -41,7 +41,8 @@ export async function POST(request: NextRequest) {
   //   message: { content: "fitnes stuff", refusal: "", role: "something" },
   // },
   //
-  console.log("Response from API:::::::::");
+  // console.log("Response from API:::::::::");
+  const json = JSON.parse(completion.choices[0].message.content as any);
 
-  return NextResponse.json(completion.choices[0], { status: 200 });
+  return NextResponse.json(json, { status: 200 });
 }

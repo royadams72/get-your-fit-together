@@ -15,7 +15,6 @@ export async function POST(req: Request) {
         "stateToSave.user.user.userName": userName,
       }
     );
-    console.log(userName, plan);
 
     if (plan) {
       return NextResponse.json(

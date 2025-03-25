@@ -12,6 +12,7 @@ import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
 
 import { FormValue } from "@/types/interfaces/form";
+import { UserStore } from "@/types/interfaces/user";
 import { User } from "@/types/enums/user.enum";
 import { UiData } from "@/types/enums/uiData.enum";
 
@@ -54,8 +55,10 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        for (const [name, value] of Object.entries(form)) {
-          dispatch(setUser({ name, value }));
+        for (const [key, val] of Object.entries(form)) {
+          dispatch(
+            setUser({ name: key as keyof UserStore, value: val as string })
+          );
         }
         reset();
         dispatch(setStore(defaultState));
@@ -101,8 +104,6 @@ const YourFit = () => {
     (async () => {
       setLoading(true);
       try {
-        console.log("fetching data::");
-
         const response = await fetch(`${API.GET_PLAN}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -110,16 +111,15 @@ const YourFit = () => {
         });
         const responseData: AIResponse = await response.json();
 
-        if (!responseData || !responseData.message) {
+        if (!responseData) {
           console.error("Invalid API response:", responseData);
           return;
         }
-        const { content: fitnessPlan } = responseData.message;
-        console.log("responseData:: loaded");
+        // const { content: fitnessPlan } = responseData.message;
         dispatch(
           setUser({
             name: User.userFitnessPlan,
-            value: fitnessPlan,
+            value: responseData,
           })
         );
         dispatch(setUiData({ name: UiData.isEditing, value: false }));
@@ -133,12 +133,12 @@ const YourFit = () => {
 
   return (
     <div>
-      {userFitnessPlan && (
+      {/* {userFitnessPlan && (
         <div>
           <h1>Your Custom Fit</h1>
           {userFitnessPlan}
         </div>
-      )}
+      )} */}
       {!getUiState.isSignedUp && (
         <section>
           <h1> Create a username and password to save your plan:</h1>
