@@ -11,20 +11,15 @@ import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
 
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
+import { UserStore } from "@/types/interfaces/user";
 import { User } from "@/types/enums/user.enum";
 import { UiData } from "@/types/enums/uiData.enum";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/forms/UserForm";
-
-interface AIResponse {
-  finish_reason: string;
-  index: number;
-  logprobs: any;
-  message: { content: string; refusal: string; role: string };
-}
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
@@ -54,8 +49,10 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        for (const [name, value] of Object.entries(form)) {
-          dispatch(setUser({ name, value }));
+        for (const [key, val] of Object.entries(form)) {
+          dispatch(
+            setUser({ name: key as keyof UserStore, value: val as string })
+          );
         }
         reset();
         dispatch(setStore(defaultState));
@@ -101,25 +98,22 @@ const YourFit = () => {
     (async () => {
       setLoading(true);
       try {
-        console.log("fetching data::");
-
         const response = await fetch(`${API.GET_PLAN}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(savedState),
         });
-        const responseData: AIResponse = await response.json();
+        const responseData: FitPlan = await response.json();
 
-        if (!responseData || !responseData.message) {
+        if (!responseData) {
           console.error("Invalid API response:", responseData);
           return;
         }
-        const { content: fitnessPlan } = responseData.message;
-        console.log("responseData:: loaded");
+
         dispatch(
           setUser({
             name: User.userFitnessPlan,
-            value: fitnessPlan,
+            value: responseData,
           })
         );
         dispatch(setUiData({ name: UiData.isEditing, value: false }));
@@ -136,7 +130,7 @@ const YourFit = () => {
       {userFitnessPlan && (
         <div>
           <h1>Your Custom Fit</h1>
-          {userFitnessPlan}
+          {userFitnessPlan as any}
         </div>
       )}
       {!getUiState.isSignedUp && (

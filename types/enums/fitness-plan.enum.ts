@@ -1,0 +1,16 @@
+export enum FitnessPlan {
+  overview = "overview",
+  title = "title",
+  copy = "copy",
+  weeklySchedule = "weeklySchedule",
+  day = "day",
+  days = "days",
+  exercises = "exercises",
+  exercise = "exercise",
+  action = "action",
+  video = "video",
+  nutritionLifestyleTips = "nutritionLifestyleTips",
+  tips = "tips",
+  tip = "tip",
+  conclusion = "conclusion",
+}

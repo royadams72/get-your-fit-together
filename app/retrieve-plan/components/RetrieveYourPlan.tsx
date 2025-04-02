@@ -1,10 +1,13 @@
 "use client";
+import { ReactNode } from "react";
 import Link from "next/link";
 
 import { useForm } from "react-hook-form";
 
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
+
+import { isNotEmpty } from "@/lib/utils/validation";
 
 import { RootState } from "@/types/interfaces/store";
 import { UiData } from "@/types/enums/uiData.enum";
@@ -37,6 +40,8 @@ const RetrieveYourPlan = () => {
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
+    console.log("data", data);
+
     try {
       setLoading(true);
       const response = await fetch(`${API.RETRIEVE}`, {
@@ -45,6 +50,7 @@ const RetrieveYourPlan = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
+      // console.log("responseData", responseData);
       setRetrievedStore(responseData);
       reset();
     } catch (error) {
@@ -55,10 +61,10 @@ const RetrieveYourPlan = () => {
   };
   return (
     <div>
-      {userFitnessPlan ? (
+      {isNotEmpty(userFitnessPlan) ? (
         <div>
           <h1>Your Custom Fit</h1>
-          {userFitnessPlan}
+          {userFitnessPlan as ReactNode}
           <Link href={`${PATHS.ABOUT_YOU}`}>Edit your information here</Link>
         </div>
       ) : (
