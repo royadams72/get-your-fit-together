@@ -1,4 +1,5 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { UserState, UserStore } from "@/types/interfaces/user";
 
 export const userSliceName = "user";
@@ -7,7 +8,7 @@ export const userInitialState: UserState = {
   user: {
     userName: "",
     userPassword: "",
-    userFitnessPlan: {},
+    userFitnessPlan: {} as FitPlan,
   },
 };
 
@@ -19,15 +20,7 @@ export const userSlice = createAppSlice({
       state: UserState,
       action: { payload: { name: K; value: UserStore[K] } }
     ) => {
-      // const {
-      //   name,
-      //   value,
-      // }: {
-      //   name: keyof UserStore;
-      //   value: string | object;
-      // } = action.payload;
       state.user[action.payload.name] = action.payload.value;
-      // state.user[name] = value;
     },
   },
   selectors: {

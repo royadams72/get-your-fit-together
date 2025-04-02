@@ -11,6 +11,7 @@ import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
 
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
 import { UserStore } from "@/types/interfaces/user";
 import { User } from "@/types/enums/user.enum";
@@ -19,13 +20,6 @@ import { UiData } from "@/types/enums/uiData.enum";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/forms/UserForm";
-
-interface AIResponse {
-  finish_reason: string;
-  index: number;
-  logprobs: any;
-  message: { content: string; refusal: string; role: string };
-}
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
@@ -109,13 +103,13 @@ const YourFit = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(savedState),
         });
-        const responseData: AIResponse = await response.json();
+        const responseData: FitPlan = await response.json();
 
         if (!responseData) {
           console.error("Invalid API response:", responseData);
           return;
         }
-        // const { content: fitnessPlan } = responseData.message;
+
         dispatch(
           setUser({
             name: User.userFitnessPlan,
@@ -133,12 +127,12 @@ const YourFit = () => {
 
   return (
     <div>
-      {/* {userFitnessPlan && (
+      {userFitnessPlan && (
         <div>
           <h1>Your Custom Fit</h1>
-          {userFitnessPlan}
+          {userFitnessPlan as any}
         </div>
-      )} */}
+      )}
       {!getUiState.isSignedUp && (
         <section>
           <h1> Create a username and password to save your plan:</h1>
