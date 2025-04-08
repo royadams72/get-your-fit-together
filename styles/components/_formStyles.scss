@@ -1,0 +1,27 @@
+@use "../abstracts/index" as *;
+
+$bgColur: var(--white);
+$inputColour: var(--input-colour);
+$inputBorderRaduis: var(--border-radius-large);
+
+.formStyles {
+  select,
+  input,
+  textarea {
+    @include typography(
+      "sm",
+      $inputColour,
+      $type-li-font-family,
+      $type-li-weight
+    );
+    border-radius: $inputBorderRaduis;
+    background-color: $bgColur;
+    border: 1px solid $inputColour;
+    padding: 0px 24px;
+    margin: 5px 0px;
+    width: 100%;
+    height: 50px;
+    display: block;
+    word-break: normal;
+  }
+}

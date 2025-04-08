@@ -1,0 +1,26 @@
+:root {
+  --primary: #00294c;
+  --secondary: #025c95;
+  --tertiary: #dcf0fd;
+  --quaternary: #f3a103;
+  --quinary: #8b1c1a;
+  --white: #ffffff;
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --btn-light: var(--quaternary);
+  --btn-dark: var(--quinary);
+  --primary-font-colour: #ebf7ff;
+  --input-colour: #707070;
+  --border-radius-large: 40px;
+  --border-radius-medium: 30px;
+  --border-radius-small: 20px;
+  --main-body-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+// Font Map
+$font-map: (
+  "body": "Arial, sans-serif",
+  "heading": "Georgia, serif",
+  "monospace": "Courier New, monospace",
+);

@@ -1,0 +1,53 @@
+@use "./formStyles" as *;
+
+.selectdiv {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+
+  // display: flex;
+  // justify-content: flex-start;
+  width: 100%;
+  // margin: 50px 33%;
+  label {
+    display: none;
+  }
+}
+
+/* IE11 hide native button (thanks Matt!) */
+// select::-ms-expand {
+//   display: none;
+// }
+
+.selectdiv:after {
+  content: ">";
+  font: 17px "Consolas", monospace;
+  color: #333;
+  transform: rotate(90deg);
+  right: 11px;
+
+  top: 18px;
+  padding: 0 0 2px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #999;
+
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectdiv select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  // width: 100%;
+  height: 50px;
+  margin-left: auto;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  word-break: normal;
+}

@@ -1,0 +1,8 @@
+html {
+  font-size: 62.5%; // This makes 1rem = 10px (since 62.5% of 16px = 10px)
+}
+
+body {
+  font-size: 1.6rem; // This is now 16px (1.6 * 10px)
+  background-color: var(--tertiary);
+}

@@ -1,0 +1,91 @@
+@use "../shared" as *;
+@use "../fonts/fonts" as *;
+
+$main-font: var(--main-body-font);
+$type-colour: var(--primary-font-colour);
+$type2-colour: var(--quaternary);
+
+$type-body-font-family: $main-font;
+$type-h1-font-family: "BebasNeue", sans-serif;
+$type-h1-weight: bold;
+$type-h1-colour: $type-colour;
+
+$type-h2-font-family: "BebasNeue", sans-serif;
+$type-h2-weight: bold;
+$type-h2-colour: $type2-colour;
+
+$type-p-font-family: $main-font;
+$type-p-margin-top: 1rem;
+$type-p-margin-bottom-small: 2rem;
+
+$type-p-margin-bottom-medium: 2rem;
+$type-p-weight: normal;
+$type-p-colour: $type-colour;
+
+$type-li-font-family: $main-font;
+$type-li-margin-bottom-small: 0.5rem;
+$type-li-margin-bottom-medium: 0.9rem;
+$type-li-weight: normal;
+$type-li-colour: $type-colour;
+
+h1,
+%h1 {
+  @include typography(
+    "title-sm",
+    $type-h1-colour,
+    $type-h1-font-family,
+    $type-h1-weight
+  );
+  @include breakpoint("sm") {
+    @include font-size("title-lrg");
+  }
+}
+
+h2,
+%h2 {
+  @include typography(
+    "xl",
+    $type-h2-colour,
+    $type-h2-font-family,
+    $type-h2-weight
+  );
+
+  @include breakpoint("md") {
+    @include font-size("xxl");
+  }
+}
+
+p,
+%p {
+  margin-top: $type-p-margin-top;
+  @include typography(
+    "sm",
+    $type-p-colour,
+    $type-p-font-family,
+    $type-p-weight
+  );
+
+  @include breakpoint("md") {
+    @include font-size("md");
+  }
+}
+
+li {
+  margin-bottom: $type-li-margin-bottom-small;
+
+  @include typography(
+    "sm",
+    $type-li-colour,
+    $type-li-font-family,
+    $type-li-weight
+  );
+
+  @include breakpoint("md") {
+    $type-li-margin-bottom-medium: 0.9rem;
+    @include font-size("md");
+  }
+}
+
+a {
+  color: inherit;
+}

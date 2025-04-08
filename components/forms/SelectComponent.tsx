@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
+import styles from "@/styles/components/_selectComponent.module.scss";
 import { Select } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
@@ -43,12 +44,11 @@ const SelectComponent = ({
       dispatch(dispatchEvent({ name, value }));
     }
 
-    // Add any onChange event handlers from config
     config?.eventHandlers?.onChange?.(e);
   };
 
   return (
-    <div className={className}>
+    <div className={`${className || ""} ${styles.selectdiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
       {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 

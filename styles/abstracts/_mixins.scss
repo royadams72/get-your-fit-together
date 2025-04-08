@@ -1,0 +1,33 @@
+@use "sass:map";
+@use "./maps" as *;
+
+@mixin breakpoint($name, $condition: min) {
+  @if map.has-key($breakpoints, $name) {
+    $size: map.get($breakpoints, $name);
+    @if $condition == min {
+      @media (min-width: $size) {
+        @content;
+      }
+    } @else if $condition == max {
+      @media (max-width: $size) {
+        @content;
+      }
+    }
+  } @else {
+    @warn "No value found for `#{$name}` in $breakpoints map.";
+  }
+}
+
+@mixin typography($size, $color, $font-family, $font-weight) {
+  color: $color;
+  font-family: $font-family;
+  font-weight: $font-weight;
+  font-size: map.get(map.get($typography-scale, $size), font-size);
+  line-height: map.get(map.get($typography-scale, $size), line-height);
+  margin: 0;
+}
+
+@mixin font-size($size) {
+  font-size: map.get(map.get($typography-scale, $size), font-size);
+  line-height: map.get(map.get($typography-scale, $size), line-height);
+}
