@@ -6,9 +6,30 @@ $afterWidth: 1.4rem;
 .selectDiv {
   position: relative;
   width: 100%;
+
   label {
     position: absolute;
     left: -9999px;
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  &Toggle {
+    @extend %radio;
+    color: var(--primary);
+    background-color: var(--warning);
+    padding: 0.3rem 1.5rem;
+    &:focus {
+      outline: none;
+      background-color: var(--senary);
+      color: var(--white);
+    }
   }
 }
 

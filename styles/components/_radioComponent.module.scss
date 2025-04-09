@@ -1,0 +1,40 @@
+@use "./formStyles" as *;
+
+.radioDiv fieldset {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  background-color: transparent;
+  border: none;
+  margin-bottom: 7rem;
+  padding: 0;
+
+  label {
+    user-select: none;
+    min-width: 6rem;
+    text-align: center;
+  }
+
+  legend {
+    color: $bgColour;
+    margin-bottom: 0.7rem;
+  }
+
+  .radioOptions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input[type="radio"] {
+    appearance: none;
+    display: none;
+  }
+
+  input[type="radio"]:checked + label {
+    @extend %radioChecked;
+  }
+
+  input[type="radio"] + label {
+    @extend %radio;
+  }
+}

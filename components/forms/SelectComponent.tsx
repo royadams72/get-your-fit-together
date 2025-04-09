@@ -1,13 +1,13 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-import styles from "@/styles/components/_selectComponent.module.scss";
 import { Select } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import { styleText } from "util";
+import styles from "@/styles/components/_selectComponent.module.scss";
 
 const SelectComponent = ({
   className,
@@ -81,8 +81,10 @@ const SelectComponent = ({
           config.toggleOptions.map((option: any) => {
             return (
               <li
+                className={styles.selectDivToggle}
                 key={option.value}
                 onClick={() => setOptionList(option.toggleOption)}
+                tabIndex={1}
               >
                 {option.label}
               </li>

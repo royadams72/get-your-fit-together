@@ -1,20 +1,39 @@
 @use "../abstracts/mixins" as *;
 
 $bgColour: var(--white);
-$inputColour: var(--input-colour);
+$fontColour: var(--input-colour);
 $inputBorderRadius: var(--border-radius-large);
 $inputBorderColour: var(--quaternary);
 $form-font-family: var(--main-body-font);
 $errorColour: var(--error);
 
+.radio,
+%radio {
+  cursor: pointer;
+  color: $fontColour;
+  background-color: $bgColour;
+  display: inline-block;
+  padding: 1rem 2rem;
+
+  border: 1px solid $bgColour;
+  border-radius: var(--border-radius-small);
+  transition: all 0.3s ease;
+}
+
+.radioChecked,
+%radioChecked {
+  background-color: var(--senary);
+  color: $bgColour;
+}
+
 .selectDiv select,
-.inputDiv select {
-  @include typography("lg", $inputColour, $form-font-family, normal);
+.radioDiv fieldset {
+  @include typography("lg", $fontColour, $form-font-family, normal);
   border-radius: $inputBorderRadius;
   background-color: $bgColour;
   border: 1px solid $inputBorderColour;
   padding: 0 2.4rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 1rem;
   width: 100%;
   height: 5rem;
   display: block;
@@ -22,7 +41,8 @@ $errorColour: var(--error);
 }
 
 .selectDiv,
-.inputDiv {
+.radioDiv {
+  margin-bottom: 4rem;
   &Hint {
     @include typography("md", $bgColour, $form-font-family, normal);
     margin-left: 2rem;

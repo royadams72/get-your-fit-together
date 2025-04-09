@@ -48,7 +48,6 @@ const AboutYouQuestions = () => {
         dispatchEvent={setAboutYou}
         config={config.bodyTypeConfig}
       ></SelectComponent>
-      <p>Injuries or Conditions</p>
       <SelectComponent
         defaultValue={aboutYou?.stressLevel}
         dispatchEvent={setAboutYou}
