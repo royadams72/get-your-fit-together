@@ -7,16 +7,17 @@ $afterWidth: 1.4rem;
   position: relative;
   width: 100%;
   label {
-    display: none;
+    position: absolute;
+    left: -9999px;
   }
 }
 
 .selectDiv:after {
   content: "";
   background-image: url("/downArrow.png");
-  background-size: $afterHeight $afterWidth; /* Adjust the size of the image */
+  background-size: $afterHeight $afterWidth;
   background-repeat: no-repeat;
-  width: $afterHeight; /* Define the width */
+  width: $afterHeight;
   height: $afterWidth;
   top: 2rem;
   right: 1.7rem;

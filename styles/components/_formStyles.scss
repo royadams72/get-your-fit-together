@@ -5,6 +5,7 @@ $inputColour: var(--input-colour);
 $inputBorderRadius: var(--border-radius-large);
 $inputBorderColour: var(--quaternary);
 $form-font-family: var(--main-body-font);
+$errorColour: var(--error);
 
 .selectDiv select,
 .inputDiv select {
@@ -24,6 +25,13 @@ $form-font-family: var(--main-body-font);
 .inputDiv {
   &Hint {
     @include typography("md", $bgColour, $form-font-family, normal);
-    margin-left: 2.4rem;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+  }
+  &Error {
+    @include typography("md", $bgColour, $form-font-family, normal);
+    background-color: $errorColour;
+    border-radius: $inputBorderRadius;
+    padding: 0.6rem 2rem;
   }
 }

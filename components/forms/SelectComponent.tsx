@@ -72,7 +72,9 @@ const SelectComponent = ({
         />
       )}
       {errors[config.name] && (
-        <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
+        <p className={styles.selectDivError}>
+          {errors[config.name]?.message as string}
+        </p>
       )}
       <ul>
         {config.toggleOptions &&
