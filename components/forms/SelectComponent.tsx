@@ -48,7 +48,7 @@ const SelectComponent = ({
   };
 
   return (
-    <div className={`${className || ""} ${styles.selectdiv}`}>
+    <div className={`${className || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
       {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 

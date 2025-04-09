@@ -1,13 +1,13 @@
-// @use "../abstracts/index" as *;
+@use "../abstracts/mixins" as *;
 
 $bgColour: var(--white);
 $inputColour: var(--input-colour);
 $inputBorderRadius: var(--border-radius-large);
 $form-font-family: var(--main-body-font);
 
-.selectdiv select,
-.inputdiv select {
-  // @include typography("sm", $inputColour, $form-font-family, normal);
+.selectDiv select,
+.inputDiv select {
+  @include typography("sm", $inputColour, $form-font-family, normal);
   border-radius: $inputBorderRadius;
   background-color: $bgColour;
   border: 1px solid $inputColour;

@@ -1,22 +1,12 @@
-@use "./forward" as *;
+@use "./formStyles" as *;
 
 .selectdiv {
   position: relative;
-  /*Don't really need this just for demo styling*/
-
-  // display: flex;
-  // justify-content: flex-start;
   width: 100%;
-  // margin: 50px 33%;
   label {
     display: none;
   }
 }
-
-/* IE11 hide native button (thanks Matt!) */
-// select::-ms-expand {
-//   display: none;
-// }
 
 .selectdiv:after {
   content: ">";
@@ -27,27 +17,22 @@
 
   top: 18px;
   padding: 0 0 2px;
-  background-color: $bgColour;
   border-bottom: 1px solid #999;
 
   position: absolute;
   pointer-events: none;
 }
 
-.selectdiv select {
+.selectDiv select {
   appearance: none;
   display: block;
   width: 100%;
-  // border-radius: 40px;
-  // width: 100%;
-  height: 50px;
-  margin-left: auto;
-  margin: 5px 0px;
+  height: 5rem;
   padding: 0px 24px;
   font-size: 16px;
   line-height: 1.75;
-  color: #333;
-  // background-color: $bgColour;
-  background-image: none;
-  word-break: normal;
+  word-break: break-all;
+  &::-ms-expand {
+    display: none;
+  }
 }

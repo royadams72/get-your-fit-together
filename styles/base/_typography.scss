@@ -1,4 +1,4 @@
-@use "../shared" as *;
+@use "../abstracts/mixins" as *;
 @use "../fonts/fonts" as *;
 
 $main-font: var(--main-body-font);
