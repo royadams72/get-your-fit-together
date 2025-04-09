@@ -1,6 +1,9 @@
 @use "./formStyles" as *;
 
-.selectdiv {
+$afterHeight: 2rem;
+$afterWidth: 1.4rem;
+
+.selectDiv {
   position: relative;
   width: 100%;
   label {
@@ -8,17 +11,15 @@
   }
 }
 
-.selectdiv:after {
-  content: ">";
-  font: 17px "Consolas", monospace;
-  color: #333;
-  transform: rotate(90deg);
-  right: 11px;
-
-  top: 18px;
-  padding: 0 0 2px;
-  border-bottom: 1px solid #999;
-
+.selectDiv:after {
+  content: "";
+  background-image: url("/downArrow.png");
+  background-size: $afterHeight $afterWidth; /* Adjust the size of the image */
+  background-repeat: no-repeat;
+  width: $afterHeight; /* Define the width */
+  height: $afterWidth;
+  top: 2rem;
+  right: 1.7rem;
   position: absolute;
   pointer-events: none;
 }
@@ -28,9 +29,7 @@
   display: block;
   width: 100%;
   height: 5rem;
-  padding: 0px 24px;
-  font-size: 16px;
-  line-height: 1.75;
+  padding: 0px 4rem 0 2rem;
   word-break: break-all;
   &::-ms-expand {
     display: none;

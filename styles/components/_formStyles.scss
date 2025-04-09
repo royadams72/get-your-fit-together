@@ -3,18 +3,27 @@
 $bgColour: var(--white);
 $inputColour: var(--input-colour);
 $inputBorderRadius: var(--border-radius-large);
+$inputBorderColour: var(--quaternary);
 $form-font-family: var(--main-body-font);
 
 .selectDiv select,
 .inputDiv select {
-  @include typography("sm", $inputColour, $form-font-family, normal);
+  @include typography("lg", $inputColour, $form-font-family, normal);
   border-radius: $inputBorderRadius;
   background-color: $bgColour;
-  border: 1px solid $inputColour;
-  padding: 0px 24px;
-  margin: 5px 0px;
+  border: 1px solid $inputBorderColour;
+  padding: 0 2.4rem;
+  margin: 0.5rem 0;
   width: 100%;
-  height: 50px;
+  height: 5rem;
   display: block;
   word-break: normal;
+}
+
+.selectDiv,
+.inputDiv {
+  &Hint {
+    @include typography("md", $bgColour, $form-font-family, normal);
+    margin-left: 2.4rem;
+  }
 }

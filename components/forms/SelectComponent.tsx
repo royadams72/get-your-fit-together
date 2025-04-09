@@ -7,6 +7,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import styles from "@/styles/components/_selectComponent.module.scss";
 import { Select } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
+import { styleText } from "util";
 
 const SelectComponent = ({
   className,
@@ -50,7 +51,6 @@ const SelectComponent = ({
   return (
     <div className={`${className || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
-      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 
       <select
         id={config.name}
@@ -65,6 +65,12 @@ const SelectComponent = ({
           </option>
         ))}
       </select>
+      {config?.hint && (
+        <div
+          className={styles.selectDivHint}
+          dangerouslySetInnerHTML={config.hint}
+        />
+      )}
       {errors[config.name] && (
         <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
       )}
