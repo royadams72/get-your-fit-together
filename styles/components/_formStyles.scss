@@ -1,37 +1,30 @@
 @use "../abstracts/mixins" as *;
 
-$bgColour: var(--white);
-$fontColour: var(--input-colour);
-$inputBorderRadius: var(--border-radius-large);
-$inputBorderColour: var(--quaternary);
-$form-font-family: var(--main-body-font);
-$errorColour: var(--error);
-
 .radio,
 %radio {
   cursor: pointer;
-  color: $fontColour;
-  background-color: $bgColour;
+  color: var(--input-colour);
+  background-color: var(--white);
   display: inline-block;
   padding: 1rem 2rem;
 
-  border: 1px solid $bgColour;
+  border: 1px solid var(--white);
   border-radius: var(--border-radius-small);
   transition: all 0.3s ease;
 }
 
 .radioChecked,
 %radioChecked {
-  background-color: var(--senary);
-  color: $bgColour;
+  background-color: var(--senary-colour);
+  color: var(--white);
 }
 
 .selectDiv select,
 .radioDiv fieldset {
-  @include typography("lg", $fontColour, $form-font-family, normal);
-  border-radius: $inputBorderRadius;
-  background-color: $bgColour;
-  border: 1px solid $inputBorderColour;
+  @include typography("lg", var(--input-colour), var(--main-body-font), normal);
+  border-radius: var(--border-radius-large);
+  background-color: var(--white);
+  border: 1px solid var(--quaternary-colour);
   padding: 0 2.4rem;
   margin: 0.5rem 0 1rem;
   width: 100%;
@@ -44,14 +37,14 @@ $errorColour: var(--error);
 .radioDiv {
   margin-bottom: 4rem;
   &Hint {
-    @include typography("md", $bgColour, $form-font-family, normal);
+    @include typography("md", var(--white), var(--main-body-font), normal);
     margin-left: 2rem;
     margin-bottom: 1rem;
   }
   &Error {
-    @include typography("md", $bgColour, $form-font-family, normal);
-    background-color: $errorColour;
-    border-radius: $inputBorderRadius;
+    @include typography("md", var(--white), var(--main-body-font), normal);
+    background-color: var(--error);
+    border-radius: var(--border-radius-large) s;
     padding: 0.6rem 2rem;
   }
 }

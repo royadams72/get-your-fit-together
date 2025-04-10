@@ -1,0 +1,90 @@
+@use "../abstracts/mixins" as *;
+
+.checkboxDiv {
+  --border: 1px solid var(--white);
+  &Contianer {
+    fieldset {
+      border: none;
+    }
+  }
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  border: var(--border);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px; /* Adjust corner radius */
+  &:nth-last-child(1) {
+    border-bottom-right-radius: 8px; /* Adjust corner radius */
+    // border-right: none;
+    // border-bottom: none;
+  }
+  div {
+    display: grid;
+    grid-template-columns: 1fr 0px 1fr;
+    padding: 1rem 0 1rem 1.5rem;
+    border: var(--border);
+    /* Remove borders for corner items */
+    &:first-child {
+      border-top-left-radius: 8px; /* Adjust corner radius */
+      // border-left: none;
+      // border-top: none;
+    }
+    // &:last-child {
+    //   border-top-right-radius: 8px;
+    //   // border-right: none;
+    //   // border-top: none;
+    // }
+    &:nth-child(3) {
+      border-top-right-radius: 8px; /* Adjust corner radius */
+    }
+    // &:nth-last-child(1) {
+    //   border-bottom-right-radius: 8px; /* Adjust corner radius */
+    //   // border-right: none;
+    //   // border-bottom: none;
+    // }
+  }
+}
+
+.checkboxDiv input[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.checkboxDiv label {
+  --size: 5rem;
+
+  cursor: pointer;
+  width: var(--size);
+  height: calc(var(--size) / 2);
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+.checkboxDiv span {
+  @include typography("md", var(--white), var(--main-body-font), normal);
+}
+.checkboxDiv label:after {
+  content: "";
+  position: absolute;
+  top: 6%;
+  left: 2.5%;
+  width: calc(50% - 5%);
+  height: calc(100% - 11%);
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+.checkboxDiv input:checked + label {
+  background: #bada55;
+}
+
+.checkboxDiv input:checked + label:after {
+  left: calc(100% - 2.5%);
+  transform: translateX(-100%);
+}
+
+.checkboxDiv label:active:after {
+  width: 55%;
+}

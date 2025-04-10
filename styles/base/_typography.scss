@@ -1,40 +1,13 @@
 @use "../abstracts/mixins" as *;
 @use "../fonts/fonts" as *;
 
-$main-font: var(--main-body-font);
-$type-colour: var(--primary-font-colour);
-$type2-colour: var(--quaternary);
-
-$type-body-font-family: $main-font;
-$type-h1-font-family: "BebasNeue", sans-serif;
-$type-h1-weight: bold;
-$type-h1-colour: $type-colour;
-
-$type-h2-font-family: "BebasNeue", sans-serif;
-$type-h2-weight: bold;
-$type-h2-colour: $type2-colour;
-
-$type-p-font-family: $main-font;
-$type-p-margin-top: 1rem;
-$type-p-margin-bottom-small: 2rem;
-
-$type-p-margin-bottom-medium: 2rem;
-$type-p-weight: normal;
-$type-p-colour: $type-colour;
-
-$type-li-font-family: $main-font;
-$type-li-margin-bottom-small: 0.5rem;
-$type-li-margin-bottom-medium: 0.9rem;
-$type-li-weight: normal;
-$type-li-colour: $type-colour;
-
 h1,
 %h1 {
   @include typography(
     "title-sm",
-    $type-h1-colour,
-    $type-h1-font-family,
-    $type-h1-weight
+    var(--primary-font-colour),
+    ("BebasNeue", sans-serif),
+    bold
   );
   @include breakpoint("sm") {
     @include font-size("title-lrg");
@@ -45,9 +18,9 @@ h2,
 %h2 {
   @include typography(
     "xxl",
-    $type-h2-colour,
-    $type-h2-font-family,
-    $type-h2-weight
+    var(--quaternary-colour),
+    ("BebasNeue", sans-serif),
+    bold
   );
 
   @include breakpoint("md") {
@@ -57,12 +30,12 @@ h2,
 
 p,
 %p {
-  margin-top: $type-p-margin-top;
+  margin-top: 1rem;
   @include typography(
     "sm",
-    $type-p-colour,
-    $type-p-font-family,
-    $type-p-weight
+    var(--primary-font-colour),
+    var(--main-body-font),
+    normal
   );
 
   @include breakpoint("md") {
@@ -71,17 +44,17 @@ p,
 }
 
 li {
-  margin-bottom: $type-li-margin-bottom-small;
+  margin-bottom: 0.5rem;
 
   @include typography(
     "sm",
-    $type-li-colour,
-    $type-li-font-family,
-    $type-li-weight
+    var(--primary-font-colour),
+    var(--main-body-font),
+    normal
   );
 
   @include breakpoint("md") {
-    $type-li-margin-bottom-medium: 0.9rem;
+    margin-bottom: 0.9rem;
     @include font-size("md");
   }
 }

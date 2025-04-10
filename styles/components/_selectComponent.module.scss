@@ -22,12 +22,12 @@ $afterWidth: 1.4rem;
 
   &Toggle {
     @extend %radio;
-    color: var(--primary);
+    color: var(--primary-colour);
     background-color: var(--warning);
     padding: 0.3rem 1.5rem;
     &:focus {
       outline: none;
-      background-color: var(--senary);
+      background-color: var(--senary-colour);
       color: var(--white);
     }
   }

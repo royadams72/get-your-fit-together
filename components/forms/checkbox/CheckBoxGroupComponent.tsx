@@ -6,6 +6,8 @@ import { useFormContext, useFieldArray } from "react-hook-form";
 import { CheckBoxGroup } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
+import styles from "@/styles/components/_checkbox.module.scss";
+
 const CheckBoxGroupComponent = ({
   config,
   required,
@@ -87,26 +89,34 @@ const CheckBoxGroupComponent = ({
   };
 
   return (
-    <fieldset>
-      <legend>{config.legend}</legend>
-      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
-      {combinedFields.map((item, index) => (
-        <div key={item.id}>
-          <label>{item.label}</label>
-          <input
-            {...register(`${config.name}[${index}].value`)}
-            type="checkbox"
-            checked={item.value}
-            onChange={(e) => handleCheckboxChange(e, index, e.target.checked)}
-          />
+    <div className={styles.checkboxDivContianer}>
+      <fieldset>
+        <legend>{config.legend}</legend>
+        {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
+        <div className={styles.checkboxDiv}>
+          {combinedFields.map((item, index) => (
+            <div key={item.id}>
+              <span>{item.label}</span>
+              <input
+                {...register(`${config.name}[${index}].value`)}
+                type="checkbox"
+                checked={item.value}
+                onChange={(e) =>
+                  handleCheckboxChange(e, index, e.target.checked)
+                }
+                id={`${config.checkboxes[index].label}`}
+              />
+              <label htmlFor={`${config.checkboxes[index].label}`}></label>
+            </div>
+          ))}
         </div>
-      ))}
-      {errors[config.name] && (
-        <p style={{ color: "red" }}>
-          {errors[config.name]?.root?.message?.toString()}
-        </p>
-      )}
-    </fieldset>
+        {errors[config.name] && (
+          <p style={{ color: "red" }}>
+            {errors[config.name]?.root?.message?.toString()}
+          </p>
+        )}
+      </fieldset>
+    </div>
   );
 };
 
