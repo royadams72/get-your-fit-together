@@ -34,7 +34,8 @@
 }
 
 .selectDiv,
-.radioDiv {
+.radioDiv,
+.checkboxDiv {
   margin-bottom: 4rem;
   &Hint {
     @include typography("md", var(--white), var(--main-body-font), normal);
@@ -44,7 +45,7 @@
   &Error {
     @include typography("md", var(--white), var(--main-body-font), normal);
     background-color: var(--error);
-    border-radius: var(--border-radius-large) s;
+    border-radius: var(--border-radius-large);
     padding: 0.6rem 2rem;
   }
 }

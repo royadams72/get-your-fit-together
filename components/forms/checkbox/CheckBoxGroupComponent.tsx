@@ -1,7 +1,9 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
 import { useFormContext, useFieldArray } from "react-hook-form";
+
+import useScreenSize from "@/lib/hooks/useScreenSize";
 
 import { CheckBoxGroup } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
@@ -28,6 +30,10 @@ const CheckBoxGroupComponent = ({
     formState: { errors },
   } = useFormContext();
 
+  const { width } = useScreenSize();
+  const [leftBottom, setLeftBottom] = useState<number>(0);
+  const [rightTop, setRightTop] = useState<number>(0);
+
   const { fields } = useFieldArray({
     control,
     name: config.name,
@@ -52,6 +58,21 @@ const CheckBoxGroupComponent = ({
     ...config.checkboxes[index],
     id: field.id,
   }));
+
+  useEffect(() => {
+    const setRows = (cols: number) => {
+      return Math.ceil(totalItems / cols);
+    };
+    const totalItems = combinedFields.length;
+    let columns = 3;
+    let rows = setRows(columns);
+    if (width < 720) {
+      columns = 2;
+      rows = setRows(columns);
+    }
+    setLeftBottom((rows - 1) * columns + 1);
+    setRightTop(columns);
+  }, [combinedFields, width]);
 
   useEffect(() => {
     if (defaultValue) {
@@ -92,26 +113,43 @@ const CheckBoxGroupComponent = ({
     <div className={styles.checkboxDivContianer}>
       <fieldset>
         <legend>{config.legend}</legend>
-        {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
+        {config?.hint && (
+          <div
+            className={styles.checkboxDivHint}
+            dangerouslySetInnerHTML={config.hint}
+          />
+        )}
         <div className={styles.checkboxDiv}>
-          {combinedFields.map((item, index) => (
-            <div key={item.id}>
-              <span>{item.label}</span>
-              <input
-                {...register(`${config.name}[${index}].value`)}
-                type="checkbox"
-                checked={item.value}
-                onChange={(e) =>
-                  handleCheckboxChange(e, index, e.target.checked)
-                }
-                id={`${config.checkboxes[index].label}`}
-              />
-              <label htmlFor={`${config.checkboxes[index].label}`}></label>
-            </div>
-          ))}
+          {combinedFields.map((item, index) =>
+            item.label === "Dummy" ? (
+              <div key={index}></div>
+            ) : (
+              <div
+                key={item.id}
+                className={[
+                  index + 1 === leftBottom ? styles["bottom-left"] : "",
+                  index + 1 === rightTop ? styles["right-top"] : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <span>{item.label}</span>
+                <input
+                  {...register(`${config.name}[${index}].value`)}
+                  type="checkbox"
+                  checked={item.value}
+                  onChange={(e) =>
+                    handleCheckboxChange(e, index, e.target.checked)
+                  }
+                  id={`${config.checkboxes[index].label}`}
+                />
+                <label htmlFor={`${config.checkboxes[index].label}`}></label>
+              </div>
+            )
+          )}
         </div>
         {errors[config.name] && (
-          <p style={{ color: "red" }}>
+          <p className={styles.checkboxDivError}>
             {errors[config.name]?.root?.message?.toString()}
           </p>
         )}
