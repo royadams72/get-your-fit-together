@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 
@@ -33,6 +33,7 @@ const CheckBoxGroupComponent = ({
   const { width } = useScreenSize();
   const [leftBottom, setLeftBottom] = useState<number>(0);
   const [rightTop, setRightTop] = useState<number>(0);
+  const [checkboxArray, setCheckboxArray] = useState<any[]>([]);
 
   const { fields } = useFieldArray({
     control,
@@ -54,25 +55,37 @@ const CheckBoxGroupComponent = ({
     },
   });
 
-  const combinedFields = fields.map((field, index) => ({
-    ...config.checkboxes[index],
-    id: field.id,
-  }));
+  useEffect(() => {
+    let combinedFields = fields.map((field, index) => ({
+      ...config.checkboxes[index],
+      id: field.id,
+    }));
+
+    if (combinedFields.length % 2 !== 0) {
+      combinedFields = [
+        ...combinedFields,
+        { label: "Dummy", value: false, id: "empty" },
+      ];
+      console.log("combinedFields", combinedFields);
+      setCheckboxArray(combinedFields);
+    }
+  }, [config.checkboxes, fields]);
 
   useEffect(() => {
-    const setRows = (cols: number) => {
-      return Math.ceil(totalItems / cols);
+    const setRows = (cols: number, items: number) => {
+      return Math.ceil(items / cols);
     };
-    const totalItems = combinedFields.length;
+    const totalItems = checkboxArray.length;
+
     let columns = 3;
-    let rows = setRows(columns);
+    let rows = setRows(columns, totalItems as number);
     if (width < 720) {
       columns = 2;
-      rows = setRows(columns);
+      rows = setRows(columns, totalItems as number);
     }
     setLeftBottom((rows - 1) * columns + 1);
     setRightTop(columns);
-  }, [combinedFields, width]);
+  }, [checkboxArray, width]);
 
   useEffect(() => {
     if (defaultValue) {
@@ -120,33 +133,34 @@ const CheckBoxGroupComponent = ({
           />
         )}
         <div className={styles.checkboxDiv}>
-          {combinedFields.map((item, index) =>
-            item.label === "Dummy" ? (
-              <div key={index}></div>
-            ) : (
-              <div
-                key={item.id}
-                className={[
-                  index + 1 === leftBottom ? styles["bottom-left"] : "",
-                  index + 1 === rightTop ? styles["right-top"] : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <span>{item.label}</span>
-                <input
-                  {...register(`${config.name}[${index}].value`)}
-                  type="checkbox"
-                  checked={item.value}
-                  onChange={(e) =>
-                    handleCheckboxChange(e, index, e.target.checked)
-                  }
-                  id={`${config.checkboxes[index].label}`}
-                />
-                <label htmlFor={`${config.checkboxes[index].label}`}></label>
-              </div>
-            )
-          )}
+          {checkboxArray &&
+            checkboxArray?.map((item, index) =>
+              item.label === "Dummy" ? (
+                <div key={index}></div>
+              ) : (
+                <div
+                  key={item.id}
+                  className={[
+                    index + 1 === leftBottom ? styles["bottom-left"] : "",
+                    index + 1 === rightTop ? styles["right-top"] : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <span>{item.label}</span>
+                  <input
+                    {...register(`${config.name}[${index}].value`)}
+                    type="checkbox"
+                    checked={item.value}
+                    onChange={(e) =>
+                      handleCheckboxChange(e, index, e.target.checked)
+                    }
+                    id={`${config.checkboxes[index].label}`}
+                  />
+                  <label htmlFor={`${config?.checkboxes[index].label}`}></label>
+                </div>
+              )
+            )}
         </div>
         {errors[config.name] && (
           <p className={styles.checkboxDivError}>

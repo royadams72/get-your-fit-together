@@ -101,7 +101,4 @@ export const workoutCheckboxes = [
   { label: "Dance & Aerobic Workouts", value: false },
   { label: "Martial Arts & Combat Sports", value: false },
   { label: "Outdoor Workouts & Hiking", value: false },
-  /* Dummy item to make sure there are 12 items/even number of items
-   Remove if necessary */
-  { label: "Dummy", value: false },
 ];
