@@ -1,14 +1,14 @@
 "use client";
-import { use, useEffect, useState } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/react";
 import { useFormContext, useFieldArray } from "react-hook-form";
-
-import useScreenSize from "@/lib/hooks/useScreenSize";
 
 import { CheckBoxGroup } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
 import styles from "@/styles/components/_checkbox.module.scss";
+import useSetFieldsToEven from "./hooks/useSetFieldsToEven";
+import useOnScreensizeChange from "./hooks/useOnScreensizeChange";
+import useSetChecked from "./hooks/useSetChecked";
 
 const CheckBoxGroupComponent = ({
   config,
@@ -30,11 +30,6 @@ const CheckBoxGroupComponent = ({
     formState: { errors },
   } = useFormContext();
 
-  const { width } = useScreenSize();
-  const [leftBottom, setLeftBottom] = useState<number>(0);
-  const [rightTop, setRightTop] = useState<number>(0);
-  const [checkboxArray, setCheckboxArray] = useState<any[]>([]);
-
   const { fields } = useFieldArray({
     control,
     name: config.name,
@@ -55,52 +50,13 @@ const CheckBoxGroupComponent = ({
     },
   });
 
-  useEffect(() => {
-    let combinedFields = fields.map((field, index) => ({
-      ...config.checkboxes[index],
-      id: field.id,
-    }));
+  const { checkboxArray } = useSetFieldsToEven(fields, config);
 
-    if (combinedFields.length % 2 !== 0) {
-      combinedFields = [
-        ...combinedFields,
-        { label: "Dummy", value: false, id: "empty" },
-      ];
-      console.log("combinedFields", combinedFields);
-      setCheckboxArray(combinedFields);
-    }
-  }, [config.checkboxes, fields]);
+  const { columns, leftBottom, rightTop } = useOnScreensizeChange(
+    checkboxArray.length
+  );
 
-  useEffect(() => {
-    const setRows = (cols: number, items: number) => {
-      return Math.ceil(items / cols);
-    };
-    const totalItems = checkboxArray.length;
-
-    let columns = 3;
-    let rows = setRows(columns, totalItems as number);
-    if (width < 720) {
-      columns = 2;
-      rows = setRows(columns, totalItems as number);
-    }
-    setLeftBottom((rows - 1) * columns + 1);
-    setRightTop(columns);
-  }, [checkboxArray, width]);
-
-  useEffect(() => {
-    if (defaultValue) {
-      const defaultChecked = config.checkboxes.map((checkbox) => {
-        defaultValue.split(",").map((value) => {
-          if (value.trim() === checkbox.label) {
-            checkbox.value = true;
-          }
-        });
-        return checkbox;
-      });
-
-      setValue(config.name, defaultChecked);
-    }
-  }, [defaultValue, setValue, config.name, config.checkboxes]);
+  config.checkboxes = useSetChecked(defaultValue || "", config, setValue);
 
   const handleCheckboxChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -132,7 +88,10 @@ const CheckBoxGroupComponent = ({
             dangerouslySetInnerHTML={config.hint}
           />
         )}
-        <div className={styles.checkboxDiv}>
+        <div
+          className={styles.checkboxDiv}
+          style={{ "--template-columns": columns } as React.CSSProperties}
+        >
           {checkboxArray &&
             checkboxArray?.map((item, index) =>
               item.label === "Dummy" ? (
@@ -157,7 +116,7 @@ const CheckBoxGroupComponent = ({
                     }
                     id={`${config.checkboxes[index].label}`}
                   />
-                  <label htmlFor={`${config?.checkboxes[index].label}`}></label>
+                  <label htmlFor={`${config.checkboxes[index].label}`}></label>
                 </div>
               )
             )}

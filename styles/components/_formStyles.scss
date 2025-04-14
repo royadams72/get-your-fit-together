@@ -37,11 +37,18 @@
 .radioDiv,
 .checkboxDiv {
   margin-bottom: 4rem;
+
   &Hint {
-    @include typography("md", var(--white), var(--main-body-font), normal);
+    @include typography(
+      "md",
+      var(--tertiary-colour),
+      var(--main-body-font),
+      normal
+    );
     margin-left: 2rem;
     margin-bottom: 1rem;
   }
+
   &Error {
     @include typography("md", var(--white), var(--main-body-font), normal);
     background-color: var(--error);

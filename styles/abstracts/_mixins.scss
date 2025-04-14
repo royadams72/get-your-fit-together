@@ -1,14 +1,14 @@
 @use "sass:map";
 @use "./maps" as *;
 
-@mixin breakpoint($name, $condition: min) {
+@mixin breakpoint($name, $condition: "min") {
   @if map.has-key($breakpoints, $name) {
     $size: map.get($breakpoints, $name);
-    @if $condition == min {
+    @if $condition == "min" {
       @media (min-width: $size) {
         @content;
       }
-    } @else if $condition == max {
+    } @else if $condition == "max" {
       @media (max-width: $size) {
         @content;
       }
