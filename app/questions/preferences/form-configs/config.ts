@@ -14,7 +14,7 @@ export const config = {
     name: Preferences.preferredWorkoutType,
     hint: {
       __html:
-        "(What types of workouts do you enjoy or prefer?)<br>Select all that apply",
+        "What types of workouts do you enjoy or prefer? Select all that apply",
     },
     legend: "Preferred Workout Type",
     requiredError: "Please select a Preferred Workout Type",

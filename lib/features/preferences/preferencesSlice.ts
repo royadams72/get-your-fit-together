@@ -35,11 +35,11 @@ export const preferencesSlice = createAppSlice({
 
         if (inState) {
           state.preferences[name] = state.preferences[name].replace(
-            new RegExp(`(^|, )${value}(, |$)`, "g"),
+            new RegExp(`(^|| )${value}(| |$)`, "g"),
             ""
           );
         } else {
-          const val = state.preferences[name] === "" ? value : `, ${value}`;
+          const val = state.preferences[name] === "" ? value : `|${value}`;
           state.preferences[name] += val;
         }
       } else {

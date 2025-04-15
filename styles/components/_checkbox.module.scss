@@ -1,0 +1,112 @@
+@use "../abstracts/mixins" as *;
+@use "./formStyles" as *;
+
+.checkboxDiv {
+  --template-columns: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--template-columns), minmax(100px, 1fr));
+  margin-bottom: 2rem;
+
+  gap: 0.5rem;
+
+  &Contianer {
+    fieldset {
+      border: none;
+      padding: 0;
+      margin-bottom: 2rem;
+    }
+    legend {
+      @include typography("xl", var(--white), var(--main-body-font), normal);
+    }
+  }
+
+  @include breakpoint("md") {
+    // --template-columns set in CheckBoxGroupComponent
+    grid-template-columns: repeat(var(--template-columns), minmax(120px, 1fr));
+  }
+
+  div {
+    display: grid;
+    grid-template-rows: 1fr 0px 1fr;
+    padding: 2rem 2rem 1.5rem 3rem;
+    background-color: var(--tertiary-colour);
+
+    @include breakpoint("md") {
+      grid-template-columns: 1fr 0px 1fr;
+      grid-template-rows: auto auto;
+    }
+
+    &.bottom-left {
+      border-bottom-left-radius: var(--border-radius-medium);
+    }
+
+    &.right-top {
+      border-top-right-radius: var(--border-radius-medium);
+    }
+
+    &:first-child {
+      border-top-left-radius: var(--border-radius-medium);
+    }
+
+    &:last-child {
+      border-bottom-right-radius: var(--border-radius-medium);
+    }
+  }
+}
+
+.checkboxDiv input[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.checkboxDiv label {
+  --size: 5rem;
+
+  cursor: pointer;
+  width: var(--size);
+  height: calc(var(--size) / 2);
+  background: var(--primary-colour);
+  display: block;
+  border-radius: 100px;
+  position: relative;
+  margin-top: 1rem;
+
+  @include breakpoint("md") {
+    margin-top: 0;
+  }
+}
+
+.checkboxDiv span {
+  @include typography(
+    "md",
+    var(--primary-colour),
+    var(--main-body-font),
+    normal
+  );
+}
+
+.checkboxDiv label:after {
+  content: "";
+  position: absolute;
+  top: 6%;
+  left: 2.5%;
+  width: calc(50% - 5%);
+  height: calc(100% - 11%);
+  background: var(--white);
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+.checkboxDiv input:checked + label {
+  background: var(--senary-colour);
+}
+
+.checkboxDiv input:checked + label:after {
+  left: calc(100% - 2.5%);
+  transform: translateX(-100%);
+}
+
+.checkboxDiv label:active:after {
+  width: 55%;
+}

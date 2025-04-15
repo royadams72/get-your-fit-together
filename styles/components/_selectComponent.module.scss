@@ -1,0 +1,59 @@
+@use "./formStyles" as *;
+
+$afterHeight: 2rem;
+$afterWidth: 1.4rem;
+
+.selectDiv {
+  position: relative;
+  width: 100%;
+
+  label {
+    position: absolute;
+    left: -9999px;
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  &Toggle {
+    @extend %radio;
+    color: var(--primary-colour);
+    background-color: var(--warning);
+    padding: 0.3rem 1.5rem;
+    &:focus {
+      outline: none;
+      background-color: var(--senary-colour);
+      color: var(--white);
+    }
+  }
+}
+
+.selectDiv:after {
+  content: "";
+  background-image: url("/downArrow.png");
+  background-size: $afterHeight $afterWidth;
+  background-repeat: no-repeat;
+  width: $afterHeight;
+  height: $afterWidth;
+  top: 2rem;
+  right: 1.7rem;
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectDiv select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 5rem;
+  padding: 0px 4rem 0 2rem;
+  word-break: break-all;
+  &::-ms-expand {
+    display: none;
+  }
+}

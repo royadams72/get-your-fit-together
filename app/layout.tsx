@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.scss";
+import "./_globals.scss";
 import StoreProvider from "./StoreProvider";
 import { LoaderProvider } from "@/context/Loader/LoaderProvider";
 
@@ -16,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LoaderProvider>
-          <StoreProvider>{children} </StoreProvider>
-        </LoaderProvider>
+        <main>
+          <LoaderProvider>
+            <StoreProvider>{children} </StoreProvider>
+          </LoaderProvider>
+        </main>
       </body>
     </html>
   );

@@ -1,0 +1,64 @@
+@use "../abstracts/mixins" as *;
+@use "../fonts/fonts" as *;
+
+h1,
+%h1 {
+  @include typography(
+    "title-sm",
+    var(--primary-font-colour),
+    ("BebasNeue", sans-serif),
+    bold
+  );
+  @include breakpoint("sm") {
+    @include font-size("title-lrg");
+  }
+}
+
+h2,
+%h2 {
+  @include typography(
+    "xxl",
+    var(--quaternary-colour),
+    ("BebasNeue", sans-serif),
+    bold
+  );
+
+  @include breakpoint("md") {
+    @include font-size("xxxl");
+  }
+}
+
+p,
+%p {
+  margin-top: 1rem;
+  @include typography(
+    "sm",
+    var(--primary-font-colour),
+    var(--main-body-font),
+    normal
+  );
+
+  @include breakpoint("md") {
+    @include font-size("md");
+  }
+}
+
+li {
+  margin-bottom: 0.5rem;
+
+  @include typography(
+    "sm",
+    var(--primary-font-colour),
+    var(--main-body-font),
+    normal
+  );
+
+  @include breakpoint("md") {
+    margin-bottom: 0.9rem;
+    @include font-size("md");
+  }
+}
+
+a {
+  color: inherit;
+}

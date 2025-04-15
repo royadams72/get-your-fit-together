@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -6,6 +7,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 import { Select } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
+import styles from "@/styles/components/_selectComponent.module.scss";
 
 const SelectComponent = ({
   className,
@@ -43,14 +45,12 @@ const SelectComponent = ({
       dispatch(dispatchEvent({ name, value }));
     }
 
-    // Add any onChange event handlers from config
     config?.eventHandlers?.onChange?.(e);
   };
 
   return (
-    <div className={className}>
+    <div className={`${className || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
-      {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
 
       <select
         id={config.name}
@@ -65,16 +65,26 @@ const SelectComponent = ({
           </option>
         ))}
       </select>
+      {config?.hint && (
+        <div
+          className={styles.selectDivHint}
+          dangerouslySetInnerHTML={config.hint}
+        />
+      )}
       {errors[config.name] && (
-        <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
+        <p className={styles.selectDivError}>
+          {errors[config.name]?.message as string}
+        </p>
       )}
       <ul>
         {config.toggleOptions &&
           config.toggleOptions.map((option: any) => {
             return (
               <li
+                className={styles.selectDivToggle}
                 key={option.value}
                 onClick={() => setOptionList(option.toggleOption)}
+                tabIndex={1}
               >
                 {option.label}
               </li>

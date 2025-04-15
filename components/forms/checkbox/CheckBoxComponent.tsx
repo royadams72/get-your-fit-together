@@ -3,7 +3,6 @@ import { useFormContext } from "react-hook-form";
 import { CheckBox } from "@/types/interfaces/form";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit/";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import { useState } from "react";
 
 const CheckBoxComponent = ({
   className,

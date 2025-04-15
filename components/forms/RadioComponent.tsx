@@ -5,6 +5,8 @@ import { useFormContext } from "react-hook-form";
 import { Radio } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
+import styles from "@/styles/components/_radioComponent.module.scss";
+
 const RadioComponent = ({
   className,
   config,
@@ -44,32 +46,34 @@ const RadioComponent = ({
   };
 
   return (
-    <fieldset className={className}>
-      <legend>{config.legend}</legend>
-      {config.options.map((option, i) => {
-        return (
-          <div key={i}>
-            <input
-              {...register(config.name, config.validation)}
-              {...config.eventHandlers}
-              onChange={handleChange}
-              type="radio"
-              id={option.id}
-              name={config.name}
-              value={option.value}
-              defaultChecked={defaultValue === option.value}
-            />
-            <label htmlFor={option.id}>{option.label}</label>
-            {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
-            {errors[config.name] && (
-              <p style={{ color: "red" }}>
-                {errors[config.name]?.message as string}
-              </p>
-            )}
-          </div>
-        );
-      })}
-    </fieldset>
+    <div className={styles.radioDiv}>
+      <fieldset className={`${className || null}`}>
+        <legend>{config.legend}</legend>
+        {config.options.map((option, i) => {
+          return (
+            <div key={i} className={styles.radioOption}>
+              <input
+                {...register(config.name, config.validation)}
+                {...config.eventHandlers}
+                onChange={handleChange}
+                type="radio"
+                id={option.id}
+                name={config.name}
+                value={option.value}
+                defaultChecked={defaultValue === option.value}
+              />
+              <label htmlFor={option.id}>{option.label}</label>
+              {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
+            </div>
+          );
+        })}
+      </fieldset>
+      {errors[config.name] && (
+        <p className={styles.radioDivError}>
+          {errors[config.name]?.message as string}
+        </p>
+      )}
+    </div>
   );
 };
 
