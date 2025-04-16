@@ -2,11 +2,10 @@
 
 .accordionPanel {
   --span-display: block;
-  --arrow-transform: 0deg;
+  --arrow-transform: 180deg;
 
   &IsActive,
   &NotActive {
-    --arrow-transform: 90deg;
     background-color: var(--primary-font-colour);
     border-bottom-left-radius: var(--border-radius-medium);
     border-bottom-right-radius: var(--border-radius-medium);
@@ -27,7 +26,6 @@
   }
 
   &NotActive {
-    --arrow-transform: 0deg;
     --span-display: none;
     opacity: 0;
     transform: scaleY(0);
@@ -53,14 +51,18 @@
       width: 100%;
     }
 
-    &Arrow {
+    &Arrow,
+    &ArrowActive {
       display: block;
       width: 2rem;
       height: 2rem;
       background: url("/solid-arrow.svg") no-repeat center center;
       background-size: 70%;
       transform: rotate(var(--arrow-transform));
-      // transition: all 0.3s ease;
+      transition: all 0.3s ease;
+    }
+    &ArrowActive {
+      --arrow-transform: 0deg;
     }
   }
 }

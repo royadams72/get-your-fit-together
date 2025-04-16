@@ -129,32 +129,34 @@ const YourFit = () => {
 
   return (
     <div>
-      <AccordionPanel
-        title="Overview"
-        isActive={activeIndex === 0}
-        onShow={() => setActiveIndex(0)}
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-        suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-        lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-        accumsan lacus vel facilisis
-      </AccordionPanel>
-      <AccordionPanel
-        title="Second One"
-        isActive={activeIndex === 1}
-        onShow={() => setActiveIndex(1)}
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-        suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-        lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
-        accumsan lacus vel facilisis
-      </AccordionPanel>
+      <section>
+        <AccordionPanel
+          title="Overview"
+          isActive={activeIndex === 0}
+          onShow={() => setActiveIndex(0)}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+          suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
+          lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra
+          maecenas accumsan lacus vel facilisis
+        </AccordionPanel>
+        <AccordionPanel
+          title="Second One"
+          isActive={activeIndex === 1}
+          onShow={() => setActiveIndex(1)}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
+          suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
+          lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra
+          maecenas accumsan lacus vel facilisis
+        </AccordionPanel>
+      </section>
       {/* {userFitnessPlan && (
         <div>
           <h1>Your Custom Fit</h1>

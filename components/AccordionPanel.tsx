@@ -18,7 +18,13 @@ const AccordionPanel = ({
     <section className={styles.accordionPanel}>
       <div className={styles.accordionPanelTitle}>
         <h3 onClick={onShow}>{title}</h3>
-        <span className={styles.accordionPanelTitleArrow}></span>
+        <span
+          className={`${
+            isActive
+              ? styles.accordionPanelTitleArrow
+              : styles.accordionPanelTitleArrowActive
+          }`}
+        ></span>
       </div>
       <p
         className={`${
