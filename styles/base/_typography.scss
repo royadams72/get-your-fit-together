@@ -28,6 +28,19 @@ h2,
   }
 }
 
+h3,
+%h3 {
+  @include typography(
+    "xl",
+    var(--quaternary-colour),
+    ("BebasNeue", sans-serif),
+    bold
+  );
+
+  @include breakpoint("md") {
+    @include font-size("xxl");
+  }
+}
 p,
 %p {
   margin-top: 1rem;

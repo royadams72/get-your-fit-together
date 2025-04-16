@@ -7,8 +7,8 @@ import {
 } from "@/lib/features/preferences/preferencesSlice";
 import { config } from "../form-configs/config";
 
-import CheckBoxGroupComponent from "@/components/forms/checkbox/checkbox-group/CheckBoxGroupComponent";
-import SelectComponent from "@/components/forms/SelectComponent";
+import CheckBoxGroupComponent from "@/components/form/checkbox/checkbox-group/CheckBoxGroupComponent";
+import SelectComponent from "@/components/form/SelectComponent";
 
 const PreferencesQuestions = () => {
   const preferences = useAppSelector(getPreferencesState);

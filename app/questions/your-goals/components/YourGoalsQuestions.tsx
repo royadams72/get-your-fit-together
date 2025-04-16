@@ -7,7 +7,7 @@ import {
 
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 import { config } from "../form-configs/config";
-import SelectComponent from "@/components/forms/SelectComponent";
+import SelectComponent from "@/components/form/SelectComponent";
 
 const YourGoals = () => {
   const goals = useAppSelector(getYourGoalsState);

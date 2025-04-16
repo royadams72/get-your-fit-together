@@ -9,8 +9,8 @@ import {
 
 import { config } from "@/app/questions/about-you/form-configs/config";
 
-import SelectComponent from "@/components/forms/SelectComponent";
-import RadioComponent from "@/components/forms/RadioComponent";
+import SelectComponent from "@/components/form/SelectComponent";
+import RadioComponent from "@/components/form/RadioComponent";
 
 const AboutYouQuestions = () => {
   const aboutYou = useAppSelector(getAboutYouState);

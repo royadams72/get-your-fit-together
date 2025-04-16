@@ -20,7 +20,7 @@ import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
-import UserForm from "@/components/forms/UserForm";
+import UserForm from "@/components/form/UserForm";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
