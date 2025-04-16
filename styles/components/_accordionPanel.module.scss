@@ -1,0 +1,68 @@
+@use "../abstracts/mixins" as *;
+
+.accordionPanel {
+  --span-display: block;
+  --arrow-transform: 180deg;
+
+  &IsActive,
+  &NotActive {
+    background-color: var(--primary-font-colour);
+    border-bottom-left-radius: var(--border-radius-medium);
+    border-bottom-right-radius: var(--border-radius-medium);
+    color: var(--primary-colour);
+    max-height: 1000rem;
+    margin-bottom: 4rem;
+    margin-top: -40px;
+    opacity: 1;
+    padding: 4rem 2rem 2rem;
+    transform: scaleY(1);
+    visibility: visible;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.3s ease-out,
+      opacity 0.4s ease-out;
+    span {
+      display: var(--span-display);
+    }
+  }
+
+  &NotActive {
+    --span-display: none;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: all 0.4s ease;
+    max-height: 0;
+    padding: 0;
+  }
+
+  &Title {
+    border-radius: var(--border-radius-small);
+    background-color: var(--btn-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem 2rem;
+    position: relative;
+    z-index: 10;
+
+    h3 {
+      color: var(--primary-font-colour);
+      width: 100%;
+    }
+
+    &Arrow,
+    &ArrowActive {
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      background: url("/solid-arrow.svg") no-repeat center center;
+      background-size: 70%;
+      transform: rotate(var(--arrow-transform));
+      transition: all 0.3s ease;
+    }
+    &ArrowActive {
+      --arrow-transform: 0deg;
+    }
+  }
+}

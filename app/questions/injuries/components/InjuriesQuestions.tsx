@@ -7,7 +7,7 @@ import {
 
 import { config } from "../form-configs/config";
 
-import SelectComponent from "@/components/forms/SelectComponent";
+import SelectComponent from "@/components/form/SelectComponent";
 
 const InjuriesQuestions = () => {
   const injuries = useAppSelector(getInjuriesState);
