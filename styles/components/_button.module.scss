@@ -14,6 +14,7 @@
   transition: all 0.2s ease;
   cursor: pointer;
   text-decoration: none;
+  text-align: center;
 
   &:hover {
     background-color: var(--hover-bgcolour);
@@ -26,6 +27,13 @@
     var(--main-body-font),
     normal
   );
+
+  &.buttonAux {
+    --inactive-bgcolour: var(--primary-colour);
+    --inactive-fontcolour: var(--tertiary-colour);
+    --hover-bgcolour: var(--tertiary-colour);
+    --hover-fontcolour: var(--primary-colour);
+  }
 
   &.buttonInverted {
     --inactive-bgcolour: var(--quinary-colour);

@@ -9,6 +9,7 @@ export interface ButtonProps {
   href?: string;
   type?: string;
   inverted?: boolean;
+  aux?: boolean;
   onClick?: () => void;
 }
 const Button = ({
@@ -16,14 +17,15 @@ const Button = ({
   disabled,
   href,
   inverted,
+  aux,
   onClick,
 }: ButtonProps) => {
+  const buttonStyles = `${styles.button} ${inverted && styles.buttonInverted} ${
+    aux && styles.buttonAux
+  }`;
   if (href)
     return (
-      <Link
-        href={href}
-        className={`${styles.button} ${inverted && styles.buttonInverted}`}
-      >
+      <Link href={href} className={`${styles.button} ${buttonStyles}`}>
         {children}
       </Link>
     );
@@ -33,7 +35,7 @@ const Button = ({
       <button
         onClick={onClick}
         disabled={disabled}
-        className={`${styles.button} ${inverted && styles.buttonInverted}`}
+        className={`${styles.button} ${buttonStyles}`}
       >
         {children}
       </button>

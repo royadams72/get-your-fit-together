@@ -6,7 +6,7 @@ const TipsComponent: React.FC<{ tips: TipsObject[] }> = ({ tips }) => {
   return (
     <div className={styles.schedule}>
       <ul>
-        {tips.map((tip) => (
+        {tips?.map((tip) => (
           <li key={tip.tip}>
             <h4>{tip.tip}</h4>
             <p>{tip.action}</p>
