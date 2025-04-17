@@ -1,0 +1,36 @@
+@use "../abstracts/_mixins" as *;
+
+.button {
+  --inactive-bgcolour: var(--quaternary-colour);
+  --inactive-fontcolour: var(--primary-colour);
+  --hover-bgcolour: var(--quinary-colour);
+  --hover-fontcolour: var(--white);
+
+  background-color: var(--inactive-bgcolour);
+  border-radius: var(--border-radius-medium);
+  border: 0.1rem solid var(--senary-colour);
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--hover-bgcolour);
+    color: var(--hover-fontcolour);
+  }
+
+  @include typography(
+    "lg",
+    var(--inactive-fontcolour),
+    var(--main-body-font),
+    normal
+  );
+
+  &.buttonInverted {
+    --inactive-bgcolour: var(--quinary-colour);
+    --inactive-fontcolour: var(--white);
+    --hover-bgcolour: var(--quaternary-colour);
+    --hover-fontcolour: var(--primary-colour);
+  }
+}

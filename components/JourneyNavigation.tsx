@@ -10,6 +10,7 @@ import { useAppSelector } from "@/lib/hooks/storeHooks";
 import { getRoutes } from "@/lib/features/journey/journeySlice";
 
 import { useFormContext } from "@/context/FormProvider";
+import Button from "@/components/Button";
 
 const JourneyNavigation = ({
   isValid,
@@ -26,14 +27,20 @@ const JourneyNavigation = ({
 
   return (
     <nav>
-      {nextRoute && (
-        <button type="button" onClick={handleSubmit}>
-          Go To{" "}
-          {nextRoute === PATHS.YOUR_FIT ? nextRoute : nextRoute.split("/")[2]}
-        </button>
-      )}
       {prevRoute && (
-        <Link href={prevRoute}>Go To {prevRoute.split("/")[2]}</Link>
+        <Button href={prevRoute} disabled={false}>
+          Go To {prevRoute.split("/")[2]}
+        </Button>
+      )}
+      {nextRoute && (
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!formState.isValid}
+        >
+          Go To
+          {nextRoute === PATHS.YOUR_FIT ? nextRoute : nextRoute.split("/")[2]}
+        </Button>
       )}
     </nav>
   );
