@@ -20,8 +20,11 @@
 }
 
 .selectDiv select,
-.radioDiv fieldset {
+.radioDiv fieldset,
+.textInputDiv input[type="text"],
+.textInputDiv input[type="password"] {
   @include typography("lg", var(--input-colour), var(--main-body-font), normal);
+  box-sizing: border-box;
   border-radius: var(--border-radius-large);
   background-color: var(--white);
   border: 1px solid var(--quaternary-colour);
@@ -34,8 +37,17 @@
 }
 
 .selectDiv,
+.textInputDiv {
+  label {
+    position: absolute;
+    left: -9999px;
+  }
+}
+
+.selectDiv,
 .radioDiv,
-.checkboxDiv {
+.checkboxDiv,
+.textInputDiv {
   margin-bottom: 4rem;
 
   &Hint {

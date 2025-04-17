@@ -1,20 +1,19 @@
 "use client";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useFormContext } from "react-hook-form";
 import { Input } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import styles from "@/styles/components/_commonStyles.module.scss";
 
 const InputComponent = ({
   className,
   config,
   dispatchEvent,
-  customMessage,
   inputValue,
 }: {
   config: Input;
   className?: string;
   dispatchEvent?: ActionCreatorWithPayload<any, string>;
-  customMessage?: string;
   inputValue?: ({ name, value }: { name: string; value: string }) => void;
 }) => {
   const {
@@ -44,22 +43,31 @@ const InputComponent = ({
     config?.eventHandlers?.onChange?.(e);
   };
   return (
-    <div className={className}>
+    <div
+      className={`${styles.textInputDiv} ${className ? " " + className : ""}`}
+    >
       <label htmlFor={config.name}>{config.label}</label>
       <input
         type={config.isPassword ? "password" : "text"}
         id={config.name}
+        placeholder={config.placeHolder}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
         onChange={(e) => {
           handleChange(e);
         }}
       />
-      {config.hint && <div dangerouslySetInnerHTML={config.hint} />}
-      {errors[config.name] && (
-        <p style={{ color: "red" }}>{errors[config.name]?.message as string}</p>
+      {config.hint && (
+        <div
+          className={styles.textInputDivHint}
+          dangerouslySetInnerHTML={config.hint}
+        />
       )}
-      {customMessage && <p style={{ color: "red" }}>{customMessage}</p>}
+      {errors[config.name] && (
+        <p className={styles.textInputDivError}>
+          {errors[config.name]?.message as string}
+        </p>
+      )}
     </div>
   );
 };

@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
     if (plan) {
       return NextResponse.json(
-        { error: "Plan already exists with that user name" },
+        { error: "A fitness plan already exists with that user name" },
         { status: 409 }
       );
     } else {
