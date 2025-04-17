@@ -1,0 +1,10 @@
+@use "./commonStyles.module" as *;
+
+.userFormContainer {
+  & div:first-child > div:first-child {
+    margin-bottom: 0;
+  }
+  .textInputDivError {
+    margin-bottom: 4rem;
+  }
+}

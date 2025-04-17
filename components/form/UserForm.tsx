@@ -1,7 +1,9 @@
 import React from "react";
-import InputComponent from "./InputComponent";
 import { FormValue } from "@/types/interfaces/form";
 import { User } from "@/types/enums/user.enum";
+import styles from "@/styles/components/_userForm.module.scss";
+
+import InputComponent from "./InputComponent";
 
 const UserForm = ({
   config,
@@ -17,20 +19,25 @@ const UserForm = ({
   const userArr = [User.userName, User.userPassword];
 
   return (
-    <>
+    <div className={styles.userFormContainer}>
       {userArr.map((elName) => {
         const isUserName = elName === User.userName;
 
         const inputProps: any = {
           config: config[elName],
           inputValue: isYourFitPage ? inputValue : undefined,
-          customMessage:
-            isYourFitPage && isUserName ? customMessage : undefined,
         };
 
-        return <InputComponent key={elName} {...inputProps} />;
+        return (
+          <div key={elName}>
+            <InputComponent {...inputProps} />
+            {isYourFitPage && isUserName && customMessage ? (
+              <div className={styles.textInputDivError}>{customMessage}</div>
+            ) : null}
+          </div>
+        );
       })}
-    </>
+    </div>
   );
 };
 

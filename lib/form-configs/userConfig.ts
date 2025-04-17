@@ -5,6 +5,7 @@ export const config = {
     name: "userPassword",
     isPassword: true,
     label: "Password:",
+    placeHolder: "Enter your password",
     validation: {
       required: { value: true, message: "Please enter your password" },
     },
@@ -12,11 +13,13 @@ export const config = {
   userName: <Input>{
     name: "userName",
     label: "User name",
+    placeHolder: "Enter your user name",
+    hint: { __html: "User name must be at least 6 characters" },
     validation: {
       required: { value: true, message: "Please enter your name" },
       minLength: {
         value: 6,
-        message: "Full name must be at least 6 characters",
+        message: "User name must be at least 6 characters",
       },
     },
   },
