@@ -20,7 +20,7 @@ import { UiData } from "@/types/enums/uiData.enum";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import AccordionPanel from "@/components/AccordionPanel";
+import Accordion from "./your-fit-response/Accordion";
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,6 @@ const YourFit = () => {
   const { reset } = methods;
   const { setLoading } = useLoader();
 
-  const [activeIndex, setActiveIndex] = useState(0);
   const [checkUserMessage, setCheckUserMessage] = useState("");
   const [userForm, setUserForm] = useState<FormValue>();
 
@@ -95,75 +94,48 @@ const YourFit = () => {
     })();
   }, [userForm, getUiState.isEditing]);
 
-  // useEffect(() => {
-  //   if (!getUiState.isEditing) return;
-  //   (async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await fetch(`${API.GET_PLAN}`, {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(savedState),
-  //       });
-  //       const responseData: FitPlan = await response.json();
+  useEffect(() => {
+    if (!getUiState.isEditing) return;
+    (async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${API.GET_PLAN}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: FitPlan = await response.json();
 
-  //       if (!responseData) {
-  //         console.error("Invalid API response:", responseData);
-  //         return;
-  //       }
+        if (!responseData) {
+          console.error("Invalid API response:", responseData);
+          return;
+        }
 
-  //       dispatch(
-  //         setUser({
-  //           name: User.userFitnessPlan,
-  //           value: responseData,
-  //         })
-  //       );
-  //       dispatch(setUiData({ name: UiData.isEditing, value: false }));
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   })();
-  // }, []);
+        dispatch(
+          setUser({
+            name: User.userFitnessPlan,
+            value: responseData,
+          })
+        );
+        dispatch(setUiData({ name: UiData.isEditing, value: false }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   return (
     <div>
-      <section>
-        <AccordionPanel
-          title="Overview"
-          isActive={activeIndex === 0}
-          onShow={() => setActiveIndex(0)}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-          suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-          lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis
-        </AccordionPanel>
-        <AccordionPanel
-          title="Second One"
-          isActive={activeIndex === 1}
-          onShow={() => setActiveIndex(1)}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-          suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-          lacus vel facilisis.Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra
-          maecenas accumsan lacus vel facilisis
-        </AccordionPanel>
-      </section>
-      {/* {userFitnessPlan && (
-        <div>
-          <h1>Your Custom Fit</h1>
-          {userFitnessPlan as any}
-        </div>
-      )} */}
-      {/* {!getUiState.isSignedUp && (
+      {userFitnessPlan && (
+        <>
+          <h2>Your Custom Fit</h2>
+          <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+        </>
+      )}
+
+      {!getUiState.isSignedUp && (
         <section>
           <h3> Create a username and password to save your plan:</h3>
           <FormProvider onSubmit={onSubmit}>
@@ -176,7 +148,7 @@ const YourFit = () => {
             <button type="submit">Save your plan</button>
           </FormProvider>
         </section>
-      )} */}
+      )}
       {getUiState.isSignedUp && !userFitnessPlan && (
         <div>
           <h3>Your plan has been saved</h3>

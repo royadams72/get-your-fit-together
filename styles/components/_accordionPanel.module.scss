@@ -1,7 +1,7 @@
 @use "../abstracts/mixins" as *;
 
 .accordionPanel {
-  --span-display: block;
+  --span-display: inline;
   --arrow-transform: 180deg;
 
   &IsActive,
@@ -9,7 +9,6 @@
     background-color: var(--primary-font-colour);
     border-bottom-left-radius: var(--border-radius-medium);
     border-bottom-right-radius: var(--border-radius-medium);
-    color: var(--primary-colour);
     max-height: 1000rem;
     margin-bottom: 4rem;
     margin-top: -40px;
@@ -18,10 +17,12 @@
     transform: scaleY(1);
     visibility: visible;
     overflow: hidden;
-    transition: max-height 0.4s ease-out, padding 0.3s ease-out,
-      opacity 0.4s ease-out;
+    transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.4s ease;
     span {
       display: var(--span-display);
+    }
+    p {
+      color: var(--primary-colour);
     }
   }
 
