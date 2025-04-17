@@ -21,6 +21,7 @@ import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "./your-fit-response/Accordion";
+import Button from "@/components/Button";
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
@@ -145,7 +146,9 @@ const YourFit = () => {
               inputValue={inputVal}
               isYourFitPage={true}
             ></UserForm>
-            <button type="submit">Save your plan</button>
+            <Button disabled={false} type="submit">
+              Save your plan
+            </Button>
           </FormProvider>
         </section>
       )}

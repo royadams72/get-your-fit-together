@@ -7,7 +7,7 @@ export interface ButtonProps {
   children: ReactNode;
   disabled: boolean;
   href?: string;
-  type?: string;
+  type?: any;
   inverted?: boolean;
   aux?: boolean;
   onClick?: () => void;
@@ -16,6 +16,7 @@ const Button = ({
   children,
   disabled,
   href,
+  type = "button",
   inverted,
   aux,
   onClick,
@@ -23,23 +24,25 @@ const Button = ({
   const buttonStyles = `${styles.button} ${inverted && styles.buttonInverted} ${
     aux && styles.buttonAux
   }`;
-  if (href)
+
+  if (href) {
     return (
-      <Link href={href} className={`${styles.button} ${buttonStyles}`}>
+      <Link href={href} className={buttonStyles}>
         {children}
       </Link>
     );
-
-  if (onClick)
+  } else {
     return (
       <button
         onClick={onClick}
         disabled={disabled}
-        className={`${styles.button} ${buttonStyles}`}
+        type={type}
+        className={buttonStyles}
       >
         {children}
       </button>
     );
+  }
 };
 
 export default Button;
