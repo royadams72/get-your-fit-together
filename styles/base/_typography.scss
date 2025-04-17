@@ -1,8 +1,7 @@
 @use "../abstracts/mixins" as *;
 @use "../fonts/fonts" as *;
 
-h1,
-%h1 {
+h1 {
   @include typography(
     "title-sm",
     var(--primary-font-colour),
@@ -14,8 +13,7 @@ h1,
   }
 }
 
-h2,
-%h2 {
+h2 {
   @include typography(
     "xxl",
     var(--quaternary-colour),
@@ -28,8 +26,7 @@ h2,
   }
 }
 
-h3,
-%h3 {
+h3 {
   @include typography(
     "xl",
     var(--quaternary-colour),
@@ -41,8 +38,20 @@ h3,
     @include font-size("xxl");
   }
 }
-p,
-%p {
+h4 {
+  @include typography(
+    "lg",
+    var(--quaternary-colour),
+    ("BebasNeue", sans-serif),
+    bold
+  );
+
+  @include breakpoint("md") {
+    @include font-size("xl");
+  }
+}
+
+p {
   margin-top: 1rem;
   @include typography(
     "sm",
@@ -60,16 +69,11 @@ li {
   margin-bottom: 0.5rem;
 
   @include typography(
-    "sm",
+    "md",
     var(--primary-font-colour),
     var(--main-body-font),
     normal
   );
-
-  @include breakpoint("md") {
-    margin-bottom: 0.9rem;
-    @include font-size("md");
-  }
 }
 
 a {

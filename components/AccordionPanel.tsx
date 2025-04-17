@@ -26,15 +26,15 @@ const AccordionPanel = ({
           }`}
         ></span>
       </div>
-      <p
+      <section
         className={`${
           isActive
             ? styles.accordionPanelIsActive
             : styles.accordionPanelNotActive
         }`}
       >
-        <span>{children}</span>
-      </p>
+        {children}
+      </section>
     </section>
   );
 };
