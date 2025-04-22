@@ -40,29 +40,22 @@ h3 {
 }
 h4 {
   @include typography(
-    "lg",
+    "xl",
     var(--quaternary-colour),
     ("BebasNeue", sans-serif),
     bold
   );
-
-  @include breakpoint("md") {
-    @include font-size("xl");
-  }
 }
 
 p {
-  margin-top: 1rem;
+  margin: 0 0 1.2rem;
+
   @include typography(
-    "sm",
+    "md",
     var(--primary-font-colour),
     var(--main-body-font),
     normal
   );
-
-  @include breakpoint("md") {
-    @include font-size("md");
-  }
 }
 
 li {

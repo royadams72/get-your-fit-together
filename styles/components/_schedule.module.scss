@@ -1,3 +1,5 @@
+@use "../abstracts/mixins" as *;
+
 .schedule {
   h3,
   h4 {
@@ -23,6 +25,15 @@
       :first-child {
         margin-top: 0.5rem;
       }
+    }
+  }
+
+  a {
+    margin: 0.5rem 0;
+    width: 60%;
+
+    @include breakpoint("md") {
+      width: 40%;
     }
   }
 }

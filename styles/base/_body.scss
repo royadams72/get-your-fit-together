@@ -1,3 +1,5 @@
+@use "../abstracts/mixins" as *;
+
 html {
   font-size: 62.5%; // This makes 1rem = 10px (since 62.5% of 16px = 10px)
 }
@@ -5,4 +7,29 @@ html {
 body {
   font-size: 1.6rem; // This is now 16px (1.6 * 10px)
   background-color: var(--tertiary-colour);
+}
+
+main {
+  margin: 0 auto;
+  padding: 2rem 2rem 0;
+  max-width: 800px;
+  background-color: var(--primary-colour);
+  border-radius: var(--border-radius-medium);
+  border: 5px solid var(--secondary-colour);
+  box-sizing: border-box;
+
+  .coach-image {
+    background: no-repeat center bottom / 100% url("/fitness_guy.png");
+    margin: 0 auto;
+    width: 100%;
+    height: 50vh;
+
+    @include breakpoint("sm") {
+      height: 70vh;
+    }
+
+    @include breakpoint("md") {
+      height: 80vh;
+    }
+  }
 }

@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Link from "next/link";
-import {} from "react-hook-form";
 
 import { PATHS } from "@/routes.config";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes } from "@/lib/features/journey/journeySlice";
 
+import styles from "@/styles/components/_journeyNav.module.scss";
+
 import { useFormContext } from "@/context/FormProvider";
+import Button from "@/components/Button";
 
 const JourneyNavigation = ({
   isValid,
@@ -25,15 +26,20 @@ const JourneyNavigation = ({
   }, [formState.isValid, isValid]);
 
   return (
-    <nav>
-      {nextRoute && (
-        <button type="button" onClick={handleSubmit}>
-          Go To{" "}
-          {nextRoute === PATHS.YOUR_FIT ? nextRoute : nextRoute.split("/")[2]}
-        </button>
-      )}
+    <nav
+      className={`${styles.journeyNav}  ${
+        !prevRoute && styles.journeyNavSingle
+      }`}
+    >
       {prevRoute && (
-        <Link href={prevRoute}>Go To {prevRoute.split("/")[2]}</Link>
+        <Button href={prevRoute} aux={true}>
+          Back
+        </Button>
+      )}
+      {nextRoute && (
+        <Button type="button" onClick={handleSubmit}>
+          Next
+        </Button>
       )}
     </nav>
   );

@@ -1,0 +1,14 @@
+.journeyNav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15rem;
+}
+
+.journeyNavSingle {
+  grid-template-columns: 1fr;
+  justify-items: end;
+  button,
+  a {
+    width: 40%;
+  }
+}

@@ -1,5 +1,9 @@
 @use "../abstracts/mixins" as *;
 
+.accordion {
+  margin-bottom: 8rem;
+}
+
 .accordionPanel {
   --span-display: inline;
   --arrow-transform: 180deg;

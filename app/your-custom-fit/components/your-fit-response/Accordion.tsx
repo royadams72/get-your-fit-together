@@ -6,6 +6,8 @@ import {
   TipsObject,
 } from "@/types/interfaces/fitness-plan";
 
+import styles from "@/styles/components/_accordionPanel.module.scss";
+
 import ScheduleComponent from "./ScheduleComponent";
 import TipsComponent from "./TipsComponent";
 import AccordionPanel from "@/components/AccordionPanel";
@@ -13,7 +15,7 @@ import AccordionPanel from "@/components/AccordionPanel";
 const Accordion: React.FC<{ plan: FitPlan }> = ({ plan }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
-    <section>
+    <section className={styles.accordion}>
       <AccordionPanel
         title={plan?.overview?.title as string}
         isActive={activeIndex === 0}
