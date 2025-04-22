@@ -25,4 +25,13 @@
       }
     }
   }
+
+  a {
+    margin: 0.5rem 0;
+    width: 60%;
+
+    @include breakpoint("md") {
+      width: 40%;
+    }
+  }
 }

@@ -32,12 +32,12 @@ const JourneyNavigation = ({
       }`}
     >
       {prevRoute && (
-        <Button href={prevRoute} disabled={false} aux={true}>
+        <Button href={prevRoute} aux={true}>
           Back
         </Button>
       )}
       {nextRoute && (
-        <Button type="button" onClick={handleSubmit} disabled={false}>
+        <Button type="button" onClick={handleSubmit}>
           Next
         </Button>
       )}

@@ -23,17 +23,18 @@
 .radioDiv fieldset,
 .textInputDiv input[type="text"],
 .textInputDiv input[type="password"] {
-  @include typography("lg", var(--input-colour), var(--main-body-font), normal);
-  box-sizing: border-box;
   border-radius: var(--border-radius-large);
   background-color: var(--white);
   border: 1px solid var(--quaternary-colour);
+  box-sizing: border-box;
   padding: 0 2.4rem;
   margin: 0.5rem 0 1rem;
   width: 100%;
   height: 5rem;
   display: block;
   word-break: normal;
+
+  @include typography("lg", var(--input-colour), var(--main-body-font), normal);
 }
 
 .selectDiv,

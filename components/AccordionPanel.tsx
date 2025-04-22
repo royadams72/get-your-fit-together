@@ -13,7 +13,6 @@ const AccordionPanel = ({
   isActive,
   onShow,
 }: AccordionPanelProps) => {
-  // isActive = true;
   return (
     <section className={styles.accordionPanel}>
       <div className={styles.accordionPanelTitle}>

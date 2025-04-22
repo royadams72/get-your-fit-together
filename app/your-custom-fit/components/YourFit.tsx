@@ -135,7 +135,6 @@ const YourFit = () => {
           <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
         </>
       )}
-
       {!getUiState.isSignedUp && (
         <section>
           <h3> Create a username and password to save your plan:</h3>
@@ -146,20 +145,19 @@ const YourFit = () => {
               inputValue={inputVal}
               isYourFitPage={true}
             ></UserForm>
-            <Button disabled={false} type="submit">
-              Save your plan
-            </Button>
+            <Button type="submit">Save your plan</Button>
           </FormProvider>
         </section>
       )}
       {getUiState.isSignedUp && !userFitnessPlan && (
         <div>
-          <h3>Your plan has been saved</h3>
-          <Link href={PATHS.RETRIEVE_PLAN}>
+          <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
+          <Button href={PATHS.RETRIEVE_PLAN}>
             You can retrieve your plan here
-          </Link>
+          </Button>
         </div>
-      )}
+      )}{" "}
+      *
     </div>
   );
 };

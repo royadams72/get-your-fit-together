@@ -9,6 +9,7 @@
   background-color: var(--inactive-bgcolour);
   border-radius: var(--border-radius-medium);
   border: 0.1rem solid var(--senary-colour);
+  box-sizing: border-box;
   display: inline-block;
   padding: 0.5rem 1.5rem;
   transition: all 0.2s ease;
