@@ -1,24 +1,31 @@
-import Link from "next/link";
-export default function Home() {
+import Button from "@/components/Button";
+import CopyComponent from "@/components/CopyComponent";
+import { getCopy } from "@/lib/actions/getCopy";
+
+export const Home = async () => {
+  const { copy } = await getCopy("firstPage");
+
   return (
     <div>
-      <h1>Get Your Fit Together</h1>
-      <h2>This is a h2</h2>
+      <h1>
+        Get Your <br />
+        <span style={{ color: "var(--quaternary-colour)" }}>Fit</span> Together
+      </h1>
+
       <div>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been standard dummy text ever since the
-          1500s, when an unknown printer took a galley of type and scrambled it
-          to make a type specimen book. It has
-        </p>
-        <Link href={"questions/about-you"}>
-          Get Started With Your Fitness Plan
-        </Link>
+        <CopyComponent copy={copy} />
       </div>
-      <div>
-        <Link href={"retrieve-plan"}>Retrieve Your Fitness Plan</Link>
+      <div className="btnContainer">
+        <Button href={"questions/about-you"}>
+          Get Started With Your Fitness Plan
+        </Button>
+        <Button inverted={true} href={"retrieve-plan"}>
+          Retrieve Your Fitness Plan
+        </Button>
       </div>
       <div className="coach-image"></div>
     </div>
   );
-}
+};
+
+export default Home;

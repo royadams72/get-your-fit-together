@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 import { config } from "@/lib/form-configs/userConfig";
@@ -20,7 +19,7 @@ import { UiData } from "@/types/enums/uiData.enum";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "./your-fit-response/Accordion";
+import Accordion from "@/components/your-fit-plan/Accordion";
 import Button from "@/components/Button";
 
 const YourFit = () => {
@@ -140,10 +139,9 @@ const YourFit = () => {
           <h3> Create a username and password to save your plan:</h3>
           <FormProvider onSubmit={onSubmit}>
             <UserForm
-              config={config}
+              config={config(true)}
               customMessage={checkUserMessage}
               inputValue={inputVal}
-              isYourFitPage={true}
             ></UserForm>
             <Button type="submit">Save your plan</Button>
           </FormProvider>
@@ -156,8 +154,7 @@ const YourFit = () => {
             You can retrieve your plan here
           </Button>
         </div>
-      )}{" "}
-      *
+      )}
     </div>
   );
 };

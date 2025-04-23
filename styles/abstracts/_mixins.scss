@@ -18,13 +18,13 @@
   }
 }
 
-@mixin typography($size, $color, $font-family, $font-weight) {
+@mixin typography($size, $color, $font-family, $font-weight, $margin: 0) {
   color: $color;
   font-family: $font-family;
   font-weight: $font-weight;
   font-size: map.get(map.get($typography-scale, $size), font-size);
   line-height: map.get(map.get($typography-scale, $size), line-height);
-  margin: 0;
+  margin: $margin;
 }
 
 @mixin font-size($size) {

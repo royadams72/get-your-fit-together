@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { Radio } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
-import styles from "@/styles/components/_radioComponent.module.scss";
+import styles from "@/styles/components/form/_radioComponent.module.scss";
 
 const RadioComponent = ({
   className,

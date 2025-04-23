@@ -2,21 +2,22 @@
 
 .button {
   --inactive-bgcolour: var(--quaternary-colour);
-  --inactive-fontcolour: var(--primary-colour);
+  --inactive-fontcolour: var(--quinary-colour);
   --hover-bgcolour: var(--quinary-colour);
   --hover-fontcolour: var(--white);
+  --margin: 0rem;
 
   background-color: var(--inactive-bgcolour);
   border-radius: var(--border-radius-medium);
   border: 0.1rem solid var(--senary-colour);
   box-sizing: border-box;
-  display: inline-block;
+  display: grid;
+  align-items: center;
   padding: 0.5rem 1.5rem;
   transition: all 0.2s ease;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-
   &:hover {
     background-color: var(--hover-bgcolour);
     color: var(--hover-fontcolour);
@@ -26,7 +27,8 @@
     "lg",
     var(--inactive-fontcolour),
     var(--main-body-font),
-    normal
+    bold,
+    var(--margin)
   );
 
   &.buttonAux {

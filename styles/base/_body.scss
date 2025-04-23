@@ -11,25 +11,56 @@ body {
 
 main {
   margin: 0 auto;
-  padding: 2rem 2rem 0;
+  padding: 2rem 3rem;
   max-width: 800px;
   background-color: var(--primary-colour);
   border-radius: var(--border-radius-medium);
   border: 5px solid var(--secondary-colour);
   box-sizing: border-box;
 
+  h1 {
+    margin-bottom: 1rem;
+    @include breakpoint("md") {
+      margin-bottom: 0;
+    }
+  }
+
   .coach-image {
-    background: no-repeat center bottom / 100% url("/fitness_guy.png");
-    margin: 0 auto;
+    background: no-repeat center bottom / 70% url("/fitness_guy.png");
+    margin: 0 auto -2rem;
     width: 100%;
-    height: 50vh;
+    height: 28vh;
 
     @include breakpoint("sm") {
-      height: 70vh;
+      height: 45vh;
     }
 
     @include breakpoint("md") {
-      height: 80vh;
+      height: 58vh;
+    }
+  }
+
+  .btnContainer {
+    width: 100%;
+    display: grid;
+    gap: 1.5rem;
+    margin: 3rem auto 1rem;
+    grid-template-rows: repeat(2, auto);
+
+    a {
+      min-height: 4rem;
+      font-size: 2rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    @include breakpoint("md") {
+      width: 70%;
+      gap: 2.5rem;
+      a {
+        min-height: 6rem;
+        font-size: 2.5rem;
+      }
     }
   }
 }
