@@ -12,6 +12,8 @@ export interface ButtonProps {
   inverted?: boolean;
   aux?: boolean;
   external?: boolean;
+  className?: string;
+  style?: any;
   onClick?: () => void;
 }
 
@@ -23,20 +25,23 @@ const Button = ({
   inverted,
   aux,
   external,
+  className,
+  style,
   onClick,
 }: ButtonProps) => {
-  const buttonStyles = `${styles.button} ${inverted && styles.buttonInverted} ${
-    aux && styles.buttonAux
-  }`;
+  const buttonStyles = `${styles.button}${
+    inverted ? " " + styles.buttonInverted : ""
+  }${aux ? " " + styles.buttonAux : ""}${className ? " " + className : ""}`;
 
   const props = {
     className: buttonStyles,
     href: href as Url,
     target: external ? "_blank" : undefined,
     rel: external ? "noopener noreferrer" : undefined,
-    onClick: onClick || undefined,
-    disabled: disabled || undefined,
-    type: type || undefined,
+    onClick,
+    disabled,
+    type,
+    style,
   };
 
   if (href) {

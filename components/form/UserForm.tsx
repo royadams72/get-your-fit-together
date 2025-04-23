@@ -1,18 +1,17 @@
 import React from "react";
 import { FormValue } from "@/types/interfaces/form";
 import { User } from "@/types/enums/user.enum";
-import styles from "@/styles/components/_userForm.module.scss";
+import styles from "@/styles/components/form/_userForm.module.scss";
 
 import InputComponent from "./InputComponent";
 
 const UserForm = ({
   config,
-  isYourFitPage,
   customMessage,
   inputValue,
 }: {
   config: any;
-  isYourFitPage?: boolean;
+
   customMessage?: string;
   inputValue?: (val: FormValue) => void;
 }) => {
@@ -22,16 +21,21 @@ const UserForm = ({
     <div className={styles.userFormContainer}>
       {userArr.map((elName) => {
         const isUserName = elName === User.userName;
+        console.log(config.isYourFitPage);
 
         const inputProps: any = {
           config: config[elName],
-          inputValue: isYourFitPage ? inputValue : undefined,
+          // config:
+          //   isUserName && !isYourFitPage
+          //     ? (config[elName].placeHolder = undefined)
+          //     : config[elName],
+          inputValue: config.isYourFitPage ? inputValue : undefined,
         };
 
         return (
           <div key={elName}>
             <InputComponent {...inputProps} />
-            {isYourFitPage && isUserName && customMessage ? (
+            {config.isYourFitPage && isUserName && customMessage ? (
               <div className={styles.textInputDivError}>{customMessage}</div>
             ) : null}
           </div>

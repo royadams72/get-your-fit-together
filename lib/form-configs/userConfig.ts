@@ -1,6 +1,7 @@
 import { Input } from "@/types/interfaces/form";
 
-export const config = {
+export const config = (isYourFitPage: boolean) => ({
+  isYourFitPage,
   userPassword: <Input>{
     name: "userPassword",
     isPassword: true,
@@ -14,7 +15,11 @@ export const config = {
     name: "userName",
     label: "User name",
     placeHolder: "Enter your user name",
-    hint: { __html: "User name must be at least 6 characters" },
+    hint: {
+      __html: isYourFitPage
+        ? "User name must be at least 6 characters"
+        : undefined,
+    },
     validation: {
       required: { value: true, message: "Please enter your name" },
       minLength: {
@@ -23,4 +28,4 @@ export const config = {
       },
     },
   },
-};
+});

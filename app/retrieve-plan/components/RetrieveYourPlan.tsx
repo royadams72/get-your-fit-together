@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+
 import Link from "next/link";
 
 import { useForm } from "react-hook-form";
@@ -9,6 +9,7 @@ import { config } from "@/lib/form-configs/userConfig";
 
 import { isNotEmpty } from "@/lib/utils/validation";
 
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
 import { UiData } from "@/types/enums/uiData.enum";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
@@ -21,6 +22,8 @@ import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
+import Accordion from "@/components/your-fit-plan/Accordion";
+import Button from "@/components/Button";
 
 const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
@@ -61,18 +64,20 @@ const RetrieveYourPlan = () => {
   };
   return (
     <div>
-      {isNotEmpty(userFitnessPlan) ? (
-        <div>
-          <h1>Your Custom Fit</h1>
-          {userFitnessPlan as ReactNode}
-          <Link href={`${PATHS.ABOUT_YOU}`}>Edit your information here</Link>
-        </div>
-      ) : (
-        <FormProvider methods={methods} onSubmit={onSubmit}>
-          <UserForm config={config} />
-          <button type="submit">Submit</button>
-        </FormProvider>
-      )}
+      {/* {isNotEmpty(userFitnessPlan) ? ( */}
+      <div>
+        <h2>Your Custom Fit</h2>
+        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+        <Button style={{ "--margin": "1rem 0" }} href={`${PATHS.ABOUT_YOU}`}>
+          Edit your information
+        </Button>
+      </div>
+      {/* // ) : ( */}
+      <FormProvider methods={methods} onSubmit={onSubmit}>
+        <UserForm config={config(false)} />
+        <Button type="submit">Retrieve Your Plan</Button>
+      </FormProvider>
+      {/* )} */}
     </div>
   );
 };

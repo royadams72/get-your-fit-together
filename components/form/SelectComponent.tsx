@@ -7,7 +7,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 import { Select } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import styles from "@/styles/components/_selectComponent.module.scss";
+import styles from "@/styles/components/form/_selectComponent.module.scss";
 
 const SelectComponent = ({
   className,

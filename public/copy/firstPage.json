@@ -1,0 +1,12 @@
+{
+  "copy": [
+    { "h2": "Welcome to your all-in-one fitness companion" },
+    {
+      "p": "built to get you stronger, healthier, and more dialed in with zero guesswork"
+    },
+    {
+      "p": "Whether you're just starting out or leveling up, we'll help you train smarter, eat better, and stay consistent."
+    },
+    { "p": "Ready to make moves? it's time to get your fit together." }
+  ]
+}

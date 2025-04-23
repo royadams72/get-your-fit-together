@@ -5,7 +5,7 @@ import {
   setPreference,
   getPreferencesState,
 } from "@/lib/features/preferences/preferencesSlice";
-import { config } from "../form-configs/config";
+import { config } from "@/app/questions/preferences/form-configs/config";
 
 import CheckBoxGroupComponent from "@/components/form/checkbox/checkbox-group/CheckBoxGroupComponent";
 import SelectComponent from "@/components/form/SelectComponent";

@@ -3,7 +3,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useFormContext } from "react-hook-form";
 import { Input } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import styles from "@/styles/components/_commonStyles.module.scss";
+import styles from "@/styles/components/form/_commonStyles.module.scss";
 
 const InputComponent = ({
   className,

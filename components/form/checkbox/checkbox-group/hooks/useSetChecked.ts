@@ -9,8 +9,6 @@ const useSetChecked = (
   setValue: UseFormSetValue<FieldValues>
 ) => {
   useEffect(() => {
-    // console.log("Default value:", defaultValue);
-
     if (defaultValue) {
       const defaultChecked = config.checkboxes.map((checkbox) => {
         defaultValue.split("|").map((value) => {

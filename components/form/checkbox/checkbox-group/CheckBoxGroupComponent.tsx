@@ -5,7 +5,7 @@ import { useFormContext, useFieldArray } from "react-hook-form";
 import { CheckBoxGroup } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
-import styles from "@/styles/components/_checkbox.module.scss";
+import styles from "@/styles/components/form/_checkbox.module.scss";
 import useSetFieldsToEven from "./hooks/useSetFieldsToEven";
 import useOnScreensizeChange from "./hooks/useOnScreensizeChange";
 import useSetChecked from "./hooks/useSetChecked";
