@@ -1,18 +1,7 @@
 @use "../abstracts/mixins" as *;
 @use "../fonts/fonts" as *;
 
-h1 {
-  @include typography(
-    "title-sm",
-    var(--primary-font-colour),
-    ("BebasNeue", sans-serif),
-    bold
-  );
-  @include breakpoint("sm") {
-    @include font-size("title-lrg");
-  }
-}
-
+h1,
 h2 {
   @include typography(
     "xxl",

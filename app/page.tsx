@@ -6,12 +6,7 @@ export const Home = async () => {
   const { copy } = await getCopy("firstPage");
 
   return (
-    <div>
-      <h1>
-        Get Your <br />
-        <span style={{ color: "var(--quaternary-colour)" }}>Fit</span> Together
-      </h1>
-
+    <>
       <div>
         <CopyComponent copy={copy} />
       </div>
@@ -24,7 +19,7 @@ export const Home = async () => {
         </Button>
       </div>
       <div className="coach-image"></div>
-    </div>
+    </>
   );
 };
 

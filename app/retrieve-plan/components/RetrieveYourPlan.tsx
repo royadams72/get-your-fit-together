@@ -64,20 +64,20 @@ const RetrieveYourPlan = () => {
   };
   return (
     <div>
-      {/* {isNotEmpty(userFitnessPlan) ? ( */}
-      <div>
-        <h2>Your Custom Fit</h2>
-        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-        <Button style={{ "--margin": "1rem 0" }} href={`${PATHS.ABOUT_YOU}`}>
-          Edit your information
-        </Button>
-      </div>
-      {/* // ) : ( */}
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <UserForm config={config(false)} />
-        <Button type="submit">Retrieve Your Plan</Button>
-      </FormProvider>
-      {/* )} */}
+      {isNotEmpty(userFitnessPlan) ? (
+        <div>
+          <h2>Your Custom Fit</h2>
+          <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+          <Button style={{ "--margin": "1rem 0" }} href={`${PATHS.ABOUT_YOU}`}>
+            Edit your information
+          </Button>
+        </div>
+      ) : (
+        <FormProvider methods={methods} onSubmit={onSubmit}>
+          <UserForm config={config(false)} />
+          <Button type="submit">Retrieve Your Plan</Button>
+        </FormProvider>
+      )}
     </div>
   );
 };

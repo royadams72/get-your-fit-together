@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 
-import { PATHS } from "@/routes.config";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes } from "@/lib/features/journey/journeySlice";
