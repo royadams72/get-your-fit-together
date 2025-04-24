@@ -3,21 +3,19 @@
 .header,
 .headerSmall {
   margin: 0 auto;
-  overflow: auto;
   text-align: left;
   max-width: 800px;
-  box-sizing: border-box;
   background-color: var(--tertiary-colour);
+
   h1 {
-    max-width: 800px;
     background-color: var(--primary-colour);
     border-top-left-radius: var(--border-radius-medium);
     border-top-right-radius: var(--border-radius-medium);
     border-top: var(--main-border);
     border-left: var(--main-border);
     border-right: var(--main-border);
-    padding: 3rem 0 2rem 3rem;
     box-sizing: border-box;
+    padding: 3rem 0 2rem 3rem;
 
     @include typography(
       "title-lrg",
@@ -29,7 +27,6 @@
     @include breakpoint("md") {
       @include font-size("title-xl");
     }
-    margin: 0 auto;
   }
 }
 
@@ -38,13 +35,9 @@
   top: 0;
   left: 0;
   right: 0;
-  // transform: translateX(-50%);
   z-index: 9999;
-  max-width: 800px;
-  // width: 100%;
 
   h1 {
-    max-width: 800px;
     @include font-size("title-sm");
 
     @include breakpoint("md") {

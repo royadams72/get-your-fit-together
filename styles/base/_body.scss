@@ -1,5 +1,6 @@
 @use "../abstracts/mixins" as *;
 @use "./rootLayout.module" as *;
+
 html {
   font-size: 62.5%;
   overflow: auto;
@@ -8,7 +9,7 @@ html {
 body {
   background-color: var(--tertiary-colour);
   font-size: 1.6rem;
-  overflow: auto;
+  margin: 0;
 }
 
 main {
