@@ -38,7 +38,8 @@
     }
   }
 }
-.childrenContainer {
+.defaultContainer,
+.firstPageContainer {
   margin: -2rem auto 0 auto;
   padding: 12rem 3rem 2rem;
   background-color: var(--primary-colour);
@@ -48,4 +49,10 @@
   border-left: var(--main-border);
   border-right: var(--main-border);
   box-sizing: border-box;
+}
+.firstPageContainer {
+  padding: 1rem 3rem 2rem;
+  @include breakpoint("md") {
+    padding: 0 3rem 2rem;
+  }
 }

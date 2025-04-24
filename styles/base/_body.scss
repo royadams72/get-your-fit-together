@@ -1,5 +1,5 @@
 @use "../abstracts/mixins" as *;
-@use "./rootLayout.module" as *;
+@use "../components/rootLayout.module" as *;
 
 html {
   font-size: 62.5%;
