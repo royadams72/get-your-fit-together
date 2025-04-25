@@ -4,19 +4,16 @@ import styles from "@/styles/components/_header.module.scss";
 
 const Header = ({ isFirstPage }: { isFirstPage: boolean }) => {
   return (
-    <div className={styles.headerWrapper}>
-      <header
-        className={`${styles.header}${
-          !isFirstPage ? " " + styles.headerSmall : ""
-        }`}
-      >
-        <h1>
-          Get Your {isFirstPage && <br />}
-          <span style={{ color: "var(--quaternary-colour)" }}>Fit</span>{" "}
-          Together
-        </h1>
-      </header>
-    </div>
+    <header
+      className={`${styles.header}${
+        !isFirstPage ? " " + styles.headerSmall : ""
+      }`}
+    >
+      <h1>
+        Get Your {isFirstPage && <br />}
+        <span style={{ color: "var(--quaternary-colour)" }}>Fit</span> Together
+      </h1>
+    </header>
   );
 };
 
