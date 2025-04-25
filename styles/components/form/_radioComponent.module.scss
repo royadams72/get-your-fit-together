@@ -12,11 +12,7 @@
     user-select: none;
     min-width: 6rem;
     text-align: center;
-  }
-
-  legend {
-    color: var(--white);
-    margin-bottom: 0.7rem;
+    justify-self: start;
   }
 
   .radioOptions {
@@ -35,6 +31,7 @@
   }
 
   input[type="radio"] + label {
+    margin-left: 0.5rem;
     @extend %radio;
   }
 }

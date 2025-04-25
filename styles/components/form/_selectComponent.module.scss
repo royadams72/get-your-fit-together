@@ -7,11 +7,6 @@ $afterWidth: 1.4rem;
   position: relative;
   width: 100%;
 
-  label {
-    position: absolute;
-    left: -9999px;
-  }
-
   ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
@@ -40,7 +35,7 @@ $afterWidth: 1.4rem;
   background-repeat: no-repeat;
   width: $afterHeight;
   height: $afterWidth;
-  top: 2rem;
+  top: 5.3rem;
   right: 1.7rem;
   position: absolute;
   pointer-events: none;
