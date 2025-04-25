@@ -1,0 +1,47 @@
+@use "../abstracts/_mixins" as *;
+
+.header,
+.headerSmall {
+  margin: 0 auto;
+  text-align: left;
+  max-width: 800px;
+  background-color: var(--tertiary-colour);
+
+  h1 {
+    background-color: var(--primary-colour);
+    border-top-left-radius: var(--border-radius-medium);
+    border-top-right-radius: var(--border-radius-medium);
+    border-top: var(--main-border);
+    border-left: var(--main-border);
+    border-right: var(--main-border);
+    box-sizing: border-box;
+    padding: 3rem 0 2rem 3rem;
+
+    @include typography(
+      "title-lrg",
+      var(--primary-font-colour),
+      ("BebasNeue", sans-serif),
+      bold
+    );
+
+    @include breakpoint("md") {
+      @include font-size("title-xl");
+    }
+  }
+}
+
+.headerSmall {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+
+  h1 {
+    @include font-size("title-sm");
+
+    @include breakpoint("md") {
+      @include font-size("title-md");
+    }
+  }
+}

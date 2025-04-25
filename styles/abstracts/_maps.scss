@@ -31,10 +31,18 @@ $typography-scale: (
     line-height: 1.5,
   ),
   "title-sm": (
-    font-size: 7rem,
+    font-size: 5rem,
+    line-height: 0.8,
+  ),
+  "title-md": (
+    font-size: 6rem,
     line-height: 0.8,
   ),
   "title-lrg": (
+    font-size: 7rem,
+    line-height: 0.8,
+  ),
+  "title-xl": (
     font-size: 12rem,
     line-height: 0.8,
   ),
