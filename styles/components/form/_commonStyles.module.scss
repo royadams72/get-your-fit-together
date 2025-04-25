@@ -7,7 +7,6 @@
   background-color: var(--white);
   display: inline-block;
   padding: 1rem 2rem;
-
   border: 1px solid var(--white);
   border-radius: var(--border-radius-small);
   transition: all 0.3s ease;
@@ -38,11 +37,24 @@
 }
 
 .selectDiv,
-.textInputDiv {
+.textInputDiv,
+.radioDiv fieldset {
+  legend,
   label {
-    position: absolute;
-    left: -9999px;
+    display: block;
+    padding: 0;
+    @include typography(
+      "lg",
+      var(--tertiary-colour),
+      var(--main-body-font),
+      normal,
+      0 0 1rem 2rem
+    );
   }
+}
+
+.radioDiv fieldset {
+  margin-bottom: 1.4rem;
 }
 
 .selectDiv,
@@ -63,9 +75,21 @@
   }
 
   &Error {
-    @include typography("md", var(--white), var(--main-body-font), normal);
     background-color: var(--error);
     border-radius: var(--border-radius-large);
     padding: 0.6rem 2rem;
+    @include typography(
+      "md",
+      var(--white),
+      var(--main-body-font),
+      normal,
+      0.5rem 0
+    );
+  }
+}
+
+.radioDiv {
+  &Error {
+    margin-top: -3rem;
   }
 }

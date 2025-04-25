@@ -18,7 +18,6 @@ export const config = {
     name: AboutYou.experienceLevel,
     label: "Experience Level",
     options: experienceLevelOptions,
-    hint: { __html: "this is a hint" },
     validation: {
       required: "Please select an option for experience",
     },

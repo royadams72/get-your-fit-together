@@ -17,7 +17,6 @@ const AboutYouQuestions = () => {
 
   return (
     <div>
-      AboutYouQuestions questions
       <SelectComponent
         dispatchEvent={setAboutYou}
         defaultValue={aboutYou?.experienceLevel}
