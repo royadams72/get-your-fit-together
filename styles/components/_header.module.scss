@@ -4,18 +4,18 @@
 .headerSmall {
   margin: 0 auto;
   text-align: left;
-  max-width: 800px;
+  max-width: var(--app-width);
   background-color: var(--tertiary-colour);
 
   h1 {
     background-color: var(--primary-colour);
     border-top-left-radius: var(--border-radius-medium);
     border-top-right-radius: var(--border-radius-medium);
-    border-top: var(--main-border);
-    border-left: var(--main-border);
-    border-right: var(--main-border);
+    border-top: var(--app-border);
+    border-left: var(--app-border);
+    border-right: var(--app-border);
     box-sizing: border-box;
-    padding: 3rem 0 2rem 3rem;
+    padding: 3rem 0 0 var(--app-side-padding);
 
     @include typography(
       "title-lrg",
@@ -30,6 +30,11 @@
   }
 }
 
+.header {
+  h1 {
+    padding-right: 3rem;
+  }
+}
 .headerSmall {
   position: sticky;
   top: 0;
@@ -43,5 +48,11 @@
     @include breakpoint("md") {
       @include font-size("title-md");
     }
+  }
+  h2 {
+    padding: 1rem 0 1rem var(--app-side-padding);
+    background-color: var(--primary-colour);
+    border-left: var(--app-border);
+    border-right: var(--app-border);
   }
 }

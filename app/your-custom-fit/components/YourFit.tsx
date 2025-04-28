@@ -129,10 +129,7 @@ const YourFit = () => {
   return (
     <div>
       {userFitnessPlan && (
-        <>
-          <h2>Your Custom Fit</h2>
-          <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-        </>
+        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedUp && (
         <section>

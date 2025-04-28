@@ -26,7 +26,7 @@
   @include typography(
     "lg",
     var(--inactive-fontcolour),
-    var(--main-body-font),
+    var(--app-body-font),
     bold,
     var(--margin)
   );

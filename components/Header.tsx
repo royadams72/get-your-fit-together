@@ -2,7 +2,13 @@
 
 import styles from "@/styles/components/_header.module.scss";
 
-const Header = ({ isFirstPage }: { isFirstPage: boolean }) => {
+const Header = ({
+  isFirstPage,
+  title,
+}: {
+  isFirstPage: boolean;
+  title: string;
+}) => {
   return (
     <header
       className={`${styles.header}${
@@ -13,6 +19,7 @@ const Header = ({ isFirstPage }: { isFirstPage: boolean }) => {
         Get Your {isFirstPage && <br />}
         <span style={{ color: "var(--quaternary-colour)" }}>Fit</span> Together
       </h1>
+      {!isFirstPage && <h2 className={styles.headerTitle}>{title}</h2>}
     </header>
   );
 };
