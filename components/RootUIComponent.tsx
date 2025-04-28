@@ -2,14 +2,16 @@
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import styles from "@/styles/components/_rootLayout.module.scss";
+
 const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
   const pageName = usePathname();
   const isFirstPage = pageName === "/";
-  console.log(isFirstPage);
+  const regex = /(\bquestions\b|-|\/)/g;
+  const pageTitle = pageName.replace(regex, " ").trim();
 
   return (
     <main>
-      <Header isFirstPage={isFirstPage} />
+      <Header isFirstPage={isFirstPage} title={pageTitle} />
       <div
         className={`${
           isFirstPage ? styles.firstPageContainer : styles.defaultContainer

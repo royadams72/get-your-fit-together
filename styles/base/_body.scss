@@ -10,9 +10,15 @@ body {
   background-color: var(--tertiary-colour);
   font-size: 1.6rem;
   margin: 0.5rem;
+  height: 100%;
 }
 
+html,
+body {
+  min-height: 100vh;
+}
 main {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: var(--app-width);
+  min-height: 70vh;
 }

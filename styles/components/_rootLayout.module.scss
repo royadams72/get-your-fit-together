@@ -38,21 +38,21 @@
     }
   }
 }
+
 .defaultContainer,
 .firstPageContainer {
   margin: 0 auto;
-  padding: 0 3rem 2rem;
+  padding: 0 var(--app-side-padding) 2rem;
   background-color: var(--primary-colour);
   border-bottom-left-radius: var(--border-radius-medium);
   border-bottom-right-radius: var(--border-radius-medium);
-  border-bottom: var(--main-border);
-  border-left: var(--main-border);
-  border-right: var(--main-border);
+  border-bottom: var(--app-border);
+  border-left: var(--app-border);
+  border-right: var(--app-border);
   box-sizing: border-box;
+  min-height: 40vh;
 }
+
 .firstPageContainer {
   padding: 1rem 3rem 2rem;
-  @include breakpoint("md") {
-    padding: 0 3rem 2rem;
-  }
 }

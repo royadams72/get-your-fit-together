@@ -33,7 +33,7 @@
   display: block;
   word-break: normal;
 
-  @include typography("lg", var(--input-colour), var(--main-body-font), normal);
+  @include typography("lg", var(--input-colour), var(--app-body-font), normal);
 }
 
 .selectDiv,
@@ -46,7 +46,7 @@
     @include typography(
       "lg",
       var(--tertiary-colour),
-      var(--main-body-font),
+      var(--app-body-font),
       normal,
       0 0 1rem 2rem
     );
@@ -67,7 +67,7 @@
     @include typography(
       "md",
       var(--tertiary-colour),
-      var(--main-body-font),
+      var(--app-body-font),
       normal
     );
     margin-left: 2rem;
@@ -81,7 +81,7 @@
     @include typography(
       "md",
       var(--white),
-      var(--main-body-font),
+      var(--app-body-font),
       normal,
       0.5rem 0
     );
