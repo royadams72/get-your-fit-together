@@ -59,7 +59,6 @@ export const config = {
   heightConfig: <Select>{
     name: AboutYou.height,
     label: "Height:",
-    options: heightOptionsFt,
     toggleOptions: heightTogglgOptions,
     validation: {
       required: "Please select an option for height",
@@ -68,7 +67,6 @@ export const config = {
   weightConfig: <Select>{
     name: AboutYou.weight,
     label: "Weight:",
-    options: weightOptionsKg,
     toggleOptions: weightTogglgOptions,
     validation: {
       required: "Please select an option for weight",

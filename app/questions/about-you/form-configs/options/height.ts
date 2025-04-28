@@ -1,9 +1,11 @@
+import { Toggle } from "@/types/interfaces/form";
+
 export const enum units {
   feet = "feet",
   cm = "cm",
 }
 export const heightOptionsFt = [
-  { value: "", display: "Select your height" },
+  { value: "", display: `Select your height ${units.feet}` },
   { value: "4'10", display: "4'10" },
   { value: "4'11", display: "4'11" },
   { value: "5'0", display: "5'0" },
@@ -27,25 +29,26 @@ export const heightOptionsFt = [
 ];
 
 export const heightOptionsCm = [
-  { value: "", display: "Select your height" },
-  { value: "150cm", display: "150 cm" },
-  { value: "155cm", display: "155 cm" },
-  { value: "160cm", display: "160 cm" },
-  { value: "165cm", display: "165 cm" },
-  { value: "170cm", display: "170 cm" },
-  { value: "175cm", display: "175 cm" },
-  { value: "180cm", display: "180 cm" },
-  { value: "185cm", display: "185 cm" },
-  { value: "190cm", display: "190 cm" },
-  { value: "195cm", display: "195 cm" },
-  { value: "200cm", display: "200 cm" },
-  { value: "over200cm", display: "over 200 cm" },
+  { value: "", display: `Select your height ${units.cm}` },
+  { value: "150cm", display: "150cm" },
+  { value: "155cm", display: "155cm" },
+  { value: "160cm", display: "160cm" },
+  { value: "165cm", display: "165cm" },
+  { value: "170cm", display: "170cm" },
+  { value: "175cm", display: "175cm" },
+  { value: "180cm", display: "180cm" },
+  { value: "185cm", display: "185cm" },
+  { value: "190cm", display: "190cm" },
+  { value: "195cm", display: "195cm" },
+  { value: "200cm", display: "200cm" },
+  { value: "over200cm", display: "over 200cm" },
 ];
 
-export const heightTogglgOptions = [
+export const heightTogglgOptions: Toggle[] = [
   {
     label: "Set Height in Feet",
     value: units.feet,
+    customValue: "'",
     toggleOption: heightOptionsFt,
   },
   { label: "Set Height in CM", value: units.cm, toggleOption: heightOptionsCm },

@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-import { Select } from "@/types/interfaces/form";
+import { Select, SelectOption, Toggle } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import styles from "@/styles/components/form/_selectComponent.module.scss";
 
@@ -28,13 +28,37 @@ const SelectComponent = ({
   } = useFormContext();
 
   const dispatch = useAppDispatch();
-  const [optionList, setOptionList] = useState(config.options);
+  const [optionList, setOptionList] = useState([] as SelectOption[]);
 
   useEffect(() => {
-    if (defaultValue) {
-      setValue(config.name, defaultValue);
+    if (config.toggleOptions) {
+      if (defaultValue) {
+        const defaultOption: any = config.toggleOptions.find((option) => {
+          if (
+            defaultValue.includes(option.value) ||
+            defaultValue.includes(option.customValue as string)
+          ) {
+            return option.value;
+          }
+        });
+        console.log(defaultValue);
+
+        console.log(defaultOption.toggleOption);
+        setOptionList(defaultOption.toggleOption);
+        setValue(config.name, defaultValue);
+      } else {
+        setOptionList(config.toggleOptions[0].toggleOption);
+        setValue(config.name, config.toggleOptions[0].toggleOption[0].value);
+      }
+      // console.log(config.toggleOptions[0].toggleOption);
+    } else {
+      if (defaultValue) {
+        setValue(config.name, defaultValue);
+      }
+      setOptionList(config.options as SelectOption[]);
+      setValue(config.name, config.options?.[0]?.value ?? "");
     }
-  }, [defaultValue, setValue, config.name]);
+  }, []);
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -54,7 +78,7 @@ const SelectComponent = ({
 
       <select
         id={config.name}
-        defaultValue={defaultValue || ""}
+        value={defaultValue || ""}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
         onChange={(e) => handleChange(e)}
