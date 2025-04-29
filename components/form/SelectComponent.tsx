@@ -8,6 +8,8 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { Select, SelectOption, Toggle } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import styles from "@/styles/components/form/_selectComponent.module.scss";
+import Button from "../Button";
+import { isNotEmpty } from "@/lib/utils/validation";
 
 const SelectComponent = ({
   className,
@@ -29,36 +31,60 @@ const SelectComponent = ({
 
   const dispatch = useAppDispatch();
   const [optionList, setOptionList] = useState([] as SelectOption[]);
+  const [toggleOptionBtn, setToggleOptionBtn] = useState({} as Toggle);
+  const [optionIndex, setOptionIndex] = useState(0);
 
   useEffect(() => {
-    if (config.toggleOptions) {
-      if (defaultValue) {
-        const defaultOption: any = config.toggleOptions.find((option) => {
-          if (
-            defaultValue.includes(option.value) ||
-            defaultValue.includes(option.customValue as string)
-          ) {
-            return option.value;
-          }
-        });
-        console.log(defaultValue);
+    const optionValue: string = defaultValue || "";
+    let options = [] as SelectOption[];
 
-        console.log(defaultOption.toggleOption);
-        setOptionList(defaultOption.toggleOption);
-        setValue(config.name, defaultValue);
-      } else {
-        setOptionList(config.toggleOptions[0].toggleOption);
-        setValue(config.name, config.toggleOptions[0].toggleOption[0].value);
-      }
-      // console.log(config.toggleOptions[0].toggleOption);
+    if (config.toggleOptions) {
+      const formOptions = config.toggleOptions;
+      // if (defaultValue) {
+      console.log("config.toggleOptions::", config.toggleOptions);
+      const defaultOption: any = config.toggleOptions.find((option, i) => {
+        if (
+          defaultValue?.includes(option.value) ||
+          defaultValue?.includes(option.customValue as string)
+        ) {
+          setOptionIndex(i);
+          return option.value;
+        } else {
+          return false;
+        }
+      });
+
+      options = defaultOption
+        ? defaultOption.toggleOption
+        : formOptions[0].toggleOption;
+
+      setToggleOptionBtn(formOptions[setToOtherIndex(optionIndex)]);
+      setOptionList(options);
     } else {
-      if (defaultValue) {
-        setValue(config.name, defaultValue);
-      }
-      setOptionList(config.options as SelectOption[]);
-      setValue(config.name, config.options?.[0]?.value ?? "");
+      options = config.options as SelectOption[];
     }
+    updateFormOptions(options, optionValue as string);
+    setOptionList(options);
   }, []);
+
+  useEffect(() => {
+    if (!config?.toggleOptions) return;
+    const formOptions = config?.toggleOptions;
+    const optionList = formOptions?.[optionIndex]
+      ?.toggleOption as SelectOption[];
+
+    const toggleButtonIndexValue = formOptions?.[setToOtherIndex(optionIndex)];
+    setToggleOptionBtn(toggleButtonIndexValue);
+    setOptionList(optionList);
+    updateFormOptions(optionList, "");
+  }, [optionIndex, config?.toggleOptions]);
+
+  const setToOtherIndex = (index: number) => (index === 0 ? 1 : 0);
+
+  const updateFormOptions = (options: SelectOption[], optionValue: string) => {
+    setOptionList(options);
+    setValue(config.name, optionValue);
+  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -73,7 +99,7 @@ const SelectComponent = ({
   };
 
   return (
-    <div className={`${className || ""} ${styles.selectDiv}`}>
+    <div className={`${className + " " || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
 
       <select
@@ -83,11 +109,12 @@ const SelectComponent = ({
         {...config.eventHandlers}
         onChange={(e) => handleChange(e)}
       >
-        {optionList.map((option, i) => (
-          <option key={i} value={option.value as string}>
-            {option.display}
-          </option>
-        ))}
+        {optionList &&
+          optionList.map((option, i) => (
+            <option key={i} value={option.value as string}>
+              {option.display}
+            </option>
+          ))}
       </select>
       {config?.hint && (
         <div
@@ -100,21 +127,16 @@ const SelectComponent = ({
           {errors[config.name]?.message as string}
         </p>
       )}
-      <ul>
-        {config.toggleOptions &&
-          config.toggleOptions.map((option: any) => {
-            return (
-              <li
-                className={styles.selectDivToggle}
-                key={option.value}
-                onClick={() => setOptionList(option.toggleOption)}
-                tabIndex={1}
-              >
-                {option.label}
-              </li>
-            );
-          })}
-      </ul>
+      {isNotEmpty(toggleOptionBtn) && (
+        <Button
+          onClick={() => {
+            setOptionIndex(setToOtherIndex(optionIndex));
+            dispatch(dispatchEvent({ name: config.name, value: "" }));
+          }}
+        >
+          {toggleOptionBtn.label}
+        </Button>
+      )}
     </div>
   );
 };
