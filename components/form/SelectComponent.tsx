@@ -5,11 +5,13 @@ import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
+import { isNotEmpty } from "@/lib/utils/validation";
+
 import { Select, SelectOption, Toggle } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
+
 import styles from "@/styles/components/form/_selectComponent.module.scss";
-import Button from "../Button";
-import { isNotEmpty } from "@/lib/utils/validation";
+import Button from "@/components/Button";
 
 const SelectComponent = ({
   className,
@@ -97,7 +99,7 @@ const SelectComponent = ({
 
     config?.eventHandlers?.onChange?.(e);
   };
-
+  console.log("styles;;", styles);
   return (
     <div className={`${className + " " || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
@@ -129,6 +131,7 @@ const SelectComponent = ({
       )}
       {isNotEmpty(toggleOptionBtn) && (
         <Button
+          style={{ marginTop: "1rem" }}
           onClick={() => {
             setOptionIndex(setToOtherIndex(optionIndex));
             dispatch(dispatchEvent({ name: config.name, value: "" }));
