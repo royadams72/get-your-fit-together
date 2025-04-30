@@ -84,6 +84,7 @@ const CheckBoxGroupComponent = ({
         <legend>{config.legend}</legend>
         {config?.hint && (
           <div
+            id={`${config.name}-hint`}
             className={styles.checkboxDivHint}
             dangerouslySetInnerHTML={config.hint}
           />
@@ -111,10 +112,18 @@ const CheckBoxGroupComponent = ({
                     {...register(`${config.name}[${index}].value`)}
                     type="checkbox"
                     checked={item.value}
+                    aria-checked={item.value}
                     onChange={(e) =>
                       handleCheckboxChange(e, index, e.target.checked)
                     }
                     id={`${config.checkboxes[index].label}`}
+                    aria-describedby={
+                      errors[config.name]
+                        ? `${config.name}-error ${config.name}-hint`
+                        : config?.hint
+                        ? `${config.name}-hint`
+                        : undefined
+                    }
                   />
                   <label htmlFor={`${config.checkboxes[index].label}`}></label>
                 </div>
@@ -122,7 +131,11 @@ const CheckBoxGroupComponent = ({
             )}
         </div>
         {errors[config.name] && (
-          <p className={styles.checkboxDivError}>
+          <p
+            className={styles.checkboxDivError}
+            id={`${config.name}-error`}
+            aria-live="polite"
+          >
             {errors[config.name]?.root?.message?.toString()}
           </p>
         )}

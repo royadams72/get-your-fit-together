@@ -48,6 +48,13 @@ const InputComponent = ({
     >
       <label htmlFor={config.name}>{config.label}</label>
       <input
+        aria-describedby={
+          errors[config.name]
+            ? `${config.name}-error ${config.name}-hint`
+            : config?.hint
+            ? `${config.name}-hint`
+            : undefined
+        }
         type={config.isPassword ? "password" : "text"}
         id={config.name}
         placeholder={config.placeHolder}
@@ -59,12 +66,17 @@ const InputComponent = ({
       />
       {config.hint && (
         <div
+          id={`${config.name}-hint}`}
           className={styles.textInputDivHint}
           dangerouslySetInnerHTML={config.hint}
         />
       )}
       {errors[config.name] && (
-        <p className={styles.textInputDivError}>
+        <p
+          className={styles.textInputDivError}
+          id={`${config.name}-error`}
+          aria-live="polite"
+        >
           {errors[config.name]?.message as string}
         </p>
       )}
