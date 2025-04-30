@@ -9,11 +9,21 @@ export interface Select {
   hint?: { __html: string };
   label: string;
   name: string;
-  options: { value: string | null; display: string }[];
-  toggleOptions?: { value: string; label: string; toggleOption: any }[];
+  options?: SelectOption[];
+  toggleOptions?: Toggle[] | undefined;
   validation?: RegisterOptions;
 }
 
+export interface SelectOption {
+  value: string | null;
+  display: string;
+}
+export interface Toggle {
+  value: string;
+  customValue?: string;
+  label: string;
+  toggleOption: SelectOption[];
+}
 export interface CheckBox {
   eventHandlers?: {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
