@@ -61,15 +61,31 @@ const RadioComponent = ({
                 name={config.name}
                 value={option.value}
                 defaultChecked={defaultValue === option.value}
+                aria-describedby={
+                  errors[config.name]
+                    ? `${config.name}-error ${config.name}-hint`
+                    : config?.hint
+                    ? `${config.name}-hint`
+                    : undefined
+                }
               />
               <label htmlFor={option.id}>{option.label}</label>
-              {config?.hint && <div dangerouslySetInnerHTML={config.hint} />}
+              {config?.hint && (
+                <div
+                  dangerouslySetInnerHTML={config.hint}
+                  id={`${config.name}-hint`}
+                />
+              )}
             </div>
           );
         })}
       </fieldset>
       {errors[config.name] && (
-        <p className={styles.radioDivError}>
+        <p
+          className={styles.radioDivError}
+          id={`${config.name}-error`}
+          aria-live="polite"
+        >
           {errors[config.name]?.message as string}
         </p>
       )}

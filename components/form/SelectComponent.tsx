@@ -114,6 +114,13 @@ const SelectComponent = ({
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
         onChange={(e) => handleChange(e)}
+        aria-describedby={
+          errors[config.name]
+            ? `${config.name}-error ${config.name}-hint`
+            : config?.hint
+            ? `${config.name}-hint`
+            : undefined
+        }
       >
         {optionList &&
           optionList.map((option, i) => (
@@ -124,12 +131,17 @@ const SelectComponent = ({
       </select>
       {config?.hint && (
         <div
+          id={`${config.name}-hint`}
           className={styles.selectDivHint}
           dangerouslySetInnerHTML={config.hint}
         />
       )}
       {errors[config.name] && (
-        <p className={styles.selectDivError}>
+        <p
+          className={styles.selectDivError}
+          id={`${config.name}-error`}
+          aria-live="polite"
+        >
           {errors[config.name]?.message as string}
         </p>
       )}

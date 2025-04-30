@@ -45,7 +45,11 @@ const Button = ({
   };
 
   if (href) {
-    return <Link {...props}>{children}</Link>;
+    return (
+      <Link role="button" {...props}>
+        {children}
+      </Link>
+    );
   } else {
     return <button {...props}>{children}</button>;
   }
