@@ -37,18 +37,19 @@ const SelectComponent = ({
   const [optionIndex, setOptionIndex] = useState(0);
 
   useEffect(() => {
-    const optionValue: string = defaultValue || "";
+    const optionValue = defaultValue || "";
     let options = [] as SelectOption[];
 
     if (config.toggleOptions) {
       const formOptions = config.toggleOptions;
-      // if (defaultValue) {
-      console.log("config.toggleOptions::", config.toggleOptions);
+      // If the value in toggleOptions matches the value/unit in the defaultValue "cm", "kg" etc.
       const defaultOption: any = config.toggleOptions.find((option, i) => {
         if (
           defaultValue?.includes(option.value) ||
           defaultValue?.includes(option.customValue as string)
         ) {
+          // We need to know the index of the option that is selected
+          // so we can toggle the button
           setOptionIndex(i);
           return option.value;
         } else {
@@ -60,7 +61,7 @@ const SelectComponent = ({
         ? defaultOption.toggleOption
         : formOptions[0].toggleOption;
 
-      setToggleOptionBtn(formOptions[setToOtherIndex(optionIndex)]);
+      setToggleOptionBtn(formOptions[setToOtherToggleIndex(optionIndex)]);
       setOptionList(options);
     } else {
       options = config.options as SelectOption[];
@@ -75,13 +76,15 @@ const SelectComponent = ({
     const optionList = formOptions?.[optionIndex]
       ?.toggleOption as SelectOption[];
 
-    const toggleButtonIndexValue = formOptions?.[setToOtherIndex(optionIndex)];
+    const toggleButtonIndexValue =
+      formOptions?.[setToOtherToggleIndex(optionIndex)];
     setToggleOptionBtn(toggleButtonIndexValue);
     setOptionList(optionList);
     updateFormOptions(optionList, "");
+    console.log("optionIndex", optionIndex);
   }, [optionIndex, config?.toggleOptions]);
 
-  const setToOtherIndex = (index: number) => (index === 0 ? 1 : 0);
+  const setToOtherToggleIndex = (index: number) => (index === 0 ? 1 : 0);
 
   const updateFormOptions = (options: SelectOption[], optionValue: string) => {
     setOptionList(options);
@@ -99,7 +102,7 @@ const SelectComponent = ({
 
     config?.eventHandlers?.onChange?.(e);
   };
-  console.log("styles;;", styles);
+
   return (
     <div className={`${className + " " || ""} ${styles.selectDiv}`}>
       <label htmlFor={config.name}>{config.label}</label>
@@ -133,7 +136,7 @@ const SelectComponent = ({
         <Button
           style={{ marginTop: "1rem" }}
           onClick={() => {
-            setOptionIndex(setToOtherIndex(optionIndex));
+            setOptionIndex(setToOtherToggleIndex(optionIndex));
             dispatch(dispatchEvent({ name: config.name, value: "" }));
           }}
         >
