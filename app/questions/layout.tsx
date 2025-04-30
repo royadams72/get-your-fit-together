@@ -32,17 +32,19 @@ export default function QuestionsLayout({
     setIsFormValid(bool);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (data: any) => {
+    console.log("isFormValid: ", isFormValid, data);
+
     if (isFormValid) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);
     }
   };
 
-  const defaultValues =
-    pageName === PATHS.PREFERENCES
-      ? { workoutType: config?.workoutType?.checkboxes }
-      : {};
+  // const defaultValues =
+  //   pageName === PATHS.PREFERENCES
+  //     ? { workoutType: config?.workoutType?.checkboxes }
+  //     : {};
 
   const formKey = `form-${pageName}`;
 
@@ -52,7 +54,7 @@ export default function QuestionsLayout({
     <FormProvider
       key={formKey}
       onSubmit={onSubmit}
-      defaultValues={defaultValues}
+      // defaultValues={defaultValues}
     >
       <section>
         {children}
