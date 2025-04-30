@@ -32,42 +32,46 @@ const SelectComponent = ({
   } = useFormContext();
 
   const dispatch = useAppDispatch();
-  const [optionList, setOptionList] = useState([] as SelectOption[]);
+  // const [optionList, setOptionList] = useState([] as SelectOption[]);
+  const [optionList, setOptionList] = useState(config.options);
   const [toggleOptionBtn, setToggleOptionBtn] = useState({} as Toggle);
   const [optionIndex, setOptionIndex] = useState(0);
 
   useEffect(() => {
-    const optionValue = defaultValue || "";
+    if (defaultValue) {
+      setValue(config.name, defaultValue);
+    }
+  }, [defaultValue, setValue, config.name]);
+
+  useEffect(() => {
     let options = [] as SelectOption[];
 
     if (config.toggleOptions) {
       const formOptions = config.toggleOptions;
-      // If the value in toggleOptions matches the value/unit in the defaultValue "cm", "kg" etc.
-      const defaultOption: any = config.toggleOptions.find((option, i) => {
-        if (
-          defaultValue?.includes(option.value) ||
-          defaultValue?.includes(option.customValue as string)
-        ) {
-          // We need to know the index of the option that is selected
-          // so we can toggle the button
-          setOptionIndex(i);
-          return option.value;
-        } else {
-          return false;
-        }
-      });
 
+      const defaultOption: any = config.toggleOptions.find(
+        (toggleOption, i) => {
+          if (
+            defaultValue?.includes(toggleOption.value) ||
+            defaultValue?.includes(toggleOption.customValue as string)
+          ) {
+            // We need to know the index of the option that is selected
+            // so we can toggle the button
+            setOptionIndex(i);
+            return toggleOption.value;
+          } else {
+            return false;
+          }
+        }
+      );
+      // Match the options to the default value i.e 25kg will load the kg options
       options = defaultOption
         ? defaultOption.toggleOption
         : formOptions[0].toggleOption;
-
-      setToggleOptionBtn(formOptions[setToOtherToggleIndex(optionIndex)]);
       setOptionList(options);
-    } else {
-      options = config.options as SelectOption[];
+      // The button to the other toggle option
+      setToggleOptionBtn(formOptions[setToOtherToggleIndex(optionIndex)]);
     }
-    updateFormOptions(options, optionValue as string);
-    setOptionList(options);
   }, []);
 
   useEffect(() => {
@@ -80,22 +84,19 @@ const SelectComponent = ({
       formOptions?.[setToOtherToggleIndex(optionIndex)];
     setToggleOptionBtn(toggleButtonIndexValue);
     setOptionList(optionList);
-    updateFormOptions(optionList, "");
+
     console.log("optionIndex", optionIndex);
-  }, [optionIndex, config?.toggleOptions]);
+  }, [optionIndex]);
 
-  const setToOtherToggleIndex = (index: number) => (index === 0 ? 1 : 0);
-
-  const updateFormOptions = (options: SelectOption[], optionValue: string) => {
-    setOptionList(options);
-    setValue(config.name, optionValue);
-  };
+  const setToOtherToggleIndex = (index: number): number =>
+    index === 0 ? 1 : 0;
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setValue(name, value);
 
     const isFieldValid = await trigger(name);
+    console.log("isFieldValid", config.name, value, isFieldValid);
     if (isFieldValid) {
       dispatch(dispatchEvent({ name, value }));
     }
