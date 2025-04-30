@@ -14,7 +14,6 @@ const InjuriesQuestions = () => {
 
   return (
     <div>
-      <p>Injuries</p>
       <SelectComponent
         dispatchEvent={setInjurie}
         defaultValue={injuries?.upperBody}
@@ -35,7 +34,7 @@ const InjuriesQuestions = () => {
         defaultValue={injuries?.medicalRestrictions}
         config={config.medicalRestrictionsConfig}
       />
-      <p>Allergies or Sensitivities</p>
+
       <SelectComponent
         dispatchEvent={setInjurie}
         defaultValue={injuries?.foodAllergies}

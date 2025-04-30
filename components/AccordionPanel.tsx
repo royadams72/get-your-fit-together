@@ -5,16 +5,18 @@ interface AccordionPanelProps {
   title: string;
   children: React.ReactNode;
   isActive: boolean;
+  ref?: (el: any) => any;
   onShow: () => void;
 }
 const AccordionPanel = ({
   title,
   children,
   isActive,
+  ref,
   onShow,
 }: AccordionPanelProps) => {
   return (
-    <section className={styles.accordionPanel}>
+    <section className={styles.accordionPanel} ref={ref}>
       <div className={styles.accordionPanelTitle}>
         <h3 onClick={onShow}>{title}</h3>
         <span
