@@ -34,7 +34,6 @@ export default function QuestionsLayout({
 
   const onSubmit = (data: any) => {
     console.log("isFormValid: ", isFormValid, data);
-
     if (isFormValid) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);

@@ -37,7 +37,6 @@ export const journeySlice = createAppSlice({
       action: PayloadAction<{ route: string; isFormSubmit?: boolean }>
     ) => {
       const currentIndex = setRoutes(state, action);
-      console.log("currentIndex:", currentIndex);
 
       if (action?.payload?.isFormSubmit) {
         state.journey.journeyData[currentIndex].isComplete = true;
