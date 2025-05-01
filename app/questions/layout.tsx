@@ -34,11 +34,9 @@ export default function QuestionsLayout({
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
-    // console.log("formErrors: ", formErrors);
     if (isNotEmpty(formErrors)) {
       scrollToError();
     }
-    // }
   };
 
   const onSubmit = () => {
@@ -50,16 +48,33 @@ export default function QuestionsLayout({
     }
   };
 
+  const getErrorElement = (error: any): HTMLElement | null => {
+    if (error == null) return null;
+    console.log(error.ref);
+    if (error?.ref?.type === "radio")
+      return document.querySelector(`label[for="${error.ref.value}"]`);
+
+    if (error.ref) return error.ref;
+    console.log(error.root?.ref?.name);
+
+    if (error.root?.ref?.name)
+      return document.getElementById(`${error.root.ref.name}`);
+
+    return null;
+  };
+
   const scrollToError = () => {
     const errors: any[] = Object.values(formErrors);
     if (errors.length === 0) return;
-    if (errors[0].ref && errors[0].ref) {
-      console.log(errors[0].ref);
-      errors[0].ref.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
+
+    const element = getErrorElement(errors[0]);
+    console.log(element);
+
+    element?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+    element?.focus();
   };
   const defaultValues =
     pageName === PATHS.PREFERENCES

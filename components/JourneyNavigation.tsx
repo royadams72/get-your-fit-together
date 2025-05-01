@@ -21,7 +21,6 @@ const JourneyNavigation = ({
   const { nextRoute, prevRoute } = useAppSelector(getRoutes);
 
   useEffect(() => {
-    // console.log(formState.errors);
     getFormErrors(formState.errors);
   }, [formState]);
 
