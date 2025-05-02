@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { useForm } from "react-hook-form";
 
 import { API, PATHS } from "@/routes.config";
@@ -24,13 +22,15 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/your-fit-plan/Accordion";
 import Button from "@/components/Button";
+import { useMemo, useState } from "react";
+import InlineError from "@/components/InlineError";
 
 const RetrieveYourPlan = () => {
+  const [responseError, setResponseError] = useState("");
+
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const store = useAppSelector(selectState);
-
-  const { setLoading } = useLoader();
 
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
@@ -39,6 +39,14 @@ const RetrieveYourPlan = () => {
     dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
   };
+
+  const isUserFitnessPlanNotEmpty = useMemo(
+    () => isNotEmpty(userFitnessPlan),
+    [userFitnessPlan]
+  );
+
+  const { setLoading } = useLoader();
+
   const methods = useForm();
   const { reset } = methods;
 
@@ -51,18 +59,23 @@ const RetrieveYourPlan = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-      // console.log("responseData", responseData);
+      if (responseData.error) {
+        setResponseError(responseData.error);
+        console.log("responseData", responseData.error);
+        return;
+      }
+      console.log("responseData", responseData.error);
       setRetrievedStore(responseData);
       reset();
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error("Error retrieving data:", error);
     } finally {
       setLoading(false);
     }
   };
   return (
     <div>
-      {isNotEmpty(userFitnessPlan) ? (
+      {isUserFitnessPlanNotEmpty ? (
         <div>
           <h2>Your Custom Fit</h2>
           <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
@@ -73,6 +86,7 @@ const RetrieveYourPlan = () => {
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>
           <UserForm config={config(false)} />
+          {responseError && <InlineError error={responseError} />}
           <Button type="submit">Retrieve Your Plan</Button>
         </FormProvider>
       )}
