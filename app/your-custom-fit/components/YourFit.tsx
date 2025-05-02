@@ -128,7 +128,7 @@ const YourFit = () => {
 
   return (
     <div>
-      {userFitnessPlan && (
+      {!getUiState.isSignedUp && userFitnessPlan && (
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedUp && (
@@ -144,10 +144,10 @@ const YourFit = () => {
           </FormProvider>
         </section>
       )}
-      {getUiState.isSignedUp && !userFitnessPlan && (
+      {getUiState.isSignedUp && (
         <div>
           <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
-          <Button href={PATHS.RETRIEVE_PLAN}>
+          <Button href={PATHS.RETRIEVE_PLAN} style={{ marginTop: "1rem" }}>
             You can retrieve your plan here
           </Button>
         </div>

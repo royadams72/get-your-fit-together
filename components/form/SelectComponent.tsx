@@ -32,13 +32,14 @@ const SelectComponent = ({
   } = useFormContext();
 
   const dispatch = useAppDispatch();
-  // const [optionList, setOptionList] = useState([] as SelectOption[]);
   const [optionList, setOptionList] = useState(config.options);
   const [toggleOptionBtn, setToggleOptionBtn] = useState({} as Toggle);
   const [optionIndex, setOptionIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(defaultValue || "");
 
   useEffect(() => {
     if (defaultValue) {
+      setSelectedOption(defaultValue);
       setValue(config.name, defaultValue);
     }
   }, [defaultValue, setValue, config.name]);
@@ -84,8 +85,6 @@ const SelectComponent = ({
       formOptions?.[setToOtherToggleIndex(optionIndex)];
     setToggleOptionBtn(toggleButtonIndexValue);
     setOptionList(optionList);
-
-    console.log("optionIndex", optionIndex);
   }, [optionIndex]);
 
   const setToOtherToggleIndex = (index: number): number =>
@@ -93,10 +92,10 @@ const SelectComponent = ({
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
+    setSelectedOption(value);
     setValue(name, value);
 
     const isFieldValid = await trigger(name);
-    console.log("isFieldValid", config.name, value, isFieldValid);
     if (isFieldValid) {
       dispatch(dispatchEvent({ name, value }));
     }
@@ -110,7 +109,7 @@ const SelectComponent = ({
 
       <select
         id={config.name}
-        value={defaultValue || ""}
+        value={selectedOption}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
         onChange={(e) => handleChange(e)}

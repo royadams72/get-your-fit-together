@@ -1,17 +1,16 @@
 import { AboutYou } from "@/types/enums/about-you.enum";
 import { Radio, Select } from "@/types/interfaces/form";
-import {
-  heightOptionsFt,
-  heightTogglgOptions,
-} from "@/app/questions/about-you/form-configs/options/height";
-import {
-  weightOptionsKg,
-  weightTogglgOptions,
-} from "@/app/questions/about-you/form-configs/options/weight";
+import { heightTogglgOptions } from "@/app/questions/about-you/form-configs/options/height";
+import { weightTogglgOptions } from "@/app/questions/about-you/form-configs/options/weight";
 import {
   experienceLevelOptions,
   bodyTypeOptions,
 } from "@/app/questions/about-you/form-configs/options/aboutYou";
+
+export const yesNoRadioOptions = [
+  { value: "yes", label: "Yes", id: "yes" },
+  { value: "no", label: "No", id: "no" },
+];
 
 export const config = {
   experienceConfig: <Select>{
@@ -100,10 +99,7 @@ export const config = {
   smokingConfig: <Radio>{
     name: AboutYou.smoking,
     legend: "Do you smoke?",
-    options: [
-      { value: "yes", label: "Yes", id: "smoking-yes" },
-      { value: "no", label: "No", id: "smoking-no" },
-    ],
+    options: yesNoRadioOptions,
     validation: {
       required: "Please select an option for smoking",
     },

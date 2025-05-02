@@ -12,17 +12,17 @@ import { useFormContext } from "@/context/FormProvider";
 import Button from "@/components/Button";
 
 const JourneyNavigation = ({
-  isValid,
+  getFormErrors,
 }: {
-  isValid: (boolean: boolean) => void;
+  getFormErrors: (errors: any) => void;
 }) => {
   const { handleSubmit, formState } = useFormContext();
 
   const { nextRoute, prevRoute } = useAppSelector(getRoutes);
 
   useEffect(() => {
-    isValid(formState.isValid);
-  }, [formState.isValid, isValid]);
+    getFormErrors(formState.errors);
+  }, [formState]);
 
   return (
     <nav

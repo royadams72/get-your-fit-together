@@ -90,6 +90,7 @@ const CheckBoxGroupComponent = ({
           />
         )}
         <div
+          id={`${config.name}`}
           className={styles.checkboxDiv}
           style={{ "--template-columns": columns } as React.CSSProperties}
         >
