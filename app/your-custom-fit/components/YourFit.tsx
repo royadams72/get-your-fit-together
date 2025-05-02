@@ -40,8 +40,16 @@ const YourFit = () => {
   };
 
   const onSubmit = async (form: any) => {
+    for (const [key, val] of Object.entries(form)) {
+      console.log(key, val);
+
+      dispatch(setUser({ name: key as keyof UserStore, value: val as string }));
+    }
     try {
       setLoading(true);
+
+      console.log(savedState);
+
       const response = await fetch(`${API.SAVE_PLAN}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,11 +58,6 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        for (const [key, val] of Object.entries(form)) {
-          dispatch(
-            setUser({ name: key as keyof UserStore, value: val as string })
-          );
-        }
         reset();
         dispatch(setStore(defaultState));
         dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
