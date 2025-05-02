@@ -43,8 +43,6 @@ const RetrieveYourPlan = () => {
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
-    console.log("data", data);
-
     try {
       setLoading(true);
       const response = await fetch(`${API.RETRIEVE}`, {

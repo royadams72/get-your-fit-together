@@ -1,19 +1,22 @@
 export const isEmpty = (obj: any = {}): boolean => {
-  if (Object?.keys?.(obj)?.length > 0) {
-    let noValue = 0;
+  // TODO: add a skip array, that will skip certain fields
+  console.log("array", obj);
+  if (Array.isArray(obj)) {
+    return obj.length === 0; // Empty array check
+  }
+
+  if (typeof obj === "object" && obj !== null) {
+    // Check if any value is not empty, return false if found
     for (const value of Object.values(obj)) {
-      if (!value) {
-        noValue++;
+      if (value) {
+        return false; // Return false immediately if a non-empty value is found
       }
     }
-    if (Object?.keys?.(obj)?.length === noValue) {
-      return true;
-    }
+
+    return true; // Return true if all values are empty
   }
-  if (Object.prototype.toString.call(obj) === "[object Array]") {
-    return obj?.length === 0;
-  }
-  return Object?.keys(obj)?.length === 0;
+
+  return !obj;
 };
 
 export const isNotEmpty = (obj: any = {}): boolean => !isEmpty(obj);
