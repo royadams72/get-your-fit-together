@@ -32,7 +32,11 @@ const YourFit = () => {
   const { reset } = methods;
   const { setLoading } = useLoader();
 
-  const [checkUserMessage, setCheckUserMessage] = useState("");
+  const [responseError, setResponseError] = useState<{
+    message: string;
+    messageElement: string;
+  }>({ message: "", messageElement: "" });
+
   const [userForm, setUserForm] = useState<FormValue>();
 
   const inputVal = (val: FormValue) => {
@@ -87,9 +91,12 @@ const YourFit = () => {
 
         const responseData = await response.json();
         if (responseData.error) {
-          setCheckUserMessage(responseData.error);
+          setResponseError({
+            message: responseData.error,
+            messageElement: User.userName,
+          });
         } else {
-          setCheckUserMessage("");
+          setResponseError({ message: "", messageElement: "" });
         }
       } catch (error) {
         console.error("Error getting data:", error);
@@ -131,22 +138,22 @@ const YourFit = () => {
 
   return (
     <div>
-      {!getUiState.isSignedUp && userFitnessPlan && (
-        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-      )}
-      {!getUiState.isSignedUp && (
-        <section>
-          <h3> Create a username and password to save your plan:</h3>
-          <FormProvider onSubmit={onSubmit}>
-            <UserForm
-              config={config(true)}
-              customMessage={checkUserMessage}
-              inputValue={inputVal}
-            ></UserForm>
-            <Button type="submit">Save your plan</Button>
-          </FormProvider>
-        </section>
-      )}
+      {/* {!getUiState.isSignedUp && userFitnessPlan && ( */}
+      <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+      {/* )} */}
+      {/* {!getUiState.isSignedUp && ( */}
+      <section>
+        <h3> Create a username and password to save your plan:</h3>
+        <FormProvider onSubmit={onSubmit}>
+          <UserForm
+            config={config(true)}
+            customMessage={responseError}
+            inputValue={inputVal}
+          ></UserForm>
+          <Button type="submit">Save your plan</Button>
+        </FormProvider>
+      </section>
+      {/* )} */}
       {getUiState.isSignedUp && (
         <div>
           <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>

@@ -61,7 +61,7 @@
 .radioDiv,
 .checkboxDiv,
 .textInputDiv,
-.inlineError {
+.inline {
   margin-bottom: 4rem;
 
   &Hint {
@@ -89,6 +89,9 @@
   }
 }
 
+.inlineError {
+  margin-bottom: 2rem;
+}
 .radioDiv {
   &Error {
     margin-top: -3rem;

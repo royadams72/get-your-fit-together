@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { DbResponse } from "../interfaces/api";
-import { isNotEmpty } from "@/lib/utils/validation";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { FitPlan } from "../interfaces/fitness-plan";
 
 export const isDbResponse = (plan: any): plan is DbResponse => {

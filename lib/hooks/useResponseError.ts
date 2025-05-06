@@ -1,0 +1,24 @@
+import { useEffect, useState } from "react";
+
+export const UseResponseError = ({
+  error,
+  input,
+}: {
+  error: string;
+  input: string;
+}) => {
+  const [responseError, setResponseError] = useState<{
+    message: string;
+    messageElement: string;
+  }>({ message: "", messageElement: "" });
+
+  const setError = () => {
+    console.log("error", error);
+
+    setResponseError({
+      message: error,
+      messageElement: input,
+    });
+  };
+  return { responseError, setError };
+};

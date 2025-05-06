@@ -5,8 +5,6 @@ import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-import { isNotEmpty } from "@/lib/utils/validation";
-
 import { Select, SelectOption, Toggle } from "@/types/interfaces/form";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 
@@ -33,7 +31,7 @@ const SelectComponent = ({
 
   const dispatch = useAppDispatch();
   const [optionList, setOptionList] = useState(config.options);
-  const [toggleOptionBtn, setToggleOptionBtn] = useState({} as Toggle);
+  const [toggleOptionBtn, setToggleOptionBtn] = useState<Toggle | null>(null);
   const [optionIndex, setOptionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(defaultValue || "");
 
@@ -144,7 +142,7 @@ const SelectComponent = ({
           {errors[config.name]?.message as string}
         </p>
       )}
-      {isNotEmpty(toggleOptionBtn) && (
+      {toggleOptionBtn && (
         <Button
           style={{ marginTop: "1rem" }}
           onClick={() => {

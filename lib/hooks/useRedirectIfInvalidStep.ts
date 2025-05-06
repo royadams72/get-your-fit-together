@@ -5,7 +5,7 @@ import { JOURNEY_PATHS } from "@/routes.config";
 import { JourneyData } from "@/types/interfaces/journey";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
-import { isNotEmpty } from "@/lib/utils/validation";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { getJourneyData, navigate } from "@/lib/features/journey/journeySlice";
 
 const useRedirectIfInvalidStep = () => {

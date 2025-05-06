@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
-import { isNotEmpty } from "@/lib/utils/validation";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
+import { User } from "@/types/enums/user.enum";
 import { UiData } from "@/types/enums/uiData.enum";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
@@ -23,10 +24,12 @@ import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/your-fit-plan/Accordion";
 import Button from "@/components/Button";
 import { useMemo, useState } from "react";
-import InlineError from "@/components/InlineError";
 
 const RetrieveYourPlan = () => {
-  const [responseError, setResponseError] = useState("");
+  const [responseError, setResponseError] = useState<{
+    message: string;
+    messageElement: string;
+  }>({ message: "", messageElement: "" });
 
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
@@ -60,7 +63,10 @@ const RetrieveYourPlan = () => {
       });
       const responseData = await response.json();
       if (responseData.error) {
-        setResponseError(responseData.error);
+        setResponseError({
+          message: responseData.error,
+          messageElement: User.userPassword,
+        });
         console.log("responseData", responseData.error);
         return;
       }
@@ -85,8 +91,7 @@ const RetrieveYourPlan = () => {
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>
-          <UserForm config={config(false)} />
-          {responseError && <InlineError error={responseError} />}
+          <UserForm customMessage={responseError} config={config(false)} />
           <Button type="submit">Retrieve Your Plan</Button>
         </FormProvider>
       )}

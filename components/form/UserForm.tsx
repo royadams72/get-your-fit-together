@@ -11,7 +11,7 @@ const UserForm = ({
   inputValue,
 }: {
   config: any;
-  customMessage?: string;
+  customMessage?: { message: string; messageElement: string };
   inputValue?: (val: FormValue) => void;
 }) => {
   const userArr = [User.userName, User.userPassword];
@@ -19,7 +19,6 @@ const UserForm = ({
   return (
     <div className={styles.userFormContainer}>
       {userArr.map((elName) => {
-        const isUserName = elName === User.userName;
         const inputProps: any = {
           config: config[elName],
           inputValue: config.isYourFitPage ? inputValue : undefined,
@@ -28,8 +27,10 @@ const UserForm = ({
         return (
           <div key={elName}>
             <InputComponent {...inputProps} />
-            {config.isYourFitPage && isUserName && customMessage ? (
-              <div className={styles.textInputDivError}>{customMessage}</div>
+            {customMessage?.messageElement === elName ? (
+              <div className={styles.textInputDivError}>
+                {customMessage.message}
+              </div>
             ) : null}
           </div>
         );
