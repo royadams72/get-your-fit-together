@@ -15,12 +15,17 @@ export async function POST(req: Request) {
 
     const {
       user: {
-        user: { userName },
+        user: { userName, userPassword },
       },
     } = reduxState;
+    console.log(reduxState);
 
+    // TODO: check if userName and userPassword are not empty
     await collection.updateOne(
-      { "reduxState.user.user.userName": userName },
+      {
+        "reduxState.user.user.userName": userName,
+        "reduxState.user.user.userPassword": userPassword,
+      },
       {
         $set: { reduxState },
         $setOnInsert: { createdAt: new Date() },
@@ -28,6 +33,7 @@ export async function POST(req: Request) {
       },
       { upsert: true }
     );
+    // TODO: check response
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,16 +1,15 @@
 "use client";
 
-import Link from "next/link";
-
 import { useForm } from "react-hook-form";
 
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
-import { isNotEmpty } from "@/lib/utils/validation";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
+import { User } from "@/types/enums/user.enum";
 import { UiData } from "@/types/enums/uiData.enum";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
@@ -24,13 +23,17 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/your-fit-plan/Accordion";
 import Button from "@/components/Button";
+import { useMemo, useState } from "react";
 
 const RetrieveYourPlan = () => {
+  const [responseError, setResponseError] = useState<{
+    message: string;
+    messageElement: string;
+  }>({ message: "", messageElement: "" });
+
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const store = useAppSelector(selectState);
-
-  const { setLoading } = useLoader();
 
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
@@ -39,12 +42,18 @@ const RetrieveYourPlan = () => {
     dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
   };
+
+  const isUserFitnessPlanNotEmpty = useMemo(
+    () => isNotEmpty(userFitnessPlan),
+    [userFitnessPlan]
+  );
+
+  const { setLoading } = useLoader();
+
   const methods = useForm();
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
-    console.log("data", data);
-
     try {
       setLoading(true);
       const response = await fetch(`${API.RETRIEVE}`, {
@@ -53,18 +62,26 @@ const RetrieveYourPlan = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
-      // console.log("responseData", responseData);
+      if (responseData.error) {
+        setResponseError({
+          message: responseData.error,
+          messageElement: User.userPassword,
+        });
+        console.log("responseData", responseData.error);
+        return;
+      }
+      console.log("responseData", responseData.error);
       setRetrievedStore(responseData);
       reset();
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error("Error retrieving data:", error);
     } finally {
       setLoading(false);
     }
   };
   return (
     <div>
-      {isNotEmpty(userFitnessPlan) ? (
+      {isUserFitnessPlanNotEmpty ? (
         <div>
           <h2>Your Custom Fit</h2>
           <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
@@ -74,7 +91,7 @@ const RetrieveYourPlan = () => {
         </div>
       ) : (
         <FormProvider methods={methods} onSubmit={onSubmit}>
-          <UserForm config={config(false)} />
+          <UserForm customMessage={responseError} config={config(false)} />
           <Button type="submit">Retrieve Your Plan</Button>
         </FormProvider>
       )}

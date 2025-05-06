@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
-        "stateToSave.user.user.userName": userName,
+        "reduxState.user.user.userName": userName,
       }
     );
 

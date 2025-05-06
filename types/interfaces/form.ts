@@ -10,7 +10,7 @@ export interface Select {
   label: string;
   name: string;
   options?: SelectOption[];
-  toggleOptions?: Toggle[] | undefined;
+  toggleOptions?: Toggle[] | null;
   validation?: RegisterOptions;
 }
 

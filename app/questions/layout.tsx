@@ -1,5 +1,4 @@
 "use client";
-// import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { config } from "@/app/questions/preferences/form-configs/config";
@@ -12,7 +11,7 @@ import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
 import useMarkAsEditingUntilYourFit from "@/lib/hooks/useMarkAsEditingUntilYourFit";
 import useRedirectIfInvalidStep from "@/lib/hooks/useRedirectIfInvalidStep";
 
-import { isEmpty, isNotEmpty } from "@/lib/utils/validation";
+import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/JourneyNavigation";
@@ -40,6 +39,7 @@ export default function QuestionsLayout({
   };
 
   const onSubmit = () => {
+    console.log("formerrors", formErrors);
     if (isEmpty(formErrors)) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);

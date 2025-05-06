@@ -32,7 +32,11 @@ const YourFit = () => {
   const { reset } = methods;
   const { setLoading } = useLoader();
 
-  const [checkUserMessage, setCheckUserMessage] = useState("");
+  const [responseError, setResponseError] = useState<{
+    message: string;
+    messageElement: string;
+  }>({ message: "", messageElement: "" });
+
   const [userForm, setUserForm] = useState<FormValue>();
 
   const inputVal = (val: FormValue) => {
@@ -40,8 +44,16 @@ const YourFit = () => {
   };
 
   const onSubmit = async (form: any) => {
+    for (const [key, val] of Object.entries(form)) {
+      console.log(key, val);
+
+      dispatch(setUser({ name: key as keyof UserStore, value: val as string }));
+    }
     try {
       setLoading(true);
+
+      console.log(savedState);
+
       const response = await fetch(`${API.SAVE_PLAN}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,11 +62,6 @@ const YourFit = () => {
       const responseData = await response.json();
 
       if (responseData.success) {
-        for (const [key, val] of Object.entries(form)) {
-          dispatch(
-            setUser({ name: key as keyof UserStore, value: val as string })
-          );
-        }
         reset();
         dispatch(setStore(defaultState));
         dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
@@ -84,9 +91,12 @@ const YourFit = () => {
 
         const responseData = await response.json();
         if (responseData.error) {
-          setCheckUserMessage(responseData.error);
+          setResponseError({
+            message: responseData.error,
+            messageElement: User.userName,
+          });
         } else {
-          setCheckUserMessage("");
+          setResponseError({ message: "", messageElement: "" });
         }
       } catch (error) {
         console.error("Error getting data:", error);
@@ -128,22 +138,22 @@ const YourFit = () => {
 
   return (
     <div>
-      {!getUiState.isSignedUp && userFitnessPlan && (
-        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-      )}
-      {!getUiState.isSignedUp && (
-        <section>
-          <h3> Create a username and password to save your plan:</h3>
-          <FormProvider onSubmit={onSubmit}>
-            <UserForm
-              config={config(true)}
-              customMessage={checkUserMessage}
-              inputValue={inputVal}
-            ></UserForm>
-            <Button type="submit">Save your plan</Button>
-          </FormProvider>
-        </section>
-      )}
+      {/* {!getUiState.isSignedUp && userFitnessPlan && ( */}
+      <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+      {/* )} */}
+      {/* {!getUiState.isSignedUp && ( */}
+      <section>
+        <h3> Create a username and password to save your plan:</h3>
+        <FormProvider onSubmit={onSubmit}>
+          <UserForm
+            config={config(true)}
+            customMessage={responseError}
+            inputValue={inputVal}
+          ></UserForm>
+          <Button type="submit">Save your plan</Button>
+        </FormProvider>
+      </section>
+      {/* )} */}
       {getUiState.isSignedUp && (
         <div>
           <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
