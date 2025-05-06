@@ -1,5 +1,5 @@
 export enum UiData {
   isEditing = "isEditing",
-  isSignedUp = "isSignedUp",
+  isSignedIn = "isSignedIn",
   isRetrieving = "isRetrieving",
 }

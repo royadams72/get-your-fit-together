@@ -39,7 +39,7 @@ const RetrieveYourPlan = () => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
     dispatch(setCanNavigateTrue());
-    dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
+    dispatch(setUiData({ name: UiData.isSignedIn, value: true }));
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
   };
 

@@ -14,8 +14,7 @@ const useRedirectIfInvalidStep = () => {
   const dispatch = useAppDispatch();
 
   const journeyData: JourneyData[] = useAppSelector(getJourneyData);
-
-  const [isRedirecting, setIsRedirecting] = useState(true);
+  const [isInvalidStep, setIsInvalidStep] = useState(true);
 
   useEffect(() => {
     const canNavigate = isNotEmpty(
@@ -29,15 +28,15 @@ const useRedirectIfInvalidStep = () => {
     )?.name;
 
     if (!canNavigate) {
-      setIsRedirecting(true);
+      setIsInvalidStep(true);
       router.replace(`${lastCompletedRoute || JOURNEY_PATHS[0]}`);
     } else {
-      setIsRedirecting(false);
+      setIsInvalidStep(false);
       dispatch(navigate({ route: path }));
     }
   }, [journeyData, router, path, dispatch]);
 
-  return isRedirecting;
+  return isInvalidStep;
 };
 
 export default useRedirectIfInvalidStep;
