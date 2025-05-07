@@ -20,4 +20,5 @@ export const PATHS = {
   PREFERENCES: JOURNEY_PATHS[3],
   YOUR_FIT: JOURNEY_PATHS[4],
   RETRIEVE_PLAN: "/retrieve-plan",
+  SUCCESS: "/success",
 };

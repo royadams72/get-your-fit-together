@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import useRedirectIfInvalidStep from "@/lib/hooks/useRedirectIfInvalidStep";
@@ -28,6 +29,8 @@ import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 const YourFit = () => {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
@@ -38,7 +41,7 @@ const YourFit = () => {
   const { setLoading } = useLoader();
 
   const [userForm, setUserForm] = useState<FormValue>();
-  const [savedSuccess, setSavedSuccess] = useState(false);
+  // const [savedSuccess, setSavedSuccess] = useState(false);
   const isInvalidStep = useRedirectIfInvalidStep();
 
   const inputVal = (val: FormValue) => {
@@ -70,7 +73,8 @@ const YourFit = () => {
       if (responseData.success) {
         reset();
         dispatch(setStore(defaultState));
-        setSavedSuccess(true);
+        router.push(PATHS.SUCCESS);
+        // setSavedSuccess(true);
       }
     } catch (error) {
       console.error("Error saving data:", error);
@@ -98,14 +102,7 @@ const YourFit = () => {
           </Button>
         </FormProvider>
       )}
-      {savedSuccess && !userFitnessPlan && (
-        <div>
-          <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
-          <Button href={PATHS.RETRIEVE_PLAN} style={{ marginTop: "1rem" }}>
-            You can retrieve your plan here
-          </Button>
-        </div>
-      )}
+
       <JourneyButtons />
     </div>
   );
