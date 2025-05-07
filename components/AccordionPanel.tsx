@@ -15,27 +15,25 @@ const AccordionPanel = ({
   ref,
   onShow,
 }: AccordionPanelProps) => {
+  const setActiveStyles = (styleName?: string) => {
+    if (!styleName) {
+      return isActive
+        ? styles.accordionPanelActive
+        : styles.accordionPanelNotActive;
+    }
+    const activeClass = `accordionPanel${styleName}Active`;
+    const notActiveClass = `accordionPanel${styleName}NotActive`;
+
+    return isActive ? styles[activeClass] : styles[notActiveClass];
+  };
+
   return (
     <section className={styles.accordionPanel} ref={ref}>
-      <div className={styles.accordionPanelTitle}>
+      <div className={setActiveStyles("Title")}>
         <h3 onClick={onShow}>{title}</h3>
-        <span
-          className={`${
-            isActive
-              ? styles.accordionPanelTitleArrow
-              : styles.accordionPanelTitleArrowActive
-          }`}
-        ></span>
+        <span className={setActiveStyles("Arrow")}></span>
       </div>
-      <section
-        className={`${
-          isActive
-            ? styles.accordionPanelIsActive
-            : styles.accordionPanelNotActive
-        }`}
-      >
-        {children}
-      </section>
+      <section className={setActiveStyles()}>{children}</section>
     </section>
   );
 };
