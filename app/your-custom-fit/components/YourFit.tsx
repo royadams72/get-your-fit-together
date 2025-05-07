@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import useRedirectIfInvalidStep from "@/lib/hooks/useRedirectIfInvalidStep";
@@ -45,12 +45,16 @@ const YourFit = () => {
   };
 
   useGetYourPlanOnLoad(isNotEmpty(userFitnessPlan));
-  const responseError = useCheckIfUserNameExists(userForm, getUiState);
+  const responseError = useCheckIfUserNameExists(userForm);
 
-  const onSubmit = async (form: any) => {
+  const setUserToStore = async (form: any) => {
     for (const [key, val] of Object.entries(form)) {
       dispatch(setUser({ name: key as keyof UserStore, value: val as string }));
     }
+  };
+
+  const onSubmit = async (form: any) => {
+    await setUserToStore(form);
 
     try {
       setLoading(true);
@@ -94,7 +98,7 @@ const YourFit = () => {
           </FormProvider>
         </section>
       )}
-      {savedSuccess && (
+      {savedSuccess && !userFitnessPlan && (
         <div>
           <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
           <Button href={PATHS.RETRIEVE_PLAN} style={{ marginTop: "1rem" }}>

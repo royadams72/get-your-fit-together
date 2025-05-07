@@ -1,13 +1,15 @@
-import { useLoader } from "@/context/Loader/LoaderProvider";
-import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { useEffect } from "react";
+
+import { API } from "@/routes.config";
+
 import { setUser } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { selectState } from "@/lib/store/store";
-import { API } from "@/routes.config";
-import { UiData } from "@/types/enums/uiData.enum";
+
 import { User } from "@/types/enums/user.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
-import { useEffect } from "react";
+
+import { useLoader } from "@/context/Loader/LoaderProvider";
 
 export const useGetYourPlanOnLoad = (userFitnessPlan: boolean) => {
   const savedState = useAppSelector(selectState);
@@ -39,7 +41,6 @@ export const useGetYourPlanOnLoad = (userFitnessPlan: boolean) => {
             value: responseData,
           })
         );
-        dispatch(setUiData({ name: UiData.isEditing, value: false }));
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

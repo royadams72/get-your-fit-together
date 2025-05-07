@@ -4,12 +4,8 @@ import { API } from "@/routes.config";
 
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
-import { UiDataStore } from "@/types/interfaces/uiData";
 
-export const useCheckIfUserNameExists = (
-  userForm: FormValue | undefined,
-  getUiState: UiDataStore
-) => {
+export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -44,6 +40,6 @@ export const useCheckIfUserNameExists = (
         console.error("Error getting data:", error);
       }
     })();
-  }, [userForm, getUiState.isEditing]);
+  }, [userForm]);
   return responseError;
 };
