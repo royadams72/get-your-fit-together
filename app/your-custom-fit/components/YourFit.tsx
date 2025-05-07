@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
+import { isNotEmpty } from "@/lib/utils/isEmpty";
+
 import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
 import { setStore, defaultState, selectState } from "@/lib/store/store";
@@ -42,22 +44,14 @@ const YourFit = () => {
     setUserForm(val);
   };
 
-  const getPlan = useGetYourPlanOnLoad();
+  useGetYourPlanOnLoad(isNotEmpty(userFitnessPlan));
   const responseError = useCheckIfUserNameExists(userForm, getUiState);
-
-  const handleGetPlan = async () => {
-    if (isInvalidStep) return;
-    await getPlan();
-  };
-
-  useEffect(() => {
-    handleGetPlan();
-  }, [isInvalidStep]);
 
   const onSubmit = async (form: any) => {
     for (const [key, val] of Object.entries(form)) {
       dispatch(setUser({ name: key as keyof UserStore, value: val as string }));
     }
+
     try {
       setLoading(true);
 

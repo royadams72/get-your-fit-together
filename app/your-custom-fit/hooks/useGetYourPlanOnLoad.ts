@@ -9,38 +9,42 @@ import { User } from "@/types/enums/user.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { useEffect } from "react";
 
-export const useGetYourPlanOnLoad = () => {
+export const useGetYourPlanOnLoad = (userFitnessPlan: boolean) => {
   const savedState = useAppSelector(selectState);
   const dispatch = useAppDispatch();
   const { setLoading } = useLoader();
 
-  const getPlan = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API.GET_PLAN}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(savedState),
-      });
-      const responseData: FitPlan = await response.json();
+  useEffect(() => {
+    console.log("userFitnessPlan", userFitnessPlan);
 
-      if (!responseData) {
-        console.error("Invalid API response:", responseData);
-        return;
+    if (userFitnessPlan) return;
+    (async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${API.GET_PLAN}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(savedState),
+        });
+        const responseData: FitPlan = await response.json();
+
+        if (!responseData) {
+          console.error("Invalid API response:", responseData);
+          return;
+        }
+
+        dispatch(
+          setUser({
+            name: User.userFitnessPlan,
+            value: responseData,
+          })
+        );
+        dispatch(setUiData({ name: UiData.isEditing, value: false }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-
-      dispatch(
-        setUser({
-          name: User.userFitnessPlan,
-          value: responseData,
-        })
-      );
-      dispatch(setUiData({ name: UiData.isEditing, value: false }));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  return getPlan;
+    })();
+  }, []);
 };
