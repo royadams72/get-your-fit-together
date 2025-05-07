@@ -25,6 +25,7 @@ import Accordion from "@/components/your-fit-plan/Accordion";
 import Button from "@/components/Button";
 import { useGetYourPlanOnLoad } from "../hooks/useGetYourPlanOnLoad";
 import { useCheckIfUserNameExists } from "../hooks/useCheckIfUserNameExists";
+import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 const YourFit = () => {
   const dispatch = useAppDispatch();
@@ -86,17 +87,16 @@ const YourFit = () => {
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedIn && (
-        <section>
-          <h3> Create a username and password to save your plan:</h3>
-          <FormProvider onSubmit={onSubmit}>
-            <UserForm
-              config={config(true)}
-              customMessage={responseError}
-              inputValue={inputVal}
-            ></UserForm>
-            <Button type="submit">Save your plan</Button>
-          </FormProvider>
-        </section>
+        <FormProvider onSubmit={onSubmit}>
+          <UserForm
+            config={config(true)}
+            customMessage={responseError}
+            inputValue={inputVal}
+          ></UserForm>
+          <Button style={{ marginBottom: "4rem" }} type="submit">
+            Save your plan
+          </Button>
+        </FormProvider>
       )}
       {savedSuccess && !userFitnessPlan && (
         <div>
@@ -106,6 +106,7 @@ const YourFit = () => {
           </Button>
         </div>
       )}
+      <JourneyButtons />
     </div>
   );
 };

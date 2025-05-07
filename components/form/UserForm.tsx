@@ -18,6 +18,7 @@ const UserForm = ({
 
   return (
     <div className={styles.userFormContainer}>
+      <h3> Create a username and password to save your plan:</h3>
       {userArr.map((elName) => {
         const inputProps: any = {
           config: config[elName],

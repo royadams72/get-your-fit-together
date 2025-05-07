@@ -1,28 +1,16 @@
-"use client";
-
-import React, { useEffect } from "react";
-
 import { useAppSelector } from "@/lib/hooks/storeHooks";
-
 import { getRoutes } from "@/lib/features/journey/journeySlice";
 
 import styles from "@/styles/components/_journeyNav.module.scss";
 
-import { useFormContext } from "@/context/FormProvider";
 import Button from "@/components/Button";
 
-const JourneyNavigation = ({
-  getFormErrors,
+export const JourneyButtons = ({
+  handleSubmit,
 }: {
-  getFormErrors: (errors: any) => void;
+  handleSubmit?: () => void;
 }) => {
-  const { handleSubmit, formState } = useFormContext();
-
   const { nextRoute, prevRoute } = useAppSelector(getRoutes);
-
-  useEffect(() => {
-    getFormErrors(formState.errors);
-  }, [formState]);
 
   return (
     <nav
@@ -44,4 +32,4 @@ const JourneyNavigation = ({
   );
 };
 
-export default JourneyNavigation;
+export default JourneyButtons;

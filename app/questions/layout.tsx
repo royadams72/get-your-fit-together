@@ -13,7 +13,7 @@ import useRedirectIfInvalidStep from "@/lib/hooks/useRedirectIfInvalidStep";
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
 
 import FormProvider from "@/context/FormProvider";
-import JourneyNavigation from "@/components/JourneyNavigation";
+import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
 
 export default function QuestionsLayout({
   children,
