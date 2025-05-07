@@ -21,7 +21,7 @@ import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/components/your-fit-plan/Accordion";
+import Accordion from "@/app/your-custom-fit/components/Accordion";
 import Button from "@/components/Button";
 import { useMemo, useState } from "react";
 
