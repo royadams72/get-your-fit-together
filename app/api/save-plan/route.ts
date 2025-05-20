@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       ...restOfState
     }: State & PersistPartial = savedState;
 
-    const { userName, userPassword } = userData;
+    const userName = userData?.userName || restOfState?.user?.user?.userName;
+    const userPassword =
+      userData?.userName || restOfState?.user?.user?.userPassword;
 
     if (!userName || !userPassword) {
       return NextResponse.json(
@@ -24,6 +26,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     const reduxState = {
       ...restOfState,
       user: { user: { ...restOfState.user.user, userPassword, userName } },

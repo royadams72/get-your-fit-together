@@ -108,6 +108,7 @@ export const foodAllergiesOptions = [
 
 export const otherSensitivitiesOptions = [
   { value: "", display: "Select Other Sensitivities" },
+  { value: "none", display: "None" },
   {
     value: "artificial-sweeteners",
     display: "Artificial Sweeteners (Aspartame, Sucralose, etc.)",
@@ -117,5 +118,4 @@ export const otherSensitivitiesOptions = [
     value: "histamine-intolerance",
     display: "Histamine Intolerance (Fermented Foods, Aged Cheeses, etc.)",
   },
-  { value: "none", display: "None of the above" },
 ];

@@ -34,4 +34,4 @@ export const aiPrompt = `You are a personal trainer. Your role is to generate st
     }
   }
 }
-Use only standard JSON formatting. Do not include any explanation or additional text outside of the JSON. Include free YouTube video links for workouts when possible. Avoid follow-up questions or interactivity. Keep all copy concise, informative, and well-structured for app formatting.`;
+Use only standard JSON formatting. Do not include any explanation or additional text outside of the JSON. Include free YouTube video links for workouts when possible. Avoid follow-up questions or interactivity. Keep all copy concise, informative, and well-structured for app formatting, when adding to nutritionLifestyleTips each action should at least 100 words and add inline links to the copy, to books or YouTube videos if possible for added information, if adding links they should be formatted as <a href="link to item" rel="noopener noreferrer"  target="_blank">view here</a>`;

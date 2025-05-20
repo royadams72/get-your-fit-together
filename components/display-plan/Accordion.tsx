@@ -8,8 +8,8 @@ import {
 
 import styles from "@/styles/components/_accordionPanel.module.scss";
 
-import ScheduleComponent from "@/app/your-custom-fit/components/ScheduleComponent";
-import TipsComponent from "@/app/your-custom-fit/components/TipsComponent";
+import ScheduleComponent from "@/components/display-plan/ScheduleComponent";
+import TipsComponent from "@/components/display-plan/TipsComponent";
 import AccordionPanel from "@/components/AccordionPanel";
 
 const Accordion: React.FC<{ plan: FitPlan }> = ({ plan }) => {

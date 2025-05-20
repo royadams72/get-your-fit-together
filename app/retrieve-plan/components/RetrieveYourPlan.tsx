@@ -1,7 +1,8 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useMemo, useState } from "react";
 
+import { useForm } from "react-hook-form";
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
@@ -10,20 +11,19 @@ import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
 import { User } from "@/types/enums/user.enum";
-import { UiData } from "@/types/enums/uiData.enum";
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { selectState, setStore } from "@/lib/store/store";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
-import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { setUiDataForRetreive } from "@/lib/features/ui-data/uiDataSlice";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/app/your-custom-fit/components/Accordion";
+import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
-import { useMemo, useState } from "react";
 
 const RetrieveYourPlan = () => {
   const [responseError, setResponseError] = useState<{
@@ -39,8 +39,7 @@ const RetrieveYourPlan = () => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
     dispatch(setCanNavigateTrue());
-    dispatch(setUiData({ name: UiData.isSignedIn, value: true }));
-    dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
+    dispatch(setUiDataForRetreive());
   };
 
   const isUserFitnessPlanNotEmpty = useMemo(
@@ -56,21 +55,22 @@ const RetrieveYourPlan = () => {
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
+
       const response = await fetch(`${API.RETRIEVE}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
+
       if (responseData.error) {
         setResponseError({
           message: responseData.error,
           messageElement: User.userPassword,
         });
-        console.log("responseData", responseData.error);
         return;
       }
-      console.log("responseData", responseData.error);
+
       setRetrievedStore(responseData);
       reset();
     } catch (error) {

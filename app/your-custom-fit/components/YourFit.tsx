@@ -11,8 +11,6 @@ import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIf
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
-import { isNotEmpty } from "@/lib/utils/isEmpty";
-
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
 import { selectState } from "@/lib/store/store";
@@ -23,9 +21,18 @@ import { FormValue } from "@/types/interfaces/form";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/app/your-custom-fit/components/Accordion";
+import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
+
+export const savePlan = async (savedState: any, userData?: any) => {
+  const response = await fetch(`${API.SAVE_PLAN}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(savedState, userData),
+  });
+  return response;
+};
 
 const YourFit = () => {
   const router = useRouter();
@@ -45,20 +52,13 @@ const YourFit = () => {
     setUserForm(val);
   };
 
-  useGetYourPlanOnLoad(isNotEmpty(userFitnessPlan));
+  useGetYourPlanOnLoad();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (form: any) => {
-    console.log("form", form);
-
     try {
       setLoading(true);
-
-      const response = await fetch(`${API.SAVE_PLAN}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ savedState, userData: form }),
-      });
+      const response = await savePlan({ savedState, userData: form });
       const responseData = await response.json();
 
       if (responseData.success) {
