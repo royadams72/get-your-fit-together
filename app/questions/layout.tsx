@@ -8,13 +8,12 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
 
-import useMarkAsEditingUntilYourFit from "@/lib/hooks/useMarkAsEditingUntilYourFit";
-import useRedirectIfInvalidStep from "@/lib/hooks/useRedirectIfInvalidStep";
+import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
 
 import FormProvider from "@/context/FormProvider";
-import JourneyNavigation from "@/components/JourneyNavigation";
+import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
 
 export default function QuestionsLayout({
   children,
@@ -25,11 +24,8 @@ export default function QuestionsLayout({
   const pageName = usePathname();
   const dispatch = useAppDispatch();
   const { nextRoute } = useAppSelector(getRoutes);
-
-  // const [formErrors, setFormErrors] = useState({});
-  const isRedirecting = useRedirectIfInvalidStep();
+  const isInvalidStep = useRedirectIfInvalidStep();
   let formErrors = {};
-  useMarkAsEditingUntilYourFit();
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
@@ -39,7 +35,6 @@ export default function QuestionsLayout({
   };
 
   const onSubmit = () => {
-    console.log("formerrors", formErrors);
     if (isEmpty(formErrors)) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);
@@ -50,12 +45,11 @@ export default function QuestionsLayout({
 
   const getErrorElement = (error: any): HTMLElement | null => {
     if (error == null) return null;
-    console.log(error.ref);
+
     if (error?.ref?.type === "radio")
       return document.querySelector(`label[for="${error.ref.value}"]`);
 
     if (error.ref) return error.ref;
-    console.log(error.root?.ref?.name);
 
     if (error.root?.ref?.name)
       return document.getElementById(`${error.root.ref.name}`);
@@ -68,7 +62,6 @@ export default function QuestionsLayout({
     if (errors.length === 0) return;
 
     const element = getErrorElement(errors[0]);
-    console.log(element);
 
     element?.scrollIntoView({
       behavior: "smooth",
@@ -83,7 +76,7 @@ export default function QuestionsLayout({
 
   const formKey = `form-${pageName}`;
 
-  if (isRedirecting) return null;
+  if (isInvalidStep) return null;
 
   return (
     <FormProvider

@@ -1,29 +1,35 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { useRouter } from "@/lib/hooks/useRouter";
+import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
+import { useAppSelector } from "@/lib/hooks/storeHooks";
+import { useGetYourPlanOnLoad } from "@/app/your-custom-fit/hooks/useGetYourPlanOnLoad";
+import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIfUserNameExists";
 
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
-import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
-import { setStore, defaultState, selectState } from "@/lib/store/store";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
+
+import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
+import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
+import { selectState } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
-import { UserStore } from "@/types/interfaces/user";
-import { User } from "@/types/enums/user.enum";
-import { UiData } from "@/types/enums/uiData.enum";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/components/your-fit-plan/Accordion";
+import Accordion from "@/app/your-custom-fit/components/Accordion";
 import Button from "@/components/Button";
+import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 const YourFit = () => {
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
@@ -32,39 +38,36 @@ const YourFit = () => {
   const { reset } = methods;
   const { setLoading } = useLoader();
 
-  const [responseError, setResponseError] = useState<{
-    message: string;
-    messageElement: string;
-  }>({ message: "", messageElement: "" });
-
   const [userForm, setUserForm] = useState<FormValue>();
+  const isInvalidStep = useRedirectIfInvalidStep();
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
   };
 
-  const onSubmit = async (form: any) => {
-    for (const [key, val] of Object.entries(form)) {
-      console.log(key, val);
+  useGetYourPlanOnLoad(isNotEmpty(userFitnessPlan));
+  const responseError = useCheckIfUserNameExists(userForm);
 
-      dispatch(setUser({ name: key as keyof UserStore, value: val as string }));
-    }
+  const onSubmit = async (form: any) => {
+    console.log("form", form);
+
     try {
       setLoading(true);
-
-      console.log(savedState);
 
       const response = await fetch(`${API.SAVE_PLAN}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ savedState }),
+        body: JSON.stringify({ savedState, userData: form }),
       });
       const responseData = await response.json();
 
       if (responseData.success) {
         reset();
-        dispatch(setStore(defaultState));
-        dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
+
+        router.push({
+          pathname: PATHS.SUCCESS,
+          query: { mode: "plan", message: "Your plan has been saved" },
+        });
       }
     } catch (error) {
       console.error("Error saving data:", error);
@@ -73,95 +76,27 @@ const YourFit = () => {
     }
   };
 
-  useEffect(() => {
-    if (
-      !userForm ||
-      userForm.name !== User.userName ||
-      userForm.value.length < 6
-    )
-      return;
-
-    (async () => {
-      try {
-        const response = await fetch(`${API.CHECK_USER}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userForm.value),
-        });
-
-        const responseData = await response.json();
-        if (responseData.error) {
-          setResponseError({
-            message: responseData.error,
-            messageElement: User.userName,
-          });
-        } else {
-          setResponseError({ message: "", messageElement: "" });
-        }
-      } catch (error) {
-        console.error("Error getting data:", error);
-      }
-    })();
-  }, [userForm, getUiState.isEditing]);
-
-  useEffect(() => {
-    if (!getUiState.isEditing) return;
-    (async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${API.GET_PLAN}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(savedState),
-        });
-        const responseData: FitPlan = await response.json();
-
-        if (!responseData) {
-          console.error("Invalid API response:", responseData);
-          return;
-        }
-
-        dispatch(
-          setUser({
-            name: User.userFitnessPlan,
-            value: responseData,
-          })
-        );
-        dispatch(setUiData({ name: UiData.isEditing, value: false }));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  if (isInvalidStep) return null;
 
   return (
     <div>
-      {/* {!getUiState.isSignedUp && userFitnessPlan && ( */}
-      <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-      {/* )} */}
-      {/* {!getUiState.isSignedUp && ( */}
-      <section>
-        <h3> Create a username and password to save your plan:</h3>
+      {userFitnessPlan && (
+        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+      )}
+      {!getUiState.isSignedIn && (
         <FormProvider onSubmit={onSubmit}>
           <UserForm
             config={config(true)}
             customMessage={responseError}
             inputValue={inputVal}
           ></UserForm>
-          <Button type="submit">Save your plan</Button>
-        </FormProvider>
-      </section>
-      {/* )} */}
-      {getUiState.isSignedUp && (
-        <div>
-          <h3 style={{ color: "var(--success)" }}>Your plan has been saved</h3>
-          <Button href={PATHS.RETRIEVE_PLAN} style={{ marginTop: "1rem" }}>
-            You can retrieve your plan here
+          <Button style={{ marginBottom: "5rem" }} type="submit">
+            Save your plan
           </Button>
-        </div>
+        </FormProvider>
       )}
+
+      <JourneyButtons />
     </div>
   );
 };

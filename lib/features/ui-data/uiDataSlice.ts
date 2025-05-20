@@ -6,8 +6,7 @@ export const uiDataSliceName = "uiData";
 
 export const uiDataInitialState: UiDataState = {
   uiData: {
-    [UiData.isEditing]: false,
-    [UiData.isSignedUp]: false,
+    [UiData.isSignedIn]: false,
     [UiData.isRetrieving]: false,
   },
 };
@@ -25,10 +24,10 @@ export const uiDataSlice = createAppSlice({
   },
   selectors: {
     getUiDataState: (state: UiDataState) => state.uiData,
-    getIsEditing: (state: UiDataState) => state.uiData.isEditing,
+    getIsSignedIn: (state: UiDataState) => state.uiData.isSignedIn,
   },
 });
 
 export const { setUiData } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
-export const { getUiDataState, getIsEditing } = uiDataSlice.selectors;
+export const { getUiDataState, getIsSignedIn } = uiDataSlice.selectors;

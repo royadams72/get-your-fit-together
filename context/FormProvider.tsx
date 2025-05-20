@@ -35,9 +35,10 @@ const FormProvider = ({
 }: FormProviderProps) => {
   const internalMethods = useForm({ defaultValues: defaultValues || {} });
   const formMethods = methods || internalMethods;
+  // console.log("defaultValues", defaultValues);
 
   const submitForm = () => {
-    formMethods.handleSubmit(onSubmit)(); // ✅ Ensure onSubmit is called correctly
+    formMethods.handleSubmit(onSubmit)();
   };
   const contextValue = {
     handleSubmit: submitForm,

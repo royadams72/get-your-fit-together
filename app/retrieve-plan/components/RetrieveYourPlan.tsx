@@ -21,7 +21,7 @@ import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/components/your-fit-plan/Accordion";
+import Accordion from "@/app/your-custom-fit/components/Accordion";
 import Button from "@/components/Button";
 import { useMemo, useState } from "react";
 
@@ -39,7 +39,7 @@ const RetrieveYourPlan = () => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
     dispatch(setCanNavigateTrue());
-    dispatch(setUiData({ name: UiData.isSignedUp, value: true }));
+    dispatch(setUiData({ name: UiData.isSignedIn, value: true }));
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
   };
 
