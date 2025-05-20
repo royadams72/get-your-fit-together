@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { State } from "@/types/interfaces/store";
 import { connectToDB } from "@/lib/db/mongodb";
 import { PersistPartial } from "redux-persist/es/persistReducer";
-// import { extractState } from "../get-plan/route";
 
 export async function POST(req: Request) {
   try {
@@ -10,11 +9,14 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
     const { savedState, userData } = await req.json();
 
-    const { _persist, uiData, journey, ...reduxState }: State & PersistPartial =
-      savedState;
+    const {
+      _persist,
+      uiData,
+      journey,
+      ...restOfState
+    }: State & PersistPartial = savedState;
 
     const { userName, userPassword } = userData;
-    console.log(userData);
 
     if (!userName || !userPassword) {
       return NextResponse.json(
@@ -22,6 +24,10 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+    const reduxState = {
+      ...restOfState,
+      user: { user: { ...restOfState.user.user, userPassword, userName } },
+    };
 
     try {
       const response = await collection.updateOne(
@@ -30,11 +36,11 @@ export async function POST(req: Request) {
         },
         {
           $set: {
-            "reduxState.user.user.userName": userName,
-            "reduxState.user.user.userPassword": userPassword,
             reduxState: reduxState,
           },
-          $setOnInsert: { createdAt: new Date() },
+          $setOnInsert: {
+            createdAt: new Date(),
+          },
           $currentDate: { updatedAt: true },
         },
         { upsert: true }
