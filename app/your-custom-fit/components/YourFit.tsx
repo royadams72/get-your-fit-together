@@ -56,8 +56,6 @@ const YourFit = () => {
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (form: any) => {
-    console.log("form", form);
-
     try {
       setLoading(true);
       const response = await savePlan({ savedState, userData: form });

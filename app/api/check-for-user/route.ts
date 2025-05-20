@@ -6,7 +6,6 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    // console.log(await req.json());
 
     const userName = await req.json();
 
