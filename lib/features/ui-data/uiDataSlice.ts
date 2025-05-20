@@ -22,6 +22,11 @@ export const uiDataSlice = createAppSlice({
     ) => {
       state.uiData[action.payload.name] = action.payload.value;
     },
+    setUiDataForRetreive: (state: UiDataState) => {
+      state.uiData.isEditing = true;
+      state.uiData.isRetrieving = true;
+      state.uiData.isSignedIn = true;
+    },
   },
   selectors: {
     getUiDataState: (state: UiDataState) => state.uiData,
@@ -29,6 +34,6 @@ export const uiDataSlice = createAppSlice({
   },
 });
 
-export const { setUiData } = uiDataSlice.actions;
+export const { setUiData, setUiDataForRetreive } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
 export const { getUiDataState, getIsSignedIn } = uiDataSlice.selectors;

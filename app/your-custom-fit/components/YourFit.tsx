@@ -21,7 +21,7 @@ import { FormValue } from "@/types/interfaces/form";
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/app/your-custom-fit/components/Accordion";
+import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 

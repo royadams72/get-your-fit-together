@@ -21,14 +21,14 @@ export default function QuestionsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pageName = usePathname();
-  const dispatch = useAppDispatch();
   const { nextRoute } = useAppSelector(getRoutes);
+  let formErrors = {};
 
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
-  let formErrors = {};
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
