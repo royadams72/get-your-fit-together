@@ -1,9 +1,9 @@
 import { useRouter as useNextRouter } from "next/navigation";
 
-const useRouter = () => {
-  const { push: nextPush, ...rest } = useNextRouter();
+export const useRouter = () => {
+  const { push: nextPush, replace: nextReplace, ...rest } = useNextRouter();
 
-  const customPush = ({
+  const customQuery = ({
     pathname,
     query,
   }: {
@@ -11,11 +11,16 @@ const useRouter = () => {
     query: Record<string, any>;
   }) => {
     const generateQuery = new URLSearchParams(query).toString();
+    const url = `${pathname}?${generateQuery}`;
 
-    nextPush(`${pathname}?${generateQuery}`);
+    if (nextReplace) {
+      nextReplace(url);
+      return { ...rest, replace: customQuery };
+    } else {
+      nextPush(url);
+      return { ...rest, push: customQuery };
+    }
   };
 
-  return { ...rest, push: customPush };
+  return { ...rest, push: customQuery, replace: customQuery };
 };
-
-export default useRouter;

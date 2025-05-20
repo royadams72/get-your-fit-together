@@ -8,17 +8,13 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    const { savedState } = await req.json();
+    const { savedState, userData } = await req.json();
 
     const { _persist, uiData, journey, ...reduxState }: State & PersistPartial =
       savedState;
 
-    const {
-      user: {
-        user: { userName, userPassword },
-      },
-    } = reduxState;
-    console.log(reduxState);
+    const { userName, userPassword } = userData;
+    console.log(userData);
 
     if (!userName || !userPassword) {
       return NextResponse.json(
@@ -33,7 +29,11 @@ export async function POST(req: Request) {
           "reduxState.user.user.userName": userName,
         },
         {
-          $set: { reduxState },
+          $set: {
+            "reduxState.user.user.userName": userName,
+            "reduxState.user.user.userPassword": userPassword,
+            reduxState: reduxState,
+          },
           $setOnInsert: { createdAt: new Date() },
           $currentDate: { updatedAt: true },
         },
@@ -47,6 +47,7 @@ export async function POST(req: Request) {
         );
       }
       console.log("response", response);
+      return NextResponse.json({ success: true });
     } catch (error) {
       console.error("Error saving state:", error);
       return NextResponse.json(
@@ -54,8 +55,6 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
-
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Database error:", error);
     return NextResponse.json(

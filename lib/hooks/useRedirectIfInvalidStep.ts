@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { getJourneyData, navigate } from "@/lib/features/journey/journeySlice";
 
-const useRedirectIfInvalidStep = () => {
+export const useRedirectIfInvalidStep = () => {
   const router = useRouter();
   const path = usePathname();
   const dispatch = useAppDispatch();
@@ -38,5 +38,3 @@ const useRedirectIfInvalidStep = () => {
 
   return isInvalidStep;
 };
-
-export default useRedirectIfInvalidStep;
