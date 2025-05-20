@@ -7,7 +7,13 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    const { savedState, userData } = await req.json();
+    const {
+      savedState,
+      userData: {
+        userName: formUserName = "",
+        userPassword: formUserPassword = "",
+      } = {},
+    } = await req.json();
 
     const {
       _persist,
@@ -16,7 +22,16 @@ export async function POST(req: Request) {
       ...restOfState
     }: State & PersistPartial = savedState;
 
-    const { userName, userPassword } = userData;
+    console.log("savedState", savedState);
+
+    let userName = formUserName;
+    let userPassword = formUserPassword;
+
+    console.log("restOfState", restOfState);
+    if (!formUserName && !formUserPassword) {
+      userName = restOfState.user.user.userName;
+      userPassword = restOfState.user.user.userPassword;
+    }
 
     if (!userName || !userPassword) {
       return NextResponse.json(
@@ -24,6 +39,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     const reduxState = {
       ...restOfState,
       user: { user: { ...restOfState.user.user, userPassword, userName } },

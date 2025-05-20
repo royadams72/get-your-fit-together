@@ -62,15 +62,15 @@ const RetrieveYourPlan = () => {
         body: JSON.stringify(data),
       });
       const responseData = await response.json();
+
       if (responseData.error) {
         setResponseError({
           message: responseData.error,
           messageElement: User.userPassword,
         });
-        console.log("responseData", responseData.error);
         return;
       }
-      console.log("responseData", responseData.error);
+
       setRetrievedStore(responseData);
       reset();
     } catch (error) {

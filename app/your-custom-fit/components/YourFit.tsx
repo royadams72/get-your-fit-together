@@ -27,6 +27,15 @@ import Accordion from "@/app/your-custom-fit/components/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
+export const savePlan = async (savedState: any, userData?: any) => {
+  const response = await fetch(`${API.SAVE_PLAN}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ savedState, userData }),
+  });
+  return response;
+};
+
 const YourFit = () => {
   const router = useRouter();
 
@@ -53,12 +62,7 @@ const YourFit = () => {
 
     try {
       setLoading(true);
-
-      const response = await fetch(`${API.SAVE_PLAN}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ savedState, userData: form }),
-      });
+      const response = await savePlan({ savedState, userData: form });
       const responseData = await response.json();
 
       if (responseData.success) {
