@@ -11,8 +11,6 @@ import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIf
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
-import { isNotEmpty } from "@/lib/utils/isEmpty";
-
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
 import { selectState } from "@/lib/store/store";
@@ -31,7 +29,7 @@ export const savePlan = async (savedState: any, userData?: any) => {
   const response = await fetch(`${API.SAVE_PLAN}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ savedState, userData }),
+    body: JSON.stringify(savedState, userData),
   });
   return response;
 };
@@ -54,7 +52,7 @@ const YourFit = () => {
     setUserForm(val);
   };
 
-  useGetYourPlanOnLoad(isNotEmpty(userFitnessPlan));
+  useGetYourPlanOnLoad();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (form: any) => {

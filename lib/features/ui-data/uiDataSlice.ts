@@ -8,6 +8,7 @@ export const uiDataInitialState: UiDataState = {
   uiData: {
     [UiData.isSignedIn]: false,
     [UiData.isRetrieving]: false,
+    [UiData.isEditing]: false,
   },
 };
 

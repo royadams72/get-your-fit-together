@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
 
+import { useMarkAsEditingUntilYourFit } from "@/lib/hooks/useMarkAsEditingUntilYourFit";
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
@@ -24,7 +25,9 @@ export default function QuestionsLayout({
   const pageName = usePathname();
   const dispatch = useAppDispatch();
   const { nextRoute } = useAppSelector(getRoutes);
+
   const isInvalidStep = useRedirectIfInvalidStep();
+  useMarkAsEditingUntilYourFit();
   let formErrors = {};
 
   const getFormErrors = (errorObj: any) => {

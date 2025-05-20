@@ -41,6 +41,7 @@ const RetrieveYourPlan = () => {
     dispatch(setCanNavigateTrue());
     dispatch(setUiData({ name: UiData.isSignedIn, value: true }));
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
+    dispatch(setUiData({ name: UiData.isEditing, value: true }));
   };
 
   const isUserFitnessPlanNotEmpty = useMemo(
