@@ -7,10 +7,7 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-
     const { savedState, userData } = await req.json();
-
-    console.log("savedState", savedState);
 
     const {
       _persist,

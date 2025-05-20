@@ -9,7 +9,7 @@ const TipsComponent: React.FC<{ tips: TipsObject[] }> = ({ tips }) => {
         {tips?.map((tip) => (
           <li key={tip.tip}>
             <h4>{tip.tip}</h4>
-            <p>{tip.action}</p>
+            <p dangerouslySetInnerHTML={{ __html: tip.action }} />
           </li>
         ))}
       </ul>
