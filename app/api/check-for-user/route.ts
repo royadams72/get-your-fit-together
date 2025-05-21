@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
+import { ApiError } from "@/lib/services/ApiError";
+import { handleApiError } from "@/lib/services/handleApiError";
 
 export async function POST(req: Request) {
   try {
@@ -16,21 +18,18 @@ export async function POST(req: Request) {
     );
 
     if (plan) {
-      return NextResponse.json(
-        { error: "A fitness plan already exists with that user name" },
-        { status: 409 }
+      throw new ApiError(
+        "A fitness plan already exists with that user name",
+        409,
+        true
       );
     } else {
       return NextResponse.json(
-        { message: "No plan wiht that user name" },
+        { message: "No plan with that user name" },
         { status: 200 }
       );
     }
   } catch (error) {
-    console.error("Database error:", error);
-    return NextResponse.json(
-      { error: "Failed to save state" },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

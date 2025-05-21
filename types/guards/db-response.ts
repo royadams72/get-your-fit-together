@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { DbResponse } from "../interfaces/api";
-import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { FitPlan } from "../interfaces/fitness-plan";
+import { fitPlanGuard } from "./fitPlanGuard";
 
 export const isDbResponse = (plan: any): plan is DbResponse => {
   const fitPlan: FitPlan = plan.reduxState.user.user.userFitnessPlan;
@@ -23,9 +23,6 @@ export const isDbResponse = (plan: any): plan is DbResponse => {
     "user" in plan.reduxState &&
     typeof plan.reduxState.user === "object" &&
     "userFitnessPlan" in plan.reduxState.user.user &&
-    isNotEmpty(fitPlan.overview) &&
-    isNotEmpty(fitPlan.weeklySchedule) &&
-    isNotEmpty(fitPlan.nutritionLifestyleTips) &&
-    isNotEmpty(fitPlan.conclusion)
+    fitPlanGuard(fitPlan)
   );
 };

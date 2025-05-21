@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
+import { ApiError } from "@/lib/services/ApiError";
+
+import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
-import { setContent } from "./setContent";
-import { aiPrompt } from "./ai-prompt";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
-export const extractState = (state: RootState, isSaving?: boolean) => {
-  const { aboutYou, injuries, yourGoals, preferences, user } = state;
+import { setContent } from "@/app/api/get-plan/setContent";
+import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
+import { handleApiError } from "@/lib/services/handleApiError";
 
-  return isSaving
-    ? { aboutYou, injuries, yourGoals, preferences, user }
-    : { aboutYou, injuries, yourGoals, preferences };
+export const extractState = (state: RootState) => {
+  const { aboutYou, injuries, yourGoals, preferences } = state;
+
+  return { aboutYou, injuries, yourGoals, preferences };
 };
 
 export async function POST(request: NextRequest) {
@@ -38,20 +41,17 @@ export async function POST(request: NextRequest) {
 
     const plan = completion.choices[0].message.content;
     if (!plan) {
-      throw new Error("AI response content is null or empty");
+      throw new ApiError("AI response content is null or empty", 404);
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
-    if (!json?.fitnessPlan?.overview || !json.fitnessPlan.weeklySchedule) {
-      throw new Error("AI returned an unexpected structure");
+    if (!fitPlanGuard(json?.fitnessPlan)) {
+      throw new ApiError("AI returned an unexpected structure", 502);
     }
 
     return NextResponse.json(json.fitnessPlan, { status: 200 });
   } catch (error) {
-    console.error("Unexpected API Error:", error);
-    return NextResponse.json(`Unexpected API Error: ${error}`, {
-      status: 500,
-    });
+    return handleApiError(error);
   }
 }
