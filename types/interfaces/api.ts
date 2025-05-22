@@ -10,6 +10,7 @@ export interface DbResponse {
 export interface CustomApiError {
   error: string;
   ignore: boolean | undefined;
+  requestUrl?: string;
 }
 
 export interface ResponseOptions {

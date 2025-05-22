@@ -21,4 +21,5 @@ export const PATHS = {
   YOUR_FIT: JOURNEY_PATHS[4],
   RETRIEVE_PLAN: "/retrieve-plan",
   SUCCESS: "/success",
+  ERROR: "/error",
 };

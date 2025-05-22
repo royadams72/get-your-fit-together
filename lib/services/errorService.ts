@@ -1,5 +1,6 @@
-import { CustomApiError, ResponseOptions } from "@/types/interfaces/api";
 import { NextResponse } from "next/server";
+import { CustomApiError, ResponseOptions } from "@/types/interfaces/api";
+import { ENV } from "./envService";
 
 export const errorService = (
   apiError: CustomApiError,
@@ -7,10 +8,11 @@ export const errorService = (
 ) => {
   const { error, ignore } = apiError;
   const { status } = responseOptions;
-
-  const redirectUrl = `/error?error=${encodeURIComponent(error)}`;
+  const newtUrl = `/error?error=${encodeURIComponent(error)}`;
+  const redirectUrl = new URL(newtUrl, ENV.BASE_URL);
+  //
   console.error(`Error Status: ${status} - ${error}- ignore: ${ignore}`);
   if (!ignore) {
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.json(apiError);
   }
 };

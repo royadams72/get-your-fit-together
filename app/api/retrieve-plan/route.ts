@@ -20,11 +20,19 @@ export async function POST(req: Request) {
     );
 
     if (!plan) {
-      throw new ApiError(
-        "A plan with that user name and password combination was not found",
-        404,
-        true
+      return NextResponse.json(
+        {
+          error:
+            "A plan with that user name and password combination was not found",
+          ignore: true,
+        },
+        { status: 404 }
       );
+      // throw new ApiError(
+      //   "A plan with that user name and password combination was not found",
+      //   404,
+      //   true
+      // );
     }
 
     if (isDbResponse(plan)) {

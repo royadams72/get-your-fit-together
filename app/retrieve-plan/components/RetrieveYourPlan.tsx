@@ -24,6 +24,7 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
+import { useClientFetch } from "@/lib/services/clientFetch";
 
 const RetrieveYourPlan = () => {
   const [responseError, setResponseError] = useState<{
@@ -34,7 +35,7 @@ const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const store = useAppSelector(selectState);
-
+  const clientFetch = useClientFetch();
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
@@ -55,13 +56,15 @@ const RetrieveYourPlan = () => {
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
-
-      const response = await fetch(`${API.RETRIEVE}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
+      // let responseData: any;
+      // const response = await fetch(`${API.RETRIEVE}`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(data),
+      // });
+      const response = await clientFetch(API.RETRIEVE, data);
+      console.log("Retieve plan:::", response);
+      if (!response) return;
       const responseData = await response.json();
 
       if (responseData.error) {
