@@ -1,16 +1,22 @@
-// utils/handleApiError.ts
-
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/services/ApiError";
+import { errorService } from "@/lib/services/errorService";
+import { CustomApiError, ResponseOptions } from "@/types/interfaces/api";
 
 export function handleApiError(error: unknown) {
   const isAppError = error instanceof ApiError;
 
-  return NextResponse.json(
-    {
-      error: isAppError ? error.message : "An unexpected error occurred",
-      code: isAppError ? error.ignore : undefined,
-    },
-    { status: isAppError ? error.status : 500 }
-  );
+  const responseOptions: ResponseOptions = {
+    status: isAppError ? error.status : 500,
+  };
+  const errObject: CustomApiError = {
+    error: isAppError ? error.message : "An unexpected error occurred",
+    ignore: isAppError ? error.ignore : undefined,
+  };
+
+  const redirect = errorService(errObject, responseOptions);
+  if (redirect) {
+    return redirect;
+  }
+  return NextResponse.json(errObject, responseOptions);
 }
