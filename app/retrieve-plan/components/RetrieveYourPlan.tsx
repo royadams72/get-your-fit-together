@@ -56,26 +56,26 @@ const RetrieveYourPlan = () => {
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
-      // let responseData: any;
+      // let response: any;
       // const response = await fetch(`${API.RETRIEVE}`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(data),
       // });
       const response = await clientFetch(API.RETRIEVE, data);
-      console.log("Retieve plan:::", response);
-      if (!response) return;
-      const responseData = await response.json();
 
-      if (responseData.error) {
+      if (!response) return;
+      // const response = await response.json();
+
+      if (response.error) {
         setResponseError({
-          message: responseData.error,
+          message: response.error,
           messageElement: User.userPassword,
         });
         return;
       }
 
-      setRetrievedStore(responseData);
+      setRetrievedStore(response);
       reset();
     } catch (error) {
       console.error("Error retrieving data:", error);

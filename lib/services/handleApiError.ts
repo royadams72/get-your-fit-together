@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/services/ApiError";
 import { errorService } from "@/lib/services/errorService";
-import { CustomApiError, ResponseOptions } from "@/types/interfaces/api";
+import { ErrorObj, ResponseOptions } from "@/types/interfaces/api";
 
 export function handleApiError(error: unknown) {
   const isAppError = error instanceof ApiError;
@@ -9,7 +9,7 @@ export function handleApiError(error: unknown) {
   const responseOptions: ResponseOptions = {
     status: isAppError ? error.status : 500,
   };
-  const errObject: CustomApiError = {
+  const errObject: ErrorObj = {
     error: isAppError ? error.message : "An unexpected error occurred",
     ignore: isAppError ? error.ignore : undefined,
   };

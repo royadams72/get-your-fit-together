@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { CustomApiError, ResponseOptions } from "@/types/interfaces/api";
+import { ErrorObj, ResponseOptions } from "@/types/interfaces/api";
 import { ENV } from "./envService";
 
 export const errorService = (
-  apiError: CustomApiError,
+  apiError: ErrorObj,
   responseOptions: ResponseOptions
 ) => {
   const { error, ignore } = apiError;

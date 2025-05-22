@@ -7,12 +7,16 @@ export interface DbResponse {
   updatedAt: Date;
 }
 
-export interface CustomApiError {
+export interface ErrorObj {
   error: string;
-  ignore: boolean | undefined;
-  requestUrl?: string;
+  redirect: boolean | undefined;
 }
 
 export interface ResponseOptions {
   status: number;
+}
+
+export interface MappedError {
+  errObject: ErrorObj;
+  responseOptions: ResponseOptions;
 }

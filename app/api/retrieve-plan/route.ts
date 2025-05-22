@@ -4,6 +4,7 @@ import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
 import { ApiError } from "@/lib/services/ApiError";
 import { handleApiError } from "@/lib/services/handleApiError";
+import { mapErrorResponse } from "@/lib/services/mapError";
 
 export async function POST(req: Request) {
   try {
@@ -18,30 +19,31 @@ export async function POST(req: Request) {
         "reduxState.user.user.userPassword": userPassword,
       }
     );
+    console.log("userName:", userName, "password:", userPassword);
+    // console.log("plan:", plan);
 
     if (!plan) {
-      return NextResponse.json(
-        {
-          error:
-            "A plan with that user name and password combination was not found",
-          ignore: true,
-        },
-        { status: 404 }
+      const { errObject, responseOptions } = mapErrorResponse(
+        "A plan with that user name and password combination was not found",
+        404,
+        true
       );
-      // throw new ApiError(
-      //   "A plan with that user name and password combination was not found",
-      //   404,
-      //   true
-      // );
+      console.log("mapErrorResponse:", errObject, { status: 404 });
+
+      return NextResponse.json(errObject, responseOptions);
     }
 
     if (isDbResponse(plan)) {
       const { reduxState } = plan;
       return NextResponse.json(reduxState, { status: 200 });
     } else {
-      throw new ApiError(
-        "AI returned an unexpected structure, so your plan could not be retrieved",
-        502
+      return NextResponse.json(
+        {
+          error:
+            "AI returned an unexpected structure, so your plan could not be retrieved",
+          ignore: false,
+        },
+        { status: 502 }
       );
     }
   } catch (error) {
