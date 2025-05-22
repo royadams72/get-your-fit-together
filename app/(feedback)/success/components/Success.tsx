@@ -1,13 +1,15 @@
 "use client";
 import React, { useEffect } from "react";
-import Button from "../../../components/Button";
 import { PATHS } from "@/routes.config";
+
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { defaultState, setStore } from "@/lib/store/store";
 
+import Button from "@/components/Button";
+
 interface SuccessProps {
   message: string;
-  mode?: Mode;
+  mode?: string;
 }
 enum Mode {
   plan = "plan",
