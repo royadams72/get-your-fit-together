@@ -1,8 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
 import { useForm } from "react-hook-form";
+
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
+
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
@@ -11,8 +14,6 @@ import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
 import { User } from "@/types/enums/user.enum";
-
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { selectState, setStore } from "@/lib/store/store";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
@@ -24,7 +25,6 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
-import { useClientFetch } from "@/lib/services/clientFetch";
 
 const RetrieveYourPlan = () => {
   const [responseError, setResponseError] = useState<{

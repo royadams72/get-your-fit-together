@@ -8,6 +8,6 @@ export const getCopy = async (url: string) => {
     const copy = await res.json();
     return copy;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

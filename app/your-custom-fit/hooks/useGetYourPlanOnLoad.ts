@@ -6,12 +6,12 @@ import { setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-import { FitPlan } from "@/types/interfaces/fitness-plan";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
 
 import { selectState } from "@/lib/store/store";
 
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { User } from "@/types/enums/user.enum";
-import { useClientFetch } from "@/lib/services/clientFetch";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 
@@ -25,14 +25,10 @@ export const useGetYourPlanOnLoad = () => {
   const { setLoading } = useLoader();
 
   useEffect(() => {
-    console.log("getUiState.isEditing", getUiState.isEditing);
-
     if (!getUiState.isEditing) return;
     (async () => {
       setLoading(true);
       try {
-        console.log("useGetYourPlanOnLoad", savedState);
-
         const response: FitPlan = await clientFetch(API.GET_PLAN, savedState);
 
         dispatch(
@@ -41,8 +37,9 @@ export const useGetYourPlanOnLoad = () => {
             value: response,
           })
         );
+
         dispatch(setUiData({ name: UiData.isEditing, value: false }));
-        console.log("savedState", savedState);
+
         if (getUiState.isRetrieving) {
           await clientFetch(API.SAVE_PLAN, { savedState });
         }

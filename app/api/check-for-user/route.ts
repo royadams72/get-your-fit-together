@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { errorResponse } from "@/lib/services/mapError";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function POST(req: Request) {
   try {

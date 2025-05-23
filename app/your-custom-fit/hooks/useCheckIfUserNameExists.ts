@@ -5,7 +5,7 @@ import { API } from "@/routes.config";
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
-import { useClientFetch } from "@/lib/services/clientFetch";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
   const clientFetch = useClientFetch();

@@ -16,9 +16,9 @@ enum Mode {
 }
 const Success = ({ message, mode }: SuccessProps) => {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(setStore(defaultState));
-    console.log("Success component rendered");
   }, [dispatch]);
 
   return (

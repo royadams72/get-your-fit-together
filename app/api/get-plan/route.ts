@@ -5,7 +5,7 @@ import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
-import { errorResponse } from "@/lib/services/mapError";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 import { setContent } from "@/app/api/get-plan/setContent";
 import { aiPrompt } from "@/app/api/get-plan/ai-prompt";

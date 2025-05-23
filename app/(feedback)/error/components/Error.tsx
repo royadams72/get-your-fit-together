@@ -9,9 +9,9 @@ interface ErrorProps {
 }
 const Error = ({ error }: ErrorProps) => {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(setStore(defaultState));
-    console.log("Error component rendered");
   }, [dispatch]);
 
   return (

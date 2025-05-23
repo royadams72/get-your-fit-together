@@ -6,8 +6,6 @@ export const errorResponse = (
   status: number,
   redirect: boolean
 ): NextResponse => {
-  console.log("redirect", redirect);
-
   const errObject: ErrorObj = {
     error,
     redirect,

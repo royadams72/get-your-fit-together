@@ -4,7 +4,7 @@ import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
 
-import { errorResponse } from "@/lib/services/mapError";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function POST(req: Request) {
   try {

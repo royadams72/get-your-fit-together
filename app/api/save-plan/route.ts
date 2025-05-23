@@ -4,9 +4,7 @@ import { State } from "@/types/interfaces/store";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 
 import { connectToDB } from "@/lib/db/mongodb";
-import { handleApiError } from "@/lib/services/handleApiError";
-import { ApiError } from "@/lib/services/ApiError";
-import { errorResponse } from "@/lib/services/mapError";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 const extractUserInfoAndState = async (
   savedState: State & PersistPartial,
@@ -25,7 +23,6 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
     const { savedState, userData } = await req.json();
-    console.log(savedState, userData);
 
     const { userName, userPassword, restOfState } =
       await extractUserInfoAndState(savedState, userData);

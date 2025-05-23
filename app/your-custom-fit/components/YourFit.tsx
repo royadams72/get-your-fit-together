@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { useRouter } from "@/lib/hooks/useRouter";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 import { useGetYourPlanOnLoad } from "@/app/your-custom-fit/hooks/useGetYourPlanOnLoad";
@@ -24,7 +25,6 @@ import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
-import { useClientFetch } from "@/lib/services/clientFetch";
 
 const YourFit = () => {
   const router = useRouter();
@@ -50,7 +50,6 @@ const YourFit = () => {
   const onSubmit = async (userData: any) => {
     try {
       setLoading(true);
-      console.log({ savedState, userData });
 
       const response = await clientFetch(API.SAVE_PLAN, {
         savedState,
@@ -59,10 +58,11 @@ const YourFit = () => {
 
       if (response.success) {
         reset();
-        router.push({
-          pathname: PATHS.SUCCESS,
-          query: { mode: "plan", message: "Your plan has been saved" },
-        });
+        router.push(
+          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+            "Your plan has been saved"
+          )}`
+        );
       }
     } catch (error) {
       console.error("Error saving data:", error);

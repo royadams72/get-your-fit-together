@@ -9,7 +9,6 @@ export const useClientFetch = () => {
     args: Record<string, unknown> | string
   ) => {
     const params = typeof args === "object" ? { ...args } : args;
-    console.log(params);
 
     const res: any = await fetch(url, {
       method: "POST",
