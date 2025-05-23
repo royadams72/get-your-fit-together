@@ -13,8 +13,6 @@ export const UseResponseError = ({
   }>({ message: "", messageElement: "" });
 
   const setError = () => {
-    console.log("error", error);
-
     setResponseError({
       message: error,
       messageElement: input,

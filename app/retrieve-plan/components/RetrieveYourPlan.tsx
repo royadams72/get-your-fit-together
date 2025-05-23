@@ -1,8 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
 import { useForm } from "react-hook-form";
+
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
+
 import { API, PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
@@ -11,8 +14,6 @@ import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { RootState } from "@/types/interfaces/store";
 import { User } from "@/types/enums/user.enum";
-
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { selectState, setStore } from "@/lib/store/store";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
@@ -34,6 +35,7 @@ const RetrieveYourPlan = () => {
   const dispatch = useAppDispatch();
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const store = useAppSelector(selectState);
+  const clientFetch = useClientFetch();
 
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
@@ -55,23 +57,19 @@ const RetrieveYourPlan = () => {
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
+      const response = await clientFetch(API.RETRIEVE, data);
 
-      const response = await fetch(`${API.RETRIEVE}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
+      if (!response) return;
 
-      if (responseData.error) {
+      if (response.error) {
         setResponseError({
-          message: responseData.error,
+          message: response.error,
           messageElement: User.userPassword,
         });
         return;
       }
 
-      setRetrievedStore(responseData);
+      setRetrievedStore(response);
       reset();
     } catch (error) {
       console.error("Error retrieving data:", error);

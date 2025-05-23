@@ -6,3 +6,12 @@ export interface DbResponse {
   reduxState: State;
   updatedAt: Date;
 }
+
+export interface ErrorObj {
+  error: string;
+  redirect?: boolean | undefined;
+}
+
+export interface ResponseOptions {
+  status: number;
+}

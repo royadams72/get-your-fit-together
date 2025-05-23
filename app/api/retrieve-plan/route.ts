@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
+
 import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
+
+import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function POST(req: Request) {
   try {
@@ -9,7 +12,6 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const { userPassword, userName } = await req.json();
-    console.log("userName", userName, "userPassword", userPassword);
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
@@ -17,30 +19,26 @@ export async function POST(req: Request) {
         "reduxState.user.user.userPassword": userPassword,
       }
     );
-    // Check if user was found
+
     if (!plan) {
-      return NextResponse.json(
-        { error: "Username or password is incorrect." },
-        { status: 404 }
+      return errorResponse(
+        "A plan with that user name and password combination was not found",
+        404,
+        false
       );
     }
 
-    // Check plan has the correct formatting
     if (isDbResponse(plan)) {
       const { reduxState } = plan;
-
       return NextResponse.json(reduxState, { status: 200 });
     } else {
-      return NextResponse.json(
-        { error: "There is data missing from your plan." },
-        { status: 500 }
+      return errorResponse(
+        "AI returned an unexpected structure, so your plan could not be retrieved",
+        502,
+        true
       );
     }
   } catch (error) {
-    console.error("Database error:", error);
-    return NextResponse.json(
-      { error: `Database error: ${error}` },
-      { status: 500 }
-    );
+    return errorResponse(`Database error: ${error}`, 500, true);
   }
 }

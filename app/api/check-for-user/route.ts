@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function POST(req: Request) {
   try {
@@ -16,21 +17,18 @@ export async function POST(req: Request) {
     );
 
     if (plan) {
-      return NextResponse.json(
-        { error: "A fitness plan already exists with that user name" },
-        { status: 409 }
+      return errorResponse(
+        "A fitness plan already exists with that user name",
+        409,
+        false
       );
     } else {
       return NextResponse.json(
-        { message: "No plan wiht that user name" },
+        { message: "No plan with that user name" },
         { status: 200 }
       );
     }
   } catch (error) {
-    console.error("Database error:", error);
-    return NextResponse.json(
-      { error: "Failed to save state" },
-      { status: 500 }
-    );
+    return errorResponse(`Any unexpected error occurred: ${error}`, 500, true);
   }
 }

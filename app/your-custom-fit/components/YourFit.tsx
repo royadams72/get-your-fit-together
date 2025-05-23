@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { useRouter } from "@/lib/hooks/useRouter";
+import { useClientFetch } from "@/lib/hooks/useClientFetch";
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
 import { useGetYourPlanOnLoad } from "@/app/your-custom-fit/hooks/useGetYourPlanOnLoad";
@@ -25,18 +26,9 @@ import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
-export const savePlan = async (savedState: any, userData?: any) => {
-  const response = await fetch(`${API.SAVE_PLAN}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(savedState, userData),
-  });
-  return response;
-};
-
 const YourFit = () => {
   const router = useRouter();
-
+  const clientFetch = useClientFetch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
@@ -55,19 +47,22 @@ const YourFit = () => {
   useGetYourPlanOnLoad();
   const responseError = useCheckIfUserNameExists(userForm);
 
-  const onSubmit = async (form: any) => {
+  const onSubmit = async (userData: any) => {
     try {
       setLoading(true);
-      const response = await savePlan({ savedState, userData: form });
-      const responseData = await response.json();
 
-      if (responseData.success) {
+      const response = await clientFetch(API.SAVE_PLAN, {
+        savedState,
+        userData,
+      });
+
+      if (response.success) {
         reset();
-
-        router.push({
-          pathname: PATHS.SUCCESS,
-          query: { mode: "plan", message: "Your plan has been saved" },
-        });
+        router.push(
+          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+            "Your plan has been saved"
+          )}`
+        );
       }
     } catch (error) {
       console.error("Error saving data:", error);
