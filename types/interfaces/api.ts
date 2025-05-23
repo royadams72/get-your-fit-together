@@ -9,14 +9,9 @@ export interface DbResponse {
 
 export interface ErrorObj {
   error: string;
-  redirect: boolean | undefined;
+  redirect?: boolean | undefined;
 }
 
 export interface ResponseOptions {
   status: number;
-}
-
-export interface MappedError {
-  errObject: ErrorObj;
-  responseOptions: ResponseOptions;
 }

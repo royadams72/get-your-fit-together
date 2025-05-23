@@ -6,8 +6,6 @@ export const useClientFetch = () => {
   const router = useRouter();
 
   const clientFetch = async (url: any, args: any) => {
-    console.log("args:", { ...args });
-
     const res: any = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -15,10 +13,9 @@ export const useClientFetch = () => {
     });
 
     const response = await res.json();
-    console.log(response);
+    // console.log("res redirect", response.redirect, response.error);
 
     if (response.redirect && isNotEmpty(response.error)) {
-      console.log(`${PATHS.ERROR}?error=${encodeURIComponent(response.error)}`);
       return router.push(
         `${PATHS.ERROR}?error=${encodeURIComponent(response.error)}`
       );

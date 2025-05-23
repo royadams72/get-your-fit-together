@@ -36,6 +36,7 @@ const RetrieveYourPlan = () => {
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const store = useAppSelector(selectState);
   const clientFetch = useClientFetch();
+
   const setRetrievedStore = (retrievedStore: any) => {
     const { _persist, uiData, journey }: RootState = store;
     dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
@@ -56,16 +57,9 @@ const RetrieveYourPlan = () => {
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
-      // let response: any;
-      // const response = await fetch(`${API.RETRIEVE}`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // });
       const response = await clientFetch(API.RETRIEVE, data);
 
       if (!response) return;
-      // const response = await response.json();
 
       if (response.error) {
         setResponseError({

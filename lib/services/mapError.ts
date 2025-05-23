@@ -1,17 +1,21 @@
-import { ErrorObj, MappedError, ResponseOptions } from "@/types/interfaces/api";
+import { ErrorObj, ResponseOptions } from "@/types/interfaces/api";
 
-export const mapErrorResponse = (
+import { NextResponse } from "next/server";
+export const errorResponse = (
   error: string,
   status: number,
-  redirect?: boolean
-): MappedError => {
+  redirect: boolean
+): NextResponse => {
+  console.log("redirect", redirect);
+
   const errObject: ErrorObj = {
     error,
-    redirect: redirect || true,
+    redirect,
   };
 
   const responseOptions: ResponseOptions = {
     status,
   };
-  return { errObject, responseOptions };
+
+  return NextResponse.json(errObject, responseOptions);
 };
