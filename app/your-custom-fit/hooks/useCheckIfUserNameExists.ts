@@ -5,7 +5,10 @@ import { API } from "@/routes.config";
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
+import { useClientFetch } from "@/lib/services/clientFetch";
+
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
+  const clientFetch = useClientFetch();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -21,16 +24,11 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
 
     (async () => {
       try {
-        const response = await fetch(`${API.CHECK_USER}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userForm.value),
-        });
+        const response = await clientFetch(API.CHECK_USER, userForm.value);
 
-        const responseData = await response.json();
-        if (responseData.error) {
+        if (response.error) {
           setResponseError({
-            message: responseData.error,
+            message: response.error,
             messageElement: User.userName,
           });
         } else {

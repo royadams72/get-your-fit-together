@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { ApiError } from "@/lib/services/ApiError";
-import { handleApiError } from "@/lib/services/handleApiError";
+import { errorResponse } from "@/lib/services/mapError";
 
 export async function POST(req: Request) {
   try {
@@ -18,10 +17,10 @@ export async function POST(req: Request) {
     );
 
     if (plan) {
-      throw new ApiError(
+      return errorResponse(
         "A fitness plan already exists with that user name",
         409,
-        true
+        false
       );
     } else {
       return NextResponse.json(
@@ -30,6 +29,6 @@ export async function POST(req: Request) {
       );
     }
   } catch (error) {
-    return handleApiError(error);
+    return errorResponse(`Any unexpected error occurred: ${error}`, 500, true);
   }
 }

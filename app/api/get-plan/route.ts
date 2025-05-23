@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-import { ApiError } from "@/lib/services/ApiError";
-
 import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
+import { errorResponse } from "@/lib/services/mapError";
+
 import { setContent } from "@/app/api/get-plan/setContent";
 import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
-import { handleApiError } from "@/lib/services/handleApiError";
 
 export const extractState = (state: RootState) => {
   const { aboutYou, injuries, yourGoals, preferences } = state;
@@ -41,17 +40,25 @@ export async function POST(request: NextRequest) {
 
     const plan = completion.choices[0].message.content;
     if (!plan) {
-      throw new ApiError("AI response content is null or empty", 404);
+      return errorResponse(
+        "There was nothing returned from AI, please try again later",
+        404,
+        true
+      );
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
-      throw new ApiError("AI returned an unexpected structure", 502);
+      return errorResponse(
+        "An unexpected structure was returned, your information may be corrupted, please try later",
+        502,
+        true
+      );
     }
 
     return NextResponse.json(json.fitnessPlan, { status: 200 });
   } catch (error) {
-    return handleApiError(error);
+    return errorResponse(`An unexpected error occured:${error}`, 500, true);
   }
 }

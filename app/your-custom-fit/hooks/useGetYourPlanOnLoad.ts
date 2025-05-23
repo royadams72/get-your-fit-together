@@ -6,16 +6,19 @@ import { setUser } from "@/lib/features/user/userSlice";
 import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { FitPlan } from "@/types/interfaces/fitness-plan";
+
 import { selectState } from "@/lib/store/store";
 
 import { User } from "@/types/enums/user.enum";
-import { FitPlan } from "@/types/interfaces/fitness-plan";
+import { useClientFetch } from "@/lib/services/clientFetch";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
-import { savePlan } from "../components/YourFit";
+
 import { UiData } from "@/types/enums/uiData.enum";
 
 export const useGetYourPlanOnLoad = () => {
+  const clientFetch = useClientFetch();
   const savedState = useAppSelector(selectState);
   const getUiState = useAppSelector(getUiDataState);
   const dispatch = useAppDispatch();
@@ -28,28 +31,20 @@ export const useGetYourPlanOnLoad = () => {
     (async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${API.GET_PLAN}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(savedState),
-        });
-        const responseData: FitPlan = await response.json();
+        console.log("useGetYourPlanOnLoad", savedState);
 
-        if (!responseData) {
-          console.error("Invalid API response:", responseData);
-          return;
-        }
+        const response: FitPlan = await clientFetch(API.GET_PLAN, savedState);
 
         dispatch(
           setUser({
             name: User.userFitnessPlan,
-            value: responseData,
+            value: response,
           })
         );
         dispatch(setUiData({ name: UiData.isEditing, value: false }));
         console.log("savedState", savedState);
         if (getUiState.isRetrieving) {
-          await savePlan({ savedState });
+          await clientFetch(API.SAVE_PLAN, { savedState });
         }
       } catch (error) {
         console.error("Error fetching data:", error);

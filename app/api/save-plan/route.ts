@@ -6,6 +6,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 import { connectToDB } from "@/lib/db/mongodb";
 import { handleApiError } from "@/lib/services/handleApiError";
 import { ApiError } from "@/lib/services/ApiError";
+import { errorResponse } from "@/lib/services/mapError";
 
 const extractUserInfoAndState = async (
   savedState: State & PersistPartial,
@@ -24,12 +25,13 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
     const { savedState, userData } = await req.json();
+    console.log(savedState, userData);
 
     const { userName, userPassword, restOfState } =
       await extractUserInfoAndState(savedState, userData);
 
     if (!userName || !userPassword) {
-      throw new ApiError("User name and password are required", 401);
+      return errorResponse("User name and password are required", 401, false);
     }
 
     const reduxState = {
@@ -54,20 +56,21 @@ export async function POST(req: Request) {
     );
 
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
-      throw new ApiError(
+      return errorResponse(
         "There was a problem, your plan could not be saved, please try again later",
-        409
+        409,
+        false
       );
     } else if (response.matchedCount === 1 && response.modifiedCount === 0) {
-      throw new ApiError(
+      return errorResponse(
         "There was a problem, updates could not be saved to your plan, please try again later",
-        409
+        409,
+        false
       );
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Database error:", error);
-    return handleApiError(error);
+    return errorResponse(`Database error: ${error}`, 500, true);
   }
 }

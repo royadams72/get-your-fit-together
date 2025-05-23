@@ -24,19 +24,11 @@ import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
-
-export const savePlan = async (savedState: any, userData?: any) => {
-  const response = await fetch(`${API.SAVE_PLAN}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(savedState, userData),
-  });
-  return response;
-};
+import { useClientFetch } from "@/lib/services/clientFetch";
 
 const YourFit = () => {
   const router = useRouter();
-
+  const clientFetch = useClientFetch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
@@ -55,15 +47,18 @@ const YourFit = () => {
   useGetYourPlanOnLoad();
   const responseError = useCheckIfUserNameExists(userForm);
 
-  const onSubmit = async (form: any) => {
+  const onSubmit = async (userData: any) => {
     try {
       setLoading(true);
-      const response = await savePlan({ savedState, userData: form });
-      const responseData = await response.json();
+      console.log({ savedState, userData });
 
-      if (responseData.success) {
+      const response = await clientFetch(API.SAVE_PLAN, {
+        savedState,
+        userData,
+      });
+
+      if (response.success) {
         reset();
-
         router.push({
           pathname: PATHS.SUCCESS,
           query: { mode: "plan", message: "Your plan has been saved" },
