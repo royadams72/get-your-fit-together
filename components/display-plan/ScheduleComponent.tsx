@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "@/styles/components/_schedule.module.scss";
 import { daysObject } from "@/types/interfaces/fitness-plan";
-import Button from "@/components/Button";
 
 const ScheduleComponent: React.FC<{ days: daysObject[] }> = ({ days }) => {
   return (
@@ -17,19 +16,14 @@ const ScheduleComponent: React.FC<{ days: daysObject[] }> = ({ days }) => {
                   <li key={i}>
                     <div>
                       <strong>{`Exercise ${i + 1}`}: </strong>
+
                       {e.exercise}
                     </div>
 
-                    {e.video ? (
-                      <Button external={true} href={e.video}>
-                        Watch video
-                      </Button>
-                    ) : (
-                      <div>
-                        <strong>Action: </strong>
-                        {e.action}
-                      </div>
-                    )}
+                    <div>
+                      <strong>Action: </strong>
+                      <p dangerouslySetInnerHTML={{ __html: e.action }} />
+                    </div>
                   </li>
                 ))}
               </ul>

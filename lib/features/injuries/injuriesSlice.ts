@@ -27,7 +27,9 @@ export const injuriesSlice = createAppSlice({
         name: keyof InjuriesStore;
         value: string;
       } = action.payload;
-      state.injuries[name] = value;
+      if (value !== "none") {
+        state.injuries[name] = value;
+      }
     },
   },
   selectors: {

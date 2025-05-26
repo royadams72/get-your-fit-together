@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
           content: userContent,
         },
       ],
-      model: "gpt-4o",
+      model: "gpt-3.5-turbo",
       store: true,
     });
 
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         true
       );
     }
+    console.log(plan);
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
