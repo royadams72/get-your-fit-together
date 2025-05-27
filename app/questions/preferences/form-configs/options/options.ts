@@ -97,8 +97,10 @@ export const workoutCheckboxes = [
   { label: "Pilates & Core Training", value: false },
   { label: "Bodyweight & Calisthenics", value: false },
   { label: "CrossFit & Circuits", value: false },
-  { label: "Sports Training (Basketball, Soccer, etc.)", value: false },
+  { label: "Basketball", value: false },
+  { label: "Football (Soccer)", value: false },
   { label: "Dance & Aerobic Workouts", value: false },
-  { label: "Martial Arts & Combat Sports", value: false },
+  { label: "Boxing", value: false },
+  { label: "Martial Arts", value: false },
   { label: "Outdoor Workouts & Hiking", value: false },
 ];

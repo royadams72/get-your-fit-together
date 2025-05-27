@@ -10,11 +10,13 @@ export const aiPrompt = `You are a personal trainer. Generate a raw JSON object 
       "title": "Weekly Schedule",
       "days": [
         {
-          "day": "Day 1, 2 3 etc based on the user's selection",
+          "day": "Day 1, 2, 3, etc. based on the user's selection",
           "title": "Workout Focus",
           "exercises": [
-            { "exercise": "Name", "action": "Instructions or sets/reps"},
-
+            {
+              "exercise": "Exercise Name",
+              "action": "Instructions or sets/reps/form Do not include any links to YouTube video or anything else"
+            }
           ]
         }
       ]
@@ -23,8 +25,8 @@ export const aiPrompt = `You are a personal trainer. Generate a raw JSON object 
       "title": "Nutrition and Lifestyle Tips",
       "tips": [
         {
-          "tip": "Topic (e.g. Diet, Sleep, Progress)",
-          "action": "Actionable advice (at least 100 words),"
+          "tip": "Topic (e.g., Diet, Sleep, Progress)",
+          "action": "Actionable advice (at least 100 words)  Include any links to books or websites, or apps that may help and should be formatted as: <a href='external links to books or websites' rel='noopener noreferrer' target='_blank'>view here</a>"
         }
       ]
     },
@@ -35,6 +37,4 @@ export const aiPrompt = `You are a personal trainer. Generate a raw JSON object 
   }
 }
 
-- Use only standard JSON, no explanation or text outside of it.
-- Include links for workouts and nutritionLifestyleTips if available like: <a href='external links to books or YouTube videos' rel='noopener noreferrer' target='_blank'>view here</a>.
-- Avoid follow-up questions or interactivity.`;
+- Use only standard JSON, no explanation or text outside of it.`;

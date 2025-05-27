@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         true
       );
     }
-    console.log(plan);
+    // console.log(plan);
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 

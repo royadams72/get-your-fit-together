@@ -10,31 +10,6 @@ interface SessionStore {
   preferences: PreferencesState;
 }
 
-const injuriesText = [
-  " - Upper Body Injuries: ",
-  "- Lower Body Injuries: ",
-  "- General Conditions: ",
-  "- Medical Restrictions: ",
-  "- Food Allergies: ",
-  "- Other Sensitivities: ",
-];
-
-const setInjuries = (injuries: InjuriesState) => {
-  const injuriesObject = {};
-  let injuriesStr = "";
-  for (const [index, [key, value]] of Object.entries(injuries.injuries)) {
-    if (value !== "") {
-      for (let i = 0; i < injuriesText.length; i++) {
-        if (Number(index) === i) {
-          console.log(index);
-          injuriesStr += `${injuriesText[i]}${value}`;
-        }
-      }
-      Object.defineProperty(injuriesObject, key, value);
-    }
-    console.log(`${key}: ${value}`);
-  }
-};
 export const setContent = async (store: SessionStore) => {
   const {
     aboutYou: {
