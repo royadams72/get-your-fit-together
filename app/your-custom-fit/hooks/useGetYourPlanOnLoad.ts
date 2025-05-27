@@ -31,14 +31,16 @@ export const useGetYourPlanOnLoad = () => {
       try {
         const response: FitPlan = await clientFetch(API.GET_PLAN, savedState);
 
-        dispatch(
-          setUser({
-            name: User.userFitnessPlan,
-            value: response,
-          })
-        );
+        if (response) {
+          dispatch(
+            setUser({
+              name: User.userFitnessPlan,
+              value: response,
+            })
+          );
 
-        dispatch(setUiData({ name: UiData.isEditing, value: false }));
+          dispatch(setUiData({ name: UiData.isEditing, value: false }));
+        }
 
         if (getUiState.isRetrieving) {
           await clientFetch(API.SAVE_PLAN, { savedState });

@@ -27,6 +27,7 @@ export const injuriesSlice = createAppSlice({
         name: keyof InjuriesStore;
         value: string;
       } = action.payload;
+
       state.injuries[name] = value;
     },
   },
