@@ -9,12 +9,8 @@ export const youtubeLinks = [
     url: "https://www.youtube.com/watch?v=J0DnG1_S92I",
   }, // Diamond Push-Up
   {
-    keywords: [
-      "incline push-up",
-      "upper body push-up",
-      "incline chest push-up",
-    ],
-    url: "https://www.youtube.com/watch?v=HI8heksyS7A",
+    keywords: ["push-up", "push-ups", "upper body push-up"],
+    url: "https://www.youtube.com/watch?v=IODxDxX7oi4",
   }, // Incline Push-Up
 
   // Squats Variations
@@ -23,16 +19,15 @@ export const youtubeLinks = [
     url: "https://www.youtube.com/watch?v=aclHkVaku9U",
   }, // Bodyweight Squat
   {
-    keywords: [
-      "goblet squat",
-      "dumbbell squat",
-      "goblet squats",
-      "lower body squat",
-    ],
-    url: "https://www.youtube.com/watch?v=6xwzJf3cI6A",
+    keywords: ["goblet squat", "goblet squats"],
+    url: "https://www.youtube.com/watch?v=MeIiIdhvXT4",
   }, // Goblet Squat
   {
-    keywords: ["bulgarian split squat", "split squat", "leg workout"],
+    keywords: ["dumbbell squat", "dumbbell squats"],
+    url: "https://www.youtube.com/watch?v=v_c67Omje48",
+  }, // Goblet Squat
+  {
+    keywords: ["bulgarian split squat", "split squat"],
     url: "https://www.youtube.com/watch?v=2C-uNgKwPLE",
   }, // Bulgarian Split Squat
 
@@ -42,8 +37,8 @@ export const youtubeLinks = [
     url: "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
   }, // Reverse Lunge Tutorial
   {
-    keywords: ["step-up exercise", "step-ups", "leg exercise"],
-    url: "https://www.youtube.com/watch?v=ZVZlbbGV5tk",
+    keywords: ["step-up exercise", "step-ups"],
+    url: "https://www.youtube.com/watch?v=dQqApCGd5Ss",
   }, // Step-Up Exercise
 
   // Deadlifts Variations
@@ -53,7 +48,7 @@ export const youtubeLinks = [
   }, // Romanian Deadlift
   {
     keywords: ["trap bar deadlift", "deadlift variation", "trap bar"],
-    url: "https://www.youtube.com/watch?v=E9cH1QHjPlA",
+    url: "https://www.youtube.com/watch?v=WzvsIU9FW60",
   }, // Trap Bar Deadlift
 
   // Plank Variations
@@ -68,42 +63,36 @@ export const youtubeLinks = [
 
   // Crunch Variations
   {
-    keywords: ["bicycle crunch", "abs crunch", "core workout"],
-    url: "https://www.youtube.com/watch?v=1vN3HhgU0nQ",
+    keywords: ["bicycle crunch", "abs crunch"],
+    url: "https://www.youtube.com/watch?v=VaL7XWK3MVE",
   }, // Bicycle Crunch
   {
-    keywords: ["reverse crunch", "lower abs crunch", "abs exercise"],
-    url: "https://www.youtube.com/watch?v=ytGaGIn3SjE",
-  }, // Reverse Crunch
-
-  // Burpees Variations
-  {
-    keywords: ["burpees", "jump burpees", "full body cardio"],
-    url: "https://www.youtube.com/watch?v=AU27pwiXlXw",
+    keywords: ["burpees", "jump burpees", "burpees jump forward"],
+    url: "https://www.youtube.com/watch?v=DxXgdnTsdVA",
   }, // Burpees Tutorial
   {
-    keywords: ["burpee push-up", "push-up burpee", "burpee variation"],
-    url: "https://www.youtube.com/watch?v=B1adR7Lf8pk",
+    keywords: ["burpee push-up", "push-up burpee"],
+    url: "https://www.youtube.com/watch?v=jc7VDvFD-wM",
   }, // Burpee Push-Up
 
   // Cardio Exercises
   {
-    keywords: ["jump rope", "skipping rope cardio", "endurance exercise"],
-    url: "https://www.youtube.com/watch?v=GzQslO70AA8",
+    keywords: ["jump rope", "skipping rope cardio", "skipping"],
+    url: "https://www.youtube.com/watch?v=1BZM2Vre5oc",
   }, // Jump Rope Cardio
   {
     keywords: ["high knees cardio", "high knees exercise", "cardio workout"],
-    url: "https://www.youtube.com/watch?v=8dvA4s2Ne1E",
+    url: "https://www.youtube.com/watch?v=ZZZoCNMU48U",
   }, // High Knees Cardio
 
   // Leg Workouts
   {
     keywords: ["leg press", "leg press machine", "lower body leg workout"],
-    url: "https://www.youtube.com/watch?v=azQWiHKHjVs",
+    url: "https://www.youtube.com/watch?v=Aq5uxXrXq7c",
   }, // Leg Press Tutorial
   {
-    keywords: ["calf raise", "calf raises", "leg workout"],
-    url: "https://www.youtube.com/watch?v=5VGXKrs5Ndw",
+    keywords: ["calf raise", "calf raises"],
+    url: "https://www.youtube.com/watch?v=_iYwv4QVFjM",
   }, // Calf Raise
 
   // Shoulder Press Variations
@@ -113,21 +102,26 @@ export const youtubeLinks = [
       "shoulder press variation",
       "shoulder strength",
     ],
-    url: "https://www.youtube.com/watch?v=4p2U97W9jpQ",
+    url: "https://www.youtube.com/watch?v=qEwKCR5JCog",
   }, // Dumbbell Shoulder Press
   {
     keywords: ["overhead press", "press strength", "shoulder press"],
-    url: "https://www.youtube.com/watch?v=wVpxmMj7dUQ",
+    url: "https://www.youtube.com/watch?v=F3QY5vMz_6I",
   }, // Overhead Press
 
   // Chest Press Variations
   {
-    keywords: ["bench press", "chest press", "upper body press"],
-    url: "https://www.youtube.com/watch?v=rT7DgCr-3Hk",
+    keywords: ["bench press", "chest press", "barbell bench press"],
+    url: "https://www.youtube.com/watch?v=rT7DgCr-3pg",
   }, // Bench Press Tutorial
   {
-    keywords: ["chest fly", "dumbbell chest fly", "upper chest workout"],
-    url: "https://www.youtube.com/watch?v=eLKK0O_-6Yg",
+    keywords: [
+      "chest fly",
+      "dumbbell chest fly",
+      "upper chest workout",
+      "dumbbell fly",
+    ],
+    url: "https://www.youtube.com/watch?v=eozdVDA78K0",
   }, // Chest Fly Exercise
 
   // Biceps & Triceps
@@ -143,23 +137,21 @@ export const youtubeLinks = [
   // CrossFit & hiit
   {
     keywords: ["crossfit", "hiit workout", "circuit workout"],
-    url: "https://www.youtube.com/watch?v=dr1dmJrfpEY",
+    url: "https://www.youtube.com/watch?v=xzqexC11dEM",
   }, // CrossFit Circuit
   {
-    keywords: ["jump squat", "hiit cardio", "cardio workout"],
-    url: "https://www.youtube.com/watch?v=1JPz0cD0wL0",
+    keywords: ["jump squat", "jump squats"],
+    url: "https://www.youtube.com/watch?v=Azl5tkCzDcc",
   }, // Jump Squat Exercise
-
   // Yoga & Flexibility
   {
     keywords: ["sun salutation", "yoga poses", "morning stretch"],
-    url: "https://www.youtube.com/watch?v=5Dg44K_NQ50",
+    url: "https://www.youtube.com/watch?v=73sjOu0g58M",
   }, // Sun Salutation
   {
-    keywords: ["downward dog", "yoga pose", "yoga flexibility"],
-    url: "https://www.youtube.com/watch?v=diX2I6l0v8Y",
+    keywords: ["downward dog", "downward dog yoga"],
+    url: "https://www.youtube.com/watch?v=j97SSGsnCAQ",
   }, // Downward Dog
-
   // Core & Abs
   {
     keywords: ["core workout", "plank", "abs exercise"],
@@ -167,17 +159,17 @@ export const youtubeLinks = [
   }, // Plank Tutorial
   {
     keywords: ["leg raises", "core abs", "lower abs"],
-    url: "https://www.youtube.com/watch?v=Z8Lxdujmzj8",
+    url: "https://www.youtube.com/watch?v=JB2oyawG9KI",
   }, // Leg Raises Tutorial
 
   // Martial Arts & Self Defense
   {
     keywords: ["karate", "self-defense", "martial arts technique"],
-    url: "https://www.youtube.com/watch?v=6wV39RbiI7M",
+    url: "https://www.youtube.com/watch?v=0JCtvpkuf8Y",
   }, // Karate Tutorial
   {
-    keywords: ["kickboxing", "fitness kickboxing", "self-defense"],
-    url: "https://www.youtube.com/watch?v=dmv3ukl4rBM",
+    keywords: ["kickboxing", "fitness kickboxing"],
+    url: "https://www.youtube.com/watch?v=Hri2rYgOLKI",
   }, // Kickboxing Tutorial
 
   // High-Intensity Interval Training (hiit)
@@ -186,28 +178,28 @@ export const youtubeLinks = [
     url: "https://www.youtube.com/watch?v=ml6cT4AZdqI",
   }, // Full Body hiit Workout
   {
-    keywords: ["tabata", "hiit workout", "interval training"],
-    url: "https://www.youtube.com/watch?v=2TOvF-N6glw",
+    keywords: ["tabata", "tabata hiit", "full body tabata workout"],
+    url: "https://www.youtube.com/watch?v=ttkq49P_7ds",
   }, // Tabata hiit
 
   // Boxing & Martial Arts
   {
     keywords: ["boxing", "shadowboxing", "boxing workout"],
-    url: "https://www.youtube.com/watch?v=Jj6xub0P77Q",
+    url: "https://www.youtube.com/watch?v=J4j3AOVWuHE",
   }, // Boxing Workout
   {
-    keywords: ["shadowboxing", "boxing punches", "boxing fitness"],
-    url: "https://www.youtube.com/watch?v=wt3bRx0x_mw",
+    keywords: ["heavy bag boxing", "heavy bag", "punch bag boxing"],
+    url: "https://www.youtube.com/watch?v=gqHc3OtDF-Y",
   }, // Shadow Boxing Tutorial
 
   // Full Body Workouts
   {
     keywords: [
       "full body workout",
-      "strength training",
       "bodyweight exercises",
+      "bodyweight workout",
     ],
-    url: "https://www.youtube.com/watch?v=4VtHpTAe-JI",
+    url: "https://www.youtube.com/watch?v=C7-xW9mRNiI",
   }, // Full Body Workout Tutorial
   {
     keywords: ["total body workout", "strength exercises", "muscle building"],
@@ -216,13 +208,12 @@ export const youtubeLinks = [
 
   // Additional New Exercises
   {
-    keywords: [
-      "basketball",
-      "basketball drills",
-      "basketball shooting",
-      "basketball dribbling drills",
-    ],
-    url: "https://www.youtube.com/watch?v=In20LoFjrHE",
+    keywords: ["basketball drills", "basketball dribbling drills"],
+    url: "https://www.youtube.com/watch?v=ynkhxHilaKA",
+  }, // Basketball Shooting Drills
+  {
+    keywords: ["basketball shooting", "basketball shooting drills"],
+    url: "https://www.youtube.com/watch?v=akSJjN8UIj0",
   }, // Basketball Shooting Drills
   {
     keywords: [
@@ -232,18 +223,27 @@ export const youtubeLinks = [
       "soccer skills",
       "soccer ball control",
     ],
-    url: "https://www.youtube.com/watch?v=FvGqF1F9auM",
+    url: "https://www.youtube.com/watch?v=e5RxAJM-oxc",
   }, // Soccer Dribbling
   {
-    keywords: ["pilates", "pilates core", "core exercises"],
-    url: "https://www.youtube.com/watch?v=RPohppXGoTg",
+    keywords: [
+      "pilates",
+      "pilates core",
+      "full body pilates workout",
+      "full body pilates",
+    ],
+    url: "https://www.youtube.com/watch?v=K56Z12XNQ5c",
   }, // Pilates Core Workout
   {
     keywords: ["bodyweight exercises", "calisthenics", "bodyweight training"],
-    url: "https://www.youtube.com/watch?v=Zgfh0TGRp1A",
+    url: "https://www.youtube.com/watch?v=kuUZYUBHryw",
   }, // Bodyweight Exercises
   {
     keywords: ["zumba dance workout", "zumba workout", "zumba dancing"],
     url: "https://www.youtube.com/watch?v=mZeFvX3ALKY",
+  },
+  {
+    keywords: ["treadmill", "treadmill cardio"],
+    url: "https://www.youtube.com/watch?v=ufhM_9eLU-s",
   },
 ];
