@@ -1,0 +1,48 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+      NEXT_PUBLIC_GET_SET_DATA_API: ${{ secrets.NEXT_PUBLIC_SET_DATA_API }}
+      NEXT_PUBLIC_GET_DATA_FOLDER: ${{ secrets.NEXT_PUBLIC_GET_DATA_FOLDER }}
+      BASE_URL_COMICS: ${{ secrets.BASE_URL_COMICS }}
+      BASE_URL_GAMES: ${{ secrets.BASE_URL_GAMES }}
+      BASE_URL_MOVIES: ${{ secrets.BASE_URL_MOVIES }}
+      BASE_URL_MUSIC: ${{ secrets.BASE_URL_MUSIC }}
+      BASE_URL_EXCHANGE: ${{ secrets.BASE_URL_EXCHANGE }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      COMIC_VINE_APIKEY: ${{ secrets.COMIC_VINE_APIKEY }}
+      X_MASHAPE_KEY: ${{ secrets.X_MASHAPE_KEY }}
+      MOVIES_APIKEY: ${{ secrets.MOVIES_APIKEY }}
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      IGDB_APIKEY: ${{ secrets.IGDB_APIKEY }}
+      EXCHANGE_RATE_APIKEY: ${{ secrets.EXCHANGE_RATE_APIKEY }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build

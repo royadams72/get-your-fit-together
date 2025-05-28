@@ -8,11 +8,11 @@ interface ErrorProps {
   error: string;
 }
 const Error = ({ error }: ErrorProps) => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(setStore(defaultState));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(setStore(defaultState));
+  }, [dispatch]);
 
   return (
     <div>
