@@ -1,47 +1,94 @@
+@mixin animateCopy($delay, $playOut: false) {
+  // visibility: visible;
+  // max-height: 100px;
+
+  @if $playOut {
+    animation: delayedShow 0.5s ease-in $delay forwards,
+      delayedHide 0.5s ease-in calc($delay + 5000ms) forwards;
+  } @else {
+    animation: delayedShow 0.5s ease-in $delay forwards;
+  }
+}
+
+@mixin copyAnimInit {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+}
+@mixin copyAnimEnd {
+  opacity: 1;
+  visibility: visible;
+  max-height: 100px;
+}
+
 .loader {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background: rgba(255, 255, 255, 1);
+  background: var(--tertiary-colour);
   z-index: 99999;
-}
-.loader:before {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #cf4647;
-  animation: bounce 0.3s cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
-}
-.loader:after {
-  content: "";
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  outline: 3px solid #524656;
-  animation: rotateBox 0.3s linear infinite;
-}
-@keyframes bounce {
-  0% {
-    transform: translateY(-18px);
+
+  &Copy1 {
+    opacity: 1;
+    visibility: visible;
+    max-height: 100px;
+    animation: delayedHide 0.5s ease-in 5000ms forwards;
   }
-  100% {
-    transform: translateY(18px);
+
+  &Copy2 {
+    @include copyAnimInit;
+    @include animateCopy(5500ms, true);
+  }
+
+  &Copy3 {
+    @include copyAnimInit;
+    @include animateCopy(11000ms, false);
   }
 }
 
-@keyframes rotateBox {
-  0% {
-    transform: rotate(0deg);
+.loaderAnim {
+  width: 10rem;
+  aspect-ratio: 4;
+  --_g: no-repeat
+    radial-gradient(circle closest-side, var(--quaternary-colour) 90%, #0000);
+  background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 100%;
+  animation: l7 1s infinite ease-out;
+}
+
+@keyframes delayedShow {
+  from {
+    @include copyAnimInit;
   }
-  100% {
-    transform: rotate(90deg);
+  to {
+    @include copyAnimEnd;
+  }
+}
+
+@keyframes delayedHide {
+  from {
+    @include copyAnimEnd;
+  }
+  to {
+    @include copyAnimInit;
+  }
+}
+
+@keyframes l7 {
+  33% {
+    background-size: calc(100% / 3) 0%, calc(100% / 3) 100%, calc(100% / 3) 100%;
+  }
+  50% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 0%, calc(100% / 3) 100%;
+  }
+  66% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 100%, calc(100% / 3) 0%;
   }
 }

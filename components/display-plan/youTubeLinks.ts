@@ -193,11 +193,11 @@ export const youtubeLinks = [
   // Boxing & Martial Arts
   {
     keywords: ["boxing", "shadowboxing", "boxing workout"],
-    url: "https://www.youtube.com/watch?v=Jj6xub0P77Q",
+    url: "https://www.youtube.com/watch?v=J4j3AOVWuHE",
   }, // Boxing Workout
   {
-    keywords: ["shadowboxing", "boxing punches", "boxing fitness"],
-    url: "https://www.youtube.com/watch?v=wt3bRx0x_mw",
+    keywords: ["heavy bag boxing", "heavy bag", "punch bag boxing"],
+    url: "https://www.youtube.com/watch?v=gqHc3OtDF-Y",
   }, // Shadow Boxing Tutorial
 
   // Full Body Workouts
@@ -245,5 +245,9 @@ export const youtubeLinks = [
   {
     keywords: ["zumba dance workout", "zumba workout", "zumba dancing"],
     url: "https://www.youtube.com/watch?v=mZeFvX3ALKY",
+  },
+  {
+    keywords: ["treadmill", "treadmill cardio"],
+    url: "https://www.youtube.com/watch?v=ufhM_9eLU-s",
   },
 ];

@@ -50,11 +50,10 @@ const CheckBoxGroupComponent = ({
     },
   });
 
-  const { checkboxArray } = useSetFieldsToEven(fields, config);
-
   const { columns, leftBottom, rightTop } = useOnScreensizeChange(
-    checkboxArray.length
+    fields.length
   );
+  const { checkboxArray } = useSetFieldsToEven(fields, config, columns);
 
   config.checkboxes = useSetChecked(defaultValue || "", config, setValue);
 

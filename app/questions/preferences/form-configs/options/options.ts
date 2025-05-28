@@ -36,16 +36,24 @@ export const daysOptions = [
     display: "1-2 days per week (Light Commitment)",
   },
   {
-    value: "3 - 4 days per week",
-    display: "3-4 days per week (Balanced Routine)",
+    value: "3 days per week",
+    display: "3 days per week",
   },
   {
-    value: "5 - 6 days per week",
-    display: "5-6 days per week (High Commitment, Dedicated Routine)",
+    value: "4 days per week",
+    display: "4 days per week",
+  },
+  {
+    value: "5 days per week",
+    display: "5 days per week",
+  },
+  {
+    value: "6 days per week",
+    display: "6 days per week",
   },
   {
     value: "7 days per week",
-    display: "7 days per week (Daily Training, Active Recovery Included)",
+    display: "7 days per week",
   },
 ];
 
