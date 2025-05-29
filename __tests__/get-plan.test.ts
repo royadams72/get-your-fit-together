@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import "openai/shims/node";
+// import "openai/shims/node";
 
 import OpenAI from "openai";
 import { NextRequest } from "next/server";

@@ -43,8 +43,8 @@ export const reduxMock = {
   },
   user: {
     user: {
-      userName: "",
-      userPassword: "",
+      userName: "clientUserName",
+      userPassword: "clientPassword",
       userFitnessPlan: {
         overview: {
           title: "Overview",
