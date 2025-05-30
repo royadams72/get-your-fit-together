@@ -25,6 +25,7 @@ export const useClientFetch = () => {
         )}`
       );
     }
+    console.log("useClientFetch response", response);
 
     return response;
   };

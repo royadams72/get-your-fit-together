@@ -167,7 +167,7 @@ export const reduxMock = {
         },
         {
           name: "/your-custom-fit",
-          isComplete: false,
+          isComplete: true,
           canNavigate: true,
         },
       ],

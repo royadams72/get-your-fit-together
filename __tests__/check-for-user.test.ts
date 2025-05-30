@@ -15,7 +15,7 @@ const mockFindOne = jest.fn();
   }),
 });
 
-fdescribe("POST /api/check-plan", () => {
+describe("POST /api/check-plan", () => {
   const createRequest = (userName: string): Request =>
     ({
       json: jest.fn().mockResolvedValue(userName),

@@ -1,3 +1,6 @@
+export interface JourneyState {
+  journey: JourneyStore;
+}
 export interface JourneyStore {
   journeyData: JourneyData[];
   routes: {
@@ -5,9 +8,6 @@ export interface JourneyStore {
     nextRoute: string;
     prevRoute: string;
   };
-}
-export interface JourneyState {
-  journey: JourneyStore;
 }
 
 export interface JourneyData {

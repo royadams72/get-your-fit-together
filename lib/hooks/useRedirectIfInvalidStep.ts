@@ -23,13 +23,13 @@ export const useRedirectIfInvalidStep = () => {
       )
     );
 
-    const lastCompletedRoute = journeyData.findLast(
+    const lastCompletedRoute = journeyData?.findLast(
       (route) => route.canNavigate === true
     )?.name;
 
     if (!canNavigate) {
       setIsInvalidStep(true);
-      router.replace(`${lastCompletedRoute || JOURNEY_PATHS[0]}`);
+      router?.replace(`${lastCompletedRoute || JOURNEY_PATHS[0]}`);
     } else {
       setIsInvalidStep(false);
       dispatch(navigate({ route: path }));

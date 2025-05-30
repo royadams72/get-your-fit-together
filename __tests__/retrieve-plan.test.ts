@@ -23,7 +23,7 @@ const mongoDbResponse = {
   }),
 });
 
-fdescribe("POST /api/retrieve-plan", () => {
+describe("POST /api/retrieve-plan", () => {
   const createRequest = (): Request =>
     ({
       json: jest.fn().mockResolvedValue({

@@ -50,12 +50,12 @@ const YourFit = () => {
   const onSubmit = async (userData: any) => {
     try {
       setLoading(true);
+      console.log("response", savedState);
 
       const response = await clientFetch(API.SAVE_PLAN, {
         savedState,
         userData,
       });
-
       if (response.success) {
         reset();
         router.push(
@@ -79,7 +79,7 @@ const YourFit = () => {
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedIn && (
-        <FormProvider onSubmit={onSubmit}>
+        <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm
             config={config(true)}
             customMessage={responseError}

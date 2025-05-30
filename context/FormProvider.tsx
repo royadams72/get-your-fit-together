@@ -47,7 +47,12 @@ const FormProvider = ({
   return (
     <FormContext.Provider value={contextValue}>
       <RHFProvider {...formMethods}>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)}>{children}</form>
+        <form
+          data-testid="user-form"
+          onSubmit={formMethods.handleSubmit(onSubmit)}
+        >
+          {children}
+        </form>
       </RHFProvider>
     </FormContext.Provider>
   );
