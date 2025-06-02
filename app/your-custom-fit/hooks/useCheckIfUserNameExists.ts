@@ -21,7 +21,6 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       userForm.name.length < 6
     )
       return;
-    console.log("useCheckIfUserNameExists called", userForm.name.length);
 
     (async () => {
       try {

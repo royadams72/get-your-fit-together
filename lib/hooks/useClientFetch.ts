@@ -13,21 +13,17 @@ export const useClientFetch = () => {
     url: string,
     args: Record<string, unknown> | string
   ) => {
-    const params = typeof args === "object" ? { ...args } : args;
-
     try {
       const res: any = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(params),
+        body: JSON.stringify(args),
       });
 
       const response = await res.json();
 
       if (response.redirect && isNotEmpty(response.error)) {
-        return router.push(
-          errRedirectURI(response.error || response.error.message)
-        );
+        return router.push(errRedirectURI(response.error));
       }
       return response;
     } catch (error) {
