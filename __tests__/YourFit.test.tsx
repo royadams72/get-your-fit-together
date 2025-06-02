@@ -10,14 +10,10 @@ import { Provider } from "react-redux";
 import YourFit from "@/app/your-custom-fit/components/YourFit";
 import { reduxMock } from "@/__mocks__/reduxMock";
 import { LoaderProvider } from "@/context/Loader/LoaderProvider";
-import { JourneyState, JourneyStore } from "@/types/interfaces/journey";
+
 import { journeySliceMock } from "@/__mocks__/rootStateMock";
 import { useAppSelector } from "@/lib/hooks/storeHooks";
-
-// // Mock the Redux hooks
-// jest.mock("@/lib/hooks/store.hooks", () => ({
-//   useAppSelector: jest.fn(),
-// }));
+import { API } from "@/routes.config";
 
 const userReducer = () => reduxMock.user;
 const uiDataReducer = () => reduxMock.uiData;
@@ -43,21 +39,49 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   usePathname: () => mockUsePathname(),
 }));
+
 const scrollIntoViewMock = jest.fn();
 const scrollByMock = jest.fn();
+let mockUseRouter: jest.Mock;
+const mockRouterPush = jest.fn();
 
 describe("CategoryItem Component", () => {
   let store: any;
-  // let mockUseAppSelector: jest.Mock;
-  // const submitMock = jest.fn();
+
+  const renderYourFit = async () =>
+    await act(async () =>
+      render(
+        <LoaderProvider>
+          <Provider store={store}>
+            <YourFit />
+          </Provider>
+        </LoaderProvider>
+      )
+    );
+
   beforeEach(() => {
     store = makeStore();
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    mockUseRouter = jest.requireMock("next/navigation").useRouter;
+    mockUseRouter.mockReturnValue({
+      push: mockRouterPush,
+      prefetch: jest.fn(),
+      replace: jest.fn(),
+      pathname: "/",
+      route: "/",
+      query: {},
+      asPath: "/",
+      refresh: jest.fn(),
+    });
+
+    mockUsePathname.mockImplementation(() => "/your-custom-fit");
+
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
     Object.defineProperty(window, "scrollIntoView", {
       value: scrollByMock,
       writable: true,
     });
-
     Object.defineProperty(window, "scrollBy", {
       value: scrollByMock,
       writable: true,
@@ -66,9 +90,40 @@ describe("CategoryItem Component", () => {
     (useAppSelector as unknown as jest.Mock).mockImplementation((selectorFn) =>
       selectorFn(store.getState())
     );
-    mockUsePathname.mockImplementation(() => "/your-custom-fit");
-    global.fetch = jest.fn();
+
+    global.fetch = jest.fn().mockImplementation((url) => {
+      if (url === "/api/check-for-user") {
+        // getting issues as it calls check user
+        return Promise.resolve({
+          json: () => Promise.resolve({ exists: false }),
+        });
+      }
+      if (url === "/api/save-plan") {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({ success: true }),
+        });
+      }
+
+      if (url === "/api/errorUrl") {
+        return Promise.resolve({
+          ok: false,
+          status: 400,
+          json: () =>
+            Promise.resolve({ error: "some message", redirect: false }),
+        });
+      }
+      return Promise.resolve({
+        json: () => Promise.resolve({}),
+      });
+    });
+
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    (console.error as jest.Mock).mockRestore();
   });
 
   it("should render YourFit", () => {
@@ -83,25 +138,10 @@ describe("CategoryItem Component", () => {
   });
 
   it("should submit", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve({ success: true }),
-    });
-    const result = await act(async () =>
-      render(
-        <LoaderProvider>
-          <Provider store={store}>
-            <YourFit />
-          </Provider>
-        </LoaderProvider>
-      )
-    );
+    const component = await renderYourFit();
 
-    // console.log(store.getState().journey.journey.journeyData);
-    // screen.debug();
-    const userName = result.container.querySelector("#userName");
-    const userPassword = result.container.querySelector("#userPassword");
+    const userName = component.container.querySelector("#userName");
+    const userPassword = component.container.querySelector("#userPassword");
     const button = screen.getByRole("button", { name: /Save your plan/i });
 
     await act(async () => {
@@ -111,6 +151,42 @@ describe("CategoryItem Component", () => {
       }
       fireEvent.click(button);
     });
+
+    expect(mockRouterPush).toHaveBeenCalled();
+
     expect(mockDispatch).toHaveBeenCalled();
+  });
+
+  it("should return an error", async () => {
+    (global.fetch as jest.Mock)
+      // First fetch call: /api/check-for-user
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ exists: false }),
+        })
+      )
+      .mockImplementationOnce(() => Promise.reject(new Error("Network error")));
+
+    const component = await renderYourFit();
+
+    const userName = component.container.querySelector("#userName");
+    const userPassword = component.container.querySelector("#userPassword");
+    const button = screen.getByRole("button", { name: /Save your plan/i });
+
+    await act(async () => {
+      if (userName && userPassword) {
+        fireEvent.change(userName, { target: { value: "userName" } });
+        fireEvent.change(userPassword, { target: { value: "password123" } });
+      }
+      fireEvent.click(button);
+    });
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      expect.stringContaining(
+        "/error?error=Error%20saving%20data%3A%20Error%3A%20Network%20error"
+      )
+    );
+
+    expect(mockRouterPush).toHaveBeenCalledTimes(1);
   });
 });

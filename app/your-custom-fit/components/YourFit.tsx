@@ -48,25 +48,21 @@ const YourFit = () => {
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (userData: any) => {
-    try {
-      setLoading(true);
-      console.log("response", savedState);
+    setLoading(true);
 
-      const response = await clientFetch(API.SAVE_PLAN, {
-        savedState,
-        userData,
-      });
-      if (response.success) {
-        reset();
-        router.push(
-          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-            "Your plan has been saved"
-          )}`
-        );
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
-    } finally {
+    const response = await clientFetch(API.SAVE_PLAN, {
+      savedState,
+      userData,
+    });
+
+    if (response?.success) {
+      reset();
+
+      router.push(
+        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+          "Your plan has been saved"
+        )}`
+      );
       setLoading(false);
     }
   };
