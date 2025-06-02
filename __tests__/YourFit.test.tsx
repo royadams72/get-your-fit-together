@@ -40,7 +40,7 @@ jest.mock("@/lib/hooks/storeHooks", () => ({
   useAppDispatch: () => mockDispatch,
   useAppSelector: jest.fn(),
 }));
-
+// Redepoluyy
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   usePathname: () => mockUsePathname(),
