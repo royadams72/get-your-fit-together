@@ -12,4 +12,5 @@ export const ENV = {
   BASE_URL: getEnv("NEXT_PUBLIC_BASE_URL"),
   OPENAI_API_KEY: getEnv("OPENAI_API_KEY"),
   MONGODB_URI: getEnv("MONGODB_URI"),
+  MONGODB_DB_NAME: getEnv("MONGODB_DB_NAME"),
 } as const;

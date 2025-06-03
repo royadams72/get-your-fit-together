@@ -6,12 +6,13 @@ import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
 import { errorResponse } from "@/lib/services/errorResponse";
+import { ENV } from "@/lib/services/envService";
 
 import { extractState, setContent } from "@/app/api/get-plan/functions";
 import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
 
 export async function POST(request: NextRequest) {
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
   const state = (await request.json()) as RootState;
 
   const mappedState = extractState(state);
