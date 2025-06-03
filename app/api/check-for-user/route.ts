@@ -6,15 +6,15 @@ import { errorResponse } from "@/lib/services/errorResponse";
 export async function POST(req: Request) {
   try {
     const db = await connectToDB();
-    const collection = db?.collection("reduxStates");
+    const collection = db.collection("reduxStates");
     console.log("collection:", collection);
     const userName = await req.json();
-    console.log("userName:", userName);
 
-    const plan: DbResponse | null | undefined =
-      await collection?.findOne<DbResponse | null>({
+    const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
+      {
         "reduxState.user.user.userName": userName,
-      });
+      }
+    );
     console.log("plan:", plan);
 
     if (plan) {
