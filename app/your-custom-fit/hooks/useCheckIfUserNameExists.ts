@@ -18,7 +18,7 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
     if (
       !userForm ||
       userForm.name !== User.userName ||
-      userForm.value.length < 6
+      userForm.name.length < 6
     )
       return;
 

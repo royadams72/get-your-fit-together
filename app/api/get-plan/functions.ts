@@ -1,6 +1,7 @@
 import { AboutYouState } from "@/types/interfaces/about-you";
 import { InjuriesState } from "@/types/interfaces/injuries";
 import { PreferencesState } from "@/types/interfaces/preferences";
+import { RootState } from "@/types/interfaces/store";
 import { YourGoalsState } from "@/types/interfaces/your-goals";
 
 interface SessionStore {
@@ -9,7 +10,11 @@ interface SessionStore {
   yourGoals: YourGoalsState;
   preferences: PreferencesState;
 }
+export const extractState = (state: RootState) => {
+  const { aboutYou, injuries, yourGoals, preferences } = state;
 
+  return { aboutYou, injuries, yourGoals, preferences };
+};
 export const setContent = async (store: SessionStore) => {
   const {
     aboutYou: {

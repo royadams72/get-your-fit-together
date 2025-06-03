@@ -1,8 +1,8 @@
+export const dynamic = "force-dynamic";
 import Button from "@/components/Button";
 import CopyComponent from "@/components/CopyComponent";
 import { getCopy } from "@/lib/services/getCopy";
-
-export const Home = async () => {
+const Home = async () => {
   const { copy } = await getCopy("firstPage");
 
   return (

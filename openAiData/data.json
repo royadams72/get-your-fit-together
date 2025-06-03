@@ -14,7 +14,7 @@
             { "exercise": "Push-Up", "action": "3 sets x 10 reps" },
             {
               "exercise": "Dumbbell Shoulder Press",
-              "video": "https://www.youtube.com/watch?v=B-aVuyhvLHU"
+              "action": "3 sets x 12 reps"
             }
           ]
         },
@@ -25,7 +25,7 @@
             { "exercise": "Bodyweight Squat", "action": "3 sets x 12 reps" },
             {
               "exercise": "Box Step-Up",
-              "video": "https://www.youtube.com/watch?v=9ZZzSK8XTwQ"
+              "action": "3 sets x 10 reps"
             }
           ]
         },
@@ -39,7 +39,7 @@
             },
             {
               "exercise": "High Knees",
-              "video": "https://www.youtube.com/watch?v=8opcQdC-V-U"
+              "action": "3 sets x 10 reps"
             }
           ]
         },
@@ -53,7 +53,7 @@
             },
             {
               "exercise": "Hip Flexor Stretch",
-              "video": "https://www.youtube.com/watch?v=TQd8fRq3mp8"
+              "action": "3 sets x 10 reps"
             }
           ]
         }

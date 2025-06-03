@@ -23,7 +23,6 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
     const { savedState, userData } = await req.json();
-
     const { userName, userPassword, restOfState } =
       await extractUserInfoAndState(savedState, userData);
 

@@ -237,7 +237,7 @@ export const youtubeLinks = [
   {
     keywords: ["bodyweight exercises", "calisthenics", "bodyweight training"],
     url: "https://www.youtube.com/watch?v=kuUZYUBHryw",
-  }, // Bodyweight Exercises
+  },
   {
     keywords: ["zumba dance workout", "zumba workout", "zumba dancing"],
     url: "https://www.youtube.com/watch?v=mZeFvX3ALKY",
@@ -245,5 +245,9 @@ export const youtubeLinks = [
   {
     keywords: ["treadmill", "treadmill cardio"],
     url: "https://www.youtube.com/watch?v=ufhM_9eLU-s",
+  },
+  {
+    keywords: ["jumping jacks"],
+    url: "https://www.youtube.com/watch?v=c4DAnQ6DtF8",
   },
 ];

@@ -48,25 +48,21 @@ const YourFit = () => {
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (userData: any) => {
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      const response = await clientFetch(API.SAVE_PLAN, {
-        savedState,
-        userData,
-      });
+    const response = await clientFetch(API.SAVE_PLAN, {
+      savedState,
+      userData,
+    });
 
-      if (response.success) {
-        reset();
-        router.push(
-          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-            "Your plan has been saved"
-          )}`
-        );
-      }
-    } catch (error) {
-      console.error("Error saving data:", error);
-    } finally {
+    if (response?.success) {
+      reset();
+
+      router.push(
+        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+          "Your plan has been saved"
+        )}`
+      );
       setLoading(false);
     }
   };
@@ -79,7 +75,7 @@ const YourFit = () => {
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedIn && (
-        <FormProvider onSubmit={onSubmit}>
+        <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm
             config={config(true)}
             customMessage={responseError}

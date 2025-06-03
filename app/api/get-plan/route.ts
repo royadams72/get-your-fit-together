@@ -7,21 +7,17 @@ import { FitPlan } from "@/types/interfaces/fitness-plan";
 
 import { errorResponse } from "@/lib/services/errorResponse";
 
-import { setContent } from "@/app/api/get-plan/setContent";
+import { extractState, setContent } from "@/app/api/get-plan/functions";
 import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
-
-export const extractState = (state: RootState) => {
-  const { aboutYou, injuries, yourGoals, preferences } = state;
-
-  return { aboutYou, injuries, yourGoals, preferences };
-};
 
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const state = (await request.json()) as RootState;
 
   const mappedState = extractState(state);
+
   const userContent = await setContent(mappedState);
+
   try {
     const completion = await openai.chat.completions.create({
       messages: [
@@ -46,7 +42,6 @@ export async function POST(request: NextRequest) {
         true
       );
     }
-    // console.log(plan);
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
