@@ -8,6 +8,8 @@ export async function connectToDB(): Promise<Db> {
   console.log("ENV.MONGODB_DB_NAME: ", ENV.MONGODB_DB_NAME);
   console.log("cachedDb: ", cachedDb);
   const client = new MongoClient(ENV.MONGODB_URI);
+  console.log("ENV.MONGODB_URI: ", ENV.MONGODB_URI);
+  console.log("client: ", client);
   await client.connect();
   cachedDb = client.db(ENV.MONGODB_DB_NAME);
   console.log("client: cachedDb", cachedDb);
