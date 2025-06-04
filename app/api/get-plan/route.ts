@@ -14,7 +14,6 @@ import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
 export async function POST(request: NextRequest) {
   const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
   const state = (await request.json()) as RootState;
-  console.log("get-plan: ", state);
 
   const mappedState = extractState(state);
 
@@ -54,7 +53,7 @@ export async function POST(request: NextRequest) {
         true
       );
     }
-
+    console.log("get-plan json.fitnessPlan: ", json.fitnessPlan);
     return NextResponse.json(json.fitnessPlan, { status: 200 });
   } catch (error) {
     return errorResponse(`An unexpected error occured:${error}`, 500, true);

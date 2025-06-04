@@ -19,6 +19,11 @@ export const fetchHelper = async (
 
     const response = await res.json();
 
+    // console.log(
+    //   "helper response:",
+    //   response,
+    //   response.redirect && isNotEmpty(response.error)
+    // );
     if (response.redirect && isNotEmpty(response.error)) {
       return redirect(errRedirectURI(response.error));
     }

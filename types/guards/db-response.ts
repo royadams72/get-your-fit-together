@@ -4,12 +4,15 @@ import { FitPlan } from "../interfaces/fitness-plan";
 import { fitPlanGuard } from "./fitPlanGuard";
 
 export const isDbResponse = (plan: any): plan is DbResponse => {
-  const fitPlan: FitPlan = plan?.reduxState?.user?.user?.userFitnessPlan;
+  // const fitPlan: FitPlan = plan?.reduxState?.user?.userFitnessPlan;
+  // console.log("fitPlan:::::::::::", plan.reduxState.user.user);
   return (
     plan !== null &&
     typeof plan === "object" &&
     "_id" in plan &&
     plan._id instanceof ObjectId &&
+    "sessionCookie" in plan &&
+    typeof plan?.sessionCookie === "string" && // ✅ fixed here
     "reduxState" in plan &&
     typeof plan?.reduxState === "object" &&
     "aboutYou" in plan?.reduxState &&
@@ -22,7 +25,9 @@ export const isDbResponse = (plan: any): plan is DbResponse => {
     typeof plan?.reduxState?.preferences === "object" &&
     "user" in plan?.reduxState &&
     typeof plan?.reduxState?.user === "object" &&
-    "userFitnessPlan" in plan?.reduxState?.user?.user &&
-    fitPlanGuard(fitPlan)
+    "userFitnessPlan" in plan?.reduxState?.user?.user
+
+    // &&
+    // fitPlanGuard(fitPlan)
   );
 };

@@ -11,26 +11,13 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
-    const data = await req.json();
-    // console.log("data:::::::::", data);
-    const userName = data.userName || undefined;
-    const userPassword = data.userPassword || undefined;
-    const sessionCookie = data.sessionCookie || undefined;
-    let documentFilter = {};
-
-    if (userName && userPassword) {
-      documentFilter = {
-        "reduxState.user.user.userName": userName,
-        "reduxState.user.user.userPassword": userPassword,
-      };
-    } else {
-      documentFilter = {
-        sessionCookie: sessionCookie,
-      };
-    }
+    const { userPassword, userName } = await req.json();
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
-      documentFilter
+      {
+        "reduxState.user.user.userName": userName,
+        "reduxState.user.user.userPassword": userPassword,
+      }
     );
 
     if (!plan) {
@@ -40,8 +27,7 @@ export async function POST(req: Request) {
         false
       );
     }
-    // console.log("plan:::", plan);
-    //  const { createdAt,  updatedAt, sessionCookie } = plan
+
     if (isDbResponse(plan)) {
       const { reduxState } = plan;
       return NextResponse.json(reduxState, { status: 200 });

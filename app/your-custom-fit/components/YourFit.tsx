@@ -19,23 +19,23 @@ import { selectState } from "@/lib/store/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
 
-import { useLoader } from "@/context/Loader/LoaderProvider";
+// import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
-const YourFit = () => {
+const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
   const router = useRouter();
   const clientFetch = useClientFetch();
   const savedState = useAppSelector(selectState);
-  const userFitnessPlan = useAppSelector(getUserFitnessPlan);
+  // const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
 
   const methods = useForm();
   const { reset } = methods;
-  const { setLoading } = useLoader();
+  // const { setLoading } = useLoader();
 
   const [userForm, setUserForm] = useState<FormValue>();
   const isInvalidStep = useRedirectIfInvalidStep();
@@ -48,7 +48,7 @@ const YourFit = () => {
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (userData: any) => {
-    setLoading(true);
+    // setLoading(true);
 
     const response = await clientFetch(API.SAVE_PLAN, {
       savedState,
@@ -63,7 +63,7 @@ const YourFit = () => {
           "Your plan has been saved"
         )}`
       );
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
