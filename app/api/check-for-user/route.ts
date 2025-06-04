@@ -7,7 +7,6 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    console.log("collection:", collection);
     const userName = await req.json();
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
@@ -15,7 +14,6 @@ export async function POST(req: Request) {
         "reduxState.user.user.userName": userName,
       }
     );
-    console.log("plan:", plan);
 
     if (plan) {
       return errorResponse(
@@ -30,8 +28,6 @@ export async function POST(req: Request) {
       );
     }
   } catch (error) {
-    console.log("error:", error);
-
     return errorResponse(`Any unexpected error occurred: ${error}`, 500, true);
   }
 }

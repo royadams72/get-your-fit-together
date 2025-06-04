@@ -10,9 +10,9 @@ interface ErrorProps {
 const Error = ({ error }: ErrorProps) => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(setStore(defaultState));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setStore(defaultState));
+  // }, [dispatch]);
 
   return (
     <div>

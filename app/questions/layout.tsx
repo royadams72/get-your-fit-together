@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { config } from "@/app/questions/preferences/form-configs/config";
@@ -7,11 +8,13 @@ import { PATHS } from "@/routes.config";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
+import { selectState } from "@/lib/store/store";
 
 import { useMarkAsEditingUntilYourFit } from "@/lib/hooks/useMarkAsEditingUntilYourFit";
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
+import setCookiesAndSaveStateForYourFit from "@/lib/actions/setCookiesAndSaveStateForYourFit";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
@@ -25,7 +28,17 @@ export default function QuestionsLayout({
   const router = useRouter();
   const pageName = usePathname();
   const { nextRoute } = useAppSelector(getRoutes);
+  const savedState = useAppSelector(selectState);
   let formErrors = {};
+
+  useEffect(() => {
+    if (pageName === PATHS.PREFERENCES) {
+      (async () => {
+        setCookiesAndSaveStateForYourFit(savedState);
+      })();
+      console.log(document.cookie.includes("sessionCookie"));
+    }
+  }, [pageName]);
 
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
@@ -40,6 +53,7 @@ export default function QuestionsLayout({
   const onSubmit = () => {
     if (isEmpty(formErrors)) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
+
       router.push(nextRoute);
     } else {
       scrollToError();

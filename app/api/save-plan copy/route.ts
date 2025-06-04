@@ -1,20 +1,43 @@
 import { NextResponse } from "next/server";
 
+import { State } from "@/types/interfaces/store";
+import { PersistPartial } from "redux-persist/es/persistReducer";
+
 import { connectToDB } from "@/lib/db/mongodb";
 import { errorResponse } from "@/lib/services/errorResponse";
+
+const extractUserInfoAndState = async (
+  savedState: State & PersistPartial,
+  userData: { userName: string; userPassword: string }
+) => {
+  const { _persist, uiData, journey, ...restOfState } = savedState;
+
+  const userName = userData?.userName || restOfState?.user?.user?.userName;
+  const userPassword =
+    userData?.userPassword || restOfState?.user?.user?.userPassword;
+  return { userName, userPassword, restOfState };
+};
 
 export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    const { savedState, sessionCookie } = await req.json();
-    const { _persist, uiData, journey, ...reduxState } = savedState;
+    const { savedState, userData } = await req.json();
+    const { userName, userPassword, restOfState } =
+      await extractUserInfoAndState(savedState, userData);
 
-    console.log("sessionCookie:", sessionCookie);
+    if (!userName || !userPassword) {
+      return errorResponse("User name and password are required", 401, false);
+    }
+
+    const reduxState = {
+      ...restOfState,
+      user: { user: { ...restOfState.user.user, userPassword, userName } },
+    };
 
     const response = await collection.updateOne(
       {
-        sessionCookie,
+        "reduxState.user.user.userName": userName,
       },
       {
         $set: {

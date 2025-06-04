@@ -44,7 +44,7 @@ const YourFit = () => {
     setUserForm(val);
   };
 
-  useGetYourPlanOnLoad();
+  // useGetYourPlanOnLoad();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const onSubmit = async (userData: any) => {
