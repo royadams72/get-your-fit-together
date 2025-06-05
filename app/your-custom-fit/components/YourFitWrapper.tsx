@@ -11,7 +11,10 @@ const YourFitWrapper = async () => {
   const cookieStore = await cookies();
   const isFromPrevPage = cookieStore.get("fromPrevPage");
   const sessionCookie = cookieStore.get("sessionCookie");
-  const userData = JSON.parse(cookieStore.get("userData")?.value as string);
+  const userData =
+    (cookieStore.get("userData") &&
+      JSON.parse(cookieStore.get("userData")?.value as string)) ||
+    undefined;
   const isReturningUser = isNotEmpty(userData);
   const retrievData = sessionCookie?.value
     ? { sessionCookie: sessionCookie?.value }
@@ -22,6 +25,7 @@ const YourFitWrapper = async () => {
   let savedState = {} as RootState;
   let userFitnessPlan: any;
   console.log("userData in page.tsx", userData);
+  console.log("isReturningUser: ", isReturningUser);
 
   if (isFromPrevPage?.value) {
     // retrieve the redux store from  mongodb, so we can make a call to create a workout plan
@@ -41,7 +45,7 @@ const YourFitWrapper = async () => {
       ? fitnessPlanFromAI
       : savedState.user.user.userFitnessPlan;
   }
-  console.log("userFitnessPlan before render::", userFitnessPlan);
+  console.log("userFitnessPlan before render::", fitnessPlanFromAI);
   return <YourFit userFitnessPlan={userFitnessPlan} />;
 };
 

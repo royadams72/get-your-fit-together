@@ -32,7 +32,6 @@ export async function POST(req: Request) {
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       documentFilter
     );
-    console.log("plan:::::", plan);
 
     if (!plan) {
       return errorResponse(

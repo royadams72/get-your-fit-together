@@ -6,6 +6,8 @@ import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { defaultState, setStore } from "@/lib/store/store";
 
 import Button from "@/components/Button";
+import cookieAction from "@/lib/actions/cookie.action";
+import { Cookie } from "@/types/enums/cookie.enum";
 
 interface SuccessProps {
   message: string;
@@ -19,6 +21,15 @@ const Success = ({ message, mode }: SuccessProps) => {
 
   useEffect(() => {
     dispatch(setStore(defaultState));
+    console.log(Cookie.fromPrevPage);
+
+    (async () => {
+      await cookieAction(true, [
+        Cookie.fromPrevPage,
+        Cookie.sessionCookie,
+        Cookie.userData,
+      ]);
+    })();
   }, [dispatch]);
 
   return (

@@ -37,13 +37,13 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
   const savedState = useAppSelector(selectState);
   const userFitnessPlanFromStore = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
-  const display = useMemo(() => displayPlan, [displayPlan]);
+
   const methods = useForm();
   const { reset } = methods;
   const { setLoading } = useLoader();
 
   const [userForm, setUserForm] = useState<FormValue>();
-  // const isInvalidStep = useRedirectIfInvalidStep();
+  const isInvalidStep = useRedirectIfInvalidStep();
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
@@ -82,13 +82,13 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
     }
 
     (async () => {
-      await cookieAction(true, Cookie.fromPrevPage);
+      await cookieAction(true, [Cookie.fromPrevPage]);
     })();
   }, []);
   useEffect(() => {
     console.log("displayPlan::::::", displayPlan);
   }, []);
-  // if (isInvalidStep) return null;
+  if (isInvalidStep) return null;
 
   return (
     <div>

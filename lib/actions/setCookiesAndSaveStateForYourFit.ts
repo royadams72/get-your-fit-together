@@ -30,6 +30,8 @@ const setCookiesAndSaveStateForYourFit = async (
   }
 
   if (isSavingStateToCallAI) {
+    // console.log(savedState, sessionCookie);
+
     await fetchHelper(`${ENV.BASE_URL}/${API.SAVE_PLAN}`, {
       savedState,
       sessionCookie,

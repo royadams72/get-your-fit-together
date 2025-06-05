@@ -36,7 +36,7 @@ export default function QuestionsLayout({
       (async () => {
         setCookiesAndSaveStateForYourFit(savedState);
       })();
-      console.log(document.cookie.includes("sessionCookie"));
+      // console.log(document.cookie.includes("sessionCookie"));
     }
   }, [pageName]);
 

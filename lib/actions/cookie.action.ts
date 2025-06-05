@@ -2,12 +2,14 @@
 
 import { cookies } from "next/headers";
 
-const cookieAction = async (isDeleting: boolean, name: string) => {
+const cookieAction = async (isDeleting: boolean, names: string[]) => {
   const cookieStore = await cookies();
-  if (isDeleting && cookieStore.get(name)?.value) {
-    cookieStore.delete(name);
-    console.log("cookie deleted::", cookieStore.get(name));
-  }
+
+  names.forEach((name) => {
+    if (isDeleting && cookieStore.get(name)?.value) {
+      cookieStore.delete(name);
+    }
+  });
 };
 
 export default cookieAction;

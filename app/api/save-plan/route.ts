@@ -7,27 +7,51 @@ export async function POST(req: Request) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    const { savedState, sessionCookie } = await req.json();
-    const { _persist, uiData, journey, ...reduxState } = savedState;
-
+    const { savedState, sessionCookie, userData } = await req.json();
+    const { _persist, uiData, journey, ...restOfState } = savedState;
+    const userName = userData?.userName || undefined;
+    const userPassword = userData?.userPassword || undefined;
+    const userIsSaving = userName && userPassword;
+    let reduxState: any;
+    let documentFilter = {};
     console.log("sessionCookie:", sessionCookie);
 
-    const response = await collection.updateOne(
-      {
-        sessionCookie,
-      },
-      {
-        $set: {
-          reduxState: reduxState,
-        },
-        $setOnInsert: {
-          createdAt: new Date(),
-        },
-        $currentDate: { updatedAt: true },
-      },
-      { upsert: true }
-    );
+    // Conditionally remove sessionCookie if user is saving with credentials
 
+    if (userIsSaving) {
+      reduxState = {
+        ...restOfState,
+        user: { user: { ...restOfState.user.user, userPassword, userName } },
+      };
+
+      documentFilter = {
+        "reduxState.user.user.userName": userName,
+        "reduxState.user.user.userPassword": userPassword,
+      };
+    } else {
+      reduxState = { ...restOfState };
+      documentFilter = {
+        sessionCookie: sessionCookie,
+      };
+      // console.log("reduxState in eles:", reduxState);
+    }
+
+    const updatePayload: any = {
+      $set: {
+        reduxState: reduxState,
+      },
+      $setOnInsert: {
+        createdAt: new Date(),
+      },
+      $currentDate: { updatedAt: true },
+    };
+    const response = await collection.updateOne(documentFilter, updatePayload, {
+      upsert: true,
+    });
+    // console.log("updatePayload:", updatePayload);
+    if (userIsSaving) {
+      updatePayload.$unset = { sessionCookie: "" };
+    }
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
       return errorResponse(
         "There was a problem, your plan could not be saved, please try again later",
