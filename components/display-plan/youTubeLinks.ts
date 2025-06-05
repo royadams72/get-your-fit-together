@@ -250,4 +250,9 @@ export const youtubeLinks = [
     keywords: ["jumping jacks"],
     url: "https://www.youtube.com/watch?v=c4DAnQ6DtF8",
   },
+  {
+    keywords: ["strength training"],
+    url: "https://www.youtube.com/watch?v=rE84PLQ4Vis",
+  },
 ];
+//

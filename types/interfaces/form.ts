@@ -86,3 +86,7 @@ export interface FormValue {
   name: string;
   value: string;
 }
+export interface UserForm {
+  userName: string;
+  userPassword: string;
+}

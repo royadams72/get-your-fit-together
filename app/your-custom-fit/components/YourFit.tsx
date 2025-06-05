@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -30,19 +30,20 @@ import { User } from "@/types/enums/user.enum";
 import { isNotEmpty } from "@/lib/utils/isEmpty";
 
 const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
+  console.log("YourFit::)", userFitnessPlan);
   const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
   const userFitnessPlanFromStore = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
-
+  const display = useMemo(() => displayPlan, [displayPlan]);
   const methods = useForm();
   const { reset } = methods;
   const { setLoading } = useLoader();
 
   const [userForm, setUserForm] = useState<FormValue>();
-  const isInvalidStep = useRedirectIfInvalidStep();
+  // const isInvalidStep = useRedirectIfInvalidStep();
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
@@ -74,15 +75,20 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
     if (isNotEmpty(userFitnessPlan)) {
       setDisplayPlan(userFitnessPlan);
       dispatch(setUser({ name: User.userFitnessPlan, value: userFitnessPlan }));
+      console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
     } else {
+      console.log("useEffect:: else", userFitnessPlanFromStore);
       setDisplayPlan(userFitnessPlanFromStore as FitPlan);
     }
+
     (async () => {
       await cookieAction(true, Cookie.fromPrevPage);
     })();
-  }, [userFitnessPlanFromStore, userFitnessPlan]);
-
-  if (isInvalidStep) return null;
+  }, []);
+  useEffect(() => {
+    console.log("displayPlan::::::", displayPlan);
+  }, []);
+  // if (isInvalidStep) return null;
 
   return (
     <div>

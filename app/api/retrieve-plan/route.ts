@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       documentFilter
     );
+    console.log("plan:::::", plan);
 
     if (!plan) {
       return errorResponse(
@@ -40,10 +41,10 @@ export async function POST(req: Request) {
         false
       );
     }
-    // console.log("plan:::", plan);
-    //  const { createdAt,  updatedAt, sessionCookie } = plan
+
     if (isDbResponse(plan)) {
       const { reduxState } = plan;
+
       return NextResponse.json(reduxState, { status: 200 });
     } else {
       return errorResponse(

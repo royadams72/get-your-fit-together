@@ -6,9 +6,9 @@ const errRedirectURI = (resObjString: any) => {
   return `${PATHS.ERROR}?error=${encodeURIComponent(resObjString)}`;
 };
 
-export const fetchHelper = async (
+export const fetchHelper = async <T = Record<string, unknown>>(
   url: string,
-  args: Record<string, unknown> | string
+  args: T | string
 ) => {
   try {
     const res: any = await fetch(url, {
@@ -18,6 +18,7 @@ export const fetchHelper = async (
     });
 
     const response = await res.json();
+    console.log("fetchHelper::", response);
 
     if (response.redirect && isNotEmpty(response.error)) {
       return redirect(errRedirectURI(response.error));
@@ -25,6 +26,6 @@ export const fetchHelper = async (
 
     return response;
   } catch (error) {
-    return redirect(errRedirectURI(`Error saving data: ${error}`));
+    return redirect(errRedirectURI(`Error: ${error}`));
   }
 };

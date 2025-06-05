@@ -25,74 +25,65 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
+import { fetchHelper } from "@/lib/actions/fetchHelper";
+import setCookiesAndSaveStateForYourFit from "@/lib/actions/setCookiesAndSaveStateForYourFit";
+import { useRouter } from "next/navigation";
 
 const RetrieveYourPlan = () => {
+  const router = useRouter();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
   }>({ message: "", messageElement: "" });
 
   const dispatch = useAppDispatch();
-  const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  const store = useAppSelector(selectState);
-  const clientFetch = useClientFetch();
+  // const userFitnessPlan = useAppSelector(getUserFitnessPlan);
+  // const store = useAppSelector(selectState);
+  // const clientFetch = useClientFetch();
 
-  const setRetrievedStore = (retrievedStore: any) => {
-    const { _persist, uiData, journey }: RootState = store;
-    dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
-    dispatch(setCanNavigateTrue());
-    dispatch(setUiDataForRetreive());
-  };
+  // const setRetrievedStore = (retrievedStore: any) => {
+  //   const { _persist, uiData, journey }: RootState = store;
+  //   dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
+  //   dispatch(setCanNavigateTrue());
+  //   dispatch(setUiDataForRetreive());
+  // };
 
-  const isUserFitnessPlanNotEmpty = useMemo(
-    () => isNotEmpty(userFitnessPlan),
-    [userFitnessPlan]
-  );
+  // const isUserFitnessPlanNotEmpty = useMemo(
+  //   () => isNotEmpty(userFitnessPlan),
+  //   [userFitnessPlan]
+  // );
 
-  const { setLoading } = useLoader();
+  // const { setLoading } = useLoader();
 
   const methods = useForm();
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
-    try {
-      setLoading(true);
-      const response = await clientFetch(API.RETRIEVE, data);
+    // try {
+    // setLoading(true);
+    console.log("res", data);
+    await setCookiesAndSaveStateForYourFit({} as RootState, data);
 
-      if (!response) return;
+    router.push(PATHS.YOUR_FIT);
+    // const response = await fetchHelper({}, data);
 
-      if (response.error) {
-        setResponseError({
-          message: response.error,
-          messageElement: User.userPassword,
-        });
-        return;
-      }
+    // if (!response) return;
 
-      setRetrievedStore(response);
-      reset();
-    } catch (error) {
-      console.error("Error retrieving data:", error);
-    } finally {
-      setLoading(false);
-    }
+    // if (response.error) {
+    //   setResponseError({
+    //     message: response.error,
+    //     messageElement: User.userPassword,
+    //   });
+    reset();
+    return;
   };
+
   return (
     <div>
-      {isUserFitnessPlanNotEmpty ? (
-        <div>
-          <h2>Your Custom Fit</h2>
-          <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
-          <Button style={{ "--margin": "1rem 0" }} href={`${PATHS.ABOUT_YOU}`}>
-            Edit your information
-          </Button>
-        </div>
-      ) : (
-        <FormProvider methods={methods} onSubmit={onSubmit}>
-          <UserForm customMessage={responseError} config={config(false)} />
-          <Button type="submit">Retrieve Your Plan</Button>
-        </FormProvider>
-      )}
+      <FormProvider methods={methods} onSubmit={onSubmit}>
+        <UserForm customMessage={responseError} config={config(false)} />
+        <Button type="submit">Retrieve Your Plan</Button>
+      </FormProvider>
     </div>
   );
 };
