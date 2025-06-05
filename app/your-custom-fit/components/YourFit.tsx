@@ -82,7 +82,7 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
     }
 
     (async () => {
-      await cookieAction(true, [Cookie.fromPrevPage]);
+      await cookieAction(true, [Cookie.fromPrevPage, Cookie.userData]);
     })();
   }, []);
   useEffect(() => {

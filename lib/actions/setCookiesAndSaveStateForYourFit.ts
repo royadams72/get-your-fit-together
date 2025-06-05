@@ -23,7 +23,7 @@ const setCookiesAndSaveStateForYourFit = async (
     cookieStore.set("userData", JSON.stringify(data));
   }
 
-  if (!sessionCookie && isSavingStateToCallAI) {
+  if (!sessionCookie) {
     const id = uuidv4();
     cookieStore.set("sessionCookie", id);
     sessionCookie = cookieStore.get("sessionCookie")?.value;

@@ -12,8 +12,8 @@ const YourFitWrapper = async () => {
   const isFromPrevPage = cookieStore.get("fromPrevPage");
   const sessionCookie = cookieStore.get("sessionCookie");
   const userData =
-    (cookieStore.get("userData") &&
-      JSON.parse(cookieStore.get("userData")?.value as string)) ||
+    (cookieStore?.get("userData") &&
+      JSON?.parse(cookieStore.get("userData")?.value as string)) ||
     undefined;
   const isReturningUser = isNotEmpty(userData);
   const retrievData = sessionCookie?.value
@@ -29,23 +29,31 @@ const YourFitWrapper = async () => {
 
   if (isFromPrevPage?.value) {
     // retrieve the redux store from  mongodb, so we can make a call to create a workout plan
+    // Or we are retrieving a saved plan after login
     savedState = await fetchHelper(
       `${ENV.BASE_URL}/${API.RETRIEVE}`,
       retrievData
     );
-    if (!isReturningUser) {
+    if (isReturningUser) {
+      userFitnessPlan = savedState.user.user.userFitnessPlan;
+      console.log(
+        "userFitnessPlan = savedState.fitnessPlan::",
+        savedState.user.user.userFitnessPlan
+      );
+    } else {
       // create a workout plan from call to AI
       fitnessPlanFromAI = await fetchHelper(
         `${ENV.BASE_URL}/${API.GET_PLAN}`,
         savedState
       );
+      userFitnessPlan = fitnessPlanFromAI;
+      console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
     }
-    console.log("page.tsx condition executed::");
-    userFitnessPlan = isNotEmpty(fitnessPlanFromAI)
-      ? fitnessPlanFromAI
-      : savedState.user.user.userFitnessPlan;
+    // userFitnessPlan = isNotEmpty(fitnessPlanFromAI)
+    //   ? fitnessPlanFromAI
+    //   : savedState.user.user.userFitnessPlan;
   }
-  console.log("userFitnessPlan before render::", fitnessPlanFromAI);
+
   return <YourFit userFitnessPlan={userFitnessPlan} />;
 };
 

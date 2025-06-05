@@ -11,8 +11,6 @@ export const isDbResponse = (plan: any): plan is DbResponse => {
     typeof plan === "object" &&
     "_id" in plan &&
     plan._id instanceof ObjectId &&
-    "sessionCookie" in plan &&
-    typeof plan?.sessionCookie === "string" && // ✅ fixed here
     "reduxState" in plan &&
     typeof plan?.reduxState === "object" &&
     "aboutYou" in plan?.reduxState &&

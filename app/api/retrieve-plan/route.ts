@@ -12,11 +12,11 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const data = await req.json();
-    // console.log("data:::::::::", data);
     const userName = data.userName || undefined;
     const userPassword = data.userPassword || undefined;
     const sessionCookie = data.sessionCookie || undefined;
     let documentFilter = {};
+    console.log("userName:::::::::", userPassword, userName);
 
     if (userName && userPassword) {
       documentFilter = {
