@@ -6,10 +6,12 @@ import styles from "@/styles/components/form/_userForm.module.scss";
 import InputComponent from "./InputComponent";
 
 const UserForm = ({
+  title,
   config,
   customMessage,
   inputValue,
 }: {
+  title: string;
   config: any;
   customMessage?: { message: string; messageElement: string };
   inputValue?: (val: FormValue) => void;
@@ -18,7 +20,7 @@ const UserForm = ({
 
   return (
     <div className={styles.userFormContainer}>
-      <h3> Create a username and password to save your plan:</h3>
+      <h3> {title}</h3>
       {userArr.map((elName) => {
         const inputProps: any = {
           config: config[elName],

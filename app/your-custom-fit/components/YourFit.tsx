@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -11,27 +11,41 @@ import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIf
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
-import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
-import { selectState } from "@/lib/store/store";
+import {
+  getUiDataState,
+  setUiDataForRetreive,
+} from "@/lib/features/ui-data/uiDataSlice";
+import { selectState, setStore } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
+import { RootState } from "@/types/interfaces/store";
 
-import { useLoader } from "@/context/Loader/LoaderProvider";
+// import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie } from "@/types/enums/cookie.enum";
-import { getUserFitnessPlan, setUser } from "@/lib/features/user/userSlice";
-import { User } from "@/types/enums/user.enum";
-import { isNotEmpty } from "@/lib/utils/isEmpty";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
-const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
+import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
+import useRediectIfNoSessionData from "../hooks/useRediectIfNoSessionData";
+
+const YourFit = ({
+  userFitnessPlan,
+  retrievedStore,
+}: {
+  userFitnessPlan: FitPlan;
+  retrievedStore: RootState;
+}) => {
   console.log("YourFit::)", userFitnessPlan);
   const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
+  const [userForm, setUserForm] = useState<FormValue>();
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
@@ -40,19 +54,35 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
 
   const methods = useForm();
   const { reset } = methods;
-  const { setLoading } = useLoader();
 
-  const [userForm, setUserForm] = useState<FormValue>();
+  // const { setLoading } = useLoader();
+
+  useEffect(() => {
+    if (isNotEmpty(userFitnessPlan)) {
+      setDisplayPlan(userFitnessPlan);
+      // setRetrievedStore(retrievedStore);
+      console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
+    } else {
+      console.log("useEffect:: else", userFitnessPlanFromStore);
+      setDisplayPlan(userFitnessPlanFromStore as FitPlan);
+    }
+
+    // (async () => {
+    //   await cookieAction(CookieAction.delete, [
+    //     Cookie.fromPrevPage,
+    //     Cookie.userData,
+    //   ]);
+    // })();
+  }, []);
+  const isSessionData = useRediectIfNoSessionData();
   const isInvalidStep = useRedirectIfInvalidStep();
+  const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
   };
-
-  const responseError = useCheckIfUserNameExists(userForm);
-
   const onSubmit = async (userData: any) => {
-    setLoading(true);
+    // setLoading(true);
 
     const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
@@ -67,35 +97,29 @@ const YourFit = ({ userFitnessPlan }: { userFitnessPlan: FitPlan }) => {
           "Your plan has been saved"
         )}`
       );
-      setLoading(false);
+      // setLoading(false);
     }
+  };
+  const setRetrievedStore = (store: any) => {
+    const { _persist, uiData, journey }: RootState = savedState;
+    dispatch(setStore({ ...store, uiData, journey, _persist }));
+    dispatch(setCanNavigateTrue());
+    dispatch(setUiDataForRetreive());
   };
 
   useEffect(() => {
-    if (isNotEmpty(userFitnessPlan)) {
-      setDisplayPlan(userFitnessPlan);
-      dispatch(setUser({ name: User.userFitnessPlan, value: userFitnessPlan }));
-      console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
-    } else {
-      console.log("useEffect:: else", userFitnessPlanFromStore);
-      setDisplayPlan(userFitnessPlanFromStore as FitPlan);
-    }
-
-    (async () => {
-      await cookieAction(true, [Cookie.fromPrevPage, Cookie.userData]);
-    })();
-  }, []);
-  useEffect(() => {
     console.log("displayPlan::::::", displayPlan);
   }, []);
-  if (isInvalidStep) return null;
+
+  // if (isSessionData) return null;
 
   return (
     <div>
-      {displayPlan && <Accordion plan={displayPlan as FitPlan}></Accordion>}
+      {<Accordion plan={displayPlan as FitPlan}></Accordion>}
       {!getUiState.isSignedIn && (
         <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm
+            title={"Create a username and password to save your plan:"}
             config={config(true)}
             customMessage={responseError}
             inputValue={inputVal}

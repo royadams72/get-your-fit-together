@@ -8,6 +8,7 @@ import { ENV } from "@/lib/services/envService";
 import { fetchHelper } from "@/lib/actions/fetchHelper";
 import { UserForm } from "@/types/interfaces/form";
 import { isNotEmpty } from "../utils/isEmpty";
+import { Cookie } from "@/types/enums/cookie.enum";
 
 const setCookiesAndSaveStateForYourFit = async (
   savedState?: RootState,
@@ -17,15 +18,16 @@ const setCookiesAndSaveStateForYourFit = async (
   const isSavingStateToCallAI = isNotEmpty(savedState);
   const cookieStore = await cookies();
   let sessionCookie = cookieStore.get("sessionCookie")?.value || undefined;
-  cookieStore.set("fromPrevPage", "true");
+
+  cookieStore.set(Cookie.fromPrevPage, "true");
 
   if (isRetrievingPlan) {
-    cookieStore.set("userData", JSON.stringify(data));
+    cookieStore.set(Cookie.userData, JSON.stringify(data));
   }
 
   if (!sessionCookie) {
     const id = uuidv4();
-    cookieStore.set("sessionCookie", id);
+    cookieStore.set(Cookie.sessionCookie, id);
     sessionCookie = cookieStore.get("sessionCookie")?.value;
   }
 

@@ -24,8 +24,8 @@ const YourFitWrapper = async () => {
 
   let fitnessPlanFromAI = {} as FitPlan;
   let savedState = {} as RootState;
-  let userFitnessPlan: any;
-
+  let userFitnessPlan = {} as FitPlan;
+  let retrievedStore = {} as RootState;
   // console.log("retrievData: ", retrievData);
 
   if (isFromPrevPage?.value) {
@@ -36,11 +36,12 @@ const YourFitWrapper = async () => {
       retrievData
     );
     if (isReturningUser) {
-      userFitnessPlan = savedState.user.user.userFitnessPlan;
-      console.log(
-        "userFitnessPlan = savedState.fitnessPlan::",
-        savedState.user.user.userFitnessPlan
-      );
+      userFitnessPlan = savedState.user.user.userFitnessPlan as FitPlan;
+      retrievedStore = savedState;
+      // console.log(
+      //   "userFitnessPlan = savedState.fitnessPlan::",
+      //   savedState.user.user.userFitnessPlan
+      // );
     } else {
       // create a workout plan from call to AI
       fitnessPlanFromAI = await fetchHelper(
@@ -48,14 +49,19 @@ const YourFitWrapper = async () => {
         savedState
       );
       userFitnessPlan = fitnessPlanFromAI;
-      console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
+      // console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
     }
     // userFitnessPlan = isNotEmpty(fitnessPlanFromAI)
     //   ? fitnessPlanFromAI
     //   : savedState.user.user.userFitnessPlan;
   }
 
-  return <YourFit userFitnessPlan={userFitnessPlan} />;
+  return (
+    <YourFit
+      retrievedStore={retrievedStore}
+      userFitnessPlan={userFitnessPlan}
+    />
+  );
 };
 
 export default YourFitWrapper;

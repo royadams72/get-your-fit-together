@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./_globals.scss";
 import StoreProvider from "./StoreProvider";
-import { LoaderProvider } from "@/context/Loader/LoaderProvider";
+// import { LoaderProvider } from "@/context/Loader/LoaderProvider";
 import RootUIComponent from "@/components/RootUIComponent";
 
 export const metadata: Metadata = {
@@ -17,11 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LoaderProvider>
-          <StoreProvider>
-            <RootUIComponent>{children}</RootUIComponent>
-          </StoreProvider>
-        </LoaderProvider>
+        {/* <LoaderProvider> */}
+        <StoreProvider>
+          <RootUIComponent>{children}</RootUIComponent>
+        </StoreProvider>
+        {/* </LoaderProvider> */}
       </body>
     </html>
   );

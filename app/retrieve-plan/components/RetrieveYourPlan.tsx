@@ -81,7 +81,11 @@ const RetrieveYourPlan = () => {
   return (
     <div>
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <UserForm customMessage={responseError} config={config(false)} />
+        <UserForm
+          title={"Enter your user name and password to retrieve your plan:"}
+          customMessage={responseError}
+          config={config(false)}
+        />
         <Button type="submit">Retrieve Your Plan</Button>
       </FormProvider>
     </div>

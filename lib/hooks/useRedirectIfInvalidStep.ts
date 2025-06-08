@@ -5,8 +5,10 @@ import { JOURNEY_PATHS } from "@/routes.config";
 import { JourneyData } from "@/types/interfaces/journey";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
+import cookieAction from "@/lib/actions/cookie.action";
 import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { getJourneyData, navigate } from "@/lib/features/journey/journeySlice";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 export const useRedirectIfInvalidStep = () => {
   const router = useRouter();

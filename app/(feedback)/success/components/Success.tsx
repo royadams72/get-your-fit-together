@@ -7,7 +7,7 @@ import { defaultState, setStore } from "@/lib/store/store";
 
 import Button from "@/components/Button";
 import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie } from "@/types/enums/cookie.enum";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 interface SuccessProps {
   message: string;
@@ -24,7 +24,7 @@ const Success = ({ message, mode }: SuccessProps) => {
     console.log(Cookie.fromPrevPage);
 
     (async () => {
-      await cookieAction(true, [
+      await cookieAction(CookieAction.delete, [
         Cookie.fromPrevPage,
         Cookie.sessionCookie,
         Cookie.userData,

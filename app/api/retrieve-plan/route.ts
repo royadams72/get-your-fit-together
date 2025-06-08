@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const userPassword = data.userPassword || undefined;
     const sessionCookie = data.sessionCookie || undefined;
     let documentFilter = {};
-    console.log("userName:::::::::", userPassword, userName);
+    // console.log("userName:::::::::", userPassword, userName);
 
     if (userName && userPassword) {
       documentFilter = {
