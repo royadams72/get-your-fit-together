@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const userIsSaving = userName && userPassword;
     let reduxState: any;
     let documentFilter = {};
-    console.log("sessionCookie:", sessionCookie);
+    // console.log("sessionCookie:", sessionCookie);
 
     // Conditionally remove sessionCookie if user is saving with credentials
 

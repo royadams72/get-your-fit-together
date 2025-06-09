@@ -35,15 +35,9 @@ import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
 import useRediectIfNoSessionData from "../hooks/useRediectIfNoSessionData";
 
-const YourFit = ({
-  userFitnessPlan,
-  retrievedStore,
-}: {
-  userFitnessPlan: FitPlan;
-  retrievedStore: RootState;
-}) => {
-  console.log("YourFit::)", userFitnessPlan);
-  const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
+const YourFit = () => {
+  // console.log("YourFit::)", userFitnessPlan);
+  // const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
   const [userForm, setUserForm] = useState<FormValue>();
 
   const router = useRouter();
@@ -57,25 +51,25 @@ const YourFit = ({
 
   // const { setLoading } = useLoader();
 
-  useEffect(() => {
-    if (isNotEmpty(userFitnessPlan)) {
-      setDisplayPlan(userFitnessPlan);
-      // setRetrievedStore(retrievedStore);
-      console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
-    } else {
-      console.log("useEffect:: else", userFitnessPlanFromStore);
-      setDisplayPlan(userFitnessPlanFromStore as FitPlan);
-    }
+  // useEffect(() => {
+  //   if (isNotEmpty(userFitnessPlan)) {
+  //     setDisplayPlan(userFitnessPlan);
+  //     // setRetrievedStore(retrievedStore);
+  //     // console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
+  //   } else {
+  //     // console.log("useEffect:: else", userFitnessPlanFromStore);
+  //     setDisplayPlan(userFitnessPlanFromStore as FitPlan);
+  //   }
 
-    // (async () => {
-    //   await cookieAction(CookieAction.delete, [
-    //     Cookie.fromPrevPage,
-    //     Cookie.userData,
-    //   ]);
-    // })();
-  }, []);
-  const isSessionData = useRediectIfNoSessionData();
-  const isInvalidStep = useRedirectIfInvalidStep();
+  //   // (async () => {
+  //   //   await cookieAction(CookieAction.delete, [
+  //   //     Cookie.fromPrevPage,
+  //   //     Cookie.userData,
+  //   //   ]);
+  //   // })();
+  // }, []);
+  // const isSessionData = useRediectIfNoSessionData();
+  // const isInvalidStep = useRedirectIfInvalidStep();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {
@@ -100,22 +94,22 @@ const YourFit = ({
       // setLoading(false);
     }
   };
-  const setRetrievedStore = (store: any) => {
-    const { _persist, uiData, journey }: RootState = savedState;
-    dispatch(setStore({ ...store, uiData, journey, _persist }));
-    dispatch(setCanNavigateTrue());
-    dispatch(setUiDataForRetreive());
-  };
+  // const setRetrievedStore = (store: any) => {
+  //   // const { _persist, uiData, journey }: RootState = savedState;
+  //   dispatch(setStore({ ...store, uiData, journey, _persist }));
+  //   dispatch(setCanNavigateTrue());
+  //   dispatch(setUiDataForRetreive());
+  // };
 
   useEffect(() => {
-    console.log("displayPlan::::::", displayPlan);
+    console.log("savedState::::::", savedState);
   }, []);
 
   // if (isSessionData) return null;
 
   return (
     <div>
-      {<Accordion plan={displayPlan as FitPlan}></Accordion>}
+      {/* {<Accordion plan={displayPlan as FitPlan}></Accordion>}
       {!getUiState.isSignedIn && (
         <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm
@@ -128,7 +122,7 @@ const YourFit = ({
             Save your plan
           </Button>
         </FormProvider>
-      )}
+      )} */}
 
       <JourneyButtons />
     </div>

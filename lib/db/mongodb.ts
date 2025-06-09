@@ -1,8 +1,18 @@
+/* eslint-disable no-var */
 import { MongoClient, Db } from "mongodb";
 import { ENV } from "../services/envService";
 
-let cachedClient: MongoClient | null = null;
-let cachedDb: Db | null = null;
+// Extend globalThis to add custom MongoDB properties
+declare global {
+  var _mongoClient: MongoClient | null;
+  var _mongoDb: Db | null;
+}
+
+// For TypeScript modules
+export {};
+
+let cachedClient = global._mongoClient || null;
+let cachedDb = global._mongoDb || null;
 
 export async function connectToDB(): Promise<Db> {
   if (cachedDb) return cachedDb;
@@ -15,16 +25,10 @@ export async function connectToDB(): Promise<Db> {
     if (!cachedClient) {
       cachedClient = new MongoClient(ENV.MONGODB_URI);
       await cachedClient.connect();
-
-      // Ping once after first connection
-      const adminDb = cachedClient.db().admin();
-      const pingResult = await adminDb.ping();
-      if (pingResult.ok !== 1) {
-        throw new Error("MongoDB ping failed");
-      }
+      global._mongoClient = cachedClient; // cache client
     }
 
-    cachedDb = cachedClient.db(ENV.MONGODB_DB_NAME);
+    cachedDb = global._mongoDb = cachedClient.db(ENV.MONGODB_DB_NAME); // cache db
     return cachedDb;
   } catch (error) {
     console.error("Failed to connect to DB:", error);

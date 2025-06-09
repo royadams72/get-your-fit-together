@@ -4,6 +4,7 @@ import {
   createAction,
   createSelector,
   PayloadAction,
+  Reducer,
   UnknownAction,
 } from "@reduxjs/toolkit";
 
@@ -95,9 +96,17 @@ const persistedReducer = persistReducer<State>(
   }
 );
 
-export const makeStore = (preloadedState?: State & PersistPartial) => {
+export const makeStore = (
+  preloadedState?: any
+  // preloadedState?: State | (State & PersistPartial)
+) => {
+  console.log("preloadedState makestore:", preloadedState);
+  const isServerState = !!preloadedState;
+  const usePersist = typeof window !== "undefined" && !isServerState;
+  const reducer: Reducer = usePersist ? persistedReducer : rootReducer;
+
   return configureStore({
-    reducer: persistedReducer,
+    reducer: reducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

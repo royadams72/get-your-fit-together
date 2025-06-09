@@ -5,18 +5,19 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { AppStore } from "@/types/interfaces/store";
+import { AppStore, RootState } from "@/types/interfaces/store";
 
 import { makeStore } from "@/lib/store/store";
 import { Cookie } from "@/types/enums/cookie.enum";
 
-export default function StoreProvider({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+  preloadedState: RootState;
+}
+export default function StoreProvider({ children, preloadedState }: Props) {
   const storeRef = useRef<AppStore>(null);
   const persistorRef = useRef<any>(null);
+
   useEffect(() => {
     const handleUnload = () => {
       document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
@@ -25,10 +26,12 @@ export default function StoreProvider({
     window.addEventListener("unload", handleUnload);
     return () => window.removeEventListener("unload", handleUnload);
   }, []);
+
   if (!storeRef.current) {
-    // Create the store instance the first time this renders
-    storeRef.current = makeStore();
+    // console.log("Creating store with preloadedState:", preloadedState);
+    storeRef.current = makeStore(preloadedState);
     persistorRef.current = persistStore(storeRef.current);
+    // console.log("Store created");
   }
 
   return (

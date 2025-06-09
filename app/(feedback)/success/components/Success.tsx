@@ -21,7 +21,7 @@ const Success = ({ message, mode }: SuccessProps) => {
 
   useEffect(() => {
     dispatch(setStore(defaultState));
-    console.log(Cookie.fromPrevPage);
+    // console.log(Cookie.fromPrevPage);
 
     (async () => {
       await cookieAction(CookieAction.delete, [
