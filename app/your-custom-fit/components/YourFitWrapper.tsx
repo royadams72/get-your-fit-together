@@ -1,7 +1,7 @@
 "use client";
-import YourFit from "./YourFit";
 import { RootState } from "@/types/interfaces/store";
 import StoreProvider from "@/app/StoreProvider";
+import YourFit from "./YourFit";
 
 const YourFitWrapper = ({ preloadedState }: { preloadedState: RootState }) => {
   return (

@@ -10,6 +10,8 @@ import { console } from "inspector";
 
 export default async function retrieveAndSetStore() {
   const cookieStore = await cookies();
+  if (!cookieStore.get("fromPrevPage")?.value) return;
+
   const isFromPrevPage = cookieStore.get("fromPrevPage");
   const sessionCookie = cookieStore.get("sessionCookie");
   // console.log("retrieveAndSetStore", cookieStore?.get("userData"));
@@ -18,12 +20,12 @@ export default async function retrieveAndSetStore() {
       JSON.parse(cookieStore.get("userData")?.value as string)) ||
     undefined;
   const isReturningUser = isNotEmpty(userData);
-  const retrievData = userData
+  const retrievData = isReturningUser
     ? userData
     : { sessionCookie: sessionCookie?.value };
   // console.log("sessionCookie:", sessionCookie?.value);
 
-  // let fitnessPlanFromAI = {} as FitPlan;
+  let fitnessPlanFromAI = {} as FitPlan;
   let savedState = {} as RootState;
   // let userFitnessPlan = {} as FitPlan;
   // let retrievedStore = {} as RootState;
@@ -37,23 +39,25 @@ export default async function retrieveAndSetStore() {
       retrievData
     );
     console.log("savedState:::", savedState);
-    setRetrievedPropsToDone(savedState);
+    // setRetrievedPropsToDone(savedState);
     //  dispatch(setCanNavigateTrue());
     //   dispatch(setUiDataForRetreive());
-    // if (isReturningUser) {
-    //   userFitnessPlan = savedState.user.user.userFitnessPlan as FitPlan;
+    if (!isReturningUser) {
+      // Get fitplan and add to saved data
 
-    //   // console.log(
-    //   //   "userFitnessPlan = savedState.fitnessPlan::",
-    //   //   savedState.user.user.userFitnessPlan
-    //   // );
-    // } else {
-    //   // create a workout plan from call to AI
-    //   fitnessPlanFromAI = await fetchHelper(
-    //     `${ENV.BASE_URL}/${API.GET_PLAN}`,
-    //     savedState
-    //   );
+      // console.log(
+      //   "userFitnessPlan = savedState.fitnessPlan::",
+      //   savedState.user.user.userFitnessPlan
+      // );
 
+      // create a workout plan from call to AI
+      fitnessPlanFromAI = await fetchHelper(
+        `${ENV.BASE_URL}/${API.GET_PLAN}`,
+        savedState
+      );
+      // add it
+      savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+    }
     //   // console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
     // }
     // console.log("savedState in ret func:", savedState);

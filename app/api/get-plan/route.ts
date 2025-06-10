@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
   const mappedState = extractState(state);
 
   const userContent = await setContent(mappedState);
+  console.log("userContent::", userContent);
 
   try {
     const completion = await openai.chat.completions.create({
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
+    console.log(plan);
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
       return errorResponse(

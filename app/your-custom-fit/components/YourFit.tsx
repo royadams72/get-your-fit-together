@@ -55,6 +55,7 @@ const YourFit = () => {
 
   // const { setLoading } = useLoader();
   useEffect(() => {
+    // TODO: Only do this if retrieving stored plan
     dispatch(setCanNavigateTrue());
     dispatch(setUiDataForRetreive());
     dispatch(setRoutesForYourFit());

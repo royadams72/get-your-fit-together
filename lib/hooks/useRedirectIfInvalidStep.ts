@@ -17,7 +17,6 @@ export const useRedirectIfInvalidStep = () => {
 
   const journeyData: JourneyData[] = useAppSelector(getJourneyData);
   const [isInvalidStep, setIsInvalidStep] = useState(true);
-  console.log("useRedirectIfInvalidStep::", journeyData);
 
   useEffect(() => {
     const canNavigate = isNotEmpty(
