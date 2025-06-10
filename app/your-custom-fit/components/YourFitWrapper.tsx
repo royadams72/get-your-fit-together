@@ -1,21 +1,16 @@
-import { FitPlan } from "@/types/interfaces/fitness-plan";
+"use client";
 import YourFit from "./YourFit";
-import { cookies } from "next/headers";
-import { fetchHelper } from "@/lib/actions/fetchHelper";
-import { API } from "@/routes.config";
-import { ENV } from "@/lib/services/envService";
-import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { RootState } from "@/types/interfaces/store";
+import StoreProvider from "@/app/StoreProvider";
 
-const YourFitWrapper = async () => {
-  // userFitnessPlan = isNotEmpty(fitnessPlanFromAI)
-  //   ? fitnessPlanFromAI
-  //   : savedState.user.user.userFitnessPlan;
+const YourFitWrapper = ({ preloadedState }: { preloadedState: RootState }) => {
+  console.log("YourFitWrapper loaded::");
 
-  // retrievedStore={retrievedStore}
-  // userFitnessPlan={userFitnessPlan}
-
-  return <YourFit />;
+  return (
+    <StoreProvider preloadedState={preloadedState}>
+      <YourFit />
+    </StoreProvider>
+  );
 };
 
 export default YourFitWrapper;

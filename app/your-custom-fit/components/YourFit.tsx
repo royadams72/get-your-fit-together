@@ -37,17 +37,18 @@ import useRediectIfNoSessionData from "../hooks/useRediectIfNoSessionData";
 
 const YourFit = () => {
   // console.log("YourFit::)", userFitnessPlan);
-  // const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
-  const [userForm, setUserForm] = useState<FormValue>();
+  // const [displayPlan, setDisplayPlan] = useState();
+  // const [userForm, setUserForm] = useState<FormValue>();
 
-  const router = useRouter();
-  const dispatch = useAppDispatch();
+  // const router = useRouter();
+  // const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-  const userFitnessPlanFromStore = useAppSelector(getUserFitnessPlan);
-  const getUiState = useAppSelector(getUiDataState);
+  console.log("YourFit loaded::", savedState);
+  // const userFitnessPlan = useAppSelector(getUserFitnessPlan);
+  // const getUiState = useAppSelector(getUiDataState);
 
-  const methods = useForm();
-  const { reset } = methods;
+  // const methods = useForm();
+  // const { reset } = methods;
 
   // const { setLoading } = useLoader();
 
@@ -70,30 +71,30 @@ const YourFit = () => {
   // }, []);
   // const isSessionData = useRediectIfNoSessionData();
   // const isInvalidStep = useRedirectIfInvalidStep();
-  const responseError = useCheckIfUserNameExists(userForm);
+  // const responseError = useCheckIfUserNameExists(userForm);
 
-  const inputVal = (val: FormValue) => {
-    setUserForm(val);
-  };
-  const onSubmit = async (userData: any) => {
-    // setLoading(true);
+  // const inputVal = (val: FormValue) => {
+  //   setUserForm(val);
+  // };
+  // const onSubmit = async (userData: any) => {
+  //   // setLoading(true);
 
-    const response = await fetchHelper(API.SAVE_PLAN, {
-      savedState,
-      userData,
-    });
+  //   const response = await fetchHelper(API.SAVE_PLAN, {
+  //     savedState,
+  //     userData,
+  //   });
 
-    if (response?.success) {
-      reset();
+  //   if (response?.success) {
+  //     reset();
 
-      router.push(
-        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-          "Your plan has been saved"
-        )}`
-      );
-      // setLoading(false);
-    }
-  };
+  //     router.push(
+  //       `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+  //         "Your plan has been saved"
+  //       )}`
+  //     );
+  //     // setLoading(false);
+  //   }
+  // };
   // const setRetrievedStore = (store: any) => {
   //   // const { _persist, uiData, journey }: RootState = savedState;
   //   dispatch(setStore({ ...store, uiData, journey, _persist }));
@@ -101,15 +102,17 @@ const YourFit = () => {
   //   dispatch(setUiDataForRetreive());
   // };
 
-  useEffect(() => {
-    console.log("savedState::::::", savedState);
-  }, []);
+  // useEffect(() => {
+  //   console.log("savedState::::::", savedState);
+  // }, []);
 
   // if (isSessionData) return null;
 
   return (
     <div>
-      {/* {<Accordion plan={displayPlan as FitPlan}></Accordion>}
+      {/* {userFitnessPlan && (
+        <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
+      )}
       {!getUiState.isSignedIn && (
         <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm

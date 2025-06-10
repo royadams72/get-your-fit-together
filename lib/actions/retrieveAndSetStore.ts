@@ -11,7 +11,7 @@ export default async function retrieveAndSetStore() {
   const cookieStore = await cookies();
   const isFromPrevPage = cookieStore.get("fromPrevPage");
   const sessionCookie = cookieStore.get("sessionCookie");
-  console.log("retrieveAndSetStore", cookieStore?.get("userData"));
+  // console.log("retrieveAndSetStore", cookieStore?.get("userData"));
   const userData =
     (cookieStore?.get("userData")?.value &&
       JSON.parse(cookieStore.get("userData")?.value as string)) ||
@@ -37,22 +37,21 @@ export default async function retrieveAndSetStore() {
     );
     // if (isReturningUser) {
     //   userFitnessPlan = savedState.user.user.userFitnessPlan as FitPlan;
-    //   retrievedStore = savedState;
+
     //   // console.log(
     //   //   "userFitnessPlan = savedState.fitnessPlan::",
     //   //   savedState.user.user.userFitnessPlan
     //   // );
-    // }
-    // else {
+    // } else {
     //   // create a workout plan from call to AI
     //   fitnessPlanFromAI = await fetchHelper(
     //     `${ENV.BASE_URL}/${API.GET_PLAN}`,
     //     savedState
     //   );
-    //   userFitnessPlan = fitnessPlanFromAI;
+
     //   // console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
     // }
-    console.log("savedState in ret func:", savedState);
+    // console.log("savedState in ret func:", savedState);
   }
   return savedState;
 }

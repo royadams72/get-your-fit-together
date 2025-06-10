@@ -16,7 +16,6 @@ export async function POST(req: Request) {
     const userPassword = data.userPassword || undefined;
     const sessionCookie = data.sessionCookie || undefined;
     let documentFilter = {};
-    // console.log("userName:::::::::", userPassword, userName);
 
     if (userName && userPassword) {
       documentFilter = {
@@ -32,6 +31,7 @@ export async function POST(req: Request) {
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       documentFilter
     );
+    console.log("plan in route:::::::::", plan);
 
     if (!plan) {
       return errorResponse(

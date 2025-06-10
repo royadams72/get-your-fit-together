@@ -25,9 +25,9 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
-import { fetchHelper } from "@/lib/actions/fetchHelper";
 import setCookiesAndSaveStateForYourFit from "@/lib/actions/setCookiesAndSaveStateForYourFit";
 import { useRouter } from "next/navigation";
+import StoreProvider from "@/app/StoreProvider";
 
 const RetrieveYourPlan = () => {
   const router = useRouter();
@@ -36,32 +36,13 @@ const RetrieveYourPlan = () => {
     messageElement: string;
   }>({ message: "", messageElement: "" });
 
-  const dispatch = useAppDispatch();
-  // const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  // const store = useAppSelector(selectState);
-  // const clientFetch = useClientFetch();
-
-  // const setRetrievedStore = (retrievedStore: any) => {
-  //   const { _persist, uiData, journey }: RootState = store;
-  //   dispatch(setStore({ ...retrievedStore, uiData, journey, _persist }));
-  //   dispatch(setCanNavigateTrue());
-  //   dispatch(setUiDataForRetreive());
-  // };
-
-  // const isUserFitnessPlanNotEmpty = useMemo(
-  //   () => isNotEmpty(userFitnessPlan),
-  //   [userFitnessPlan]
-  // );
-
-  // const { setLoading } = useLoader();
-
   const methods = useForm();
   const { reset } = methods;
 
   const onSubmit = async (data: any) => {
     // try {
     // setLoading(true);
-    console.log("res", data);
+    // console.log("res", data);
     await setCookiesAndSaveStateForYourFit({} as RootState, data);
 
     router.push(PATHS.YOUR_FIT);
@@ -80,14 +61,16 @@ const RetrieveYourPlan = () => {
 
   return (
     <div>
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        <UserForm
-          title={"Enter your user name and password to retrieve your plan:"}
-          customMessage={responseError}
-          config={config(false)}
-        />
-        <Button type="submit">Retrieve Your Plan</Button>
-      </FormProvider>
+      <StoreProvider>
+        <FormProvider methods={methods} onSubmit={onSubmit}>
+          <UserForm
+            title={"Enter your user name and password to retrieve your plan:"}
+            customMessage={responseError}
+            config={config(false)}
+          />
+          <Button type="submit">Retrieve Your Plan</Button>
+        </FormProvider>
+      </StoreProvider>
     </div>
   );
 };

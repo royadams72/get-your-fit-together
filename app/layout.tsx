@@ -27,20 +27,14 @@ const RootLayout = async ({
   //   preloadedState = await retrieveAndSetStore();
   //   console.log(preloadedState);
   // }
-  const sessionCookie = await cookieAction(CookieAction.get, [
-    Cookie.sessionCookie,
-  ]);
-  // console.log("Root layout currentPath", currentPath);
-  const preloadedState = sessionCookie
-    ? await retrieveAndSetStore()
-    : undefined;
+
   return (
     <html lang="en">
       <body>
         {/* <LoaderProvider> */}
-        <StoreProvider preloadedState={preloadedState}>
-          <RootUIComponent>{children}</RootUIComponent>
-        </StoreProvider>
+        {/* <StoreProvider preloadedState={preloadedState}> */}
+        <RootUIComponent>{children}</RootUIComponent>
+        {/* </StoreProvider> */}
         {/* </LoaderProvider> */}
       </body>
     </html>

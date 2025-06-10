@@ -12,26 +12,27 @@ import { Cookie } from "@/types/enums/cookie.enum";
 
 interface Props {
   children: React.ReactNode;
-  preloadedState: RootState;
+  preloadedState?: RootState;
 }
 export default function StoreProvider({ children, preloadedState }: Props) {
   const storeRef = useRef<AppStore>(null);
   const persistorRef = useRef<any>(null);
 
-  useEffect(() => {
-    const handleUnload = () => {
-      document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
-    };
+  // useEffect(() => {
+  //   const handleUnload = () => {
+  //     document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+  //   };
 
-    window.addEventListener("unload", handleUnload);
-    return () => window.removeEventListener("unload", handleUnload);
-  }, []);
+  //   window.addEventListener("unload", handleUnload);
+  //   return () => window.removeEventListener("unload", handleUnload);
+  // }, []);
 
   if (!storeRef.current) {
-    // console.log("Creating store with preloadedState:", preloadedState);
     storeRef.current = makeStore(preloadedState);
+    localStorage.setItem("persist:root", JSON.stringify(storeRef.current));
+    console.log("StoreProvider: storeRef.current", storeRef.current);
     persistorRef.current = persistStore(storeRef.current);
-    // console.log("Store created");
+    console.log("persistorRef.current:", persistorRef.current);
   }
 
   return (
