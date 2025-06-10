@@ -32,85 +32,86 @@ import cookieAction from "@/lib/actions/cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
-import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
+import {
+  setCanNavigateTrue,
+  setRoutesForYourFit,
+} from "@/lib/features/journey/journeySlice";
 import useRediectIfNoSessionData from "../hooks/useRediectIfNoSessionData";
 
 const YourFit = () => {
   // console.log("YourFit::)", userFitnessPlan);
   // const [displayPlan, setDisplayPlan] = useState();
-  // const [userForm, setUserForm] = useState<FormValue>();
+  const [userForm, setUserForm] = useState<FormValue>();
 
-  // const router = useRouter();
-  // const dispatch = useAppDispatch();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-  console.log("YourFit loaded::", savedState);
-  // const userFitnessPlan = useAppSelector(getUserFitnessPlan);
-  // const getUiState = useAppSelector(getUiDataState);
+  // console.log("YourFit loaded::", savedState);
+  const userFitnessPlan = useAppSelector(getUserFitnessPlan);
+  const getUiState = useAppSelector(getUiDataState);
 
-  // const methods = useForm();
-  // const { reset } = methods;
+  const methods = useForm();
+  const { reset } = methods;
 
   // const { setLoading } = useLoader();
+  useEffect(() => {
+    dispatch(setCanNavigateTrue());
+    dispatch(setUiDataForRetreive());
+    dispatch(setRoutesForYourFit());
+  }, []);
+  useEffect(() => {
+    // if (isNotEmpty(userFitnessPlan)) {
+    //   // setDisplayPlan(userFitnessPlan);
+    //   // setRetrievedStore(retrievedStore);
+    //   // console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
+    // } else {
+    //   // console.log("useEffect:: else", userFitnessPlanFromStore);
+    //   setDisplayPlan(userFitnessPlanFromStore as FitPlan);
+    // }
 
-  // useEffect(() => {
-  //   if (isNotEmpty(userFitnessPlan)) {
-  //     setDisplayPlan(userFitnessPlan);
-  //     // setRetrievedStore(retrievedStore);
-  //     // console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
-  //   } else {
-  //     // console.log("useEffect:: else", userFitnessPlanFromStore);
-  //     setDisplayPlan(userFitnessPlanFromStore as FitPlan);
-  //   }
-
-  //   // (async () => {
-  //   //   await cookieAction(CookieAction.delete, [
-  //   //     Cookie.fromPrevPage,
-  //   //     Cookie.userData,
-  //   //   ]);
-  //   // })();
-  // }, []);
+    (async () => {
+      await cookieAction(CookieAction.delete, [
+        Cookie.fromPrevPage,
+        Cookie.userData,
+      ]);
+    })();
+  }, []);
   // const isSessionData = useRediectIfNoSessionData();
   // const isInvalidStep = useRedirectIfInvalidStep();
-  // const responseError = useCheckIfUserNameExists(userForm);
+  const responseError = useCheckIfUserNameExists(userForm);
 
-  // const inputVal = (val: FormValue) => {
-  //   setUserForm(val);
-  // };
-  // const onSubmit = async (userData: any) => {
-  //   // setLoading(true);
+  const inputVal = (val: FormValue) => {
+    setUserForm(val);
+  };
+  const onSubmit = async (userData: any) => {
+    // setLoading(true);
 
-  //   const response = await fetchHelper(API.SAVE_PLAN, {
-  //     savedState,
-  //     userData,
-  //   });
+    const response = await fetchHelper(API.SAVE_PLAN, {
+      savedState,
+      userData,
+    });
 
-  //   if (response?.success) {
-  //     reset();
+    if (response?.success) {
+      reset();
 
-  //     router.push(
-  //       `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-  //         "Your plan has been saved"
-  //       )}`
-  //     );
-  //     // setLoading(false);
-  //   }
-  // };
-  // const setRetrievedStore = (store: any) => {
-  //   // const { _persist, uiData, journey }: RootState = savedState;
-  //   dispatch(setStore({ ...store, uiData, journey, _persist }));
-  //   dispatch(setCanNavigateTrue());
-  //   dispatch(setUiDataForRetreive());
-  // };
+      router.push(
+        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+          "Your plan has been saved"
+        )}`
+      );
+      // setLoading(false);
+    }
+  };
 
   // useEffect(() => {
   //   console.log("savedState::::::", savedState);
   // }, []);
 
   // if (isSessionData) return null;
-
+  // if (isInvalidStep) return null;
   return (
     <div>
-      {/* {userFitnessPlan && (
+      {userFitnessPlan && (
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}
       {!getUiState.isSignedIn && (
@@ -125,7 +126,7 @@ const YourFit = () => {
             Save your plan
           </Button>
         </FormProvider>
-      )} */}
+      )}
 
       <JourneyButtons />
     </div>

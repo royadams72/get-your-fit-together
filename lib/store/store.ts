@@ -163,7 +163,8 @@ export const makeStore = (
       getDefaultMiddleware({
         serializableCheck: false,
         ignoredActions: [
-          // "persist/PERSIST",
+          "persist/REHYDRATE",
+          "persist/PERSIST",
           "persist/PAUSE",
           "persist/PURGE",
           "persist/FLUSH",

@@ -29,10 +29,8 @@ export default function StoreProvider({ children, preloadedState }: Props) {
 
   if (!storeRef.current) {
     storeRef.current = makeStore(preloadedState);
-    localStorage.setItem("persist:root", JSON.stringify(storeRef.current));
-    console.log("StoreProvider: storeRef.current", storeRef.current);
+
     persistorRef.current = persistStore(storeRef.current);
-    console.log("persistorRef.current:", persistorRef.current);
   }
 
   return (

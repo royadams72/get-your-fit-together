@@ -1,11 +1,12 @@
-import { API } from "@/routes.config";
+import { API, JOURNEY_PATHS } from "@/routes.config";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
 import { cookies } from "next/headers";
 import { ENV } from "../services/envService";
 import { isNotEmpty } from "../utils/isEmpty";
 import { fetchHelper } from "./fetchHelper";
-import { RootState } from "@/types/interfaces/store";
+import { RootState, State } from "@/types/interfaces/store";
+import { console } from "inspector";
 
 export default async function retrieveAndSetStore() {
   const cookieStore = await cookies();
@@ -35,6 +36,10 @@ export default async function retrieveAndSetStore() {
       `${ENV.BASE_URL}/${API.RETRIEVE}`,
       retrievData
     );
+    console.log("savedState:::", savedState);
+    setRetrievedPropsToDone(savedState);
+    //  dispatch(setCanNavigateTrue());
+    //   dispatch(setUiDataForRetreive());
     // if (isReturningUser) {
     //   userFitnessPlan = savedState.user.user.userFitnessPlan as FitPlan;
 
@@ -55,3 +60,17 @@ export default async function retrieveAndSetStore() {
   }
   return savedState;
 }
+
+const setRetrievedPropsToDone = (retrievedData: State) => {
+  console.log("setRetrievedPropsToDone");
+  const journeyData: any[] = JOURNEY_PATHS.map((name) => {
+    return { name, isComplete: true, canNavigate: true };
+  });
+  const journey = { journey: { journeyData: [] as any[] } };
+  const newDate = { ...retrievedData, journey };
+  journey.journey.journeyData = journeyData;
+  console.log("journeyData:::", newDate);
+
+  // console.log("newJourneyData:::", newJourneyData);
+  // return { ...retrievedData };
+};

@@ -1,5 +1,5 @@
 import { createAppSlice } from "@/lib/store/createAppSlice";
-import { JOURNEY_PATHS } from "@/routes.config";
+import { JOURNEY_PATHS, PATHS } from "@/routes.config";
 import { JourneyState, JourneyStore } from "@/types/interfaces/journey";
 import { PayloadAction } from "@reduxjs/toolkit/react";
 
@@ -15,8 +15,8 @@ export const journeyInitialState: JourneyState = {
   journey: {
     journeyData: setJourneyPaths(),
     routes: {
-      currentRoute: JOURNEY_PATHS[0],
-      nextRoute: JOURNEY_PATHS[1],
+      currentRoute: PATHS.ABOUT_YOU,
+      nextRoute: PATHS.INJURIES,
       prevRoute: "",
     },
   },
@@ -46,6 +46,13 @@ export const journeySlice = createAppSlice({
     setCanNavigateTrue: (state) => {
       state.journey.journeyData.map((route) => (route.canNavigate = true));
     },
+    setRoutesForYourFit: (state) => {
+      state.journey.routes = {
+        currentRoute: PATHS.YOUR_FIT,
+        nextRoute: "",
+        prevRoute: PATHS.PREFERENCES,
+      };
+    },
   },
   selectors: {
     getRoutes: (state: JourneyState) => state.journey.routes,
@@ -53,10 +60,11 @@ export const journeySlice = createAppSlice({
   },
 });
 
-export const { setJourney, navigate, setCanNavigateTrue } =
+export const { setJourney, navigate, setCanNavigateTrue, setRoutesForYourFit } =
   journeySlice.actions;
 export const journeyReducer = journeySlice.reducer;
 export const { getRoutes, getJourneyData } = journeySlice.selectors;
+
 // Utils
 const setRoutes = (
   state: JourneyState,

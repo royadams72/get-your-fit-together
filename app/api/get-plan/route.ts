@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         true
       );
     }
-    console.log("get-plan json.fitnessPlan: ", json.fitnessPlan);
+    // console.log("get-plan json.fitnessPlan: ", json.fitnessPlan);
     return NextResponse.json(json.fitnessPlan, { status: 200 });
   } catch (error) {
     return errorResponse(`An unexpected error occured:${error}`, 500, true);
