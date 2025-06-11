@@ -10,12 +10,12 @@ import { UserForm } from "@/types/interfaces/form";
 import { isNotEmpty } from "../utils/isEmpty";
 import { Cookie } from "@/types/enums/cookie.enum";
 
-const setCookiesAndSaveStateForYourFit = async (
+const setCookiesAndSaveState = async (
   savedState?: RootState,
   data?: UserForm
 ) => {
   const isRetrievingPlan = isNotEmpty(data);
-  const isSavingStateToCallAI = isNotEmpty(savedState);
+  const isOnJourney = isNotEmpty(savedState);
   const cookieStore = await cookies();
   let sessionCookie = cookieStore.get("sessionCookie")?.value || undefined;
 
@@ -31,7 +31,7 @@ const setCookiesAndSaveStateForYourFit = async (
     sessionCookie = cookieStore.get("sessionCookie")?.value;
   }
 
-  if (isSavingStateToCallAI) {
+  if (isOnJourney) {
     // console.log(savedState, sessionCookie);
 
     await fetchHelper(`${ENV.BASE_URL}/${API.SAVE_PLAN}`, {
@@ -41,4 +41,4 @@ const setCookiesAndSaveStateForYourFit = async (
   }
 };
 
-export default setCookiesAndSaveStateForYourFit;
+export default setCookiesAndSaveState;

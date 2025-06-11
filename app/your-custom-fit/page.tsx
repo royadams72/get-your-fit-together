@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import retrieveAndSetStore from "@/lib/actions/retrieveAndSetStore";
 import YourFitWrapper from "./components/YourFitWrapper";
 import { State } from "@/types/interfaces/store";
@@ -5,6 +7,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 
 export default async function YourCustomFitPage() {
   const preloadedState = await retrieveAndSetStore();
+  console.log("YourCustomFitPage:", preloadedState);
 
   return (
     <YourFitWrapper

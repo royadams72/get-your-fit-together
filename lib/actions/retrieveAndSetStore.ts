@@ -1,3 +1,5 @@
+"use server";
+
 import { API, JOURNEY_PATHS } from "@/routes.config";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
@@ -9,7 +11,16 @@ import { RootState, State } from "@/types/interfaces/store";
 import { console } from "inspector";
 
 export default async function retrieveAndSetStore() {
+  console.log("retrieveAndSetStore: CALLED");
   const cookieStore = await cookies();
+  console.log("cookieStore:", cookieStore);
+  console.log(
+    "!fromPrevPage",
+    !cookieStore.get("fromPrevPage")?.value,
+    "fromPrevPage val",
+    cookieStore.get("fromPrevPage")?.value
+  );
+
   if (!cookieStore.get("fromPrevPage")?.value) return;
 
   const isFromPrevPage = cookieStore.get("fromPrevPage");
@@ -39,18 +50,9 @@ export default async function retrieveAndSetStore() {
       retrievData
     );
     console.log("savedState:::", savedState);
-    // setRetrievedPropsToDone(savedState);
-    //  dispatch(setCanNavigateTrue());
-    //   dispatch(setUiDataForRetreive());
+
     if (!isReturningUser) {
       // Get fitplan and add to saved data
-
-      // console.log(
-      //   "userFitnessPlan = savedState.fitnessPlan::",
-      //   savedState.user.user.userFitnessPlan
-      // );
-
-      // create a workout plan from call to AI
       fitnessPlanFromAI = await fetchHelper(
         `${ENV.BASE_URL}/${API.GET_PLAN}`,
         savedState
@@ -58,23 +60,8 @@ export default async function retrieveAndSetStore() {
       // add it
       savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
     }
-    //   // console.log("userFitnessPlan = fitnessPlanFromAI::", fitnessPlanFromAI);
-    // }
-    // console.log("savedState in ret func:", savedState);
   }
+  console.log("savedState in retrieveAndSetStore:", savedState);
+
   return savedState;
 }
-
-const setRetrievedPropsToDone = (retrievedData: State) => {
-  console.log("setRetrievedPropsToDone");
-  const journeyData: any[] = JOURNEY_PATHS.map((name) => {
-    return { name, isComplete: true, canNavigate: true };
-  });
-  const journey = { journey: { journeyData: [] as any[] } };
-  const newDate = { ...retrievedData, journey };
-  journey.journey.journeyData = journeyData;
-  console.log("journeyData:::", newDate);
-
-  // console.log("newJourneyData:::", newJourneyData);
-  // return { ...retrievedData };
-};

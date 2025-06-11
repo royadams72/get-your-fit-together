@@ -25,7 +25,7 @@ import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
-import setCookiesAndSaveStateForYourFit from "@/lib/actions/setCookiesAndSaveStateForYourFit";
+import setCookiesAndSaveState from "@/lib/actions/setCookiesAndSaveState";
 import { useRouter } from "next/navigation";
 import StoreProvider from "@/app/StoreProvider";
 
@@ -43,7 +43,7 @@ const RetrieveYourPlan = () => {
     // try {
     // setLoading(true);
     // console.log("res", data);
-    await setCookiesAndSaveStateForYourFit({} as RootState, data);
+    await setCookiesAndSaveState({} as RootState, data);
 
     router.push(PATHS.YOUR_FIT);
     // const response = await fetchHelper({}, data);

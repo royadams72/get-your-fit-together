@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { config } from "@/app/questions/preferences/form-configs/config";
@@ -14,7 +14,7 @@ import { useMarkAsEditingUntilYourFit } from "@/lib/hooks/useMarkAsEditingUntilY
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
-import setCookiesAndSaveStateForYourFit from "@/lib/actions/setCookiesAndSaveStateForYourFit";
+import setCookiesAndSaveState from "@/lib/actions/setCookiesAndSaveState";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
@@ -32,10 +32,12 @@ export default function LayoutWrapper({
   let formErrors = {};
 
   useEffect(() => {
-    if (pageName === PATHS.PREFERENCES) {
+    if (pageName) {
       (async () => {
-        setCookiesAndSaveStateForYourFit(savedState);
+        setCookiesAndSaveState(savedState);
       })();
+      console.log("pageName2:::", pageName);
+
       // console.log(document.cookie.includes("sessionCookie"));
     }
   }, [pageName]);

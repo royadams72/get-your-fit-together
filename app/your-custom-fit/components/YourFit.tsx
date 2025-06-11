@@ -46,7 +46,7 @@ const YourFit = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-  // console.log("YourFit loaded::", savedState);
+  console.log("YourFit loaded::", savedState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
 
