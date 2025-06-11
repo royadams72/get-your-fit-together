@@ -36,7 +36,6 @@ export default function LayoutWrapper({
       (async () => {
         setCookiesAndSaveState(savedState);
       })();
-      console.log("pageName2:::", pageName);
 
       // console.log(document.cookie.includes("sessionCookie"));
     }

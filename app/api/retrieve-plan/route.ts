@@ -12,8 +12,6 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const data = await req.json();
-    console.log("retreive plan route data::", data);
-
     const userName = data.userName || undefined;
     const userPassword = data.userPassword || undefined;
     const sessionCookie = data.sessionCookie || undefined;
@@ -33,12 +31,6 @@ export async function POST(req: Request) {
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       documentFilter
     );
-    // console.log(
-    //   "plan in route:::::::::",
-    //   plan?.reduxState.preferences,
-    //   "documentFilter",
-    //   documentFilter
-    // );
 
     if (!plan) {
       return errorResponse(

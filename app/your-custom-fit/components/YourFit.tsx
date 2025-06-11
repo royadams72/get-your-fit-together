@@ -36,7 +36,8 @@ import {
   setCanNavigateTrue,
   setRoutesForYourFit,
 } from "@/lib/features/journey/journeySlice";
-import useRediectIfNoSessionData from "../hooks/useRediectIfNoSessionData";
+
+import { isAnyFieldEmpty } from "@/lib/utils/isAnyFieldEmpty";
 
 const YourFit = () => {
   // console.log("YourFit::)", userFitnessPlan);
@@ -53,23 +54,19 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  // const { setLoading } = useLoader();
   useEffect(() => {
+    let savedStateToCheck = {};
+    if (savedState) {
+      const { user, ...rest } = savedState;
+      savedStateToCheck = rest;
+    }
+    if (isAnyFieldEmpty(savedStateToCheck)) return;
     // TODO: Only do this if retrieving stored plan
     dispatch(setCanNavigateTrue());
     dispatch(setUiDataForRetreive());
     dispatch(setRoutesForYourFit());
   }, []);
   useEffect(() => {
-    // if (isNotEmpty(userFitnessPlan)) {
-    //   // setDisplayPlan(userFitnessPlan);
-    //   // setRetrievedStore(retrievedStore);
-    //   // console.log("useEffect:: isNotEmpty(userFitnessPlan)", userFitnessPlan);
-    // } else {
-    //   // console.log("useEffect:: else", userFitnessPlanFromStore);
-    //   setDisplayPlan(userFitnessPlanFromStore as FitPlan);
-    // }
-
     (async () => {
       await cookieAction(CookieAction.delete, [
         Cookie.fromPrevPage,
@@ -78,7 +75,6 @@ const YourFit = () => {
     })();
   }, []);
   // const isSessionData = useRediectIfNoSessionData();
-  // const isInvalidStep = useRedirectIfInvalidStep();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {
@@ -109,7 +105,6 @@ const YourFit = () => {
   // }, []);
 
   // if (isSessionData) return null;
-  // if (isInvalidStep) return null;
   return (
     <div>
       {userFitnessPlan && (

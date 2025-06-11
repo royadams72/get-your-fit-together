@@ -5,10 +5,8 @@ import { JOURNEY_PATHS } from "@/routes.config";
 import { JourneyData } from "@/types/interfaces/journey";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
-import cookieAction from "@/lib/actions/cookie.action";
 import { isNotEmpty } from "@/lib/utils/isEmpty";
 import { getJourneyData, navigate } from "@/lib/features/journey/journeySlice";
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 export const useRedirectIfInvalidStep = () => {
   const router = useRouter();
@@ -17,6 +15,7 @@ export const useRedirectIfInvalidStep = () => {
 
   const journeyData: JourneyData[] = useAppSelector(getJourneyData);
   const [isInvalidStep, setIsInvalidStep] = useState(true);
+  console.log("useRedirectIfInvalidStep::", journeyData);
 
   useEffect(() => {
     const canNavigate = isNotEmpty(

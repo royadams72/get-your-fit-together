@@ -7,7 +7,6 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 
 export default async function YourCustomFitPage() {
   const preloadedState = await retrieveAndSetStore();
-  console.log("YourCustomFitPage:", preloadedState);
 
   return (
     <YourFitWrapper

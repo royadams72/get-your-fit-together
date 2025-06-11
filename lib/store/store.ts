@@ -94,32 +94,7 @@ const persistConfig: PersistConfig<State> = {
   ],
 };
 
-// const persistedReducer = persistReducer<State>(
-//   persistConfig,
-//   (state: any, action: UnknownAction) => {
-//     if (action.type === setStore.type && isPayInloadAction(action)) {
-//       return action.payload;
-//     }
-//     if (action.type === "persist/REHYDRATE" && isPayInloadAction(action)) {
-//       console.log(
-//         "persist/REHYDRATE merged",
-
-//         action.payload
-//       );
-
-//       return isEmpty(action.payload)
-//         ? state // ✅ keep server state
-//         : action.payload; // merge if there is something useful
-//     }
-//     return rootReducer(state, action);
-//   }
-// );
-
-export const makeStore = (
-  preloadedState?: any
-  // preloadedState?: State | (State & PersistPartial)
-) => {
-  console.log("preloadedState makestore:", preloadedState);
+export const makeStore = (preloadedState?: State & PersistPartial) => {
   const reducer = persistReducer<State>(
     persistConfig,
     (state: State | undefined, action: UnknownAction): any => {
@@ -145,17 +120,16 @@ export const makeStore = (
             },
           } as any;
 
-          return action.payload;
+          // return action.payload;
         }
 
-        // Otherwise, allow payload to overwrite state
-        console.log("returning from reducer::::");
         return action.payload;
       }
 
       return rootReducer(state, action);
     }
   );
+
   return configureStore({
     reducer: reducer,
     preloadedState,
