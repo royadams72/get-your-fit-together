@@ -29,6 +29,8 @@ export default function StoreProvider({ children, preloadedState }: Props) {
   }, []);
 
   if (!storeRef.current) {
+    console.log("preloadedState in StoreProvider:", preloadedState);
+
     storeRef.current = makeStore(preloadedState);
 
     persistorRef.current = persistStore(storeRef.current);

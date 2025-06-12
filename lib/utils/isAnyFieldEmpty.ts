@@ -8,7 +8,7 @@ export const isAnyFieldEmpty = (obj: any = {}): boolean => {
       if (isAnyFieldEmpty(value)) {
         return true;
       }
-    } else if (!value) {
+    } else if (value === "" || value === null || value === undefined) {
       return true;
     }
   }

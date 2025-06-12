@@ -95,6 +95,7 @@ const persistConfig: PersistConfig<State> = {
 };
 
 export const makeStore = (preloadedState?: State & PersistPartial) => {
+  console.log("preloadedState in store;", preloadedState);
   const reducer = persistReducer<State>(
     persistConfig,
     (state: State | undefined, action: UnknownAction): any => {
@@ -104,24 +105,30 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
 
       if (action.type === REHYDRATE && isPayInloadAction(action)) {
         if (preloadedState) {
-          console.log("Skipping REHYDRATE overwrite. Using SSR state.", {
-            ...state,
-            _persist: {
-              version: -1,
-              rehydrated: true,
-            },
-          });
+          // console.log("Skipping REHYDRATE overwrite. Using SSR state.", {
+          //   ...state,
+          //   _persist: {
+          //     version: -1,
+          //     rehydrated: true,
+          //   },
+          // });
 
           action.payload = {
             ...(state as any),
+            // ...action.payload,
             _persist: {
               version: -1,
               rehydrated: true,
             },
           } as any;
-
-          // return action.payload;
+          // "Skipping REHYDRATE overwrite. Using SSR state
+          console.log(
+            "Skipping REHYDRATE overwrite. Using SSR state",
+            action.payload
+          );
+          return action.payload;
         }
+        console.log("return action.payload;", action.payload);
 
         return action.payload;
       }

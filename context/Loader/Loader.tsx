@@ -1,16 +1,22 @@
 import styles from "./_loader.module.scss";
 
-const Loader = () => {
+const Loader = ({ isGeneric }: { isGeneric?: boolean }) => {
   return (
     <>
       <div className={styles.loader}>
         <h3 className={styles.loaderCopy1}>Loading</h3>
-        <h3 className={styles.loaderCopy2}>Creating Plan</h3>
-        <h3 className={styles.loaderCopy3}>Nearly there</h3>
+        {!isGeneric && (
+          <>
+            <h3 className={styles.loaderCopy2}>Creating Plan</h3>
+            <h3 className={styles.loaderCopy3}>Nearly there</h3>
+          </>
+        )}
         <div className={styles.loaderAnim}></div>
-        <h4 style={{ marginTop: "10px" }}>
-          Plan creation can take a while, so please be patient.
-        </h4>
+        {!isGeneric && (
+          <h4 style={{ marginTop: "10px" }}>
+            Plan creation can take a while, so please be patient.
+          </h4>
+        )}
       </div>
     </>
   );

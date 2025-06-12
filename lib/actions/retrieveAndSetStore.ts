@@ -1,6 +1,4 @@
-"use server";
-
-import { API, PATHS } from "@/routes.config";
+import { API } from "@/routes.config";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
 import { cookies } from "next/headers";
@@ -8,14 +6,14 @@ import { ENV } from "../services/envService";
 import { isNotEmpty } from "../utils/isEmpty";
 import { fetchHelper } from "./fetchHelper";
 import { RootState } from "@/types/interfaces/store";
-import { redirect } from "next/navigation";
+
 import { isAnyFieldEmpty } from "../utils/isAnyFieldEmpty";
+import { redirectIf } from "../utils/redirectIf";
 
 export default async function retrieveAndSetStore() {
   const cookieStore = await cookies();
 
-  if (!cookieStore.get("fromPrevPage")?.value) return;
-
+  // if (!cookieStore.get("fromPrevPage")?.value) return;
   const sessionCookie = cookieStore.get("sessionCookie");
   const userData =
     (cookieStore?.get("userData")?.value &&
@@ -27,8 +25,9 @@ export default async function retrieveAndSetStore() {
     ? userData
     : { sessionCookie: sessionCookie?.value };
 
+  console.log("isReturningUser", isNotEmpty(userData), "userData:", userData);
   let fitnessPlanFromAI = {} as FitPlan;
-  let savedState = {} as RootState;
+  let savedState = {} as RootState | any;
 
   // retrieve the redux store from  mongodb, so we can make a call to create a workout plan
   // Or we are retrieving a saved plan after login
@@ -36,14 +35,16 @@ export default async function retrieveAndSetStore() {
     `${ENV.BASE_URL}/${API.RETRIEVE}`,
     retrievData
   );
+  redirectIf(savedState.message === "no data recieved");
 
-  // Redirect if savedState is invalid (missing any field except 'user')
-  const { user, ...savedStateToCheck } = savedState;
-  const isInvalid = isAnyFieldEmpty(savedStateToCheck);
-
-  if (isInvalid) {
-    redirect(PATHS.ABOUT_YOU);
-  }
+  const { user, _persist, uiData, journey, ...savedStateToCheck } = savedState;
+  console.log(
+    "savedStateToCheck",
+    savedStateToCheck,
+    "isAnyFieldEmpty(savedStateToCheck):",
+    isAnyFieldEmpty(savedStateToCheck)
+  );
+  redirectIf(isAnyFieldEmpty(savedStateToCheck));
 
   if (!isReturningUser) {
     // Get fitplan and add to saved data
@@ -52,7 +53,9 @@ export default async function retrieveAndSetStore() {
       savedState
     );
     // add it
+    console.log("fitnessPlanFromAI", fitnessPlanFromAI);
     savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+    console.log("savedState", savedState);
   }
 
   return savedState;

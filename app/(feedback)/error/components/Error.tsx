@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Cookie } from "@/types/enums/cookie.enum";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { defaultState, setStore } from "@/lib/store/store";
@@ -15,9 +15,9 @@ const Error = ({ error }: ErrorProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // dispatch(setStore(defaultState));
+    dispatch(setStore(defaultState));
     (async () => {
-      await cookieAction(true, [
+      await cookieAction(CookieAction.delete, [
         Cookie.fromPrevPage,
         Cookie.sessionCookie,
         Cookie.userData,

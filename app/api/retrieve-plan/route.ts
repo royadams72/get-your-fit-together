@@ -5,13 +5,22 @@ import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
 
 import { errorResponse } from "@/lib/services/errorResponse";
+import { isEmpty } from "@/lib/utils/isEmpty";
 
 export async function POST(req: Request) {
+  console.log("POST retrieve plan from mongo");
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
     const data = await req.json();
+    console.log("data in route", data);
+    if (isEmpty(data)) {
+      return NextResponse.json(
+        { message: "no data recieved" },
+        { status: 200 }
+      );
+    }
     const userName = data.userName || undefined;
     const userPassword = data.userPassword || undefined;
     const sessionCookie = data.sessionCookie || undefined;

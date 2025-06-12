@@ -30,17 +30,7 @@ export default function LayoutWrapper({
   const { nextRoute } = useAppSelector(getRoutes);
   const savedState = useAppSelector(selectState);
   let formErrors = {};
-
-  useEffect(() => {
-    if (pageName) {
-      (async () => {
-        setCookiesAndSaveState(savedState);
-      })();
-
-      // console.log(document.cookie.includes("sessionCookie"));
-    }
-  }, [pageName]);
-
+  const isPreferencesPage = pageName === PATHS.PREFERENCES;
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
 
@@ -53,6 +43,15 @@ export default function LayoutWrapper({
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {
+      console.log("isPreferencesPage::", isPreferencesPage);
+
+      if (isPreferencesPage) {
+        (async () => {
+          await setCookiesAndSaveState(savedState);
+        })();
+
+        console.log("onSubmit::", savedState);
+      }
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
 
       router.push(nextRoute);
@@ -87,10 +86,9 @@ export default function LayoutWrapper({
     });
     element?.focus();
   };
-  const defaultValues =
-    pageName === PATHS.PREFERENCES
-      ? { workoutType: config?.workoutType?.checkboxes }
-      : {};
+  const defaultValues = isPreferencesPage
+    ? { workoutType: config?.workoutType?.checkboxes }
+    : {};
 
   const formKey = `form-${pageName}`;
 
