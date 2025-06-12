@@ -7,3 +7,4 @@ process.env.NEXT_PUBLIC_BASE_URL =
 process.env.MONGODB_URI = "mongodb/api/url";
 process.env.OPENAI_API_KEY = "openapiKey1234";
 process.env.MONGODB_DB_NAME = "MONGODB_DB_NAME";
+process.env.REDIS_URL = "localhost:6379";

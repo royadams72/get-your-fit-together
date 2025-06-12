@@ -21,15 +21,14 @@ const Success = ({ message, mode }: SuccessProps) => {
 
   useEffect(() => {
     dispatch(setStore(defaultState));
-    // console.log(Cookie.fromPrevPage);
 
-    (async () => {
-      await cookieAction(CookieAction.delete, [
-        Cookie.fromPrevPage,
-        Cookie.sessionCookie,
-        Cookie.userData,
-      ]);
-    })();
+    // (async () => {
+    //   await cookieAction(CookieAction.delete, [
+    //     Cookie.fromPrevPage,
+    //     Cookie.sessionCookie,
+    //     Cookie.userData,
+    //   ]);
+    // })();
   }, [dispatch]);
 
   return (

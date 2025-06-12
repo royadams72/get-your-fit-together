@@ -15,22 +15,22 @@ const JourneyNavigation = ({
   getFormErrors: (errors: any) => void;
 }) => {
   const { handleSubmit, formState } = useFormContext();
-  const savedState = useAppSelector(selectState);
-  const pageName = usePathname();
+  // const savedState = useAppSelector(selectState);
+  // const pageName = usePathname();
 
   useEffect(() => {
     getFormErrors(formState.errors);
   }, [formState]);
 
-  useEffect(() => {
-    if (pageName) {
-      (async () => {
-        await setCookiesAndSaveState(savedState);
-      })();
+  // useEffect(() => {
+  //   if (pageName) {
+  //     (async () => {
+  //       await setCookiesAndSaveState(savedState);
+  //     })();
 
-      console.log("pageName::", pageName);
-    }
-  }, [pageName]);
+  //     console.log("pageName::", pageName);
+  //   }
+  // }, [pageName]);
 
   return <JourneyButtons handleSubmit={handleSubmit}></JourneyButtons>;
 };

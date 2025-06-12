@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { API } from "@/routes.config";
 
 import { setUser } from "@/lib/features/user/userSlice";
-import { getUiDataState, setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { getUiDataState, setUiData } from "@/lib/features/uiData/uiDataSlice";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 // import { useClientFetch } from "@/lib/hooks/useClientFetch";

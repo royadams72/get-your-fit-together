@@ -4,20 +4,14 @@ import {
   createAction,
   createSelector,
   PayloadAction,
-  Reducer,
   UnknownAction,
 } from "@reduxjs/toolkit";
 
 import { PersistPartial } from "redux-persist/es/persistReducer";
-import {
-  PersistConfig,
-  persistReducer,
-  persistStore,
-  REHYDRATE,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage/session";
-
 import { RootState, State } from "@/types/interfaces/store";
+
+import { PersistConfig, persistReducer, REHYDRATE } from "redux-persist";
+import storage from "redux-persist/lib/storage/session";
 
 import {
   aboutYouInitialState,
@@ -48,14 +42,16 @@ import {
   uiDataInitialState,
   uiDataReducer,
   uiDataSliceName,
-} from "../features/ui-data/uiDataSlice";
+} from "@/lib/features/uiData/uiDataSlice";
 import {
   journeyInitialState,
   journeyReducer,
   journeySliceName,
-} from "../features/journey/journeySlice";
-import noopStorage from "../utils/noopStorage";
-import { isEmpty } from "../utils/isEmpty";
+} from "@/lib/features/journey/journeySlice";
+
+import noopStorage from "@/lib/utils/noopStorage";
+
+import { saveDataToRedis } from "@/lib/middleware/saveDataToRedis";
 
 export const defaultState: State = {
   aboutYou: aboutYouInitialState,
@@ -95,7 +91,7 @@ const persistConfig: PersistConfig<State> = {
 };
 
 export const makeStore = (preloadedState?: State & PersistPartial) => {
-  console.log("preloadedState in store;", preloadedState);
+  // console.log("preloadedState in store;", preloadedState);
   const reducer = persistReducer<State>(
     persistConfig,
     (state: State | undefined, action: UnknownAction): any => {
@@ -105,30 +101,20 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
 
       if (action.type === REHYDRATE && isPayInloadAction(action)) {
         if (preloadedState) {
-          // console.log("Skipping REHYDRATE overwrite. Using SSR state.", {
-          //   ...state,
-          //   _persist: {
-          //     version: -1,
-          //     rehydrated: true,
-          //   },
-          // });
-
           action.payload = {
             ...(state as any),
-            // ...action.payload,
             _persist: {
               version: -1,
               rehydrated: true,
             },
           } as any;
-          // "Skipping REHYDRATE overwrite. Using SSR state
-          console.log(
-            "Skipping REHYDRATE overwrite. Using SSR state",
-            action.payload
-          );
+          // console.log(
+          //   "Skipping REHYDRATE overwrite. Using SSR state",
+          //   action.payload
+          // );
           return action.payload;
         }
-        console.log("return action.payload;", action.payload);
+        // console.log("return action.payload;", action.payload);
 
         return action.payload;
       }
@@ -151,7 +137,7 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
           "persist/FLUSH",
           "persist/REGISTER",
         ],
-      }),
+      }).concat(saveDataToRedis.middleware),
   });
 };
 

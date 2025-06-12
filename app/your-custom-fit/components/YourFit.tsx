@@ -14,7 +14,7 @@ import { API, PATHS } from "@/routes.config";
 import {
   getUiDataState,
   setUiDataForRetreive,
-} from "@/lib/features/ui-data/uiDataSlice";
+} from "@/lib/features/uiData/uiDataSlice";
 import { selectState, setStore } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
@@ -52,7 +52,7 @@ const YourFit = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-  console.log("YourFit loaded::", savedState);
+  // console.log("YourFit loaded::", savedState);
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
 
@@ -65,11 +65,11 @@ const YourFit = () => {
       const { user, _persist, uiData, journey, ...rest } = savedState;
       savedStateToCheck = rest;
     }
-    console.log(
-      "isAnyFieldEmpty(savedStateToCheck)",
-      isAnyFieldEmpty(savedStateToCheck),
-      savedStateToCheck
-    );
+    // console.log(
+    //   "isAnyFieldEmpty(savedStateToCheck)",
+    //   isAnyFieldEmpty(savedStateToCheck),
+    //   savedStateToCheck
+    // );
 
     if (isAnyFieldEmpty(savedStateToCheck)) return;
     // TODO: Only do this if retrieving stored plan

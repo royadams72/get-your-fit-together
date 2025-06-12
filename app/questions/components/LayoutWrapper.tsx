@@ -24,15 +24,15 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const router = useRouter();
   const pageName = usePathname();
-  const { nextRoute } = useAppSelector(getRoutes);
-  const savedState = useAppSelector(selectState);
+  // const { nextRoute } = useAppSelector(getRoutes);
+  // const savedState = useAppSelector(selectState);
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
-  const isInvalidStep = useRedirectIfInvalidStep();
-  useMarkAsEditingUntilYourFit();
+  // const isInvalidStep = useRedirectIfInvalidStep();
+  // useMarkAsEditingUntilYourFit();
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
@@ -42,22 +42,19 @@ export default function LayoutWrapper({
   };
 
   const onSubmit = () => {
-    if (isEmpty(formErrors)) {
-      console.log("isPreferencesPage::", isPreferencesPage);
-
-      if (isPreferencesPage) {
-        (async () => {
-          await setCookiesAndSaveState(savedState);
-        })();
-
-        console.log("onSubmit::", savedState);
-      }
-      dispatch(navigate({ route: pageName, isFormSubmit: true }));
-
-      router.push(nextRoute);
-    } else {
-      scrollToError();
-    }
+    // if (isEmpty(formErrors)) {
+    //   // console.log("isPreferencesPage::", isPreferencesPage);
+    //   if (isPreferencesPage) {
+    //     (async () => {
+    //       await setCookiesAndSaveState(savedState);
+    //     })();
+    //     // console.log("onSubmit::", savedState);
+    //   }
+    //   dispatch(navigate({ route: pageName, isFormSubmit: true }));
+    //   router.push(nextRoute);
+    // } else {
+    //   scrollToError();
+    // }
   };
 
   const getErrorElement = (error: any): HTMLElement | null => {
@@ -92,7 +89,7 @@ export default function LayoutWrapper({
 
   const formKey = `form-${pageName}`;
 
-  if (isInvalidStep) return null;
+  // if (isInvalidStep) return null;
 
   return (
     <FormProvider

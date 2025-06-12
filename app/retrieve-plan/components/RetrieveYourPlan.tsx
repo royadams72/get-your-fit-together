@@ -18,7 +18,7 @@ import { User } from "@/types/enums/user.enum";
 import { selectState, setStore } from "@/lib/store/store";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
-import { setUiDataForRetreive } from "@/lib/features/ui-data/uiDataSlice";
+import { setUiDataForRetreive } from "@/lib/features/uiData/uiDataSlice";
 
 import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";

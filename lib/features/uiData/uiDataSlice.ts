@@ -9,6 +9,7 @@ export const uiDataInitialState: UiDataState = {
     [UiData.isSignedIn]: false,
     [UiData.isRetrieving]: false,
     [UiData.isEditing]: false,
+    [UiData.cookieSession]: "",
   },
 };
 

@@ -9,7 +9,7 @@ const cookieAction = async (
   cookieVal?: any[]
 ): Promise<string | undefined> => {
   const cookieStore = await cookies();
-  // console.log("action::::::::::::", action);
+
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
 
@@ -22,13 +22,11 @@ const cookieAction = async (
     ) {
       cookieStore.set(name, cookieVal[i]);
     } else if (action === CookieAction.get && cookieStore.get(name)?.value) {
-      // console.log("action", action, cookieStore.get(name)?.value);
-
       return cookieStore.get(name)?.value;
     }
   }
 
-  return undefined; // In case nothin
+  return undefined; // In case nothing
 };
 
 export default cookieAction;
