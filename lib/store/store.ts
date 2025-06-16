@@ -103,11 +103,11 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
       if (action.type === setStore.type && isPayInloadAction(action)) {
         return action.payload;
       }
-      if (action.type === PERSIST && isPayInloadAction(action)) {
-        console.log("PERSIST payload:", action.payload?.uiData);
-      }
+      // if (action.type === PERSIST && isPayInloadAction(action)) {
+      //   console.log("PERSIST payload:", action.payload?.uiData);
+      // }
       if (action.type === REHYDRATE && isPayInloadAction(action)) {
-        console.log("REHYDRATE payload:", action.payload?.uiData);
+        console.log("REHYDRATE payload:", action.payload?.preferences);
         if (preloadedState) {
           action.payload = {
             ...(state as any),
@@ -123,7 +123,7 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
           // return action.payload;
         }
         // console.log("return action.payload;", action.payload);
-        console.log("action.payload::", action.payload);
+        // console.log("action.payload::", action.payload);
         return action.payload;
       }
 

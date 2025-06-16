@@ -59,34 +59,6 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  useEffect(() => {
-    let savedStateToCheck = {};
-    if (savedState) {
-      const { user, _persist, uiData, journey, ...rest } = savedState;
-      savedStateToCheck = rest;
-    }
-    // console.log(
-    //   "isAnyFieldEmpty(savedStateToCheck)",
-    //   isAnyFieldEmpty(savedStateToCheck),
-    //   savedStateToCheck
-    // );
-
-    if (isAnyFieldEmpty(savedStateToCheck)) return;
-    // TODO: Only do this if retrieving stored plan
-    dispatch(setCanNavigateTrue());
-    dispatch(setUiDataForRetreive());
-    dispatch(setRoutesForYourFit());
-  }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     await cookieAction(CookieAction.delete, [
-  //       Cookie.fromPrevPage,
-  //       Cookie.userData,
-  //     ]);
-  //   })();
-  // }, []);
-  // const isSessionData = useRediectIfNoSessionData();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {

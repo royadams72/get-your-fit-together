@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import Redis from "ioredis";
 import { v4 as uuidv4 } from "uuid";
 
+import redis from "@/lib/db/redisClient";
 import { ENV } from "@/lib/services/envService";
 import cookieAction from "@/lib/actions/cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 // localhost:6379
 
 export async function POST(request: NextRequest) {
-  const redis = new Redis(ENV.REDIS_URL, { keyPrefix: ENV.REDIS_KEY_PREFIX });
+  // console.log("redi÷s:::::", redis);
+
   const sessionTTL = 86400;
   try {
     const data = await request.json();
@@ -19,16 +20,19 @@ export async function POST(request: NextRequest) {
     } = data;
     console.log("POST redis:", ENV.REDIS_URL);
 
-    const response = NextResponse.json({ message: "Data saved", status: 200 });
+    const response = NextResponse.json(
+      { message: "Data saved" },
+      { status: 200 }
+    );
 
-    console.log("!sessionCooki::=====", data.state.uiData.uiData);
+    // console.log("!sessionCooki::=====", data.state.preferences.preferences);
     const isCookieInBrowser = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
     ]);
     if (!sessionCookie && !isCookieInBrowser) {
       sessionCookie = uuidv4();
 
-      response.cookies.set("sessionCookie", sessionCookie, {
+      response.cookies.set("sessionCookie:", sessionCookie, {
         path: "/",
         httpOnly: false,
         // sameSite: "lax",
@@ -37,11 +41,13 @@ export async function POST(request: NextRequest) {
     }
 
     const redisRespone = await redis.set(
-      `session:${sessionCookie}`,
+      `sessionCookie:${sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL
     );
+    // const redisGet = await redis.get(`sessionCookie:${sessionCookie}`);
+    // console.log("redis ttl::", redisGet);
 
     if (redisRespone !== "OK") {
       throw new Error(`Could not save data to Redis`);

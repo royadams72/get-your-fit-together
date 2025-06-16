@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { config } from "@/app/questions/preferences/form-configs/config";
-import { PATHS } from "@/routes.config";
+import { JOURNEY_PATHS, PATHS } from "@/routes.config";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
@@ -32,12 +32,20 @@ export default function LayoutWrapper({
   const router = useRouter();
   const pageName = usePathname();
   const { nextRoute } = useAppSelector(getRoutes);
-  const savedState = useAppSelector(selectState);
-  const isStateCookie = useAppSelector(getSessionCookie);
+  const isCookieInState = useAppSelector(getSessionCookie);
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
+
+  const callNavigate = (dispatchPaths?: string[]) => {
+    if (
+      isPreferencesPage ||
+      (dispatchPaths !== undefined && dispatchPaths.includes(pageName))
+    ) {
+      dispatch(navigate({ route: pageName, isFormSubmit: true }));
+    }
+  };
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
@@ -45,24 +53,32 @@ export default function LayoutWrapper({
       scrollToError();
     }
   };
+
   useEffect(() => {
-    // (async () => {
-    //   if (!isStateCookie) {
-    //     const sessionCookie = await cookieAction(CookieAction.get, [
-    //       "sessionCookie",
-    //     ]);
-    //     dispatch(
-    //       setUiData({
-    //         name: UiData.sessionCookie,
-    //         value: sessionCookie as string,
-    //       })
-    //     );
-    //   }
-    // })();
-  }, []);
+    const dispatchPaths = JOURNEY_PATHS.slice(0, 3);
+    callNavigate(dispatchPaths);
+    console.log("navigate", dispatchPaths);
+  }, [pageName]);
+
+  useEffect(() => {
+    (async () => {
+      const sessionCookie = await cookieAction(CookieAction.get, [
+        "sessionCookie",
+      ]);
+      if (!isCookieInState && sessionCookie) {
+        dispatch(
+          setUiData({
+            name: UiData.sessionCookie,
+            value: sessionCookie as string,
+          })
+        );
+      }
+    })();
+  }, [isCookieInState]);
+
   const onSubmit = () => {
     if (isEmpty(formErrors)) {
-      dispatch(navigate({ route: pageName, isFormSubmit: true }));
+      callNavigate();
       router.push(nextRoute);
     } else {
       scrollToError();

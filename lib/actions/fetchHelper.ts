@@ -8,7 +8,7 @@ const errRedirectURI = (resObjString: any) => {
 
 export const fetchHelper = async <T = Record<string, unknown>>(
   url: string,
-  args: T | string
+  args?: T | string
 ) => {
   try {
     const res: any = await fetch(url, {

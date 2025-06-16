@@ -9,16 +9,6 @@ export const saveDataToRedis = createListenerMiddleware();
 saveDataToRedis.startListening({
   predicate: (action, currState: any, prevState: any) => {
     if (currState !== prevState && action.type === "journey/navigate") {
-      // const pagesComplete = currState.journey.journey.journeyData.reduce(
-      //   (acc: number, route: JourneyData) =>
-      //     route.isComplete === true ? acc++ : acc
-      // );
-      // const journeyData = currState.journey.journey.journeyData;
-      const journeyData = currState.uiData.uiData;
-      console.log("saveDataToRedis::", journeyData);
-
-      // let pagesComplete = 0;
-
       return true;
     }
     return false;
@@ -26,7 +16,7 @@ saveDataToRedis.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
-    console.log("saveDataToRedis::", action, BASE_URL, API.SET_REDIS);
+    console.log("saveDataToRedis::", state, BASE_URL, API.SET_REDIS);
 
     try {
       const res = await fetch(`${BASE_URL}/${API.SET_REDIS}`, {
