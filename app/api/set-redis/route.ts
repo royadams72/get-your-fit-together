@@ -3,6 +3,8 @@ import Redis from "ioredis";
 import { v4 as uuidv4 } from "uuid";
 
 import { ENV } from "@/lib/services/envService";
+import cookieAction from "@/lib/actions/cookie.action";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 // localhost:6379
 
 export async function POST(request: NextRequest) {
@@ -19,17 +21,21 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({ message: "Data saved", status: 200 });
 
-    console.log("!sessionCooki::=====", !sessionCookie, sessionCookie);
-    if (!sessionCookie) {
+    console.log("!sessionCooki::=====", data.state.uiData.uiData);
+    const isCookieInBrowser = await cookieAction(CookieAction.get, [
+      Cookie.sessionCookie,
+    ]);
+    if (!sessionCookie && !isCookieInBrowser) {
       sessionCookie = uuidv4();
 
       response.cookies.set("sessionCookie", sessionCookie, {
         path: "/",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: ENV.IS_PRODUCTION,
+        httpOnly: false,
+        // sameSite: "lax",
+        // secure: ENV.IS_PRODUCTION,
       });
     }
+
     const redisRespone = await redis.set(
       `session:${sessionCookie}`,
       JSON.stringify(data),

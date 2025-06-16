@@ -1,5 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { API } from "@/routes.config";
+import { JourneyData } from "@/types/interfaces/journey";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -7,7 +8,17 @@ export const saveDataToRedis = createListenerMiddleware();
 
 saveDataToRedis.startListening({
   predicate: (action, currState: any, prevState: any) => {
-    if (currState !== prevState) {
+    if (currState !== prevState && action.type === "journey/navigate") {
+      // const pagesComplete = currState.journey.journey.journeyData.reduce(
+      //   (acc: number, route: JourneyData) =>
+      //     route.isComplete === true ? acc++ : acc
+      // );
+      // const journeyData = currState.journey.journey.journeyData;
+      const journeyData = currState.uiData.uiData;
+      console.log("saveDataToRedis::", journeyData);
+
+      // let pagesComplete = 0;
+
       return true;
     }
     return false;
@@ -24,6 +35,7 @@ saveDataToRedis.startListening({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ state }),
+        credentials: "include",
       });
 
       if (!res.ok) {

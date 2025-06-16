@@ -11,12 +11,10 @@ const useRediectIfNoSessionData = () => {
       const cookie = await cookieAction(CookieAction.get, [
         Cookie.sessionCookie,
       ]);
-      // console.log(cookie);
 
       setSessionCookie(cookie as string);
     })();
   }, []);
-  // console.log(sessionCookie);
 
   return sessionCookie !== "";
 };

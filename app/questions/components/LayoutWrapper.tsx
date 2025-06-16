@@ -18,21 +18,26 @@ import setCookiesAndSaveState from "@/lib/actions/setCookiesAndSaveState";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
+import cookieAction from "@/lib/actions/cookie.action";
+import { CookieAction } from "@/types/enums/cookie.enum";
+import { getSessionCookie, setUiData } from "@/lib/features/uiData/uiDataSlice";
+import { UiData } from "@/types/enums/uiData.enum";
 
 export default function LayoutWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pageName = usePathname();
-  // const { nextRoute } = useAppSelector(getRoutes);
-  // const savedState = useAppSelector(selectState);
+  const { nextRoute } = useAppSelector(getRoutes);
+  const savedState = useAppSelector(selectState);
+  const isStateCookie = useAppSelector(getSessionCookie);
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
-  // const isInvalidStep = useRedirectIfInvalidStep();
-  // useMarkAsEditingUntilYourFit();
+  const isInvalidStep = useRedirectIfInvalidStep();
+  useMarkAsEditingUntilYourFit();
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
@@ -40,21 +45,28 @@ export default function LayoutWrapper({
       scrollToError();
     }
   };
-
-  const onSubmit = () => {
-    // if (isEmpty(formErrors)) {
-    //   // console.log("isPreferencesPage::", isPreferencesPage);
-    //   if (isPreferencesPage) {
-    //     (async () => {
-    //       await setCookiesAndSaveState(savedState);
-    //     })();
-    //     // console.log("onSubmit::", savedState);
+  useEffect(() => {
+    // (async () => {
+    //   if (!isStateCookie) {
+    //     const sessionCookie = await cookieAction(CookieAction.get, [
+    //       "sessionCookie",
+    //     ]);
+    //     dispatch(
+    //       setUiData({
+    //         name: UiData.sessionCookie,
+    //         value: sessionCookie as string,
+    //       })
+    //     );
     //   }
-    //   dispatch(navigate({ route: pageName, isFormSubmit: true }));
-    //   router.push(nextRoute);
-    // } else {
-    //   scrollToError();
-    // }
+    // })();
+  }, []);
+  const onSubmit = () => {
+    if (isEmpty(formErrors)) {
+      dispatch(navigate({ route: pageName, isFormSubmit: true }));
+      router.push(nextRoute);
+    } else {
+      scrollToError();
+    }
   };
 
   const getErrorElement = (error: any): HTMLElement | null => {
@@ -89,7 +101,7 @@ export default function LayoutWrapper({
 
   const formKey = `form-${pageName}`;
 
-  // if (isInvalidStep) return null;
+  if (isInvalidStep) return null;
 
   return (
     <FormProvider

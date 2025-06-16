@@ -5,16 +5,16 @@ import { State } from "@/types/interfaces/store";
 import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";
 
 export default async function YourCustomFitPage() {
-  const preloadedState = await retrieveAndSetStore();
-  // console.log("YourCustomFitPage:", preloadedState);
+  // const preloadedState = await retrieveAndSetStore();
+  // // console.log("YourCustomFitPage:", preloadedState);
 
-  if (!preloadedState) {
-    redirect("/");
-  }
-
-  return (
-    <YourFitWrapper
-      preloadedState={preloadedState as State & PersistPartial}
-    ></YourFitWrapper>
-  );
+  // if (!preloadedState) {
+  //   redirect("/");
+  // }
+  return null;
+  // return (
+  //   <YourFitWrapper
+  //     preloadedState={preloadedState as State & PersistPartial}
+  //   ></YourFitWrapper>
+  // );
 }

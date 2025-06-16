@@ -10,7 +10,12 @@ import {
 import { PersistPartial } from "redux-persist/es/persistReducer";
 import { RootState, State } from "@/types/interfaces/store";
 
-import { PersistConfig, persistReducer, REHYDRATE } from "redux-persist";
+import {
+  PERSIST,
+  PersistConfig,
+  persistReducer,
+  REHYDRATE,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 
 import {
@@ -98,8 +103,11 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
       if (action.type === setStore.type && isPayInloadAction(action)) {
         return action.payload;
       }
-
+      if (action.type === PERSIST && isPayInloadAction(action)) {
+        console.log("PERSIST payload:", action.payload?.uiData);
+      }
       if (action.type === REHYDRATE && isPayInloadAction(action)) {
+        console.log("REHYDRATE payload:", action.payload?.uiData);
         if (preloadedState) {
           action.payload = {
             ...(state as any),
@@ -108,14 +116,14 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
               rehydrated: true,
             },
           } as any;
-          // console.log(
-          //   "Skipping REHYDRATE overwrite. Using SSR state",
-          //   action.payload
-          // );
-          return action.payload;
+          console.log(
+            "Skipping REHYDRATE overwrite. Using SSR state",
+            action.payload
+          );
+          // return action.payload;
         }
         // console.log("return action.payload;", action.payload);
-
+        console.log("action.payload::", action.payload);
         return action.payload;
       }
 
