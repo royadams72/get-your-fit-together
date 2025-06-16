@@ -83,7 +83,8 @@ const isServer = typeof window === "undefined";
 
 const persistConfig: PersistConfig<State> = {
   key: "root",
-  storage: isServer ? noopStorage : storage,
+  // storage: isServer ? noopStorage : storage,
+  storage,
   whitelist: [
     aboutYouSliceName,
     injuriesSliceName,
@@ -94,7 +95,15 @@ const persistConfig: PersistConfig<State> = {
     journeySliceName,
   ],
 };
-
+// const persistedReducer = persistReducer<State>(
+//   persistConfig,
+//   (state: State | undefined, action: UnknownAction) => {
+//     if (action.type === setStore.type && isPayInloadAction(action)) {
+//       return action.payload;
+//     }
+//     return rootReducer(state, action);
+//   }
+// );
 export const makeStore = (preloadedState?: State & PersistPartial) => {
   // console.log("preloadedState in store;", preloadedState);
   const reducer = persistReducer<State>(
@@ -107,7 +116,7 @@ export const makeStore = (preloadedState?: State & PersistPartial) => {
       //   console.log("PERSIST payload:", action.payload?.uiData);
       // }
       if (action.type === REHYDRATE && isPayInloadAction(action)) {
-        console.log("REHYDRATE payload:", action.payload?.preferences);
+        console.log("preloadedState:", preloadedState);
         if (preloadedState) {
           action.payload = {
             ...(state as any),

@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
-    console.log("get plan::", plan);
+    // console.log("get plan::", plan);
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
       return errorResponse(

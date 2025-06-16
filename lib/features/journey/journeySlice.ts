@@ -43,6 +43,13 @@ export const journeySlice = createAppSlice({
         state.journey.journeyData[currentIndex + 1].canNavigate = true;
       }
     },
+    setNavOnLastPage: (state) => {
+      state.journey.routes = {
+        currentRoute: PATHS.YOUR_FIT,
+        nextRoute: "",
+        prevRoute: PATHS.PREFERENCES,
+      };
+    },
     setCanNavigateTrue: (state) => {
       state.journey.journeyData.map((route) => (route.canNavigate = true));
     },
@@ -60,8 +67,13 @@ export const journeySlice = createAppSlice({
   },
 });
 
-export const { setJourney, navigate, setCanNavigateTrue, setRoutesForYourFit } =
-  journeySlice.actions;
+export const {
+  setJourney,
+  navigate,
+  setCanNavigateTrue,
+  setRoutesForYourFit,
+  setNavOnLastPage,
+} = journeySlice.actions;
 export const journeyReducer = journeySlice.reducer;
 export const { getRoutes, getJourneyData } = journeySlice.selectors;
 

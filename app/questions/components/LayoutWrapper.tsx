@@ -38,15 +38,6 @@ export default function LayoutWrapper({
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
 
-  const callNavigate = (dispatchPaths?: string[]) => {
-    if (
-      isPreferencesPage ||
-      (dispatchPaths !== undefined && dispatchPaths.includes(pageName))
-    ) {
-      dispatch(navigate({ route: pageName, isFormSubmit: true }));
-    }
-  };
-
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
     if (isNotEmpty(formErrors)) {
@@ -55,9 +46,8 @@ export default function LayoutWrapper({
   };
 
   useEffect(() => {
-    const dispatchPaths = JOURNEY_PATHS.slice(0, 3);
-    callNavigate(dispatchPaths);
-    console.log("navigate", dispatchPaths);
+    dispatch(navigate({ route: pageName, isFormSubmit: true }));
+    console.log("navigate", pageName);
   }, [pageName]);
 
   useEffect(() => {
@@ -78,7 +68,7 @@ export default function LayoutWrapper({
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {
-      callNavigate();
+      dispatch(navigate({ route: pageName, isFormSubmit: true }));
       router.push(nextRoute);
     } else {
       scrollToError();

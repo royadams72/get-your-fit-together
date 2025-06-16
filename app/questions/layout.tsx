@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import StoreProvider from "../StoreProvider";
 import LayoutWrapper from "./components/LayoutWrapper";
-import Loading from "./your-goals/components/loading";
+import Loader from "@/context/Loader/Loader";
 
 export default function QuestionsLayout({
   children,
@@ -9,7 +9,7 @@ export default function QuestionsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loader isGeneric={true} />}>
       <StoreProvider>
         <LayoutWrapper>{children}</LayoutWrapper>
       </StoreProvider>

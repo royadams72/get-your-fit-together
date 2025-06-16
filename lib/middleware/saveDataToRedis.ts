@@ -1,6 +1,5 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { API } from "@/routes.config";
-import { JourneyData } from "@/types/interfaces/journey";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -8,7 +7,10 @@ export const saveDataToRedis = createListenerMiddleware();
 
 saveDataToRedis.startListening({
   predicate: (action, currState: any, prevState: any) => {
-    if (currState !== prevState && action.type === "journey/navigate") {
+    if (
+      (currState !== prevState && action.type === "journey/navigate") ||
+      action.type.includes("preferences/")
+    ) {
       return true;
     }
     return false;
@@ -16,7 +18,7 @@ saveDataToRedis.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
-    console.log("saveDataToRedis::", state, BASE_URL, API.SET_REDIS);
+    console.log("saveDataToRedis::", state, BASE_URL);
 
     try {
       const res = await fetch(`${BASE_URL}/${API.SET_REDIS}`, {

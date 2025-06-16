@@ -6,7 +6,7 @@ import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";
 
 export default async function YourCustomFitPage() {
   const preloadedState = await retrieveAndSetStore();
-  console.log("YourCustomFitPage:", preloadedState);
+  // console.log("YourCustomFitPage:", preloadedState);
 
   // if (!preloadedState) {
   //   redirect("/");

@@ -34,6 +34,7 @@ import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
 import {
   setCanNavigateTrue,
+  setNavOnLastPage,
   setRoutesForYourFit,
 } from "@/lib/features/journey/journeySlice";
 
@@ -44,7 +45,10 @@ import { isAnyFieldEmpty } from "@/lib/utils/isAnyFieldEmpty";
 //     Cookie.userData,
 //   ]);
 // })();
+
 const YourFit = () => {
+  // console.log("YourFit::)", userFitnessPlan);
+  // const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
   // console.log("YourFit::)", userFitnessPlan);
   // const [displayPlan, setDisplayPlan] = useState();
   const [userForm, setUserForm] = useState<FormValue>();
@@ -59,6 +63,10 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
+  useEffect(() => {
+    dispatch(setNavOnLastPage());
+  }, []);
+  // const isSessionData = useRediectIfNoSessionData();
   const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {

@@ -36,7 +36,7 @@ const ScheduleComponent: React.FC<{ days: daysObject[] }> = ({ days }) => {
             <h4>{day.title}</h4>
             <div className={styles.scheduleExercises}>
               <ul>
-                {day?.exercises.map((e, i) => (
+                {day?.exercises?.map((e, i) => (
                   <li key={i}>
                     <div>
                       <strong>{`Exercise ${i + 1}`}: </strong>

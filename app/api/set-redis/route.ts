@@ -12,27 +12,28 @@ export async function POST(request: NextRequest) {
 
   const sessionTTL = 86400;
   try {
+    const cookie = request.headers.get("cookie");
     const data = await request.json();
     let {
       state: {
         uiData: { sessionCookie },
       },
     } = data;
-    console.log("POST redis:", ENV.REDIS_URL);
+    console.log("POST redis:", cookie);
 
     const response = NextResponse.json(
       { message: "Data saved" },
       { status: 200 }
     );
 
-    // console.log("!sessionCooki::=====", data.state.preferences.preferences);
+    console.log("SET REDIS::=====", data.state, data.state.journey.journey);
     const isCookieInBrowser = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
     ]);
     if (!sessionCookie && !isCookieInBrowser) {
       sessionCookie = uuidv4();
 
-      response.cookies.set("sessionCookie:", sessionCookie, {
+      response.cookies.set("sessionCookie", sessionCookie, {
         path: "/",
         httpOnly: false,
         // sameSite: "lax",
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     const redisRespone = await redis.set(
-      `sessionCookie:${sessionCookie}`,
+      `sessionCookie${sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL

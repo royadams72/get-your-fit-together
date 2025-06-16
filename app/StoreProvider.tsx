@@ -29,7 +29,7 @@ export default function StoreProvider({ children, preloadedState }: Props) {
   // }, []);
 
   if (!storeRef.current) {
-    console.log("preloadedState in StoreProvider:", storeRef.current);
+    console.log("preloadedState in StoreProvider:", preloadedState);
 
     storeRef.current = makeStore(preloadedState);
 
