@@ -18,6 +18,7 @@ interface Props {
 export default function StoreProvider({ children, preloadedState }: Props) {
   const storeRef = useRef<AppStore>(null);
   const persistorRef = useRef<any>(null);
+  console.log("StoreProvider loaded");
 
   useEffect(() => {
     const handleUnload = () => {
@@ -29,11 +30,10 @@ export default function StoreProvider({ children, preloadedState }: Props) {
   }, []);
 
   if (!storeRef.current) {
-    console.log("preloadedState in StoreProvider:", preloadedState);
-
     storeRef.current = makeStore(preloadedState);
 
     persistorRef.current = persistStore(storeRef.current);
+    console.log("persistorRef.current in StoreProvider:", persistorRef.current);
   }
 
   return (

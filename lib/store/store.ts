@@ -79,12 +79,11 @@ const rootReducer = combineReducers({
   uiData: uiDataReducer,
   journey: journeyReducer,
 });
-const isServer = typeof window === "undefined";
 
 const persistConfig: PersistConfig<State> = {
   key: "root",
-  // storage: isServer ? noopStorage : storage,
   storage,
+  timeout: 100,
   whitelist: [
     aboutYouSliceName,
     injuriesSliceName,
@@ -95,6 +94,7 @@ const persistConfig: PersistConfig<State> = {
     journeySliceName,
   ],
 };
+
 const persistedReducer = persistReducer<State>(
   persistConfig,
   (state: State | undefined, action: UnknownAction) => {
@@ -104,42 +104,8 @@ const persistedReducer = persistReducer<State>(
     return rootReducer(state, action);
   }
 );
+
 export const makeStore = (preloadedState?: State & PersistPartial) => {
-  // console.log("preloadedState in store;", preloadedState);
-  // const reducer = persistReducer<State>(
-  //   persistConfig,
-  //   (state: State | undefined, action: UnknownAction): any => {
-  //     if (action.type === setStore.type && isPayInloadAction(action)) {
-  //       return action.payload;
-  //     }
-  //     // if (action.type === PERSIST && isPayInloadAction(action)) {
-  //     //   console.log("PERSIST payload:", action.payload?.uiData);
-  //     // }
-  //     if (action.type === REHYDRATE && isPayInloadAction(action)) {
-  //       console.log("preloadedState:", preloadedState);
-  //       if (preloadedState) {
-  //         action.payload = {
-  //           ...(state as any),
-  //           _persist: {
-  //             version: -1,
-  //             rehydrated: true,
-  //           },
-  //         } as any;
-  //         console.log(
-  //           "Skipping REHYDRATE overwrite. Using SSR state",
-  //           action.payload
-  //         );
-  //         // return action.payload;
-  //       }
-  //       // console.log("return action.payload;", action.payload);
-  //       // console.log("action.payload::", action.payload);
-  //       return action.payload;
-  //     }
-
-  //     return rootReducer(state, action);
-  //   }
-  // );
-
   return configureStore({
     reducer: persistedReducer,
     preloadedState,
