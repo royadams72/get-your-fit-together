@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
   const mappedState = extractState(state);
 
   const userContent = await setContent(mappedState);
-  // console.log("userContent::", userContent);
 
   try {
     const completion = await openai.chat.completions.create({
@@ -46,7 +45,6 @@ export async function POST(request: NextRequest) {
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
-    // console.log("get plan::", plan);
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
       return errorResponse(
@@ -55,7 +53,7 @@ export async function POST(request: NextRequest) {
         true
       );
     }
-    // console.log("get-plan json.fitnessPlan: ", json.fitnessPlan);
+
     return NextResponse.json(json.fitnessPlan, { status: 200 });
   } catch (error) {
     return errorResponse(`An unexpected error occured:${error}`, 500, true);

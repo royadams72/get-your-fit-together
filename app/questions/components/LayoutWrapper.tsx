@@ -14,7 +14,6 @@ import { useMarkAsEditingUntilYourFit } from "@/lib/hooks/useMarkAsEditingUntilY
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
-import setCookiesAndSaveState from "@/lib/actions/setCookiesAndSaveState";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
@@ -47,7 +46,6 @@ export default function LayoutWrapper({
 
   useEffect(() => {
     dispatch(navigate({ route: pageName, isFormSubmit: true }));
-    console.log("navigate", pageName);
   }, [pageName]);
 
   useEffect(() => {

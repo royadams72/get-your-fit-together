@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import redis from "@/lib/db/redisClient";
 
@@ -6,21 +6,18 @@ import cookieAction from "@/lib/actions/cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 // localhost:6379
 
-export async function GET(request: NextRequest) {
-  // console.log("redi÷s:::::", redis);
-
+export async function GET() {
   try {
-    // console.log("!sessionCooki::=====", data.state.preferences.preferences);
     const sessionCookie = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
     ]);
 
     const redisCache = await redis.get(`sessionCookie${sessionCookie}`);
     const data = JSON.parse(redisCache as string);
-    // if (redisRespone !== "OK") {
-    //   throw new Error(`Could not save data to Redis`);
-    // }
-    // console.log("redis GET:::::", typeof data);
+
+    if (!redisCache) {
+      throw new Error(`Could not get data from Redis`);
+    }
 
     return NextResponse.json(data.state, { status: 200 });
   } catch (error) {

@@ -5,33 +5,37 @@ import { fetchHelper } from "./fetchHelper";
 import { RootState } from "@/types/interfaces/store";
 
 export default async function retrieveAndSetStore() {
-  const data = await fetch(`${ENV.BASE_URL}/${API.GET_REDIS}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const savedState = await data.json();
-  // const state = JSON.parse(savedState);
-  const {
-    preferences: { preferences },
-    uiData: {
-      uiData: { isRetrieving, isEditing },
-    },
-  } = savedState as RootState;
-  console.log("!isRetrieving && isEditing::", !isRetrieving && isEditing);
+  let savedState: any;
+  try {
+    const data = await fetch(`${ENV.BASE_URL}/${API.GET_REDIS}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    savedState = await data.json();
+    console.log("retrieveAndSetStore savedState:", savedState);
 
-  if (!isRetrieving && isEditing) {
-    console.log("retrieveAndSetStore isEditing::", isEditing);
-    // Get fitplan and add to saved data
-    const fitnessPlanFromAI = await fetchHelper(
-      `${ENV.BASE_URL}/${API.GET_PLAN}`,
-      savedState
-    );
+    const {
+      uiData: {
+        uiData: { isRetrieving, isEditing },
+      },
+    } = savedState as RootState;
 
-    savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+    if (!isRetrieving && isEditing) {
+      console.log("retrieveAndSetStore isEditing::", isEditing);
+      // Get fitplan and add to saved data
+      const fitnessPlanFromAI = await fetchHelper(
+        `${ENV.BASE_URL}/${API.GET_PLAN}`,
+        savedState
+      );
+
+      savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+    }
+  } catch (error) {
+    console.error("An error occured:", error);
   }
-
+  // TODO: What to return if error
   return savedState;
 }

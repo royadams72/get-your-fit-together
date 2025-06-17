@@ -20,12 +20,11 @@ import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
 import { setUiDataForRetreive } from "@/lib/features/uiData/uiDataSlice";
 
-import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
-import Accordion from "@/components/display-plan/Accordion";
+
 import Button from "@/components/Button";
-import setCookiesAndSaveState from "@/lib/actions/setCookiesAndSaveState";
+
 import { useRouter } from "next/navigation";
 import StoreProvider from "@/app/StoreProvider";
 
@@ -43,7 +42,6 @@ const RetrieveYourPlan = () => {
     // try {
     // setLoading(true);
     // console.log("res", data);
-    await setCookiesAndSaveState({} as RootState, data);
 
     router.push(PATHS.YOUR_FIT);
     // const response = await fetchHelper({}, data);

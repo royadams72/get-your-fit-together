@@ -19,7 +19,7 @@ import {
 import { selectState, setStore } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
-import { FormValue } from "@/types/interfaces/form";
+import { FormValue, UserFormType } from "@/types/interfaces/form";
 
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
@@ -38,7 +38,7 @@ const YourFit = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
-  // console.log("YourFit loaded::", savedState);
+
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
 
@@ -55,7 +55,9 @@ const YourFit = () => {
   const inputVal = (val: FormValue) => {
     setUserForm(val);
   };
-  const onSubmit = async (userData: any) => {
+  const onSubmit = async (userData: UserFormType) => {
+    console.log("userData", userData);
+
     const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
       userData,

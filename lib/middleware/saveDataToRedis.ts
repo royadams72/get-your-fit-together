@@ -15,7 +15,6 @@ const persistStoreClientSide = (state: any) => {
 };
 
 export const saveDataToRedis = createListenerMiddleware();
-// uiData/
 saveDataToRedis.startListening({
   predicate: (action, currState: any, prevState: any) => {
     if (
