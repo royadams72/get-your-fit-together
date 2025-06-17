@@ -3,6 +3,17 @@ import { API } from "@/routes.config";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const persistStoreClientSide = (state: any) => {
+  if (typeof window !== "undefined") {
+    try {
+      const serializedState = JSON.stringify(state);
+      sessionStorage.setItem("redux-store", serializedState);
+    } catch (error) {
+      console.error("Error saving to session storage:", error);
+    }
+  }
+};
+
 export const saveDataToRedis = createListenerMiddleware();
 // uiData/
 saveDataToRedis.startListening({
@@ -12,6 +23,7 @@ saveDataToRedis.startListening({
       action.type.includes("preferences/") ||
       (currState !== prevState && action.type.includes("uiData/"))
     ) {
+      persistStoreClientSide(currState);
       return true;
     }
     return false;
