@@ -17,12 +17,13 @@ export default async function retrieveAndSetStore() {
   const {
     preferences: { preferences },
     uiData: {
-      uiData: { isRetrieving },
+      uiData: { isRetrieving, isEditing },
     },
   } = savedState as RootState;
-  console.log("retrieveAndSetStore::", preferences);
+  console.log("!isRetrieving && isEditing::", !isRetrieving && isEditing);
 
-  if (!isRetrieving) {
+  if (!isRetrieving && isEditing) {
+    console.log("retrieveAndSetStore isEditing::", isEditing);
     // Get fitplan and add to saved data
     const fitnessPlanFromAI = await fetchHelper(
       `${ENV.BASE_URL}/${API.GET_PLAN}`,

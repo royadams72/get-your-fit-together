@@ -13,6 +13,7 @@ import { API, PATHS } from "@/routes.config";
 
 import {
   getUiDataState,
+  setUiData,
   setUiDataForRetreive,
 } from "@/lib/features/uiData/uiDataSlice";
 import { selectState, setStore } from "@/lib/store/store";
@@ -29,6 +30,7 @@ import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
 import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
+import { UiData } from "@/types/enums/uiData.enum";
 
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();
@@ -45,6 +47,7 @@ const YourFit = () => {
 
   useEffect(() => {
     dispatch(setNavOnLastPage());
+    dispatch(setUiData({ name: UiData.isEditing, value: false }));
   }, []);
 
   const responseError = useCheckIfUserNameExists(userForm);

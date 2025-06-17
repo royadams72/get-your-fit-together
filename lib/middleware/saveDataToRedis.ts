@@ -4,12 +4,13 @@ import { API } from "@/routes.config";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const saveDataToRedis = createListenerMiddleware();
-
+// uiData/
 saveDataToRedis.startListening({
   predicate: (action, currState: any, prevState: any) => {
     if (
       (currState !== prevState && action.type === "journey/navigate") ||
-      action.type.includes("preferences/")
+      action.type.includes("preferences/") ||
+      (currState !== prevState && action.type.includes("uiData/"))
     ) {
       return true;
     }
