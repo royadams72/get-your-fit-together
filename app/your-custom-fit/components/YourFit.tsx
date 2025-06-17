@@ -19,38 +19,18 @@ import { selectState, setStore } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue } from "@/types/interfaces/form";
-import { isNotEmpty } from "@/lib/utils/isEmpty";
-import { RootState } from "@/types/interfaces/store";
 
-// import { useLoader } from "@/context/Loader/LoaderProvider";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
-import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
-import {
-  setCanNavigateTrue,
-  setNavOnLastPage,
-  setRoutesForYourFit,
-} from "@/lib/features/journey/journeySlice";
-
-import { isAnyFieldEmpty } from "@/lib/utils/isAnyFieldEmpty";
-// (async () => {
-//   await cookieAction(CookieAction.delete, [
-//     Cookie.fromPrevPage,
-//     Cookie.userData,
-//   ]);
-// })();
+import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
 
 const YourFit = () => {
-  // console.log("YourFit::)", userFitnessPlan);
-  // const [displayPlan, setDisplayPlan] = useState(userFitnessPlan);
-  // console.log("YourFit::)", userFitnessPlan);
-  // const [displayPlan, setDisplayPlan] = useState();
   const [userForm, setUserForm] = useState<FormValue>();
 
   const router = useRouter();
@@ -66,15 +46,13 @@ const YourFit = () => {
   useEffect(() => {
     dispatch(setNavOnLastPage());
   }, []);
-  // const isSessionData = useRediectIfNoSessionData();
+
   const responseError = useCheckIfUserNameExists(userForm);
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
   };
   const onSubmit = async (userData: any) => {
-    // setLoading(true);
-
     const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
       userData,
@@ -88,15 +66,9 @@ const YourFit = () => {
           "Your plan has been saved"
         )}`
       );
-      // setLoading(false);
     }
   };
 
-  // useEffect(() => {
-  //   console.log("savedState::::::", savedState);
-  // }, []);
-
-  // if (isSessionData) return null;
   return (
     <div>
       {userFitnessPlan && (
