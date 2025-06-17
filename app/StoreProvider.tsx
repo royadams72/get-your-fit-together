@@ -9,6 +9,7 @@ import { AppStore, RootState } from "@/types/interfaces/store";
 
 import { makeStore } from "@/lib/store/store";
 import { Cookie } from "@/types/enums/cookie.enum";
+import Loader from "@/context/Loader/Loader";
 
 interface Props {
   children: React.ReactNode;
@@ -38,7 +39,7 @@ export default function StoreProvider({ children, preloadedState }: Props) {
 
   return (
     <Provider store={storeRef.current}>
-      <PersistGate loading={null} persistor={persistorRef.current}>
+      <PersistGate loading={<Loader />} persistor={persistorRef.current}>
         {children}
       </PersistGate>
     </Provider>

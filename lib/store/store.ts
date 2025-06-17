@@ -95,53 +95,53 @@ const persistConfig: PersistConfig<State> = {
     journeySliceName,
   ],
 };
-// const persistedReducer = persistReducer<State>(
-//   persistConfig,
-//   (state: State | undefined, action: UnknownAction) => {
-//     if (action.type === setStore.type && isPayInloadAction(action)) {
-//       return action.payload;
-//     }
-//     return rootReducer(state, action);
-//   }
-// );
+const persistedReducer = persistReducer<State>(
+  persistConfig,
+  (state: State | undefined, action: UnknownAction) => {
+    if (action.type === setStore.type && isPayInloadAction(action)) {
+      return action.payload;
+    }
+    return rootReducer(state, action);
+  }
+);
 export const makeStore = (preloadedState?: State & PersistPartial) => {
   // console.log("preloadedState in store;", preloadedState);
-  const reducer = persistReducer<State>(
-    persistConfig,
-    (state: State | undefined, action: UnknownAction): any => {
-      if (action.type === setStore.type && isPayInloadAction(action)) {
-        return action.payload;
-      }
-      // if (action.type === PERSIST && isPayInloadAction(action)) {
-      //   console.log("PERSIST payload:", action.payload?.uiData);
-      // }
-      if (action.type === REHYDRATE && isPayInloadAction(action)) {
-        console.log("preloadedState:", preloadedState);
-        if (preloadedState) {
-          action.payload = {
-            ...(state as any),
-            _persist: {
-              version: -1,
-              rehydrated: true,
-            },
-          } as any;
-          console.log(
-            "Skipping REHYDRATE overwrite. Using SSR state",
-            action.payload
-          );
-          // return action.payload;
-        }
-        // console.log("return action.payload;", action.payload);
-        // console.log("action.payload::", action.payload);
-        return action.payload;
-      }
+  // const reducer = persistReducer<State>(
+  //   persistConfig,
+  //   (state: State | undefined, action: UnknownAction): any => {
+  //     if (action.type === setStore.type && isPayInloadAction(action)) {
+  //       return action.payload;
+  //     }
+  //     // if (action.type === PERSIST && isPayInloadAction(action)) {
+  //     //   console.log("PERSIST payload:", action.payload?.uiData);
+  //     // }
+  //     if (action.type === REHYDRATE && isPayInloadAction(action)) {
+  //       console.log("preloadedState:", preloadedState);
+  //       if (preloadedState) {
+  //         action.payload = {
+  //           ...(state as any),
+  //           _persist: {
+  //             version: -1,
+  //             rehydrated: true,
+  //           },
+  //         } as any;
+  //         console.log(
+  //           "Skipping REHYDRATE overwrite. Using SSR state",
+  //           action.payload
+  //         );
+  //         // return action.payload;
+  //       }
+  //       // console.log("return action.payload;", action.payload);
+  //       // console.log("action.payload::", action.payload);
+  //       return action.payload;
+  //     }
 
-      return rootReducer(state, action);
-    }
-  );
+  //     return rootReducer(state, action);
+  //   }
+  // );
 
   return configureStore({
-    reducer: reducer,
+    reducer: persistedReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
