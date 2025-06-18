@@ -21,7 +21,9 @@ saveDataToRedis.startListening({
       (currState !== prevState && action.type === "journey/navigate") ||
       action.type.includes("preferences/") ||
       (currState !== prevState && action.type.includes("uiData/")) ||
-      (currState !== prevState && action.type.includes("user/"))
+      (currState !== prevState && action.type.includes("user/")) ||
+      (currState.journey !== prevState.journey &&
+        action.type === "journey/setCanNavigateTrue")
     ) {
       persistStoreClientSide(currState);
       return true;
@@ -31,7 +33,7 @@ saveDataToRedis.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
-    console.log("saveDataToRedis::", state, BASE_URL);
+    console.log("saveDataToRedis::", action.type);
 
     try {
       const res = await fetch(`${BASE_URL}/${API.SET_REDIS}`, {

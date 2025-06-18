@@ -13,11 +13,11 @@ import { API, PATHS } from "@/routes.config";
 
 import {
   getIsRetrieving,
+  getIsSignedIn,
   getUiDataState,
   setUiData,
-  setUiDataForRetreive,
 } from "@/lib/features/uiData/uiDataSlice";
-import { selectState, setStore } from "@/lib/store/store";
+import { selectState } from "@/lib/store/store";
 
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue, UserFormType } from "@/types/interfaces/form";
@@ -28,12 +28,9 @@ import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
-import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
+import { getUserFitnessPlan, getUserInfo } from "@/lib/features/user/userSlice";
 
-import {
-  setCanNavigateTrue,
-  setNavOnLastPage,
-} from "@/lib/features/journey/journeySlice";
+import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
 import { UiData } from "@/types/enums/uiData.enum";
 
 const YourFit = () => {
@@ -46,10 +43,27 @@ const YourFit = () => {
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
   const isRetrieving = useAppSelector(getIsRetrieving);
-
+  const isSignedIn = useAppSelector(getIsSignedIn);
+  const userInfoFromState = useAppSelector(getUserInfo);
+  //
   const methods = useForm();
   const { reset } = methods;
+  const savePlan = async (userData: UserFormType, isForm = true) => {
+    const response = await fetchHelper(API.SAVE_PLAN, {
+      savedState,
+      userData,
+    });
 
+    if (response?.success && isForm) {
+      reset();
+
+      router.push(
+        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+          "Your plan has been saved"
+        )}`
+      );
+    }
+  };
   const responseError = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
@@ -60,33 +74,22 @@ const YourFit = () => {
   useEffect(() => {
     if (isRetrieving) {
       console.log(savedState);
-      dispatch(setUiDataForRetreive());
-      dispatch(setCanNavigateTrue());
       dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
-      // dispatch(setStore)
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      savePlan(userInfoFromState, false);
+      console.log(savedState);
+    }
+  }, []);
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
   };
   const onSubmit = async (userData: UserFormType) => {
     console.log("userData", userData);
-
-    const response = await fetchHelper(API.SAVE_PLAN, {
-      savedState,
-      userData,
-    });
-
-    if (response?.success) {
-      reset();
-
-      router.push(
-        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-          "Your plan has been saved"
-        )}`
-      );
-    }
   };
 
   return (
