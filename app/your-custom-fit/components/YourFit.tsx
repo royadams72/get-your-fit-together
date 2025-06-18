@@ -12,6 +12,7 @@ import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
 import {
+  getIsRetrieving,
   getUiDataState,
   setUiData,
   setUiDataForRetreive,
@@ -41,16 +42,23 @@ const YourFit = () => {
 
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
+  const isRetrieving = useAppSelector(getIsRetrieving);
 
   const methods = useForm();
   const { reset } = methods;
+
+  const responseError = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
     dispatch(setNavOnLastPage());
     dispatch(setUiData({ name: UiData.isEditing, value: false }));
   }, []);
 
-  const responseError = useCheckIfUserNameExists(userForm);
+  // useEffect(()=>{
+  //   if(isRetrieving){
+  // dispatch(setStore)
+  //   }
+  // })
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);

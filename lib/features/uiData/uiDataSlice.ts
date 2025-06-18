@@ -33,10 +33,15 @@ export const uiDataSlice = createAppSlice({
     getUiDataState: (state: UiDataState) => state.uiData,
     getIsSignedIn: (state: UiDataState) => state.uiData.isSignedIn,
     getSessionCookie: (state: UiDataState) => state.uiData.sessionCookie,
+    getIsRetrieving: (state: UiDataState) => state.uiData.isRetrieving,
   },
 });
 
 export const { setUiData, setUiDataForRetreive } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
-export const { getUiDataState, getIsSignedIn, getSessionCookie } =
-  uiDataSlice.selectors;
+export const {
+  getUiDataState,
+  getIsSignedIn,
+  getSessionCookie,
+  getIsRetrieving,
+} = uiDataSlice.selectors;

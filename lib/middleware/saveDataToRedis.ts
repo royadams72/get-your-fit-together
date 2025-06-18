@@ -20,7 +20,8 @@ saveDataToRedis.startListening({
     if (
       (currState !== prevState && action.type === "journey/navigate") ||
       action.type.includes("preferences/") ||
-      (currState !== prevState && action.type.includes("uiData/"))
+      (currState !== prevState && action.type.includes("uiData/")) ||
+      (currState !== prevState && action.type.includes("user/"))
     ) {
       persistStoreClientSide(currState);
       return true;

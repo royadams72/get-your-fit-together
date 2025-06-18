@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const data = await req.json();
-    // console.log("data in route", data);
+    console.log("data in route", data);
     if (isEmpty(data)) {
       return NextResponse.json(
         { message: "no data recieved" },
@@ -23,19 +23,11 @@ export async function POST(req: Request) {
     }
     const userName = data.userName || undefined;
     const userPassword = data.userPassword || undefined;
-    const sessionCookie = data.sessionCookie || undefined;
-    let documentFilter = {};
 
-    if (userName && userPassword) {
-      documentFilter = {
-        "reduxState.user.user.userName": userName,
-        "reduxState.user.user.userPassword": userPassword,
-      };
-    } else {
-      documentFilter = {
-        sessionCookie: sessionCookie,
-      };
-    }
+    const documentFilter = {
+      "reduxState.user.user.userName": userName,
+      "reduxState.user.user.userPassword": userPassword,
+    };
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       documentFilter

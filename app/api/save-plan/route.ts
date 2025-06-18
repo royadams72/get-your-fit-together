@@ -37,11 +37,10 @@ export async function POST(req: Request) {
       $currentDate: { updatedAt: true },
     };
 
-    console.log("save-plan", userPassword && userName, updatePayload);
     const response = await collection.updateOne(documentFilter, updatePayload, {
       upsert: true,
     });
-    console.log("save-plan response:", response);
+
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
       return errorResponse(
         "There was a problem, your plan could not be saved, please try again later",

@@ -22,6 +22,15 @@ export const userSlice = createAppSlice({
     ) => {
       state.user[action.payload.name] = action.payload.value;
     },
+    setUserInfo: (
+      state: UserState,
+      action: { payload: { userName: string; userPassword: string } }
+    ) => {
+      console.log("setUserInfo::", action.payload);
+
+      state.user.userName = action.payload.userName;
+      state.user.userPassword = action.payload.userPassword;
+    },
   },
   selectors: {
     getUserState: (state: UserState) => state.user,
@@ -30,7 +39,7 @@ export const userSlice = createAppSlice({
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setUserInfo } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 export const { getUserState, getUserFitnessPlan, getUserName } =
   userSlice.selectors;

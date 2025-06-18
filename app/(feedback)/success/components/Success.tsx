@@ -15,12 +15,12 @@ enum Mode {
   plan = "plan",
 }
 const Success = ({ message, mode }: SuccessProps) => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(setStore(defaultState));
-  //   sessionStorage.removeItem("redux-store");
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(setStore(defaultState));
+    sessionStorage.removeItem("redux-store");
+  }, [dispatch]);
 
   return (
     <div>
