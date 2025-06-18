@@ -1,4 +1,3 @@
-import React from "react";
 import RetrievePlanWrapper from "./components/RetrievePlanWrapper";
 
 const RetrievePlanPage = () => {

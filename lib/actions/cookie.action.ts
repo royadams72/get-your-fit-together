@@ -12,15 +12,12 @@ const cookieAction = async (
 
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
+    const cookieValue = cookieVal !== undefined && cookieVal[i];
 
     if (action === CookieAction.delete && cookieStore.get(name)?.value) {
       cookieStore.delete(name);
-    } else if (
-      action === CookieAction.set &&
-      cookieStore.get(name)?.value &&
-      cookieVal !== undefined
-    ) {
-      cookieStore.set(name, cookieVal[i]);
+    } else if (action === CookieAction.set && cookieVal !== undefined) {
+      cookieStore.set(name, cookieValue, { secure: true });
     } else if (action === CookieAction.get && cookieStore.get(name)?.value) {
       return cookieStore.get(name)?.value;
     }

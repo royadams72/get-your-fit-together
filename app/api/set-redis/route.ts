@@ -35,13 +35,15 @@ export async function POST(request: NextRequest) {
         // secure: ENV.IS_PRODUCTION,
       });
     }
+    console.log("isCookieInBrowser", isCookieInBrowser, sessionCookie);
 
     const redisRespone = await redis.set(
-      `sessionCookie${sessionCookie}`,
+      `${Cookie.sessionCookie}:${isCookieInBrowser || sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL
     );
+    console.log(redisRespone);
 
     if (redisRespone !== "OK") {
       throw new Error(`Could not save data to Redis`);

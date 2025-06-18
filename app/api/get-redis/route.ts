@@ -4,18 +4,23 @@ import redis from "@/lib/db/redisClient";
 
 import cookieAction from "@/lib/actions/cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+import { cookies } from "next/headers";
 // localhost:6379
 
 export async function GET(request: NextRequest) {
-  // const res = await request.json();
-  // console.log("res::::", request.cookies.get(Cookie.sessionCookie));
   try {
-    const sessionCookie = await cookieAction(CookieAction.get, [
-      Cookie.sessionCookie,
-    ]);
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("sessionCookie")?.value;
+    // const sessionCookie = await cookieAction(CookieAction.get, [
+    //   Cookie.sessionCookie,
+    // ]);
     console.log("sessionCookie GET::", sessionCookie);
 
-    const redisCache = await redis.get(`sessionCookie:${sessionCookie}`);
+    const redisCache = await redis.get(
+      `${Cookie.sessionCookie}:${sessionCookie}`
+    );
+    console.log(redisCache);
+
     const data = JSON.parse(redisCache as string);
 
     if (!redisCache) {

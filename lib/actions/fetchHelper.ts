@@ -9,13 +9,18 @@ const errRedirectURI = (resObjString: any) => {
 export const fetchHelper = async <T = Record<string, unknown>>(
   url: string,
   args?: T | string,
-  method = "POST"
+  method = "POST",
+  cookieString?: string
 ) => {
   const options: RequestInit = {
     method,
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...(cookieString ? { Cookie: cookieString } : {}),
+    },
   };
+  console.log("options:", options);
 
   if (isNotEmpty(args) && method !== "GET" && method !== "HEAD") {
     options.body = JSON.stringify(args);

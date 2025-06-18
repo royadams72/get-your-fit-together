@@ -23,14 +23,14 @@ export default function StoreProvider({
   children: React.ReactNode;
   preloadedState?: RootState;
 }) {
-  useEffect(() => {
-    const handleUnload = () => {
-      document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
-    };
+  // useEffect(() => {
+  //   const handleUnload = () => {
+  //     document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+  //   };
 
-    window.addEventListener("unload", handleUnload);
-    return () => window.removeEventListener("unload", handleUnload);
-  }, []);
+  //   window.addEventListener("unload", handleUnload);
+  //   return () => window.removeEventListener("unload", handleUnload);
+  // }, []);
 
   const stateToUse = preloadedState ?? loadStateFromSessionStorage();
   const storeRef = useRef(makeStore(stateToUse));
