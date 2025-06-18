@@ -30,17 +30,24 @@ export default async function retrieveAndSetStore() {
       },
     } = savedState as RootState;
 
-    console.log(
-      "userName && userPassword && isRetrieving",
-      userName && userPassword && isRetrieving,
-      { userName, userPassword },
-      { isRetrieving, isEditing }
-    );
+    // console.log(
+    //   "userName && userPassword && isRetrieving",
+    //   userName && userPassword && isRetrieving,
+    //   { userName, userPassword },
+    //   { isRetrieving, isEditing }
+    // );
     if (userName && userPassword && isRetrieving) {
-      savedState = await fetchHelper(`${ENV.BASE_URL}/${API.RETRIEVE}`, {
-        userName,
-        userPassword,
-      });
+      const retrievedState = await fetchHelper(
+        `${ENV.BASE_URL}/${API.RETRIEVE}`,
+        {
+          userName,
+          userPassword,
+        }
+      );
+
+      const { uiData } = savedState;
+      savedState = {};
+      savedState = { ...retrievedState, uiData };
     }
 
     if (!isRetrieving && isEditing) {
@@ -57,7 +64,7 @@ export default async function retrieveAndSetStore() {
     console.error("An error occured:", error);
   }
   // TODO: What to return if error
-  // console.log("retrieveAndSetStore savedState:", savedState);
+  console.log("retrieveAndSetStore savedState:", savedState);
 
   return savedState;
 }

@@ -24,7 +24,6 @@ export const uiDataSlice = createAppSlice({
       state.uiData[action.payload.name] = action.payload.value;
     },
     setUiDataForRetreive: (state: UiDataState) => {
-      state.uiData.isEditing = true;
       state.uiData.isRetrieving = true;
       state.uiData.isSignedIn = true;
     },

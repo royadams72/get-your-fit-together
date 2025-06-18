@@ -14,12 +14,12 @@ export async function GET(request: NextRequest) {
     // const sessionCookie = await cookieAction(CookieAction.get, [
     //   Cookie.sessionCookie,
     // ]);
-    console.log("sessionCookie GET::", sessionCookie);
+    // console.log("sessionCookie GET::", sessionCookie);
 
     const redisCache = await redis.get(
       `${Cookie.sessionCookie}:${sessionCookie}`
     );
-    console.log(redisCache);
+    // console.log(redisCache);
 
     const data = JSON.parse(redisCache as string);
 

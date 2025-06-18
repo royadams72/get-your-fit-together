@@ -84,6 +84,7 @@ const RetrievePlan = () => {
     // console.log("onSubmit:", user);
 
     dispatch(setUiData({ name: UiData.isRetrieving, value: true }));
+    dispatch(setUiData({ name: UiData.isSignedIn, value: true }));
     // dispatch(setUiData({ name: UiData.sessionCookie, value: cookie }));
     dispatch(setUserInfo(user));
     router.push(PATHS.YOUR_FIT);

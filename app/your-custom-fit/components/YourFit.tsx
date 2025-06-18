@@ -30,7 +30,10 @@ import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
 
-import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
+import {
+  setCanNavigateTrue,
+  setNavOnLastPage,
+} from "@/lib/features/journey/journeySlice";
 import { UiData } from "@/types/enums/uiData.enum";
 
 const YourFit = () => {
@@ -54,11 +57,15 @@ const YourFit = () => {
     dispatch(setUiData({ name: UiData.isEditing, value: false }));
   }, []);
 
-  // useEffect(()=>{
-  //   if(isRetrieving){
-  // dispatch(setStore)
-  //   }
-  // })
+  useEffect(() => {
+    if (isRetrieving) {
+      console.log(savedState);
+      dispatch(setUiDataForRetreive());
+      dispatch(setCanNavigateTrue());
+      dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
+      // dispatch(setStore)
+    }
+  });
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);
