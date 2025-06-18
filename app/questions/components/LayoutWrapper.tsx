@@ -50,10 +50,12 @@ export default function LayoutWrapper({
 
   useEffect(() => {
     (async () => {
-      const sessionCookie = await cookieAction(CookieAction.get, [
-        "sessionCookie",
-      ]);
-      if (!isCookieInState && sessionCookie) {
+      console.log("sessionCookie layout", isCookieInState);
+
+      if (!isCookieInState) {
+        const sessionCookie = await cookieAction(CookieAction.get, [
+          "sessionCookie",
+        ]);
         dispatch(
           setUiData({
             name: UiData.sessionCookie,
@@ -62,7 +64,7 @@ export default function LayoutWrapper({
         );
       }
     })();
-  }, [isCookieInState]);
+  }, [isCookieInState, dispatch]);
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {

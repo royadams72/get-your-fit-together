@@ -8,26 +8,34 @@ import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 export async function POST(request: NextRequest) {
   const sessionTTL = 86400;
+
   try {
-    const cookie = request.headers.get("cookie");
     const data = await request.json();
-    let {
+    const {
       state: {
-        uiData: { sessionCookie },
+        uiData: { sessionCookie: cookieFromState },
       },
     } = data;
 
-    const response = NextResponse.json(
-      { message: "Data saved" },
-      { status: 200 }
-    );
-
-    const isCookieInBrowser = await cookieAction(CookieAction.get, [
+    const response = NextResponse.json({ message: "Data saved" });
+    const cookieFromBrowser = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
     ]);
-    if (!sessionCookie && !isCookieInBrowser) {
-      sessionCookie = uuidv4();
 
+    // Decide source of truth
+    const sessionCookie = cookieFromState || cookieFromBrowser || uuidv4();
+
+    // Sync to Redux state if missing
+    if (!cookieFromState) {
+      data.state.uiData.sessionCookie = sessionCookie;
+    }
+    console.log(
+      "data.state.uiData.sessionCookie",
+      data.state.uiData.sessionCookie
+    );
+
+    // Set cookie if not in browser
+    if (!cookieFromBrowser) {
       response.cookies.set("sessionCookie", sessionCookie, {
         path: "/",
         httpOnly: false,
@@ -35,18 +43,17 @@ export async function POST(request: NextRequest) {
         // secure: ENV.IS_PRODUCTION,
       });
     }
-    // console.log("isCookieInBrowser", isCookieInBrowser, sessionCookie);
 
+    // Save to Redis
     const redisRespone = await redis.set(
-      `${Cookie.sessionCookie}:${isCookieInBrowser || sessionCookie}`,
+      `${Cookie.sessionCookie}:${sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL
     );
-    // console.log(redisRespone);
 
     if (redisRespone !== "OK") {
-      throw new Error(`Could not save data to Redis`);
+      throw new Error("Could not save data to Redis");
     }
 
     return response;
