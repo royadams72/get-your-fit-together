@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -48,22 +48,25 @@ const YourFit = () => {
   //
   const methods = useForm();
   const { reset } = methods;
-  const savePlan = async (userData: UserFormType, isForm = true) => {
-    const response = await fetchHelper(API.SAVE_PLAN, {
-      savedState,
-      userData,
-    });
+  const savePlan = useCallback(
+    async (userData: UserFormType, isForm = true) => {
+      const response = await fetchHelper(API.SAVE_PLAN, {
+        savedState,
+        userData,
+      });
 
-    if (response?.success && isForm) {
-      reset();
+      if (response?.success && isForm) {
+        reset();
 
-      router.push(
-        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-          "Your plan has been saved"
-        )}`
-      );
-    }
-  };
+        router.push(
+          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+            "Your plan has been saved"
+          )}`
+        );
+      }
+    },
+    [savedState, reset, router]
+  );
   const responseError = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
