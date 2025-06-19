@@ -7,7 +7,6 @@ import cookieAction from "./cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 export default async function retrieveAndSetStore() {
-  // GET GYFTapp:sessionCookie:9edbf5ce-4f83-4108-8134-c67955de6e98
   let savedState: any;
   const sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,

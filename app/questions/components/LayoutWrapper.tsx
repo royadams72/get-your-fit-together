@@ -1,26 +1,21 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { config } from "@/app/questions/preferences/form-configs/config";
-import { JOURNEY_PATHS, PATHS } from "@/routes.config";
+import { PATHS } from "@/routes.config";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
-import { selectState } from "@/lib/store/store";
+
+import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
 
 import { useMarkAsEditingUntilYourFit } from "@/lib/hooks/useMarkAsEditingUntilYourFit";
 import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
-import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
-
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
-import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-import { getSessionCookie, setUiData } from "@/lib/features/uiData/uiDataSlice";
-import { UiData } from "@/types/enums/uiData.enum";
 
 export default function LayoutWrapper({
   children,
@@ -31,11 +26,13 @@ export default function LayoutWrapper({
   const router = useRouter();
   const pageName = usePathname();
   const { nextRoute } = useAppSelector(getRoutes);
-  const isSessionInState = useAppSelector(getSessionCookie);
+
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
+
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
+  useSetSessionToStore();
 
   const getFormErrors = (errorObj: any) => {
     formErrors = errorObj;
@@ -43,26 +40,6 @@ export default function LayoutWrapper({
       scrollToError();
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      (async () => {
-        const sessionCookie = await cookieAction(CookieAction.get, [
-          Cookie.sessionCookie,
-        ]);
-        console.log("sessionCookie in retrieve", sessionCookie);
-
-        if (!isSessionInState) {
-          dispatch(
-            setUiData({
-              name: UiData.sessionCookie,
-              value: sessionCookie as string,
-            })
-          );
-        }
-      })();
-    }, 100);
-  }, []);
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {

@@ -29,33 +29,15 @@ import { config } from "@/lib/form-configs/userConfig";
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Button from "@/components/Button";
+import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 const RetrievePlan = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const isSessionInState = useAppSelector(getSessionCookie);
   const methods = useForm();
   const { reset } = methods;
 
-  useEffect(() => {
-    setTimeout(() => {
-      (async () => {
-        const sessionCookie = await cookieAction(CookieAction.get, [
-          Cookie.sessionCookie,
-        ]);
-        console.log("sessionCookie in retrieve", sessionCookie);
-
-        if (!isSessionInState) {
-          dispatch(
-            setUiData({
-              name: UiData.sessionCookie,
-              value: sessionCookie as string,
-            })
-          );
-        }
-      })();
-    }, 100);
-  }, []);
+  useSetSessionToStore();
 
   const onSubmit = async (user: UserFormType) => {
     dispatch(setUiDataForRetreive());
