@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import redis from "@/lib/db/redisClient";
 
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+import cookieAction from "@/lib/actions/cookie.action";
 
 export async function GET() {
   try {
@@ -39,10 +40,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
-function cookieAction(
-  get: any,
-  arg1: Cookie[]
-): string | PromiseLike<string | undefined> | undefined {
-  throw new Error("Function not implemented.");
 }
