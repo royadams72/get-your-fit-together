@@ -48,25 +48,23 @@ const YourFit = () => {
   //
   const methods = useForm();
   const { reset } = methods;
-  const savePlan = useCallback(
-    async (userData: UserFormType, isForm = true) => {
-      const response = await fetchHelper(API.SAVE_PLAN, {
-        savedState,
-        userData,
-      });
+  const savePlan = async (userData: UserFormType, isForm = true) => {
+    const response = await fetchHelper(API.SAVE_PLAN, {
+      savedState,
+      userData,
+    });
 
-      if (response?.success && isForm) {
-        reset();
+    if (response?.success && isForm) {
+      reset();
 
-        router.push(
-          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-            "Your plan has been saved"
-          )}`
-        );
-      }
-    },
-    [savedState, reset, router]
-  );
+      router.push(
+        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+          "Your plan has been saved"
+        )}`
+      );
+    }
+  };
+
   const responseError = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {

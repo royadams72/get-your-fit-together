@@ -6,13 +6,14 @@ import { useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
 
-import { useAppDispatch } from "@/lib/hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 
 import { PATHS } from "@/routes.config";
 
 import { setUserInfo } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
 import {
+  getSessionCookie,
   setUiData,
   setUiDataForRetreive,
 } from "@/lib/features/uiData/uiDataSlice";
@@ -32,28 +33,28 @@ import Button from "@/components/Button";
 const RetrievePlan = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-
+  const isSessionInState = useAppSelector(getSessionCookie);
   const methods = useForm();
   const { reset } = methods;
 
   useEffect(() => {
-    (async () => {
-      let sessionCookie = await cookieAction(CookieAction.get, [
-        Cookie.sessionCookie,
-      ]);
+    setTimeout(() => {
+      (async () => {
+        const sessionCookie = await cookieAction(CookieAction.get, [
+          Cookie.sessionCookie,
+        ]);
+        console.log("sessionCookie in retrieve", sessionCookie);
 
-      if (!sessionCookie) {
-        sessionCookie = uuidv4();
-        await cookieAction(
-          CookieAction.set,
-          [Cookie.sessionCookie],
-          [sessionCookie]
-        );
-        dispatch(
-          setUiData({ name: UiData.sessionCookie, value: sessionCookie })
-        );
-      }
-    })();
+        if (!isSessionInState) {
+          dispatch(
+            setUiData({
+              name: UiData.sessionCookie,
+              value: sessionCookie as string,
+            })
+          );
+        }
+      })();
+    }, 100);
   }, []);
 
   const onSubmit = async (user: UserFormType) => {

@@ -44,27 +44,42 @@ export default function LayoutWrapper({
     }
   };
 
-  useEffect(() => {
-    dispatch(navigate({ route: pageName, isFormSubmit: true }));
-  }, [pageName]);
+  // useEffect(() => {
+  //   dispatch(navigate({ route: pageName, isFormSubmit: true }));
+  //   (async () => {
+  //     console.log("sessionCookie layout", isCookieInState);
 
-  useEffect(() => {
-    (async () => {
-      console.log("sessionCookie layout", isCookieInState);
+  //     if (!isCookieInState) {
+  //       const sessionCookie = await cookieAction(CookieAction.get, [
+  //         "sessionCookie",
+  //       ]);
+  //       dispatch(
+  //         setUiData({
+  //           name: UiData.sessionCookie,
+  //           value: sessionCookie as string,
+  //         })
+  //       );
+  //     }
+  //   })();
+  // }, [pageName]);
 
-      if (!isCookieInState) {
-        const sessionCookie = await cookieAction(CookieAction.get, [
-          "sessionCookie",
-        ]);
-        dispatch(
-          setUiData({
-            name: UiData.sessionCookie,
-            value: sessionCookie as string,
-          })
-        );
-      }
-    })();
-  }, [isCookieInState, dispatch]);
+  // useEffect(() => {
+  // (async () => {
+  //   console.log("sessionCookie layout", isCookieInState);
+
+  //   if (!isCookieInState) {
+  //     const sessionCookie = await cookieAction(CookieAction.get, [
+  //       "sessionCookie",
+  //     ]);
+  //     dispatch(
+  //       setUiData({
+  //         name: UiData.sessionCookie,
+  //         value: sessionCookie as string,
+  //       })
+  //     );
+  //   }
+  // })();
+  // }, [isCookieInState, dispatch]);
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {

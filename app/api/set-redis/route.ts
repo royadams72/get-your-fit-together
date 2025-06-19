@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import redis from "@/lib/db/redisClient";
 import { v4 as uuidv4 } from "uuid";
 
-import redis from "@/lib/db/redisClient";
-import { ENV } from "@/lib/services/envService";
 import cookieAction from "@/lib/actions/cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
@@ -25,20 +24,12 @@ export async function POST(request: NextRequest) {
     // Decide source of truth
     const sessionCookie = cookieFromState || cookieFromBrowser || uuidv4();
 
-    // Sync to Redux state if missing
-    // if (!cookieFromState) {
-    //   data.state.uiData.sessionCookie = sessionCookie;
-    // }
-    // console.log(
-    //   "data.state.uiData.sessionCookie",
-    //   data.state.uiData.sessionCookie
-    // );
-
     // Set cookie if not in browser
     if (!cookieFromBrowser) {
       response.cookies.set("sessionCookie", sessionCookie, {
         path: "/",
         httpOnly: false,
+        expires: 60,
         // sameSite: "lax",
         // secure: ENV.IS_PRODUCTION,
       });
