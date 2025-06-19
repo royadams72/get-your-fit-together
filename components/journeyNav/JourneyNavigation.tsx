@@ -11,6 +11,7 @@ const JourneyNavigation = ({
   getFormErrors: (errors: any) => void;
 }) => {
   const { handleSubmit, formState } = useFormContext();
+
   useEffect(() => {
     getFormErrors(formState.errors);
   }, [formState]);

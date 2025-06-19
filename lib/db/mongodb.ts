@@ -1,25 +1,34 @@
+/* eslint-disable no-var */
 import { MongoClient, Db } from "mongodb";
 import { ENV } from "../services/envService";
 
-let cachedDb: Db | null = null;
+// Extend globalThis to add custom MongoDB properties
+declare global {
+  var _mongoClient: MongoClient | null;
+  var _mongoDb: Db | null;
+}
+
+// For TypeScript modules
+export {};
+
+let cachedClient = global._mongoClient || null;
+let cachedDb = global._mongoDb || null;
 
 export async function connectToDB(): Promise<Db> {
   if (cachedDb) return cachedDb;
-  console.log("ENV.MONGODB_DB_NAME: ", ENV.MONGODB_DB_NAME);
-  console.log("cachedDb: ", cachedDb);
-  const client = new MongoClient(ENV.MONGODB_URI);
-  console.log("ENV.MONGODB_URI: ", ENV.MONGODB_URI);
-  console.log("client: ", client);
+
+  if (!ENV.MONGODB_URI || !ENV.MONGODB_DB_NAME) {
+    throw new Error("Missing MongoDB connection environment variables");
+  }
+
   try {
-    await client.connect();
-    const adminDb = client.db().admin();
-    const pingResult = await adminDb.ping();
-    console.log("Ping successful:", pingResult);
-    if (pingResult.ok !== 1) {
-      throw new Error("MongoDB does not exist");
+    if (!cachedClient) {
+      cachedClient = new MongoClient(ENV.MONGODB_URI);
+      await cachedClient.connect();
+      global._mongoClient = cachedClient; // cache client
     }
-    cachedDb = client.db(ENV.MONGODB_DB_NAME);
-    console.log("client: cachedDb", cachedDb);
+
+    cachedDb = global._mongoDb = cachedClient.db(ENV.MONGODB_DB_NAME); // cache db
     return cachedDb;
   } catch (error) {
     console.error("Failed to connect to DB:", error);

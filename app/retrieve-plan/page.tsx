@@ -1,12 +1,11 @@
-import React from "react";
-import RetrieveYourPlan from "@/app/retrieve-plan/components/RetrieveYourPlan";
+import RetrievePlanWrapper from "./components/RetrievePlanWrapper";
 
-const RetrievePlan = () => {
+const RetrievePlanPage = () => {
   return (
     <div>
-      <RetrieveYourPlan />
+      <RetrievePlanWrapper />
     </div>
   );
 };
 
-export default RetrievePlan;
+export default RetrievePlanPage;

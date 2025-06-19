@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+
 import "./_globals.scss";
-import StoreProvider from "./StoreProvider";
-import { LoaderProvider } from "@/context/Loader/LoaderProvider";
+
 import RootUIComponent from "@/components/RootUIComponent";
 
 export const metadata: Metadata = {
@@ -9,20 +9,17 @@ export const metadata: Metadata = {
   description: "Fitness app",
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body>
-        <LoaderProvider>
-          <StoreProvider>
-            <RootUIComponent>{children}</RootUIComponent>
-          </StoreProvider>
-        </LoaderProvider>
+        <RootUIComponent>{children}</RootUIComponent>
       </body>
     </html>
   );
-}
+};
+export default RootLayout;

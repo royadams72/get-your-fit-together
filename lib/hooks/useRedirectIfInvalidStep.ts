@@ -34,7 +34,7 @@ export const useRedirectIfInvalidStep = () => {
       setIsInvalidStep(false);
       dispatch(navigate({ route: path }));
     }
-  }, [journeyData, router, path, dispatch]);
+  }, [router, path]);
 
   return isInvalidStep;
 };

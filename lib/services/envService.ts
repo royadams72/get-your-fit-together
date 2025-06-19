@@ -13,4 +13,6 @@ export const ENV = {
   OPENAI_API_KEY: getEnv("OPENAI_API_KEY"),
   MONGODB_URI: getEnv("MONGODB_URI"),
   MONGODB_DB_NAME: getEnv("MONGODB_DB_NAME"),
+  GYFT_REDIS_URL: getEnv("GYFT_REDIS_URL"),
+  REDIS_KEY_PREFIX: getEnv("REDIS_KEY_PREFIX"),
 } as const;

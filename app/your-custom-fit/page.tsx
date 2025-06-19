@@ -1,7 +1,11 @@
-import YourFit from "./components/YourFit";
+import { State } from "@/types/interfaces/store";
+import retrieveAndSetStore from "@/lib/actions/retrieveAndSetStore";
+import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";
 
-const YourCustomFit = () => {
-  return <YourFit />;
-};
+export default async function YourCustomFitPage() {
+  const preloadedState = await retrieveAndSetStore();
 
-export default YourCustomFit;
+  return (
+    <YourFitWrapper preloadedState={preloadedState as State}></YourFitWrapper>
+  );
+}

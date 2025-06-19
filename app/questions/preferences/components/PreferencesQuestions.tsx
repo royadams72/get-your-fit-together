@@ -12,7 +12,6 @@ import SelectComponent from "@/components/form/SelectComponent";
 
 const PreferencesQuestions = () => {
   const preferences = useAppSelector(getPreferencesState);
-
   return (
     <div>
       <CheckBoxGroupComponent

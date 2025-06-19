@@ -1,3 +1,4 @@
+// Returns true if all fields empty
 export const isEmpty = (obj: any = {}): boolean => {
   if (Array.isArray(obj)) {
     return obj.length === 0;

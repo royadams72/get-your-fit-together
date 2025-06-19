@@ -3,51 +3,37 @@ import {
   configureStore,
   createAction,
   createSelector,
-  PayloadAction,
-  UnknownAction,
 } from "@reduxjs/toolkit";
-
-import { PersistPartial } from "redux-persist/es/persistReducer";
-import { PersistConfig, persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage/session";
 
 import { RootState, State } from "@/types/interfaces/store";
 
 import {
   aboutYouInitialState,
   aboutYouReducer,
-  aboutYouSliceName,
 } from "@/lib/features/about-you/aboutYouSlice";
 import {
   yourGoalsInitialState,
   yourGoalsReducer,
-  yourGoalsSliceName,
 } from "@/lib/features/your-goals/yourGoalsSlice";
 import {
   injuriesInitialState,
   injuriesReducer,
-  injuriesSliceName,
 } from "@/lib/features/injuries/injuriesSlice";
 import {
   preferencesInitialState,
   preferencesReducer,
-  preferencesSliceName,
 } from "@/lib/features/preferences/preferencesSlice";
-import {
-  userInitialState,
-  userReducer,
-  userSliceName,
-} from "@/lib/features/user/userSlice";
+import { userInitialState, userReducer } from "@/lib/features/user/userSlice";
 import {
   uiDataInitialState,
   uiDataReducer,
-  uiDataSliceName,
-} from "../features/ui-data/uiDataSlice";
+} from "@/lib/features/uiData/uiDataSlice";
 import {
   journeyInitialState,
   journeyReducer,
-  journeySliceName,
-} from "../features/journey/journeySlice";
+} from "@/lib/features/journey/journeySlice";
+
+import { saveDataToRedis } from "@/lib/middleware/saveDataToRedis";
 
 export const defaultState: State = {
   aboutYou: aboutYouInitialState,
@@ -71,59 +57,27 @@ const rootReducer = combineReducers({
   journey: journeyReducer,
 });
 
-const persistConfig: PersistConfig<State> = {
-  key: "root",
-  storage,
-  whitelist: [
-    aboutYouSliceName,
-    injuriesSliceName,
-    yourGoalsSliceName,
-    preferencesSliceName,
-    userSliceName,
-    uiDataSliceName,
-    journeySliceName,
-  ],
-};
-
-const persistedReducer = persistReducer<State>(
-  persistConfig,
-  (state: State | undefined, action: UnknownAction) => {
-    if (action.type === setStore.type && isPayInloadAction(action)) {
-      return action.payload;
-    }
-    return rootReducer(state, action);
-  }
-);
-
-export const makeStore = (preloadedState?: State & PersistPartial) => {
+export const makeStore = (preloadedState?: State) => {
   return configureStore({
-    reducer: persistedReducer,
+    reducer: rootReducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
         ignoredActions: [
-          "persist/PERSIST",
           "persist/REHYDRATE",
+          "persist/PERSIST",
           "persist/PAUSE",
           "persist/PURGE",
           "persist/FLUSH",
           "persist/REGISTER",
         ],
-      }),
+      }).concat(saveDataToRedis.middleware),
   });
 };
 
-export const persistor = persistStore(makeStore());
-
-function isPayInloadAction(
-  action: UnknownAction
-): action is PayloadAction<State> {
-  return "payload" in action && typeof action.payload === "object";
-}
-
 export const selectState = createSelector(
-  (state: RootState & PersistPartial) => state,
+  (state: RootState) => state,
   (state) => {
     return { ...state };
   }

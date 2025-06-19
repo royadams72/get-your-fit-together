@@ -5,7 +5,7 @@ import { JOURNEY_PATHS, PATHS } from "@/routes.config";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks/storeHooks";
 import { UiData } from "@/types/enums/uiData.enum";
 
-import { setUiData } from "@/lib/features/ui-data/uiDataSlice";
+import { setUiData } from "@/lib/features/uiData/uiDataSlice";
 import { getRoutes } from "@/lib/features/journey/journeySlice";
 
 export const useMarkAsEditingUntilYourFit = () => {

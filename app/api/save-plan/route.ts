@@ -1,33 +1,20 @@
 import { NextResponse } from "next/server";
 
-import { State } from "@/types/interfaces/store";
-import { PersistPartial } from "redux-persist/es/persistReducer";
-
 import { connectToDB } from "@/lib/db/mongodb";
 import { errorResponse } from "@/lib/services/errorResponse";
-
-const extractUserInfoAndState = async (
-  savedState: State & PersistPartial,
-  userData: { userName: string; userPassword: string }
-) => {
-  const { _persist, uiData, journey, ...restOfState } = savedState;
-
-  const userName = userData?.userName || restOfState?.user?.user?.userName;
-  const userPassword =
-    userData?.userPassword || restOfState?.user?.user?.userPassword;
-  return { userName, userPassword, restOfState };
-};
+import { UpdateFilter, Document } from "mongodb";
 
 export async function POST(req: Request) {
   try {
     const db = await connectToDB();
-    const collection = db.collection("reduxStates");
+    const collection = db.collection<Document>("reduxStates");
     const { savedState, userData } = await req.json();
-    const { userName, userPassword, restOfState } =
-      await extractUserInfoAndState(savedState, userData);
+    const { uiData, journey, ...restOfState } = savedState;
+    const userName = userData?.userName || undefined;
+    const userPassword = userData?.userPassword || undefined;
 
-    if (!userName || !userPassword) {
-      return errorResponse("User name and password are required", 401, false);
+    if (!userPassword && !userName) {
+      return errorResponse("Pleas provide a username and password", 404, false);
     }
 
     const reduxState = {
@@ -35,21 +22,24 @@ export async function POST(req: Request) {
       user: { user: { ...restOfState.user.user, userPassword, userName } },
     };
 
-    const response = await collection.updateOne(
-      {
-        "reduxState.user.user.userName": userName,
+    const documentFilter = {
+      "reduxState.user.user.userName": userName,
+      "reduxState.user.user.userPassword": userPassword,
+    };
+
+    const updatePayload: UpdateFilter<Document> = {
+      $set: {
+        reduxState: reduxState,
       },
-      {
-        $set: {
-          reduxState: reduxState,
-        },
-        $setOnInsert: {
-          createdAt: new Date(),
-        },
-        $currentDate: { updatedAt: true },
+      $setOnInsert: {
+        createdAt: new Date(),
       },
-      { upsert: true }
-    );
+      $currentDate: { updatedAt: true },
+    };
+
+    const response = await collection.updateOne(documentFilter, updatePayload, {
+      upsert: true,
+    });
 
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
       return errorResponse(

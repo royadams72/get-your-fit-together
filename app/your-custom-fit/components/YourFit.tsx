@@ -1,25 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { useClientFetch } from "@/lib/hooks/useClientFetch";
-import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
-import { useAppSelector } from "@/lib/hooks/storeHooks";
-import { useGetYourPlanOnLoad } from "@/app/your-custom-fit/hooks/useGetYourPlanOnLoad";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIfUserNameExists";
 
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
-import { getUserFitnessPlan } from "@/lib/features/user/userSlice";
-import { getUiDataState } from "@/lib/features/ui-data/uiDataSlice";
 import { selectState } from "@/lib/store/store";
+import {
+  getIsRetrieving,
+  getIsSignedIn,
+  getUiDataState,
+  setUiData,
+} from "@/lib/features/uiData/uiDataSlice";
+import { getUserFitnessPlan, getUserInfo } from "@/lib/features/user/userSlice";
+import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
 
+import { UiData } from "@/types/enums/uiData.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
-import { FormValue } from "@/types/interfaces/form";
+import { FormValue, UserFormType } from "@/types/interfaces/form";
 
-import { useLoader } from "@/context/Loader/LoaderProvider";
+import { fetchHelper } from "@/lib/actions/fetchHelper";
+
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
@@ -27,35 +32,27 @@ import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 const YourFit = () => {
+  const [userForm, setUserForm] = useState<FormValue>();
+
   const router = useRouter();
-  const clientFetch = useClientFetch();
+  const dispatch = useAppDispatch();
   const savedState = useAppSelector(selectState);
+
   const userFitnessPlan = useAppSelector(getUserFitnessPlan);
   const getUiState = useAppSelector(getUiDataState);
-
+  const isRetrieving = useAppSelector(getIsRetrieving);
+  const isSignedIn = useAppSelector(getIsSignedIn);
+  const userInfoFromState = useAppSelector(getUserInfo);
+  //
   const methods = useForm();
   const { reset } = methods;
-  const { setLoading } = useLoader();
-
-  const [userForm, setUserForm] = useState<FormValue>();
-  const isInvalidStep = useRedirectIfInvalidStep();
-
-  const inputVal = (val: FormValue) => {
-    setUserForm(val);
-  };
-
-  useGetYourPlanOnLoad();
-  const responseError = useCheckIfUserNameExists(userForm);
-
-  const onSubmit = async (userData: any) => {
-    setLoading(true);
-
-    const response = await clientFetch(API.SAVE_PLAN, {
+  const savePlan = async (userData: UserFormType, isForm = true) => {
+    const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
       userData,
     });
 
-    if (response?.success) {
+    if (response?.success && isForm) {
       reset();
 
       router.push(
@@ -63,11 +60,37 @@ const YourFit = () => {
           "Your plan has been saved"
         )}`
       );
-      setLoading(false);
     }
   };
 
-  if (isInvalidStep) return null;
+  const responseError = useCheckIfUserNameExists(userForm);
+
+  useEffect(() => {
+    dispatch(setNavOnLastPage());
+    dispatch(setUiData({ name: UiData.isEditing, value: false }));
+  }, []);
+
+  useEffect(() => {
+    if (isRetrieving) {
+      console.log(savedState);
+      dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      savePlan(userInfoFromState, false);
+      console.log(savedState);
+    }
+  }, []);
+
+  const inputVal = (val: FormValue) => {
+    setUserForm(val);
+  };
+  const onSubmit = async (userData: UserFormType) => {
+    savePlan(userData);
+    console.log("userData", userData);
+  };
 
   return (
     <div>
@@ -77,6 +100,7 @@ const YourFit = () => {
       {!getUiState.isSignedIn && (
         <FormProvider aria-label="userForm" onSubmit={onSubmit}>
           <UserForm
+            title={"Create a username and password to save your plan:"}
             config={config(true)}
             customMessage={responseError}
             inputValue={inputVal}
