@@ -1,35 +1,24 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
-import { v4 as uuidv4 } from "uuid";
-
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
+import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 import { PATHS } from "@/routes.config";
 
 import { setUserInfo } from "@/lib/features/user/userSlice";
 import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
-import {
-  getSessionCookie,
-  setUiData,
-  setUiDataForRetreive,
-} from "@/lib/features/uiData/uiDataSlice";
+import { setUiDataForRetreive } from "@/lib/features/uiData/uiDataSlice";
 
-import { UiData } from "@/types/enums/uiData.enum";
 import { UserFormType } from "@/types/interfaces/form";
-
-import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 import { config } from "@/lib/form-configs/userConfig";
 
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Button from "@/components/Button";
-import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 const RetrievePlan = () => {
   const dispatch = useAppDispatch();

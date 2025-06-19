@@ -1,37 +1,35 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { fetchHelper } from "@/lib/actions/fetchHelper";
-import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIfUserNameExists";
 
 import { config } from "@/lib/form-configs/userConfig";
 import { API, PATHS } from "@/routes.config";
 
+import { selectState } from "@/lib/store/store";
 import {
   getIsRetrieving,
   getIsSignedIn,
   getUiDataState,
   setUiData,
 } from "@/lib/features/uiData/uiDataSlice";
-import { selectState } from "@/lib/store/store";
+import { getUserFitnessPlan, getUserInfo } from "@/lib/features/user/userSlice";
+import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
 
+import { UiData } from "@/types/enums/uiData.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue, UserFormType } from "@/types/interfaces/form";
+
+import { fetchHelper } from "@/lib/actions/fetchHelper";
 
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
-
-import { getUserFitnessPlan, getUserInfo } from "@/lib/features/user/userSlice";
-
-import { setNavOnLastPage } from "@/lib/features/journey/journeySlice";
-import { UiData } from "@/types/enums/uiData.enum";
 
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();

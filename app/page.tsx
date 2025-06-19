@@ -1,4 +1,4 @@
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import FirstPage from "@/components/FirstPage";
 import { getCopy } from "@/lib/services/getCopy";
 const Home = async () => {

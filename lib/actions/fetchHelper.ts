@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { PATHS } from "@/routes.config";
-import { isEmpty, isNotEmpty } from "../utils/isEmpty";
+import { isNotEmpty } from "@/lib/utils/isEmpty";
 
 const errRedirectURI = (resObjString: any) => {
   return `${PATHS.ERROR}?error=${encodeURIComponent(resObjString)}`;
