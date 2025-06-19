@@ -11,7 +11,7 @@ export default async function retrieveAndSetStore() {
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
   ]);
-  let retries = 2;
+  let retries = 3;
   while (!sessionCookie && retries > 0) {
     console.log("retries:", retries, sessionCookie);
 
