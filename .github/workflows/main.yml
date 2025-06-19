@@ -16,7 +16,7 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
-      REDIS_URL: ${{ secrets.REDIS_URL }}
+      GYFT_REDIS_URL: ${{ secrets.GYFT_REDIS_URL }}
       REDIS_KEY_PREFIX: ${{ secrets.REDIS_KEY_PREFIX }}
 
     steps:
