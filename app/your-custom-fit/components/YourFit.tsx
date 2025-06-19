@@ -43,7 +43,9 @@ const YourFit = () => {
   const isRetrieving = useAppSelector(getIsRetrieving);
   const isSignedIn = useAppSelector(getIsSignedIn);
   const userInfoFromState = useAppSelector(getUserInfo);
-  //
+
+  console.log("YourFit", savedState);
+
   const methods = useForm();
   const { reset } = methods;
   const savePlan = async (userData: UserFormType, isForm = true) => {
