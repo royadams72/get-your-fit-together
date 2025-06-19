@@ -35,7 +35,7 @@ saveDataToRedis.startListening({
     const state = listenerApi.getState() as any;
     console.log("saveDataToRedis::", state, action.type);
     try {
-      const res = await fetch(`${BASE_URL}/${API.SET_REDIS}`, {
+      const res = await fetch(API.SET_REDIS, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
