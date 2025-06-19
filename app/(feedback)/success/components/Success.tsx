@@ -6,6 +6,8 @@ import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { defaultState, setStore } from "@/lib/store/store";
 
 import Button from "@/components/Button";
+import cookieAction from "@/lib/actions/cookie.action";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 
 interface SuccessProps {
   message: string;
@@ -20,6 +22,9 @@ const Success = ({ message, mode }: SuccessProps) => {
   useEffect(() => {
     dispatch(setStore(defaultState));
     sessionStorage.removeItem("redux-store");
+    (async () => {
+      await cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
+    })();
   }, [dispatch]);
 
   return (

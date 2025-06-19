@@ -29,7 +29,16 @@ export default async function retrieveAndSetStore() {
         uiData: { isRetrieving, isEditing },
       },
     } = savedState as RootState;
-
+    // console.log(
+    //   "userName: ",
+    //   userName,
+    //   "userPassword: ",
+    //   userPassword,
+    //   "isRetrieving: ",
+    //   isRetrieving,
+    //   "isEditing: ",
+    //   isEditing
+    // );
     if (userName && userPassword && isRetrieving) {
       const retrievedState = await fetchHelper(
         `${ENV.BASE_URL}/${API.RETRIEVE}`,
