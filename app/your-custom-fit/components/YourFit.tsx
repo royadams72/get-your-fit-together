@@ -92,6 +92,7 @@ const YourFit = () => {
     setUserForm(val);
   };
   const onSubmit = async (userData: UserFormType) => {
+    savePlan(userData);
     console.log("userData", userData);
   };
 

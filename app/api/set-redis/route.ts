@@ -26,13 +26,13 @@ export async function POST(request: NextRequest) {
     const sessionCookie = cookieFromState || cookieFromBrowser || uuidv4();
 
     // Sync to Redux state if missing
-    if (!cookieFromState) {
-      data.state.uiData.sessionCookie = sessionCookie;
-    }
-    console.log(
-      "data.state.uiData.sessionCookie",
-      data.state.uiData.sessionCookie
-    );
+    // if (!cookieFromState) {
+    //   data.state.uiData.sessionCookie = sessionCookie;
+    // }
+    // console.log(
+    //   "data.state.uiData.sessionCookie",
+    //   data.state.uiData.sessionCookie
+    // );
 
     // Set cookie if not in browser
     if (!cookieFromBrowser) {
