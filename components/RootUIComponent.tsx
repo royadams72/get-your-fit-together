@@ -19,27 +19,29 @@ const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
   const pageTitle = pageName.replace(regex, " ").trim();
 
   useEffect(() => {
-    (async () => {
-      const sessionCookie = await cookieAction(CookieAction.get, [
-        Cookie.sessionCookie,
-      ]);
-      const sessionId = sessionStorage.getItem("sessionId");
+    setTimeout(() => {
+      (async () => {
+        const sessionCookie = await cookieAction(CookieAction.get, [
+          Cookie.sessionCookie,
+        ]);
+        const sessionId = sessionStorage.getItem("sessionId");
 
-      if (!sessionCookie && sessionId) {
-        await cookieAction(
-          CookieAction.set,
-          [Cookie.sessionCookie],
-          [sessionId]
-        );
-      }
+        if (!sessionCookie && sessionId) {
+          await cookieAction(
+            CookieAction.set,
+            [Cookie.sessionCookie],
+            [sessionId]
+          );
+        }
 
-      if (!sessionId) {
-        const newId = uuidv4();
-        await cookieAction(CookieAction.set, [Cookie.sessionCookie], [newId]);
-        sessionStorage.setItem("sessionId", newId);
-      }
-      console.log("sessionId:", sessionId, "sessionCookie", sessionCookie);
-    })();
+        if (!sessionId) {
+          const newId = uuidv4();
+          await cookieAction(CookieAction.set, [Cookie.sessionCookie], [newId]);
+          sessionStorage.setItem("sessionId", newId);
+        }
+        console.log("sessionId:", sessionId, "sessionCookie", sessionCookie);
+      })();
+    }, 100);
   }, [pageName]);
   return (
     <main>

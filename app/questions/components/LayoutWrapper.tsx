@@ -18,7 +18,7 @@ import { isEmpty, isNotEmpty } from "@/lib/utils/isEmpty";
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
 import cookieAction from "@/lib/actions/cookie.action";
-import { CookieAction } from "@/types/enums/cookie.enum";
+import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import { getSessionCookie, setUiData } from "@/lib/features/uiData/uiDataSlice";
 import { UiData } from "@/types/enums/uiData.enum";
 
@@ -31,7 +31,7 @@ export default function LayoutWrapper({
   const router = useRouter();
   const pageName = usePathname();
   const { nextRoute } = useAppSelector(getRoutes);
-  const isCookieInState = useAppSelector(getSessionCookie);
+  const isSessionInState = useAppSelector(getSessionCookie);
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
   const isInvalidStep = useRedirectIfInvalidStep();
@@ -44,42 +44,25 @@ export default function LayoutWrapper({
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(navigate({ route: pageName, isFormSubmit: true }));
-  //   (async () => {
-  //     console.log("sessionCookie layout", isCookieInState);
+  useEffect(() => {
+    setTimeout(() => {
+      (async () => {
+        const sessionCookie = await cookieAction(CookieAction.get, [
+          Cookie.sessionCookie,
+        ]);
+        console.log("sessionCookie in retrieve", sessionCookie);
 
-  //     if (!isCookieInState) {
-  //       const sessionCookie = await cookieAction(CookieAction.get, [
-  //         "sessionCookie",
-  //       ]);
-  //       dispatch(
-  //         setUiData({
-  //           name: UiData.sessionCookie,
-  //           value: sessionCookie as string,
-  //         })
-  //       );
-  //     }
-  //   })();
-  // }, [pageName]);
-
-  // useEffect(() => {
-  // (async () => {
-  //   console.log("sessionCookie layout", isCookieInState);
-
-  //   if (!isCookieInState) {
-  //     const sessionCookie = await cookieAction(CookieAction.get, [
-  //       "sessionCookie",
-  //     ]);
-  //     dispatch(
-  //       setUiData({
-  //         name: UiData.sessionCookie,
-  //         value: sessionCookie as string,
-  //       })
-  //     );
-  //   }
-  // })();
-  // }, [isCookieInState, dispatch]);
+        if (!isSessionInState) {
+          dispatch(
+            setUiData({
+              name: UiData.sessionCookie,
+              value: sessionCookie as string,
+            })
+          );
+        }
+      })();
+    }, 100);
+  }, []);
 
   const onSubmit = () => {
     if (isEmpty(formErrors)) {
