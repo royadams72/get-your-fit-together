@@ -16,6 +16,7 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
