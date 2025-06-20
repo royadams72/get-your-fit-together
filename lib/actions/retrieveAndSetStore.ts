@@ -1,9 +1,8 @@
 import { API } from "@/routes.config";
-import { ENV } from "../services/envService";
-import { fetchHelper } from "./fetchHelper";
-import { RootState } from "@/types/interfaces/store";
-import cookieAction from "./cookie.action";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+import { ENV } from "@/lib/services/envService";
+import { fetchHelper } from "@/lib/actions/fetchHelper";
+import cookieAction from "@/lib/actions/cookie.action";
 
 export default async function retrieveAndSetStore() {
   let savedState: any;
@@ -12,12 +11,14 @@ export default async function retrieveAndSetStore() {
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
   ]);
-  let retries = 5;
+  let retries = 3;
+  console.log("retrieveAndSetStore sessionCookie:", sessionCookie);
+
   while (!sessionCookie && retries > 0) {
     console.log("retries:", retries, sessionCookie);
 
     if (!sessionCookie) {
-      await new Promise((res) => setTimeout(res, 200));
+      await new Promise((res) => setTimeout(res, 100));
       sessionCookie = await cookieAction(CookieAction.get, [
         Cookie.sessionCookie,
       ]);

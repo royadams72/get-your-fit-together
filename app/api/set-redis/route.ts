@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import redis from "@/lib/db/redisClient";
-import { v4 as uuidv4 } from "uuid";
-
-import cookieAction from "@/lib/actions/cookie.action";
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
+import { Cookie } from "@/types/enums/cookie.enum";
 
 export async function POST(request: NextRequest) {
   const sessionTTL = 86400;
@@ -12,42 +9,29 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const {
       state: {
-        uiData: { sessionCookie: cookieFromState },
+        uiData: {
+          uiData: { sessionCookie },
+        },
       },
     } = data;
 
-    const response = NextResponse.json({ message: "Data saved" });
-    const cookieFromBrowser = await cookieAction(CookieAction.get, [
-      Cookie.sessionCookie,
-    ]);
-
-    // Decide source of truth
-    const sessionCookie = cookieFromState || cookieFromBrowser || uuidv4();
-
-    // Set cookie if not in browser
-    if (!cookieFromBrowser) {
-      response.cookies.set("sessionCookie", sessionCookie, {
-        path: "/",
-        httpOnly: false,
-        expires: 900,
-        // sameSite: "lax",
-        // secure: ENV.IS_PRODUCTION,
-      });
+    if (!sessionCookie) {
+      throw new Error("Missing sessionCookie in state");
     }
+    console.log("SET REDIS sessionCookie ::", sessionCookie);
 
-    // Save to Redis
-    const redisRespone = await redis.set(
+    const redisResponse = await redis.set(
       `${Cookie.sessionCookie}:${sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL
     );
 
-    if (redisRespone !== "OK") {
+    if (redisResponse !== "OK") {
       throw new Error("Could not save data to Redis");
     }
 
-    return response;
+    return NextResponse.json({ message: "Data saved" });
   } catch (error) {
     return NextResponse.json(
       { message: `Failed to store data: ${error}` },
