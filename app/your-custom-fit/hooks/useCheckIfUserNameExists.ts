@@ -9,7 +9,7 @@ import { fetchHelper } from "@/lib/utils/fetchHelper";
 import { useErrorPage } from "@/lib/hooks/useErrorPage";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
-  const { redirectIfError, errorComponent } = useErrorPage();
+  const { redirectIfError } = useErrorPage();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -41,5 +41,5 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       }
     })();
   }, [userForm]);
-  return { responseError, errorComponent };
+  return { responseError };
 };

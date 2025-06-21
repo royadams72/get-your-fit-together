@@ -49,7 +49,7 @@ const YourFit = () => {
 
   const methods = useForm();
   const { reset } = methods;
-  const { redirectIfError, errorComponent } = useErrorPage();
+  const { redirectIfError } = useErrorPage();
   const savePlan = async (userData: UserFormType, isForm = true) => {
     const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
@@ -69,8 +69,7 @@ const YourFit = () => {
     }
   };
 
-  const { responseError, errorComponent: errComp } =
-    useCheckIfUserNameExists(userForm);
+  const { responseError } = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
     dispatch(setNavOnLastPage());
@@ -98,7 +97,7 @@ const YourFit = () => {
     savePlan(userData);
     // console.log("userData", userData);
   };
-  if (errorComponent || errComp) return <>{errorComponent}</>;
+
   return (
     <div>
       {userFitnessPlan && (

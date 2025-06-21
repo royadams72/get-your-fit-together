@@ -4,9 +4,10 @@ import { ENV } from "@/lib/services/envService";
 import { fetchHelper } from "@/lib/utils/fetchHelper";
 import cookieAction from "@/lib/actions/cookie.action";
 import { RootState } from "@/types/interfaces/store";
+import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 
 export default async function retrieveAndSetStore() {
-  let savedState: RootState | undefined;
+  let savedState: RootState | { redirect: { error: string } } | undefined;
 
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
@@ -38,21 +39,22 @@ export default async function retrieveAndSetStore() {
       `sessionCookie=${sessionCookie}`
     );
 
+    if (isRedirectResponse(savedState)) return savedState;
+
     if (!savedState || typeof savedState !== "object") {
       console.warn("Empty or invalid savedState received from Redis.");
       return undefined;
     }
 
-    const user = savedState?.user?.user || {};
-    const ui = savedState?.uiData?.uiData || {};
-    const { userName, userPassword } = user;
-    const { isRetrieving, isEditing } = ui;
-    console.log(
-      "retrieveAndSetStore userName && userPassword && isRetrievin:",
-      userName,
-      userPassword,
-      isRetrieving
-    );
+    const {
+      user: {
+        user: { userName, userPassword },
+      },
+      uiData: {
+        uiData: { isRetrieving, isEditing },
+      },
+    } = savedState as RootState;
+
     // Retrieve full state if needed
     if (userName && userPassword && isRetrieving) {
       const retrievedState = await fetchHelper(
@@ -63,17 +65,28 @@ export default async function retrieveAndSetStore() {
         }
       );
 
-      const { uiData, journey } = savedState;
+      if (isRedirectResponse(retrievedState)) return retrievedState;
+
+      const { uiData, journey } = savedState as RootState;
       savedState = { ...retrievedState, uiData, journey };
     }
 
     if (!isRetrieving && isEditing) {
-      // console.log("retrieveAndSetStore isEditing:", isEditing);
       const fitnessPlanFromAI = await fetchHelper(
         `${ENV.BASE_URL}/${API.GET_PLAN}`,
         savedState
       );
-      if (savedState && savedState.user && savedState.user.user) {
+
+      if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
+
+      if (
+        savedState &&
+        typeof savedState === "object" &&
+        "user" in savedState &&
+        savedState.user &&
+        "user" in savedState.user &&
+        savedState.user.user
+      ) {
         savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
       }
     }
