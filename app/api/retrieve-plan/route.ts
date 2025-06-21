@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const collection = db.collection("reduxStates");
 
     const data = await req.json();
-    console.log("data in route", data);
+    // console.log("data in route", data);
     if (isEmpty(data)) {
       return NextResponse.json(
         { message: "no data recieved" },

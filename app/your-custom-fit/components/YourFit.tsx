@@ -23,13 +23,14 @@ import { UiData } from "@/types/enums/uiData.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue, UserFormType } from "@/types/interfaces/form";
 
-import { fetchHelper } from "@/lib/actions/fetchHelper";
+import { fetchHelper } from "@/lib/utils/fetchHelper";
 
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
+import { useErrorPage } from "@/lib/hooks/useErrorPage";
 
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();
@@ -44,16 +45,19 @@ const YourFit = () => {
   const isSignedIn = useAppSelector(getIsSignedIn);
   const userInfoFromState = useAppSelector(getUserInfo);
 
-  console.log("YourFit", savedState);
+  // console.log("YourFit", savedState);
 
   const methods = useForm();
   const { reset } = methods;
+  const { redirectIfError, errorComponent } = useErrorPage();
   const savePlan = async (userData: UserFormType, isForm = true) => {
     const response = await fetchHelper(API.SAVE_PLAN, {
       savedState,
       userData,
     });
+    console.log("YourFit", response);
 
+    redirectIfError(response);
     if (response?.success && isForm) {
       reset();
 
@@ -65,7 +69,8 @@ const YourFit = () => {
     }
   };
 
-  const responseError = useCheckIfUserNameExists(userForm);
+  const { responseError, errorComponent: errComp } =
+    useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
     dispatch(setNavOnLastPage());
@@ -74,7 +79,7 @@ const YourFit = () => {
 
   useEffect(() => {
     if (isRetrieving) {
-      console.log(savedState);
+      // console.log(savedState);
       dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
     }
   }, []);
@@ -82,7 +87,7 @@ const YourFit = () => {
   useEffect(() => {
     if (isSignedIn) {
       savePlan(userInfoFromState, false);
-      console.log(savedState);
+      // console.log(savedState);
     }
   }, []);
 
@@ -91,9 +96,9 @@ const YourFit = () => {
   };
   const onSubmit = async (userData: UserFormType) => {
     savePlan(userData);
-    console.log("userData", userData);
+    // console.log("userData", userData);
   };
-
+  if (errorComponent || errComp) return <>{errorComponent}</>;
   return (
     <div>
       {userFitnessPlan && (

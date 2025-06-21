@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
     const userName = await req.json();
-
+    return errorResponse("A fitness plan test for error", 400, true);
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
         "reduxState.user.user.userName": userName,

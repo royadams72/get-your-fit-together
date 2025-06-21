@@ -33,7 +33,7 @@ saveDataToRedis.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
-    console.log("saveDataToRedis::", state, action.type);
+    console.log("saveDataToRedis::", state.uiData.uiData, action.payload);
     try {
       const res = await fetch(API.SET_REDIS, {
         method: "POST",
@@ -43,6 +43,7 @@ saveDataToRedis.startListening({
         body: JSON.stringify({ state }),
         credentials: "include",
       });
+      console.log("save:::", res);
 
       if (!res.ok) {
         console.error(`HTTP error! Status: ${res.status}`);

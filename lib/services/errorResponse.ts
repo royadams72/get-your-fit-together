@@ -14,6 +14,7 @@ export const errorResponse = (
   const responseOptions: ResponseOptions = {
     status,
   };
+  console.log(errObject);
 
   return NextResponse.json(errObject, responseOptions);
 };
