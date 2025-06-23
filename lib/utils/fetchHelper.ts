@@ -1,10 +1,4 @@
-import { redirect } from "next/navigation";
-import { PATHS } from "@/routes.config";
 import { isNotEmpty } from "@/lib/utils/isEmpty";
-
-const errRedirectURI = (resObjString: any) => {
-  return `${PATHS.ERROR}?error=${encodeURIComponent(resObjString)}`;
-};
 
 export const fetchHelper = async <T = Record<string, unknown>>(
   url: string,
@@ -28,13 +22,18 @@ export const fetchHelper = async <T = Record<string, unknown>>(
     const res: any = await fetch(url, options);
 
     const response = await res.json();
+    console.log("fetchHelper", response);
 
     if (response.redirect && isNotEmpty(response.error)) {
-      return redirect(errRedirectURI(response.error));
+      return {
+        redirect: { error: response.error || "Unknown error" },
+      };
     }
 
     return response;
   } catch (error) {
-    return redirect(errRedirectURI(`Error: ${error}`));
+    return {
+      redirect: { error: `Error: ${error}` },
+    };
   }
 };

@@ -1,22 +1,20 @@
 import { API } from "@/routes.config";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import { ENV } from "@/lib/services/envService";
-import { fetchHelper } from "@/lib/actions/fetchHelper";
+import { fetchHelper } from "@/lib/utils/fetchHelper";
 import cookieAction from "@/lib/actions/cookie.action";
+import { RootState } from "@/types/interfaces/store";
+import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 
 export default async function retrieveAndSetStore() {
-  let savedState: any;
+  let savedState: RootState | { redirect: { error: string } } | undefined;
 
-  // Retry sessionCookie up to 3 times (waits 100ms between attempts)
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
   ]);
   let retries = 3;
-  console.log("retrieveAndSetStore sessionCookie:", sessionCookie);
 
   while (!sessionCookie && retries > 0) {
-    console.log("retries:", retries, sessionCookie);
-
     if (!sessionCookie) {
       await new Promise((res) => setTimeout(res, 100));
       sessionCookie = await cookieAction(CookieAction.get, [
@@ -41,15 +39,21 @@ export default async function retrieveAndSetStore() {
       `sessionCookie=${sessionCookie}`
     );
 
+    if (isRedirectResponse(savedState)) return savedState;
+
     if (!savedState || typeof savedState !== "object") {
       console.warn("Empty or invalid savedState received from Redis.");
       return undefined;
     }
 
-    const user = savedState?.user?.user || {};
-    const ui = savedState?.uiData?.uiData || {};
-    const { userName, userPassword } = user;
-    const { isRetrieving, isEditing } = ui;
+    const {
+      user: {
+        user: { userName, userPassword },
+      },
+      uiData: {
+        uiData: { isRetrieving, isEditing },
+      },
+    } = savedState as RootState;
 
     // Retrieve full state if needed
     if (userName && userPassword && isRetrieving) {
@@ -61,18 +65,30 @@ export default async function retrieveAndSetStore() {
         }
       );
 
-      const { uiData, journey } = savedState;
+      if (isRedirectResponse(retrievedState)) return retrievedState;
+
+      const { uiData, journey } = savedState as RootState;
       savedState = { ...retrievedState, uiData, journey };
     }
 
-    // Add plan if editing only
     if (!isRetrieving && isEditing) {
-      console.log("retrieveAndSetStore isEditing:", isEditing);
       const fitnessPlanFromAI = await fetchHelper(
         `${ENV.BASE_URL}/${API.GET_PLAN}`,
         savedState
       );
-      savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+
+      if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
+
+      if (
+        savedState &&
+        typeof savedState === "object" &&
+        "user" in savedState &&
+        savedState.user &&
+        "user" in savedState.user &&
+        savedState.user.user
+      ) {
+        savedState.user.user.userFitnessPlan = fitnessPlanFromAI;
+      }
     }
   } catch (error) {
     console.error("An error occurred in retrieveAndSetStore:", error);

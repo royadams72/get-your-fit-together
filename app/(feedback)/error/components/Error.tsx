@@ -12,18 +12,16 @@ interface ErrorProps {
   error: string;
 }
 const Error = ({ error }: ErrorProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(setStore(defaultState));
-    (async () => {
-      await cookieAction(CookieAction.delete, [
-        Cookie.fromPrevPage,
-        Cookie.sessionCookie,
-        Cookie.userData,
-      ]);
-    })();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setStore(defaultState));
+  //   (async () => {
+  //     await cookieAction(CookieAction.delete, [
+  //       Cookie.sessionCookie,
+  //     ]);
+  //   })();
+  // }, [dispatch]);
 
   return (
     <div>

@@ -4,6 +4,7 @@ import redis from "@/lib/db/redisClient";
 
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import cookieAction from "@/lib/actions/cookie.action";
+import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function GET() {
   try {

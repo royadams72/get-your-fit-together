@@ -5,9 +5,11 @@ import { API } from "@/routes.config";
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
-import { fetchHelper } from "@/lib/actions/fetchHelper";
+import { fetchHelper } from "@/lib/utils/fetchHelper";
+import { useErrorPage } from "@/lib/hooks/useErrorPage";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
+  const { redirectIfError } = useErrorPage();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -25,6 +27,7 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       try {
         const response = await fetchHelper(API.CHECK_USER, userForm.value);
 
+        redirectIfError(response);
         if (response.error) {
           setResponseError({
             message: response.error,
@@ -38,5 +41,5 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       }
     })();
   }, [userForm]);
-  return responseError;
+  return { responseError };
 };
