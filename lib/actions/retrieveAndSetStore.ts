@@ -5,9 +5,10 @@ import { fetchHelper } from "@/lib/utils/fetchHelper";
 import cookieAction from "@/lib/actions/cookie.action";
 import { RootState } from "@/types/interfaces/store";
 import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
+import { ErrorObj } from "@/types/interfaces/api";
 
 export default async function retrieveAndSetStore() {
-  let savedState: RootState | { redirect: { error: string } } | undefined;
+  let savedState: RootState | ErrorObj | undefined;
 
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,

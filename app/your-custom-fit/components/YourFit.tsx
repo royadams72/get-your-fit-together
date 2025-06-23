@@ -99,6 +99,7 @@ const YourFit = () => {
   };
 
   return (
+    // TODO: fade in Accordion & better anim for the dropdown
     <div>
       {userFitnessPlan && (
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>

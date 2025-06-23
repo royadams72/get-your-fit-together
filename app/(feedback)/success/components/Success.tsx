@@ -22,10 +22,11 @@ const Success = ({ message, mode }: SuccessProps) => {
   useEffect(() => {
     dispatch(setStore(defaultState));
     sessionStorage.removeItem("redux-store");
+    sessionStorage.removeItem("sessionId");
     (async () => {
       await cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
     })();
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>

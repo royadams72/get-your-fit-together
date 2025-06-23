@@ -8,10 +8,7 @@ export default async function YourCustomFitPage() {
   const result = await retrieveAndSetStore();
   if (!result || (result && "redirect" in result && result.redirect)) {
     return (
-      <Redirect
-        redirectTo={PATHS.ERROR}
-        query={result?.redirect?.error || undefined}
-      />
+      <Redirect redirectTo={PATHS.ERROR} query={result?.error || undefined} />
     );
   }
   return <YourFitWrapper preloadedState={result as State}></YourFitWrapper>;
