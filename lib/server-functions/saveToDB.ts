@@ -1,15 +1,20 @@
-import { NextResponse } from "next/server";
+"use server";
 
 import { connectToDB } from "@/lib/db/mongodb";
 import { errorResponse } from "@/lib/services/errorResponse";
 import { UpdateFilter, Document } from "mongodb";
+import { RootState } from "@/types/interfaces/store";
+import { UserFormType } from "@/types/interfaces/form";
 
-export async function POST(req: Request) {
+export async function saveToDB(
+  savedState?: RootState,
+  userData?: UserFormType
+) {
   try {
     const db = await connectToDB();
     const collection = db.collection<Document>("reduxStates");
-    const { savedState, userData } = await req.json();
-    const { uiData, journey, ...restOfState } = savedState;
+
+    const { uiData, journey, ...restOfState } = savedState as RootState;
     const userName = userData?.userName || undefined;
     const userPassword = userData?.userPassword || undefined;
 
@@ -42,20 +47,21 @@ export async function POST(req: Request) {
     });
 
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
-      return errorResponse(
-        "There was a problem, your plan could not be saved, please try again later",
-        409,
-        false
-      );
+      // return errorResponse(
+      //   "There was a problem, your plan could not be saved, please try again later",
+      //   409,
+      //   false
+      // );
     } else if (response.matchedCount === 1 && response.modifiedCount === 0) {
-      return errorResponse(
-        "There was a problem, updates could not be saved to your plan, please try again later",
-        409,
-        false
-      );
+      // throw new Error("There was a problem, updates could not be saved to your plan, please try again later");
+      // return errorResponse(
+      //   "There was a problem, updates could not be saved to your plan, please try again later",
+      //   409,
+      //   false
+      // );
     }
 
-    return NextResponse.json({ success: true });
+    return { success: true };
   } catch (error) {
     return errorResponse(`Database error: ${error}`, 500, true);
   }

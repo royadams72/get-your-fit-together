@@ -1,5 +1,5 @@
 import { State } from "@/types/interfaces/store";
-import retrieveAndSetStore from "@/lib/actions/retrieveAndSetStore";
+import retrieveAndSetStore from "@/lib/server-functions/retrieveAndSetStore";
 import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";
 import { PATHS } from "@/routes.config";
 import Redirect from "@/components/Redirect";
