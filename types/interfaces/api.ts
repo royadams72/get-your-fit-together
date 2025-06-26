@@ -7,9 +7,10 @@ export interface DbResponse {
   updatedAt: Date;
 }
 
-export interface ErrorObj {
-  error: string;
+export interface ResponseObj {
+  message?: string;
   redirect?: boolean | undefined;
+  softError?: boolean | undefined;
 }
 
 export interface ResponseOptions {

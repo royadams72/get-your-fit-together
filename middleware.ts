@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const url = new URL(request.url);
   const pathname = url.pathname;
-
+  console.log("middleware:: pathname", pathname, "url::", url);
   // Check if the request is for the home page and not an asset
 
   // Continue with the request

@@ -1,19 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
+import { ResponseType } from "@/types/enums/response.enum";
 
-import { errorResponse } from "@/lib/services/errorResponse";
-import { ENV } from "@/lib/services/envService";
+import { ENV } from "@/lib/services/env.service";
+import { response } from "@/lib/services/response.service";
+import {
+  extractState,
+  setContent,
+} from "@/lib/server-functions/ai-utils/functions";
+import { aiPrompt } from "@/lib/server-functions/ai-utils/ai-prompt";
 
-import { extractState, setContent } from "@/app/api/get-plan/functions";
-import { aiPrompt } from "@/app/api/get-plan/ai-prompt";
-
-export async function POST(request: NextRequest) {
+export async function createPlan(state: RootState) {
   const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
-  const state = (await request.json()) as RootState;
 
   const mappedState = extractState(state);
 
@@ -37,25 +38,23 @@ export async function POST(request: NextRequest) {
 
     const plan = completion.choices[0].message.content;
     if (!plan) {
-      return errorResponse(
-        "There was nothing returned from AI, please try again later",
-        404,
-        true
-      );
+      throw new Error("No Fitplan created");
     }
 
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
-      return errorResponse(
+      return await response(
         "An unexpected structure was returned, your information may be corrupted, please try later",
-        502,
-        true
+        ResponseType.redirect
       );
     }
 
-    return NextResponse.json(json.fitnessPlan, { status: 200 });
+    return json.fitnessPlan;
   } catch (error) {
-    return errorResponse(`An unexpected error occured:${error}`, 500, true);
+    return await response(
+      `There was an error: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

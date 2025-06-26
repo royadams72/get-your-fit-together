@@ -1,28 +1,27 @@
-import { NextResponse } from "next/server";
 import { connectToDB } from "@/lib/db/mongodb";
 
 import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
-
-import { errorResponse } from "@/lib/services/errorResponse";
+import { ResponseType } from "@/types/enums/response.enum";
 import { isEmpty } from "@/lib/utils/isEmpty";
+import { UserFormType } from "@/types/interfaces/form";
 
-export async function POST(req: Request) {
-  // console.log("POST retrieve plan from mongo");
+import { response } from "@/lib/services/response.service";
+
+export async function getPlanFromDB(userData: UserFormType) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
-    const data = await req.json();
-    // console.log("data in route", data);
-    if (isEmpty(data)) {
-      return NextResponse.json(
-        { message: "no data recieved" },
-        { status: 200 }
+    if (isEmpty(userData)) {
+      return await response(
+        "No data recieved data was recieved from the form, please try again",
+        ResponseType.softError
       );
     }
-    const userName = data.userName || undefined;
-    const userPassword = data.userPassword || undefined;
+
+    const userName = userData.userName || undefined;
+    const userPassword = userData.userPassword || undefined;
 
     const documentFilter = {
       "reduxState.user.user.userName": userName,
@@ -34,25 +33,26 @@ export async function POST(req: Request) {
     );
 
     if (!plan) {
-      return errorResponse(
+      return await response(
         "A plan with that user name and password combination was not found",
-        404,
-        false
+        ResponseType.softError
       );
     }
 
     if (isDbResponse(plan)) {
       const { reduxState } = plan;
 
-      return NextResponse.json(reduxState, { status: 200 });
+      return reduxState;
     } else {
-      return errorResponse(
+      return await response(
         "AI returned an unexpected structure, so your plan could not be retrieved",
-        502,
-        true
+        ResponseType.redirect
       );
     }
   } catch (error) {
-    return errorResponse(`Database error: ${error}`, 500, true);
+    return await response(
+      `There was an unexpected error: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

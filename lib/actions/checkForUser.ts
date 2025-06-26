@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
+"use server";
+
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { errorResponse } from "@/lib/services/errorResponse";
+import { ResponseType } from "@/types/enums/response.enum";
+import { response } from "@/lib/services/response.service";
 
-export async function POST(req: Request) {
+export async function checkForUser(userName: string) {
   try {
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
-    const userName = await req.json();
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
       {
@@ -16,18 +17,17 @@ export async function POST(req: Request) {
     );
 
     if (plan) {
-      return errorResponse(
+      return await response(
         "A fitness plan already exists with that user name",
-        409,
-        false
+        ResponseType.softError
       );
     } else {
-      return NextResponse.json(
-        { message: "No plan with that user name" },
-        { status: 200 }
-      );
+      return response("No plan with that user name");
     }
   } catch (error) {
-    return errorResponse(`Any unexpected error occurred: ${error}`, 500, true);
+    return response(
+      `Any unexpected error occurred: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

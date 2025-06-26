@@ -1,4 +1,3 @@
-"use server";
 import { NextResponse } from "next/server";
 import { CookieOptions } from "@/types/interfaces/cookies.types";
 import { cookies } from "next/headers";
@@ -8,6 +7,7 @@ const isClient = typeof window !== "undefined";
 
 const cookieService = {
   get: async (name: string): Promise<string | undefined> => {
+    "use server";
     if (isClient) {
       const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
       return match?.[2];
@@ -22,6 +22,7 @@ const cookieService = {
     options?: CookieOptions,
     response?: NextResponse
   ): Promise<void> => {
+    "use server";
     if (isClient) {
       let cookieStr = `${name}=${value}; path=${options?.path || "/"}`;
       if (options?.expires) {
@@ -38,6 +39,7 @@ const cookieService = {
   },
 
   delete: async (name: string, response?: NextResponse): Promise<void> => {
+    "use server";
     if (isClient) {
       document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     } else {

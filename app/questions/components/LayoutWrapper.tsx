@@ -57,6 +57,7 @@ export default function LayoutWrapper({
   };
 
   const getErrorElement = (error: any): HTMLElement | null => {
+    // TODO: handle error type
     if (error == null) return null;
 
     if (error?.ref?.type === "radio")

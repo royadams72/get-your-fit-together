@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 
-import { API } from "@/routes.config";
-
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
-import { fetchHelper } from "@/lib/utils/fetchHelper";
-import { useErrorPage } from "@/lib/hooks/useErrorPage";
+import { checkForUser } from "@/lib/actions/checkForUser";
+import { redirectOnError } from "@/lib/utils/redirectOnError";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
-  const { redirectIfError } = useErrorPage();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -24,13 +21,13 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       return;
 
     (async () => {
+      let response: any;
       try {
-        const response = await fetchHelper(API.CHECK_USER, userForm.value);
+        response = await checkForUser(userForm.value);
 
-        redirectIfError(response);
-        if (response.error) {
+        if (response.softError) {
           setResponseError({
-            message: response.error,
+            message: response.message,
             messageElement: User.userName,
           });
         } else {
@@ -39,6 +36,8 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       } catch (error) {
         console.error("Error getting data:", error);
       }
+
+      redirectOnError(response as { redirect: boolean });
     })();
   }, [userForm]);
   return { responseError };
