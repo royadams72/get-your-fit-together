@@ -7,9 +7,7 @@ import { response } from "@/lib/services/response.service";
 
 export async function getStateFromRedis(sessionCookie: string) {
   try {
-    const redisCache = await redis.get(
-      `${Cookie.sessionCookie}:${sessionCookie}`
-    );
+    const redisCache = await redis.get(`session:${sessionCookie}`);
     // const redisCache = null;
 
     if (!redisCache) {

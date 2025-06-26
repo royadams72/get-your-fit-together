@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { usePathname } from "next/navigation";
 
-import checkForSession from "@/lib/actions/ckeckForSession";
+import createSessionIfNeeded from "@/lib/actions/createSessionIfNeeded";
 import { PATHS } from "@/routes.config";
 
 const SessionInitialiser = () => {
@@ -10,8 +10,7 @@ const SessionInitialiser = () => {
   useEffect(() => {
     if (pageName === PATHS.YOUR_FIT) return;
     (async () => {
-      await checkForSession();
-      console.log("SessionInitialiser");
+      await createSessionIfNeeded();
     })();
   }, [pageName]);
   return null;

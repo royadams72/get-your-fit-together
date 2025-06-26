@@ -1,4 +1,4 @@
-import { ResponseObj } from "@/types/interfaces/api";
+import { ResponseObj } from "@/types/interfaces/response";
 
 export function isRedirectResponse({ redirect }: { redirect: boolean }) {
   console.log(redirect);

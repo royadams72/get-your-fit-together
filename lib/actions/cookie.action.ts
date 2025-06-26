@@ -17,7 +17,7 @@ const cookieAction = async (
     if (action === CookieAction.delete && cookieStore.get(name)?.value) {
       cookieStore.delete(name);
     } else if (action === CookieAction.set && cookieVal !== undefined) {
-      cookieStore.set(name, cookieValue, { maxAge: 60 });
+      cookieStore.set(name, cookieValue, { maxAge: 800, httpOnly: true });
     } else if (action === CookieAction.get && cookieStore.get(name)?.value) {
       return cookieStore.get(name)?.value;
     }

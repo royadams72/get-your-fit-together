@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { DbResponse } from "../interfaces/api";
+import { DbResponse } from "../interfaces/response";
 import { FitPlan } from "../interfaces/fitness-plan";
 import { fitPlanGuard } from "./fitPlanGuard";
 

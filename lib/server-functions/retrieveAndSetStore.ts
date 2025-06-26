@@ -3,7 +3,7 @@ import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
-import { ResponseObj } from "@/types/interfaces/api";
+import { ResponseObj } from "@/types/interfaces/response";
 
 import cookieAction from "@/lib/actions/cookie.action";
 import { getStateFromRedis } from "@/lib/server-functions/getStateFromRedis";

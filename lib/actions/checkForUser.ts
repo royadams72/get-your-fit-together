@@ -1,7 +1,7 @@
 "use server";
 
 import { connectToDB } from "@/lib/db/mongodb";
-import { DbResponse } from "@/types/interfaces/api";
+import { DbResponse } from "@/types/interfaces/response";
 import { ResponseType } from "@/types/enums/response.enum";
 import { response } from "@/lib/services/response.service";
 

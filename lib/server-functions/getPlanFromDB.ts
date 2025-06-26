@@ -1,6 +1,6 @@
 import { connectToDB } from "@/lib/db/mongodb";
 
-import { DbResponse } from "@/types/interfaces/api";
+import { DbResponse } from "@/types/interfaces/response";
 import { isDbResponse } from "@/types/guards/db-response";
 import { ResponseType } from "@/types/enums/response.enum";
 import { isEmpty } from "@/lib/utils/isEmpty";

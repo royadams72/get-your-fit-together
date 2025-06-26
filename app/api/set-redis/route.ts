@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     const redisResponse = await redis.set(
-      `${Cookie.sessionCookie}:${sessionCookie}`,
+      `session:${sessionCookie}`,
       JSON.stringify(data),
       "EX",
       sessionTTL
