@@ -13,10 +13,15 @@ import cookieService from "./cookie.service";
 import { formatDate } from "../utils/formatDate";
 import { PATHS } from "@/routes.config";
 import cookieAction from "../actions/cookie.action";
-
-export const response = async (message: string, redirect?: boolean) => {
+export enum ResponseType {
+  redirect = "redirect",
+  softError = "softError",
+}
+export const response = async (message: string, action?: ResponseType) => {
   // if (!resObj.redirect) return resObj;
-
+  console.log("message:::::", message);
+  const redirect = action === ResponseType.redirect;
+  const softError = action === ResponseType.softError;
   // Log the error
   // (async () => {
   if (redirect) {
@@ -48,5 +53,5 @@ export const response = async (message: string, redirect?: boolean) => {
     return { redirect };
   }
   // })();
-  return { message };
+  return softError ? { message, softError } : { message };
 };

@@ -2,8 +2,7 @@
 
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { response } from "../services/response.service";
-// import { errorResponse } from "@/lib/services/errorResponse";
+import { response, ResponseType } from "../services/response.service";
 
 export async function checkForUser(userName: string) {
   try {
@@ -17,14 +16,17 @@ export async function checkForUser(userName: string) {
     );
 
     if (plan) {
-      return response(
+      return await response(
         "A fitness plan already exists with that user name",
-        true
+        ResponseType.softError
       );
     } else {
       return response("No plan with that user name");
     }
   } catch (error) {
-    return response(`Any unexpected error occurred: ${error}`, true);
+    return response(
+      `Any unexpected error occurred: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

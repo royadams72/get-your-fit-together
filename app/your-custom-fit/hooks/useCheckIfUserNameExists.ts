@@ -6,12 +6,12 @@ import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
 import { fetchHelper } from "@/lib/utils/fetchHelper";
-import { useErrorPage } from "@/lib/hooks/useErrorPage";
+
 import { checkForUser } from "@/lib/actions/checkForUser";
 import { ResponseObj } from "@/types/interfaces/api";
+import { redirectOnError } from "@/lib/utils/redirectOnError";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
-  const { redirectIfError } = useErrorPage();
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
@@ -26,22 +26,24 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       return;
 
     (async () => {
+      let response: any;
       try {
-        const response = await checkForUser(userForm.value);
-        console.log("useCheckUser::", response);
+        response = await checkForUser(userForm.value);
 
-        redirectIfError(response as ResponseObj);
-        // // if (response.error) {
-        // //   setResponseError({
-        // //     message: response.message,
-        // //     messageElement: User.userName,
-        // //   });
-        // } else {
-        //   setResponseError({ message: "", messageElement: "" });
-        // }
+        if (response.softError) {
+          setResponseError({
+            message: response.message,
+            messageElement: User.userName,
+          });
+        } else {
+          setResponseError({ message: "", messageElement: "" });
+        }
       } catch (error) {
         console.error("Error getting data:", error);
       }
+      console.log("useCheckUser::", response);
+
+      redirectOnError(response as { redirect: boolean });
     })();
   }, [userForm]);
   return { responseError };

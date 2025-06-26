@@ -38,7 +38,6 @@ export default async function retrieveAndSetStore() {
 
   try {
     savedState = await getStateFromRedis(sessionCookie);
-    console.log("getStateFromRedis::", savedState);
 
     if (isRedirectResponse(savedState as { redirect: boolean })) {
       return savedState;

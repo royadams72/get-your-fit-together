@@ -1,18 +1,21 @@
 import redis from "@/lib/db/redisClient";
 
 import { Cookie } from "@/types/enums/cookie.enum";
-import { response } from "../services/response.service";
+import { response, ResponseType } from "../services/response.service";
 
 export async function getStateFromRedis(sessionCookie: string) {
   try {
-    // const redisCache = await redis.get(
-    //   `${Cookie.sessionCookie}:${sessionCookie}`
-    // );
-    const redisCache = null;
+    const redisCache = await redis.get(
+      `${Cookie.sessionCookie}:${sessionCookie}`
+    );
+    // const redisCache = null;
 
     if (!redisCache) {
       // throw new Error(`Could not get data from Redis geezzzzz`);
-      return await response(`Could not get data from Redis`, true);
+      return await response(
+        `Could not get data from Redis`,
+        ResponseType.redirect
+      );
       // return;
     }
     // if (redisCache) {
@@ -23,6 +26,9 @@ export async function getStateFromRedis(sessionCookie: string) {
   } catch (error) {
     console.log(error);
 
-    return await response(`Failed to store data: ${error}`, true);
+    return await response(
+      `Failed to store data: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

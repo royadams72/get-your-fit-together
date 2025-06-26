@@ -1,8 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { API } from "@/routes.config";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 const persistStoreClientSide = (state: any) => {
   if (typeof window !== "undefined") {
     try {

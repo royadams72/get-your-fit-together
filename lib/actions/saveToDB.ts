@@ -1,7 +1,7 @@
 "use server";
 
 import { connectToDB } from "@/lib/db/mongodb";
-// import { errorResponse } from "@/lib/services/errorResponse";
+import { response, ResponseType } from "@/lib/services/response.service";
 import { UpdateFilter, Document } from "mongodb";
 import { RootState } from "@/types/interfaces/store";
 import { UserFormType } from "@/types/interfaces/form";
@@ -18,10 +18,10 @@ export async function saveToDB(savedState: RootState, userData: UserFormType) {
     console.log("userName:", userName, "userPassword:", userPassword);
 
     if (!userPassword && !userName) {
-      return {
-        message: "Please provide a username and password",
-      };
-      // return errorResponse("Pleas provide a username and password", 404, false);
+      return await response(
+        "Please provide a username and password",
+        ResponseType.softError
+      );
     }
 
     const reduxState = {
@@ -44,33 +44,32 @@ export async function saveToDB(savedState: RootState, userData: UserFormType) {
       $currentDate: { updatedAt: true },
     };
 
-    const response = await collection.updateOne(documentFilter, updatePayload, {
-      upsert: true,
-    });
+    const updateResult = await collection.updateOne(
+      documentFilter,
+      updatePayload,
+      {
+        upsert: true,
+      }
+    );
 
-    if (response.matchedCount === 0 && response.upsertedCount === 0) {
-      throw new Error(
-        "There was a problem, updates could not be saved to your plan, please try again later"
+    if (updateResult.matchedCount === 0 && updateResult.upsertedCount === 0) {
+      return await response(
+        "There was a problem, updates could not be saved to your plan, please try again later",
+        ResponseType.redirect
       );
-      // return errorResponse(
-      //   "There was a problem, your plan could not be saved, please try again later",
-      //   409,
-      //   false
-      // );
-    } else if (response.matchedCount === 1 && response.modifiedCount === 0) {
-      throw new Error(
-        "There was a problem, updates could not be saved to your plan, please try again later"
+    } else if (
+      updateResult.matchedCount === 1 &&
+      updateResult.modifiedCount === 0
+    ) {
+      return await response(
+        "There was a problem, updates could not be saved to your plan, please try again later",
+        ResponseType.redirect
       );
-      // return errorResponse(
-      //   "There was a problem, updates could not be saved to your plan, please try again later",
-      //   409,
-      //   false
-      // );
     }
 
     return { success: true };
   } catch (error) {
     console.error(`Database error: ${error}`);
-    // return errorResponse(`Database error: ${error}`, 500, true);
+    return await response(`Database error: ${error}`, ResponseType.redirect);
   }
 }
