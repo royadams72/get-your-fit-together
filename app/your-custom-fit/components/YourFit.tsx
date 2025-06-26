@@ -31,6 +31,8 @@ import Accordion from "@/components/display-plan/Accordion";
 import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 import { useErrorPage } from "@/lib/hooks/useErrorPage";
+import { saveToDB } from "@/lib/actions/saveToDB";
+import { ResponseObj } from "@/types/interfaces/api";
 
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();
@@ -50,14 +52,12 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
   const { redirectIfError } = useErrorPage();
+
   const savePlan = async (userData: UserFormType, isForm = true) => {
-    const response = await fetchHelper(API.SAVE_PLAN, {
-      savedState,
-      userData,
-    });
+    const response = await saveToDB(savedState, userData);
     console.log("YourFit", response);
 
-    redirectIfError(response);
+    redirectIfError(response as ResponseObj);
     if (response?.success && isForm) {
       reset();
 

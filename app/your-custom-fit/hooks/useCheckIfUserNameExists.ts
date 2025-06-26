@@ -8,6 +8,7 @@ import { FormValue } from "@/types/interfaces/form";
 import { fetchHelper } from "@/lib/utils/fetchHelper";
 import { useErrorPage } from "@/lib/hooks/useErrorPage";
 import { checkForUser } from "@/lib/actions/checkForUser";
+import { ResponseObj } from "@/types/interfaces/api";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
   const { redirectIfError } = useErrorPage();
@@ -29,10 +30,10 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
         const response = await checkForUser(userForm.value);
         console.log("useCheckUser::", response);
 
-        // redirectIfError(response);
+        redirectIfError(response as ResponseObj);
         // // if (response.error) {
         // //   setResponseError({
-        // //     message: response.error,
+        // //     message: response.message,
         // //     messageElement: User.userName,
         // //   });
         // } else {

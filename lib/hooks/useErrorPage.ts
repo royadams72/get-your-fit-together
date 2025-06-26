@@ -1,4 +1,4 @@
-import { ErrorObj } from "@/types/interfaces/api";
+import { ResponseObj } from "@/types/interfaces/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -12,14 +12,17 @@ export const useErrorPage = () => {
     }
   }, [errorRedirect]);
 
-  const redirectIfError = (response: ErrorObj) => {
+  const redirectIfError = (response: ResponseObj) => {
     if (
       response &&
       typeof response === "object" &&
       response.redirect &&
-      typeof response.error === "string"
+      typeof response.message === "string" &&
+      response.redirectTo
     ) {
-      setErrorRedirect(`/error?error=${encodeURIComponent(response.error)}`);
+      console.log(response.message);
+
+      setErrorRedirect(response.redirectTo);
       return true;
     }
     return false;

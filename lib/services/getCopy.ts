@@ -1,6 +1,6 @@
 "use server";
 
-import { ENV } from "@/lib/services/envService";
+import { ENV } from "@/lib/services/env.service";
 
 export const getCopy = async (url: string) => {
   try {

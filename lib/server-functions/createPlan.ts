@@ -5,8 +5,8 @@ import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
-import { errorResponse } from "@/lib/services/errorResponse";
-import { ENV } from "@/lib/services/envService";
+// import { errorResponse } from "@/lib/services/errorResponse";
+import { ENV } from "@/lib/services/env.service";
 
 import {
   extractState,

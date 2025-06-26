@@ -1,18 +1,18 @@
 import { API } from "@/routes.config";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-import { ENV } from "@/lib/services/envService";
+import { ENV } from "@/lib/services/env.service";
 import { fetchHelper } from "@/lib/utils/fetchHelper";
 import cookieAction from "@/lib/actions/cookie.action";
 import { RootState } from "@/types/interfaces/store";
 import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
-import { ErrorObj } from "@/types/interfaces/api";
+import { ResponseObj } from "@/types/interfaces/api";
 import { getStateFromRedis } from "@/lib/server-functions/getStateFromRedis";
 import { getPlanFromDB } from "./getPlanFromDB";
 import { createPlan } from "./createPlan";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 
 export default async function retrieveAndSetStore() {
-  let savedState: RootState | ErrorObj | undefined;
+  let savedState: RootState | ResponseObj | undefined;
 
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
@@ -38,15 +38,11 @@ export default async function retrieveAndSetStore() {
 
   try {
     savedState = await getStateFromRedis(sessionCookie);
+    console.log("getStateFromRedis::", savedState);
 
-    if (isRedirectResponse(savedState)) return savedState;
-
-    // if (!savedState || typeof savedState !== "object") {
-    //   console.warn("Empty or invalid savedState received from Redis.");
-    //   return undefined;
-    // }
-    console.log("savedState::::::", savedState);
-
+    if (isRedirectResponse(savedState as { redirect: boolean })) {
+      return savedState;
+    }
     const {
       user: {
         user: { userName, userPassword },
@@ -63,7 +59,10 @@ export default async function retrieveAndSetStore() {
         userPassword,
       });
 
-      if (isRedirectResponse(retrievedState)) return retrievedState;
+      if (
+        isRedirectResponse(retrievedState as unknown as { redirect: boolean })
+      )
+        return retrievedState;
 
       // const { uiData, journey } = savedState as RootState;
       savedState = {
@@ -75,7 +74,12 @@ export default async function retrieveAndSetStore() {
     if (!isRetrieving && isEditing) {
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
 
-      if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
+      if (
+        isRedirectResponse(
+          fitnessPlanFromAI as unknown as { redirect: boolean }
+        )
+      )
+        return fitnessPlanFromAI;
 
       if (
         savedState &&
@@ -91,6 +95,7 @@ export default async function retrieveAndSetStore() {
   } catch (error) {
     console.error("An error occurred in retrieveAndSetStore:", error);
   }
+  console.log(savedState);
 
   return savedState;
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-var */
 import { MongoClient, Db } from "mongodb";
-import { ENV } from "../services/envService";
+import { ENV } from "../services/env.service";
 
 // Extend globalThis to add custom MongoDB properties
 declare global {

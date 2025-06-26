@@ -1,5 +1,9 @@
-import { ErrorObj } from "../interfaces/api";
+import { ResponseObj } from "@/types/interfaces/api";
 
-export const isRedirectResponse = <T>(res: T | ErrorObj): res is ErrorObj => {
-  return typeof res === "object" && res !== null && "redirect" in res;
-};
+export function isRedirectResponse({ redirect }: { redirect: boolean }) {
+  console.log(redirect);
+
+  if (redirect) {
+    return { redirect };
+  }
+}

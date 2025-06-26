@@ -1,15 +1,13 @@
 "use server";
 
 import { connectToDB } from "@/lib/db/mongodb";
-import { errorResponse } from "@/lib/services/errorResponse";
+// import { errorResponse } from "@/lib/services/errorResponse";
 import { UpdateFilter, Document } from "mongodb";
 import { RootState } from "@/types/interfaces/store";
 import { UserFormType } from "@/types/interfaces/form";
+import { redirect } from "next/dist/server/api-utils";
 
-export async function saveToDB(
-  savedState?: RootState,
-  userData?: UserFormType
-) {
+export async function saveToDB(savedState: RootState, userData: UserFormType) {
   try {
     const db = await connectToDB();
     const collection = db.collection<Document>("reduxStates");
@@ -17,9 +15,13 @@ export async function saveToDB(
     const { uiData, journey, ...restOfState } = savedState as RootState;
     const userName = userData?.userName || undefined;
     const userPassword = userData?.userPassword || undefined;
+    console.log("userName:", userName, "userPassword:", userPassword);
 
     if (!userPassword && !userName) {
-      return errorResponse("Pleas provide a username and password", 404, false);
+      return {
+        message: "Please provide a username and password",
+      };
+      // return errorResponse("Pleas provide a username and password", 404, false);
     }
 
     const reduxState = {
@@ -47,13 +49,18 @@ export async function saveToDB(
     });
 
     if (response.matchedCount === 0 && response.upsertedCount === 0) {
+      throw new Error(
+        "There was a problem, updates could not be saved to your plan, please try again later"
+      );
       // return errorResponse(
       //   "There was a problem, your plan could not be saved, please try again later",
       //   409,
       //   false
       // );
     } else if (response.matchedCount === 1 && response.modifiedCount === 0) {
-      // throw new Error("There was a problem, updates could not be saved to your plan, please try again later");
+      throw new Error(
+        "There was a problem, updates could not be saved to your plan, please try again later"
+      );
       // return errorResponse(
       //   "There was a problem, updates could not be saved to your plan, please try again later",
       //   409,
@@ -63,6 +70,7 @@ export async function saveToDB(
 
     return { success: true };
   } catch (error) {
-    return errorResponse(`Database error: ${error}`, 500, true);
+    console.error(`Database error: ${error}`);
+    // return errorResponse(`Database error: ${error}`, 500, true);
   }
 }

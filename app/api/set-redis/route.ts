@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
     if (!sessionCookie) {
       throw new Error("Missing sessionCookie in state");
     }
-    console.log("SET REDIS sessionCookie ::", sessionCookie);
 
     const redisResponse = await redis.set(
       `${Cookie.sessionCookie}:${sessionCookie}`,

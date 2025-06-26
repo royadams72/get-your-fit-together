@@ -1,8 +1,9 @@
 "use server";
-import { NextResponse } from "next/server";
+
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { errorResponse } from "@/lib/services/errorResponse";
+import { response } from "../services/response.service";
+// import { errorResponse } from "@/lib/services/errorResponse";
 
 export async function checkForUser(userName: string) {
   try {
@@ -16,11 +17,14 @@ export async function checkForUser(userName: string) {
     );
 
     if (plan) {
-      return { message: "A fitness plan already exists with that user name" };
+      return response(
+        "A fitness plan already exists with that user name",
+        true
+      );
     } else {
-      return { message: "No plan with that user name" };
+      return response("No plan with that user name");
     }
   } catch (error) {
-    console.error(`Any unexpected error occurred: ${error}`);
+    return response(`Any unexpected error occurred: ${error}`, true);
   }
 }

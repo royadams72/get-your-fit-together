@@ -4,7 +4,7 @@ import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
 import { isDbResponse } from "@/types/guards/db-response";
 
-import { errorResponse } from "@/lib/services/errorResponse";
+// import { errorResponse } from "@/lib/services/errorResponse";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { UserFormType } from "@/types/interfaces/form";
 
