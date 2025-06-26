@@ -58,7 +58,7 @@ const YourFit = () => {
     console.log("YourFit", response);
 
     redirectOnError(response as any);
-    if (response?.success && isForm) {
+    if ("success" in response && response.success && isForm) {
       reset();
 
       router.push(

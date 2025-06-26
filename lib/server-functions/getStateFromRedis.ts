@@ -1,7 +1,9 @@
 import redis from "@/lib/db/redisClient";
 
 import { Cookie } from "@/types/enums/cookie.enum";
-import { response, ResponseType } from "../services/response.service";
+import { ResponseType } from "@/types/enums/response.enum";
+
+import { response } from "@/lib/services/response.service";
 
 export async function getStateFromRedis(sessionCookie: string) {
   try {

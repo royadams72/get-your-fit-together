@@ -10,7 +10,7 @@ export interface DbResponse {
 export interface ResponseObj {
   message?: string;
   redirect?: boolean | undefined;
-  redirectTo?: string;
+  softError?: boolean | undefined;
 }
 
 export interface ResponseOptions {

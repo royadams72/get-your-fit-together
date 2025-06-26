@@ -2,7 +2,8 @@
 
 import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/api";
-import { response, ResponseType } from "../services/response.service";
+import { ResponseType } from "@/types/enums/response.enum";
+import { response } from "@/lib/services/response.service";
 
 export async function checkForUser(userName: string) {
   try {

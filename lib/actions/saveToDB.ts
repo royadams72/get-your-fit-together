@@ -1,13 +1,24 @@
 "use server";
-
-import { connectToDB } from "@/lib/db/mongodb";
-import { response, ResponseType } from "@/lib/services/response.service";
 import { UpdateFilter, Document } from "mongodb";
-import { RootState } from "@/types/interfaces/store";
-import { UserFormType } from "@/types/interfaces/form";
-import { redirect } from "next/dist/server/api-utils";
+import { connectToDB } from "@/lib/db/mongodb";
 
-export async function saveToDB(savedState: RootState, userData: UserFormType) {
+import { RootState } from "@/types/interfaces/store";
+import { ResponseType } from "@/types/enums/response.enum";
+import { UserFormType } from "@/types/interfaces/form";
+
+import { response } from "@/lib/services/response.service";
+
+type SaveToDBResult = {
+  success?: boolean;
+  message?: string;
+  redirect?: boolean;
+  softError?: boolean;
+};
+
+export async function saveToDB(
+  savedState: RootState,
+  userData: UserFormType
+): Promise<SaveToDBResult> {
   try {
     const db = await connectToDB();
     const collection = db.collection<Document>("reduxStates");
@@ -15,7 +26,6 @@ export async function saveToDB(savedState: RootState, userData: UserFormType) {
     const { uiData, journey, ...restOfState } = savedState as RootState;
     const userName = userData?.userName || undefined;
     const userPassword = userData?.userPassword || undefined;
-    console.log("userName:", userName, "userPassword:", userPassword);
 
     if (!userPassword && !userName) {
       return await response(

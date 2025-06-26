@@ -1,13 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import { fitPlanGuard } from "@/types/guards/fitPlanGuard";
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
+import { ResponseType } from "@/types/enums/response.enum";
 
-// import { errorResponse } from "@/lib/services/errorResponse";
 import { ENV } from "@/lib/services/env.service";
-
+import { response } from "@/lib/services/response.service";
 import {
   extractState,
   setContent,
@@ -45,13 +44,17 @@ export async function createPlan(state: RootState) {
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
-      throw new Error(
-        "An unexpected structure was returned, your information may be corrupted, please try later"
+      return await response(
+        "An unexpected structure was returned, your information may be corrupted, please try later",
+        ResponseType.redirect
       );
     }
 
     return json.fitnessPlan;
   } catch (error) {
-    console.error(`There was an error: ${error}`);
+    return await response(
+      `There was an error: ${error}`,
+      ResponseType.redirect
+    );
   }
 }

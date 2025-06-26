@@ -2,7 +2,6 @@
 import { MongoClient, Db } from "mongodb";
 import { ENV } from "../services/env.service";
 
-// Extend globalThis to add custom MongoDB properties
 declare global {
   var _mongoClient: MongoClient | null;
   var _mongoDb: Db | null;
@@ -25,13 +24,13 @@ export async function connectToDB(): Promise<Db> {
     if (!cachedClient) {
       cachedClient = new MongoClient(ENV.MONGODB_URI);
       await cachedClient.connect();
-      global._mongoClient = cachedClient; // cache client
+      global._mongoClient = cachedClient;
     }
 
-    cachedDb = global._mongoDb = cachedClient.db(ENV.MONGODB_DB_NAME); // cache db
+    cachedDb = global._mongoDb = cachedClient.db(ENV.MONGODB_DB_NAME);
     return cachedDb;
   } catch (error) {
-    console.error("Failed to connect to DB:", error);
-    throw error;
+    // Optionally log or handle the error here
+    throw new Error(`Failed to connect to DB: ${error}`);
   }
 }

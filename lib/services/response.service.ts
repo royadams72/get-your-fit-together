@@ -13,10 +13,8 @@ import cookieService from "./cookie.service";
 import { formatDate } from "../utils/formatDate";
 import { PATHS } from "@/routes.config";
 import cookieAction from "../actions/cookie.action";
-export enum ResponseType {
-  redirect = "redirect",
-  softError = "softError",
-}
+import { ResponseType } from "@/types/enums/response.enum";
+
 export const response = async (message: string, action?: ResponseType) => {
   // if (!resObj.redirect) return resObj;
   console.log("message:::::", message);
@@ -29,11 +27,9 @@ export const response = async (message: string, action?: ResponseType) => {
       Cookie.sessionCookie,
     ]);
 
-    if (!sessionCookie && typeof window === "undefined") {
+    if (!sessionCookie) {
       console.log("!sessionCookie && typeof window === undefined");
-      return serverRedirect(PATHS.ERROR);
-    } else if (!sessionCookie && typeof window !== "undefined") {
-      return { message, clientRedirectTo: PATHS.ERROR };
+      return { redirect };
     }
     // const state = await getStateFromRedis(sessionCookie as string);
     const userName = "test user";
