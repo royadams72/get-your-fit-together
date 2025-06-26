@@ -1,27 +1,19 @@
 // lib/services/response.service.ts
 
-import { redirect as serverRedirect } from "next/navigation";
 import fs from "fs/promises";
 import path from "path";
 
-import { ResponseObj } from "@/types/interfaces/api";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-import { RootState } from "@/types/interfaces/store";
-
-import { getStateFromRedis } from "../server-functions/getStateFromRedis";
-import cookieService from "./cookie.service";
-import { formatDate } from "../utils/formatDate";
-import { PATHS } from "@/routes.config";
-import cookieAction from "../actions/cookie.action";
 import { ResponseType } from "@/types/enums/response.enum";
 
+import { formatDate } from "@/lib/utils/formatDate";
+
+import cookieAction from "@/lib/actions/cookie.action";
+
 export const response = async (message: string, action?: ResponseType) => {
-  // if (!resObj.redirect) return resObj;
-  console.log("message:::::", message);
   const redirect = action === ResponseType.redirect;
   const softError = action === ResponseType.softError;
-  // Log the error
-  // (async () => {
+
   if (redirect) {
     const sessionCookie = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
@@ -45,7 +37,6 @@ export const response = async (message: string, action?: ResponseType) => {
     await fs.appendFile(errorPath, `${errorStr}\n`);
     console.log("wtf is going on", { redirect });
 
-    //   // Client: return redirect info to caller
     return { redirect };
   }
   // })();

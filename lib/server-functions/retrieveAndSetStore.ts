@@ -1,15 +1,14 @@
-import { API } from "@/routes.config";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-import { ENV } from "@/lib/services/env.service";
-import { fetchHelper } from "@/lib/utils/fetchHelper";
-import cookieAction from "@/lib/actions/cookie.action";
+
 import { RootState } from "@/types/interfaces/store";
+import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 import { ResponseObj } from "@/types/interfaces/api";
+
+import cookieAction from "@/lib/actions/cookie.action";
 import { getStateFromRedis } from "@/lib/server-functions/getStateFromRedis";
-import { getPlanFromDB } from "./getPlanFromDB";
-import { createPlan } from "./createPlan";
-import { FitPlan } from "@/types/interfaces/fitness-plan";
+import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
+import { createPlan } from "@/lib/server-functions/createPlan";
 
 export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | undefined;

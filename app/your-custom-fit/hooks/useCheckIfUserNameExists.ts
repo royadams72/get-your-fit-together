@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 
-import { API } from "@/routes.config";
-
 import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
-import { fetchHelper } from "@/lib/utils/fetchHelper";
-
 import { checkForUser } from "@/lib/actions/checkForUser";
-import { ResponseObj } from "@/types/interfaces/api";
 import { redirectOnError } from "@/lib/utils/redirectOnError";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
@@ -41,7 +36,6 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       } catch (error) {
         console.error("Error getting data:", error);
       }
-      console.log("useCheckUser::", response);
 
       redirectOnError(response as { redirect: boolean });
     })();

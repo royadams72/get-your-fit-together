@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import { useCheckIfUserNameExists } from "@/app/your-custom-fit/hooks/useCheckIfUserNameExists";
 
 import { config } from "@/lib/form-configs/userConfig";
-import { API, PATHS } from "@/routes.config";
+import { PATHS } from "@/routes.config";
 
 import { selectState } from "@/lib/store/store";
 import {
@@ -23,8 +23,6 @@ import { UiData } from "@/types/enums/uiData.enum";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { FormValue, UserFormType } from "@/types/interfaces/form";
 
-import { fetchHelper } from "@/lib/utils/fetchHelper";
-
 import FormProvider from "@/context/FormProvider";
 import UserForm from "@/components/form/UserForm";
 import Accordion from "@/components/display-plan/Accordion";
@@ -32,7 +30,6 @@ import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 import { saveToDB } from "@/lib/actions/saveToDB";
-import { ResponseObj } from "@/types/interfaces/api";
 import { redirectOnError } from "@/lib/utils/redirectOnError";
 
 const YourFit = () => {
@@ -47,8 +44,6 @@ const YourFit = () => {
   const isRetrieving = useAppSelector(getIsRetrieving);
   const isSignedIn = useAppSelector(getIsSignedIn);
   const userInfoFromState = useAppSelector(getUserInfo);
-
-  // console.log("YourFit", savedState);
 
   const methods = useForm();
   const { reset } = methods;
@@ -78,7 +73,6 @@ const YourFit = () => {
 
   useEffect(() => {
     if (isRetrieving) {
-      // console.log(savedState);
       dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
     }
   }, []);
@@ -86,7 +80,6 @@ const YourFit = () => {
   useEffect(() => {
     if (isSignedIn) {
       savePlan(userInfoFromState, false);
-      // console.log(savedState);
     }
   }, []);
 
@@ -95,7 +88,6 @@ const YourFit = () => {
   };
   const onSubmit = async (userData: UserFormType) => {
     savePlan(userData);
-    // console.log("userData", userData);
   };
 
   return (

@@ -6,7 +6,7 @@ import { getSessionCookie, setUiData } from "@/lib/features/uiData/uiDataSlice";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
 import cookieAction from "@/lib/actions/cookie.action";
-import { usePathname } from "next/navigation";
+
 import { getRoutes } from "../features/journey/journeySlice";
 
 const useSetSessionToStore = () => {
