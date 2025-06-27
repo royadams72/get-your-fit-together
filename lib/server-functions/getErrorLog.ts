@@ -24,7 +24,10 @@ export const getLastErrorMessage = async (): Promise<string> => {
       .reverse()
       .find((line) => line.startsWith(sessionCookie));
 
-    return lastMatch?.replace(sessionCookie, "") || "No matching error found.";
+    return (
+      lastMatch?.replace(sessionCookie, "") ||
+      "There has been an unexpected error."
+    );
   } catch (err) {
     console.error("Error reading log:", err);
     return "Could not read error log.";

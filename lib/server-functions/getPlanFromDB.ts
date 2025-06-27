@@ -1,15 +1,18 @@
 import { connectToDB } from "@/lib/db/mongodb";
 
 import { DbResponse } from "@/types/interfaces/response";
-import { isDbResponse } from "@/types/guards/db-response";
+import { isDbResponse } from "@/types/guards/isDbResponse";
 import { ResponseType } from "@/types/enums/response.enum";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { UserFormType } from "@/types/interfaces/form";
 
 import { response } from "@/lib/services/response.service";
+import { verifySession } from "./verifySession";
 
 export async function getPlanFromDB(userData: UserFormType) {
   try {
+    await verifySession(false);
+
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
@@ -38,11 +41,12 @@ export async function getPlanFromDB(userData: UserFormType) {
         ResponseType.softError
       );
     }
+    console.log("plan::", plan);
 
     if (isDbResponse(plan)) {
-      const { reduxState } = plan;
+      const { reduxState, _id } = plan;
 
-      return reduxState;
+      return { reduxState, _id };
     } else {
       return await response(
         "AI returned an unexpected structure, so your plan could not be retrieved",

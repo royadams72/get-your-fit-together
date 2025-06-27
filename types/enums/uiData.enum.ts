@@ -2,5 +2,5 @@ export enum UiData {
   isSignedIn = "isSignedIn",
   isRetrieving = "isRetrieving",
   isEditing = "isEditing",
-  sessionCookie = "sessionCookie",
+  sessionId = "sessionId",
 }

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import redis from "@/lib/db/redisClient";
-import { Cookie } from "@/types/enums/cookie.enum";
 
 export async function POST(request: NextRequest) {
   const sessionTTL = 86400;
@@ -10,17 +9,17 @@ export async function POST(request: NextRequest) {
     const {
       state: {
         uiData: {
-          uiData: { sessionCookie },
+          uiData: { sessionId },
         },
       },
     } = data;
 
-    if (!sessionCookie) {
-      throw new Error("Missing sessionCookie in state");
+    if (!sessionId) {
+      throw new Error("Missing sessionId in state");
     }
 
     const redisResponse = await redis.set(
-      `session:${sessionCookie}`,
+      `session:${sessionId}`,
       JSON.stringify(data),
       "EX",
       sessionTTL

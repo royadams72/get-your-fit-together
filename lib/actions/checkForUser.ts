@@ -4,9 +4,11 @@ import { connectToDB } from "@/lib/db/mongodb";
 import { DbResponse } from "@/types/interfaces/response";
 import { ResponseType } from "@/types/enums/response.enum";
 import { response } from "@/lib/services/response.service";
+import { verifySession } from "../server-functions/verifySession";
 
 export async function checkForUser(userName: string) {
   try {
+    await verifySession(false);
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 

@@ -27,11 +27,11 @@ const createSessionIfNeeded = async () => {
     sessionId = sessionCookie;
   }
 
-  console.log(
-    "createSessionIfNeeded sessionId:",
-    sessionId,
-    "sessionCookie:",
-    sessionCookie
-  );
+  // console.log(
+  //   "createSessionIfNeeded sessionId:",
+  //   sessionId,
+  //   "sessionCookie:",
+  //   sessionCookie
+  // );
 };
 export default createSessionIfNeeded;

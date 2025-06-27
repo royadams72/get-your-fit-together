@@ -1,44 +1,29 @@
-import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-
-import { RootState } from "@/types/interfaces/store";
+import { RootState, State } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
-import { ResponseObj } from "@/types/interfaces/response";
+import { DbResponse, ResponseObj } from "@/types/interfaces/response";
 
-import cookieAction from "@/lib/actions/cookie.action";
-import { getStateFromRedis } from "@/lib/server-functions/getStateFromRedis";
 import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
 import { createPlan } from "@/lib/server-functions/createPlan";
+import { verifySession } from "@/lib/server-functions/verifySession";
+import { isDbResponse } from "@/types/guards/isDbResponse";
+import { setRedisUser } from "../actions/setRedisUser";
 
 export default async function retrieveAndSetStore() {
-  let savedState: RootState | ResponseObj | undefined;
+  const sessionResult = await verifySession(false);
+  console.log("sessionResult::", sessionResult);
 
-  let sessionCookie = await cookieAction(CookieAction.get, [
-    Cookie.sessionCookie,
-  ]);
-  let retries = 3;
-
-  while (!sessionCookie && retries > 0) {
-    if (!sessionCookie) {
-      await new Promise((res) => setTimeout(res, 100));
-      sessionCookie = await cookieAction(CookieAction.get, [
-        Cookie.sessionCookie,
-      ]);
-      retries--;
-    }
+  if (!sessionResult || !sessionResult.userSessionState) {
+    return { redirect: true };
   }
-
-  if (!sessionCookie) {
-    console.warn(
-      "No session cookie found after retries — skipping store retrieval."
-    );
-    return undefined;
-  }
+  const { userSessionState } = sessionResult;
+  console.log("userSessionState:::", userSessionState);
+  let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
-    savedState = await getStateFromRedis(sessionCookie);
+    savedState = userSessionState;
 
-    if (isRedirectResponse(savedState as { redirect: boolean })) {
+    if (isRedirectResponse(savedState)) {
       return savedState;
     }
     const {
@@ -52,32 +37,48 @@ export default async function retrieveAndSetStore() {
 
     // Retrieve full state if needed
     if (userName && userPassword && isRetrieving) {
-      const retrievedState = await getPlanFromDB({
+      const retrievedState:
+        | Partial<DbResponse>
+        | { redirect: boolean }
+        | ResponseObj = await getPlanFromDB({
         userName,
         userPassword,
       });
 
-      if (
-        isRedirectResponse(retrievedState as unknown as { redirect: boolean })
-      )
-        return retrievedState;
+      if (isRedirectResponse(retrievedState)) return retrievedState;
 
+      if ("reduxState" in retrievedState) {
+        console.log("retrievedState::", retrievedState.reduxState);
+      }
+
+      if (isDbResponse(retrievedState)) {
+        const { reduxState, _id } = retrievedState;
+
+        const {
+          uiData: {
+            uiData: { sessionId },
+          },
+        } = savedState as State;
+
+        setRedisUser(sessionId as string, _id);
+
+        savedState = {
+          ...(savedState as RootState),
+          ...(reduxState as Partial<RootState>),
+        };
+      } else {
+        return {
+          redirect: true,
+        };
+      }
       // const { uiData, journey } = savedState as RootState;
-      savedState = {
-        ...(savedState as RootState),
-        ...(retrievedState as Partial<RootState>),
-      };
     }
+    console.log("isRetrieving && isEditing", savedState);
 
     if (!isRetrieving && isEditing) {
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
-
-      if (
-        isRedirectResponse(
-          fitnessPlanFromAI as unknown as { redirect: boolean }
-        )
-      )
-        return fitnessPlanFromAI;
+      console.log("fitnessPlanFromAI", fitnessPlanFromAI);
+      if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
 
       if (
         savedState &&
@@ -95,5 +96,5 @@ export default async function retrieveAndSetStore() {
   }
   console.log(savedState);
 
-  return savedState;
+  return savedState ?? { redirect: true };
 }

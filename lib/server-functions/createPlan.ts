@@ -7,6 +7,8 @@ import { ResponseType } from "@/types/enums/response.enum";
 
 import { ENV } from "@/lib/services/env.service";
 import { response } from "@/lib/services/response.service";
+
+import { verifySession } from "@/lib/server-functions/verifySession";
 import {
   extractState,
   setContent,
@@ -14,6 +16,7 @@ import {
 import { aiPrompt } from "@/lib/server-functions/ai-utils/ai-prompt";
 
 export async function createPlan(state: RootState) {
+  await verifySession(false);
   const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
   const mappedState = extractState(state);
