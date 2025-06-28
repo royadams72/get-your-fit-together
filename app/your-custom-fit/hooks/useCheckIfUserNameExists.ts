@@ -34,11 +34,11 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
           setResponseError({ message: "", messageElement: "" });
         }
       } catch (error) {
+        await redirectOnError(response);
         console.error("Error getting data:", error);
       }
-
-      redirectOnError(response as { redirect: boolean });
     })();
   }, [userForm]);
+
   return { responseError };
 };

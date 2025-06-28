@@ -1,33 +1,44 @@
 "use server";
-
 import redis from "@/lib/db/redisClient";
 
 const sessionTTL = 86400;
 
-interface SessionData {
+interface SessionMeta {
   userId?: string;
   anonymous?: boolean;
-  [key: string]: any;
 }
 
-export const setRedisUser = async (sessionId: string, userId?: any) => {
-  const existing = JSON.parse(
+interface SessionData {
+  userSessionState?: any; // should be RootState ideally
+  sessionMeta: SessionMeta;
+}
+
+export const setRedisUser = async (sessionId: string, userId?: string) => {
+  // Get the existing session if any
+  const existing: SessionData = JSON.parse(
     (await redis.get(`session:${sessionId}`)) || "{}"
   );
 
-  let redisCache: SessionData = { ...existing };
-  console.log("redisCache:::", redisCache);
+  const userSessionState = existing.userSessionState || {};
+  let sessionMeta: SessionMeta = existing.sessionMeta || {};
 
+  // Update metadata based on userId presence
   if (userId) {
-    const { anonymous, ...restOfExisting } = existing;
-    redisCache = { ...restOfExisting, userId };
+    sessionMeta = { userId };
   } else {
-    redisCache = { ...existing, anonymous: true };
+    sessionMeta = { anonymous: true };
   }
-  console.log("redisCache2:::", redisCache);
+
+  const updatedSession: SessionData = {
+    userSessionState,
+    sessionMeta,
+  };
+
+  console.log("setRedisUser:: updatedSession", updatedSession);
+
   await redis.set(
     `session:${sessionId}`,
-    JSON.stringify(redisCache),
+    JSON.stringify(updatedSession),
     "EX",
     sessionTTL
   );

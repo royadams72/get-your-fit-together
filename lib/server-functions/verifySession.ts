@@ -22,6 +22,7 @@ export async function verifySession(
   }
 
   const session = JSON.parse(raw);
+
   const userId = session?.userId;
   const anonymous = session?.anonymous;
   const reduxState = session?.state;
@@ -33,7 +34,8 @@ export async function verifySession(
   return {
     userSessionState: reduxState ?? {},
     sessionMeta: {
-      userId: anonymous,
+      userId,
+      anonymous,
     },
   };
 }

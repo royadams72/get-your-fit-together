@@ -36,7 +36,7 @@ export async function getPlanFromDB(userData: UserFormType) {
     );
 
     if (!plan) {
-      return await response(
+      return response(
         "A plan with that user name and password combination was not found",
         ResponseType.softError
       );
@@ -48,7 +48,7 @@ export async function getPlanFromDB(userData: UserFormType) {
 
       return { reduxState, _id };
     } else {
-      return await response(
+      return response(
         "AI returned an unexpected structure, so your plan could not be retrieved",
         ResponseType.redirect
       );
