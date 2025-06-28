@@ -17,8 +17,8 @@ export async function getPlanFromDB(userData: UserFormType) {
     const collection = db.collection("reduxStates");
 
     if (isEmpty(userData)) {
-      return await response(
-        "No data recieved data was recieved from the form, please try again",
+      return response(
+        "No data was recieved from the form, please try again",
         ResponseType.softError
       );
     }
@@ -41,22 +41,17 @@ export async function getPlanFromDB(userData: UserFormType) {
         ResponseType.softError
       );
     }
-    console.log("plan::", plan);
 
     if (isDbResponse(plan)) {
       const { reduxState, _id } = plan;
 
       return { reduxState, _id };
     } else {
-      return response(
-        "AI returned an unexpected structure, so your plan could not be retrieved",
-        ResponseType.redirect
+      throw new Error(
+        "An unexpected structure was returned, so your plan could not be retrieved"
       );
     }
   } catch (error) {
-    return await response(
-      `There was an unexpected error: ${error}`,
-      ResponseType.redirect
-    );
+    return response(`There was an error: ${error}`, ResponseType.redirect);
   }
 }

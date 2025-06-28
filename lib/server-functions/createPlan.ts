@@ -47,17 +47,13 @@ export async function createPlan(state: RootState) {
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
-      return await response(
-        "An unexpected structure was returned, your information may be corrupted, please try later",
-        ResponseType.redirect
+      throw new Error(
+        "An unexpected structure was returned, your information may be corrupted, please try later"
       );
     }
 
     return json.fitnessPlan;
   } catch (error) {
-    return await response(
-      `There was an error: ${error}`,
-      ResponseType.redirect
-    );
+    return response(`There was an error: ${error}`, ResponseType.redirect);
   }
 }

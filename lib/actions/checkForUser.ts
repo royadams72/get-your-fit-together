@@ -19,18 +19,16 @@ export async function checkForUser(userName: string) {
     );
 
     if (plan) {
-      throw new Error("A fitness plan already exists with that user name");
-      // return response(
-      //   "A fitness plan already exists with that user name",
-      //   ResponseType.softError
-      // );
+      return response(
+        "A fitness plan already exists with that user name",
+        ResponseType.softError
+      );
     } else {
       return response("No plan with that user name");
     }
   } catch (error) {
-    // throw new Error(`Any unexpected error occurred: ${error}`);
     return response(
-      `Any unexpected error occurred: ${error}`,
+      `An unexpected error occurred: ${error}`,
       ResponseType.redirect
     );
   }

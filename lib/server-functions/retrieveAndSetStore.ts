@@ -8,24 +8,27 @@ import { createPlan } from "@/lib/server-functions/createPlan";
 import { verifySession } from "@/lib/server-functions/verifySession";
 import { isDbResponse } from "@/types/guards/isDbResponse";
 import { setRedisUser } from "../actions/setRedisUser";
+import { response } from "../services/response.service";
+import { ResponseType } from "@/types/enums/response.enum";
+import { redirectOnError } from "../utils/redirectOnError";
 
 export default async function retrieveAndSetStore() {
-  const sessionResult = await verifySession(false);
-  console.log("sessionResult::", sessionResult);
-
-  if (!sessionResult || !sessionResult.userSessionState) {
-    return { redirect: true };
-  }
-  const { userSessionState } = sessionResult;
-  console.log("userSessionState:::", userSessionState);
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
+    const sessionResult = await verifySession(false);
+    console.log("sessionResult::", sessionResult);
+
+    // if (isRedirectResponse(savedState)) {
+    //   return savedState;
+    // }
+    if (!sessionResult || !sessionResult.userSessionState) {
+      return { message: "No user details found", redirect: true };
+    }
+    const { userSessionState } = sessionResult;
+    console.log("userSessionState:::", userSessionState);
     savedState = userSessionState;
 
-    if (isRedirectResponse(savedState)) {
-      return savedState;
-    }
     const {
       user: {
         user: { userName, userPassword },
@@ -45,7 +48,7 @@ export default async function retrieveAndSetStore() {
         userPassword,
       });
 
-      if (isRedirectResponse(retrievedState)) return retrievedState;
+      // if (isRedirectResponse(retrievedState)) return retrievedState;
 
       if ("reduxState" in retrievedState) {
         console.log("retrievedState::", retrievedState.reduxState);
@@ -79,7 +82,7 @@ export default async function retrieveAndSetStore() {
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
       console.log("fitnessPlanFromAI", fitnessPlanFromAI);
       if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
-
+      // await redirectOnError(fitnessPlanFromAI);
       if (
         savedState &&
         typeof savedState === "object" &&
@@ -93,8 +96,12 @@ export default async function retrieveAndSetStore() {
     }
   } catch (error) {
     console.error("An error occurred in retrieveAndSetStore:", error);
+    return response(
+      `An error occurred in retrieveAndSetStore: ${error}`,
+      ResponseType.redirect
+    );
   }
   console.log(savedState);
 
-  return savedState ?? { redirect: true };
+  return savedState;
 }

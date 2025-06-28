@@ -30,7 +30,7 @@ export async function saveToDB(
     const userPassword = userData?.userPassword || undefined;
 
     if (!userPassword && !userName) {
-      return await response(
+      return response(
         "Please provide a username and password",
         ResponseType.softError
       );
@@ -65,23 +65,20 @@ export async function saveToDB(
     );
 
     if (updateResult.matchedCount === 0 && updateResult.upsertedCount === 0) {
-      return await response(
-        "There was a problem, updates could not be saved to your plan, please try again later",
-        ResponseType.redirect
+      throw new Error(
+        "There was a problem, your plan could not be saved, please try again later"
       );
     } else if (
       updateResult.matchedCount === 1 &&
       updateResult.modifiedCount === 0
     ) {
-      return await response(
-        "There was a problem, updates could not be saved to your plan, please try again later",
-        ResponseType.redirect
+      throw new Error(
+        "There was a problem, your plan could not be modified, please try again later"
       );
     }
 
     return { success: true };
   } catch (error) {
-    console.error(`Database error: ${error}`);
-    return await response(`Database error: ${error}`, ResponseType.redirect);
+    return response(`Database error: ${error}`, ResponseType.redirect);
   }
 }

@@ -15,13 +15,13 @@ export const redirectOnError = async ({
   redirect,
   softError,
 }: ResponseObj) => {
-  console.log("sessionResult::", message, redirect);
-
   if (redirect) {
     const sessionResult = await verifySession(false);
 
+    console.log("sessionResult::", sessionResult);
+
     if (!sessionResult || !sessionResult.userSessionState) {
-      return { redirect: true };
+      return { message: "whaaaattttt!!", redirect: true };
     }
     const { userSessionState } = sessionResult;
 
