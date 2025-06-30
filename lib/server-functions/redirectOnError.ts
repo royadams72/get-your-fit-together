@@ -1,4 +1,3 @@
-"use server";
 import { redirect as redirectTo } from "next/navigation";
 import { PATHS } from "@/routes.config";
 

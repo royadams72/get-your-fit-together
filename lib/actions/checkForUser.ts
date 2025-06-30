@@ -21,19 +21,12 @@ export async function checkForUser(userName: string) {
     if (plan) {
       return response(
         "A fitness plan already exists with that user name",
-        ResponseType.redirect,
-        true,
-        true
+        ResponseType.softError
       );
     } else {
       return response("No plan with that user name");
     }
   } catch (error) {
-    return response(
-      `Database error: ${error}`,
-      ResponseType.redirect,
-      true,
-      true
-    );
+    return response(`Database error: ${error}`, ResponseType.redirect, true);
   }
 }

@@ -26,12 +26,5 @@ const createSessionIfNeeded = async () => {
     sessionStorage.setItem("sessionId", sessionCookie);
     sessionId = sessionCookie;
   }
-
-  // console.log(
-  //   "createSessionIfNeeded sessionId:",
-  //   sessionId,
-  //   "sessionCookie:",
-  //   sessionCookie
-  // );
 };
 export default createSessionIfNeeded;

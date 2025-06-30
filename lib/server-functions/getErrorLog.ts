@@ -1,5 +1,3 @@
-// lib/server-functions/getErrorLog.ts
-
 import fs from "fs/promises";
 import path from "path";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
@@ -14,7 +12,7 @@ export const getLastErrorMessage = async (): Promise<string> => {
     ]);
 
     if (!sessionCookie) {
-      return "No session cookie found.";
+      return "No session found.";
     }
 
     const content = await fs.readFile(errorLogPath, "utf-8");

@@ -1,5 +1,3 @@
-import { ResponseObj } from "@/types/interfaces/response";
-
 export function isRedirectResponse(
   obj: any
 ): obj is { redirect: true | boolean } {

@@ -12,9 +12,8 @@ import { verifySession } from "@/lib/actions/verifySession";
 import {
   extractState,
   setContent,
-} from "@/lib/server-functions/ai-utils/functions";
-import { aiPrompt } from "@/lib/server-functions/ai-utils/ai-prompt";
-import { AppError } from "../utils/appError";
+} from "@/lib/server-functions/createPlan/functions";
+import { aiPrompt } from "@/lib/server-functions/createPlan/ai-prompt";
 
 export async function createPlan(state: RootState) {
   await verifySession(false);
@@ -57,8 +56,7 @@ export async function createPlan(state: RootState) {
   } catch (error) {
     return response(
       `Could not retrieve plan from DB, ${error}`,
-      ResponseType.redirect,
-      true
+      ResponseType.redirect
     );
   }
 }

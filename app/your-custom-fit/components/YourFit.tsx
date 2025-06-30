@@ -30,7 +30,7 @@ import Button from "@/components/Button";
 import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 
 import { saveToDB } from "@/lib/actions/saveToDB";
-import { redirectOnError } from "@/lib/utils/redirectOnError";
+import { redirectOnError } from "@/lib/server-functions/redirectOnError";
 
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();

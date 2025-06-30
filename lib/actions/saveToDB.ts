@@ -79,6 +79,6 @@ export async function saveToDB(
 
     return { success: true };
   } catch (error) {
-    return response(`Database error: ${error}`, ResponseType.redirect);
+    return response(`${error}`, ResponseType.redirect, true);
   }
 }

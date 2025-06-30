@@ -5,12 +5,11 @@ import { ResponseObj } from "@/types/interfaces/response";
 export function response(
   message: string,
   action?: ResponseType,
-  isError?: boolean,
   isServerAction = false
 ): ResponseObj {
   if (action === ResponseType.redirect) {
     if (!isServerAction) throw new AppError(message, action);
-    return { message, redirect: true, isError };
+    return { message, redirect: true };
   }
 
   if (action === ResponseType.softError) {

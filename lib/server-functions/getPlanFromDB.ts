@@ -52,6 +52,6 @@ export async function getPlanFromDB(userData: UserFormType) {
       );
     }
   } catch (error) {
-    return response(`There was an error: ${error}`, ResponseType.redirect);
+    return response(`DB error: ${error}`, ResponseType.redirect);
   }
 }

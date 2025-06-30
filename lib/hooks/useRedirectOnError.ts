@@ -7,12 +7,7 @@ import { useRouter } from "next/navigation";
 
 export const useRedirectOnError = () => {
   const router = useRouter();
-  const redirectClienSideError = ({
-    message,
-    redirect,
-    softError,
-  }: ResponseObj) => {
-    console.log("redirectClienSideError::", message, redirect);
+  const handleClientErrorRedirect = ({ message, redirect }: ResponseObj) => {
     if (redirect && message) {
       (async () => {
         await writeError(message);
@@ -20,5 +15,5 @@ export const useRedirectOnError = () => {
       })();
     }
   };
-  return redirectClienSideError;
+  return handleClientErrorRedirect;
 };

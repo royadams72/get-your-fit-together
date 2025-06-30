@@ -1,5 +1,9 @@
 "use server";
+
 import redis from "@/lib/db/redisClient";
+import { response } from "@/lib/services/response.service";
+import { ResponseType } from "@/types/enums/response.enum";
+import { RootState } from "@/types/interfaces/store";
 
 const sessionTTL = 86400;
 
@@ -9,37 +13,46 @@ interface SessionMeta {
 }
 
 interface SessionData {
-  userSessionState?: any; // should be RootState ideally
+  userSessionState?: RootState;
   sessionMeta: SessionMeta;
 }
 
-export const setRedisUser = async (sessionId: string, userId?: string) => {
-  // Get the existing session if any
-  const existing: SessionData = JSON.parse(
-    (await redis.get(`session:${sessionId}`)) || "{}"
-  );
+export const setRedisUser = async (
+  sessionId: string,
+  userId?: string,
+  isServerAction = false
+) => {
+  try {
+    const existing: SessionData = JSON.parse(
+      (await redis.get(`session:${sessionId}`)) || "{}"
+    );
 
-  const userSessionState = existing.userSessionState || {};
-  let sessionMeta: SessionMeta = existing.sessionMeta || {};
+    const userSessionState = existing.userSessionState || ({} as RootState);
+    let sessionMeta: SessionMeta = existing.sessionMeta || {};
 
-  // Update metadata based on userId presence
-  if (userId) {
-    sessionMeta = { userId };
-  } else {
-    sessionMeta = { anonymous: true };
+    // Update metadata
+    sessionMeta = userId ? { userId } : { anonymous: true };
+
+    const updatedSession: SessionData = {
+      userSessionState,
+      sessionMeta,
+    };
+
+    console.log("setRedisUser:: updatedSession", updatedSession);
+
+    await redis.set(
+      `session:${sessionId}`,
+      JSON.stringify(updatedSession),
+      "EX",
+      sessionTTL
+    );
+
+    return { message: "Redis session updated" };
+  } catch (error) {
+    return response(
+      `Error in setRedisUser: ${error}`,
+      ResponseType.redirect,
+      isServerAction
+    );
   }
-
-  const updatedSession: SessionData = {
-    userSessionState,
-    sessionMeta,
-  };
-
-  console.log("setRedisUser:: updatedSession", updatedSession);
-
-  await redis.set(
-    `session:${sessionId}`,
-    JSON.stringify(updatedSession),
-    "EX",
-    sessionTTL
-  );
 };

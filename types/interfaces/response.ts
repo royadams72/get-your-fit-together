@@ -11,7 +11,6 @@ export interface ResponseObj {
   message?: string;
   redirect?: boolean | undefined;
   softError?: boolean | undefined;
-  isError?: boolean | undefined;
 }
 
 export interface ResponseOptions {
