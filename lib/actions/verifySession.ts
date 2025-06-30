@@ -1,3 +1,4 @@
+"use server";
 import redis from "@/lib/db/redisClient";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
 import cookieAction from "@/lib/actions/cookie.action";

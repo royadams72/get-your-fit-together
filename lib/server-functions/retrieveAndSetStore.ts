@@ -5,19 +5,20 @@ import { DbResponse, ResponseObj } from "@/types/interfaces/response";
 
 import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
 import { createPlan } from "@/lib/server-functions/createPlan";
-import { verifySession } from "@/lib/server-functions/verifySession";
+import { verifySession } from "@/lib/actions/verifySession";
 import { isDbResponse } from "@/types/guards/isDbResponse";
 import { setRedisUser } from "../actions/setRedisUser";
 import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { redirectOnError } from "../utils/redirectOnError";
+import { AppError } from "../utils/appError";
 
 export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
     const sessionResult = await verifySession(false);
-    console.log("sessionResult::", sessionResult);
+    // console.log("sessionResult::", sessionResult);
 
     // if (isRedirectResponse(savedState)) {
     //   return savedState;
@@ -26,7 +27,7 @@ export default async function retrieveAndSetStore() {
       return { message: "No user details found", redirect: true };
     }
     const { userSessionState } = sessionResult;
-    console.log("userSessionState:::", userSessionState);
+    // console.log("userSessionState:::", userSessionState);
     savedState = userSessionState;
 
     const {
@@ -76,12 +77,12 @@ export default async function retrieveAndSetStore() {
       }
       // const { uiData, journey } = savedState as RootState;
     }
-    console.log("isRetrieving && isEditing", savedState);
+    // console.log("isRetrieving && isEditing", savedState);
 
     if (!isRetrieving && isEditing) {
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
-      console.log("fitnessPlanFromAI", fitnessPlanFromAI);
-      if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
+      // console.log("fitnessPlanFromAI", fitnessPlanFromAI);
+      // if (isRedirectResponse(fitnessPlanFromAI)) return fitnessPlanFromAI;
       // await redirectOnError(fitnessPlanFromAI);
       if (
         savedState &&
@@ -95,11 +96,28 @@ export default async function retrieveAndSetStore() {
       }
     }
   } catch (error) {
-    console.error("An error occurred in retrieveAndSetStore:", error);
-    return response(
-      `An error occurred in retrieveAndSetStore: ${error}`,
-      ResponseType.redirect
-    );
+    // console.error("An error occurred in retrieveAndSetStore:", error);
+    let result: ResponseObj = {};
+    if (error instanceof AppError) {
+      console.log("error instanceof AppError::", error instanceof AppError);
+
+      result = {
+        redirect: error.action === ResponseType.redirect,
+        softError: error.action === ResponseType.softError,
+        message: error.message,
+      };
+    } else {
+      result = {
+        redirect: true,
+        message: `Unexpected error: ${error}`,
+      };
+    }
+
+    await redirectOnError(result);
+    // return response(
+    //   `An error occurred in retrieveAndSetStore: ${error}`,
+    //   ResponseType.redirect
+    // );
   }
   console.log(savedState);
 

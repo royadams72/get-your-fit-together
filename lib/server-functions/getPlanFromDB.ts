@@ -7,7 +7,7 @@ import { isEmpty } from "@/lib/utils/isEmpty";
 import { UserFormType } from "@/types/interfaces/form";
 
 import { response } from "@/lib/services/response.service";
-import { verifySession } from "./verifySession";
+import { verifySession } from "../actions/verifySession";
 
 export async function getPlanFromDB(userData: UserFormType) {
   try {

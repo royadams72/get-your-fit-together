@@ -6,7 +6,7 @@ import { RootState } from "@/types/interfaces/store";
 import { ResponseType } from "@/types/enums/response.enum";
 import { UserFormType } from "@/types/interfaces/form";
 
-import { verifySession } from "@/lib/server-functions/verifySession";
+import { verifySession } from "@/lib/actions/verifySession";
 import { response } from "@/lib/services/response.service";
 
 type SaveToDBResult = {

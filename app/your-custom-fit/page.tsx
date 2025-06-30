@@ -6,6 +6,6 @@ import { redirectOnError } from "@/lib/utils/redirectOnError";
 
 export default async function YourCustomFitPage() {
   const result = await retrieveAndSetStore();
-  await redirectOnError(result as { redirect: boolean });
+
   return <YourFitWrapper preloadedState={result as State}></YourFitWrapper>;
 }
