@@ -1,21 +1,24 @@
 import { connectToDB } from "@/lib/db/mongodb";
 
-import { DbResponse } from "@/types/interfaces/api";
-import { isDbResponse } from "@/types/guards/db-response";
+import { DbResponse } from "@/types/interfaces/response";
+import { isDbResponse } from "@/types/guards/isDbResponse";
 import { ResponseType } from "@/types/enums/response.enum";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { UserFormType } from "@/types/interfaces/form";
 
 import { response } from "@/lib/services/response.service";
+import { verifySession } from "../actions/verifySession";
 
 export async function getPlanFromDB(userData: UserFormType) {
   try {
+    await verifySession(false);
+
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
 
     if (isEmpty(userData)) {
-      return await response(
-        "No data recieved data was recieved from the form, please try again",
+      return response(
+        "No data was recieved from the form, please try again",
         ResponseType.softError
       );
     }
@@ -33,26 +36,22 @@ export async function getPlanFromDB(userData: UserFormType) {
     );
 
     if (!plan) {
-      return await response(
+      return response(
         "A plan with that user name and password combination was not found",
         ResponseType.softError
       );
     }
 
     if (isDbResponse(plan)) {
-      const { reduxState } = plan;
+      const { reduxState, _id } = plan;
 
-      return reduxState;
+      return { reduxState, _id };
     } else {
-      return await response(
-        "AI returned an unexpected structure, so your plan could not be retrieved",
-        ResponseType.redirect
+      throw new Error(
+        "An unexpected structure was returned, so your plan could not be retrieved"
       );
     }
   } catch (error) {
-    return await response(
-      `There was an unexpected error: ${error}`,
-      ResponseType.redirect
-    );
+    return response(`DB error: ${error}`, ResponseType.redirect);
   }
 }

@@ -23,9 +23,7 @@ const Success = ({ message, mode }: SuccessProps) => {
     dispatch(setStore(defaultState));
     sessionStorage.removeItem("redux-store");
     sessionStorage.removeItem("sessionId");
-    (async () => {
-      await cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
-    })();
+    document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
   }, []);
 
   return (

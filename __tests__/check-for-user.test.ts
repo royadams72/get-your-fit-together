@@ -58,7 +58,7 @@ describe("POST /api/check-plan", () => {
     const json = await response.json();
     expect(json).toEqual({
       error: expect.stringContaining(
-        "Any unexpected error occurred: Error: DB failure"
+        "An unexpected error occurred: Error: DB failure"
       ),
       redirect: true,
     });

@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { CookieAction, Cookie } from "@/types/enums/cookie.enum";
 import cookieAction from "./cookie.action";
-const checkForSession = async () => {
+import { setRedisUser } from "./setRedisUser";
+const createSessionIfNeeded = async () => {
   let sessionId = sessionStorage.getItem("sessionId");
   let sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
@@ -13,6 +14,7 @@ const checkForSession = async () => {
     await cookieAction(CookieAction.set, [Cookie.sessionCookie], [newId]);
     sessionId = newId;
     sessionCookie = newId;
+    setRedisUser(newId);
   }
 
   if (!sessionCookie && sessionId) {
@@ -24,12 +26,5 @@ const checkForSession = async () => {
     sessionStorage.setItem("sessionId", sessionCookie);
     sessionId = sessionCookie;
   }
-
-  console.log(
-    "checkForSession sessionId:",
-    sessionId,
-    "sessionCookie:",
-    sessionCookie
-  );
 };
-export default checkForSession;
+export default createSessionIfNeeded;

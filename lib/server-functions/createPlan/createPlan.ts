@@ -7,13 +7,16 @@ import { ResponseType } from "@/types/enums/response.enum";
 
 import { ENV } from "@/lib/services/env.service";
 import { response } from "@/lib/services/response.service";
+
+import { verifySession } from "@/lib/actions/verifySession";
 import {
   extractState,
   setContent,
-} from "@/lib/server-functions/ai-utils/functions";
-import { aiPrompt } from "@/lib/server-functions/ai-utils/ai-prompt";
+} from "@/lib/server-functions/createPlan/functions";
+import { aiPrompt } from "@/lib/server-functions/createPlan/ai-prompt";
 
 export async function createPlan(state: RootState) {
+  await verifySession(false);
   const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
   const mappedState = extractState(state);
@@ -44,16 +47,15 @@ export async function createPlan(state: RootState) {
     const json = JSON.parse(plan) as { fitnessPlan: FitPlan };
 
     if (!fitPlanGuard(json?.fitnessPlan)) {
-      return await response(
-        "An unexpected structure was returned, your information may be corrupted, please try later",
-        ResponseType.redirect
+      throw new Error(
+        "An unexpected structure was returned, your information may be corrupted, please try later"
       );
     }
 
     return json.fitnessPlan;
   } catch (error) {
-    return await response(
-      `There was an error: ${error}`,
+    return response(
+      `Could not retrieve plan from DB, ${error}`,
       ResponseType.redirect
     );
   }

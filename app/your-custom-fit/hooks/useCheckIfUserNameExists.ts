@@ -4,14 +4,15 @@ import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
 import { checkForUser } from "@/lib/actions/checkForUser";
-import { redirectOnError } from "@/lib/utils/redirectOnError";
+import { redirectOnError } from "@/lib/server-functions/redirectOnError";
+import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
   const [responseError, setResponseError] = useState<{
     message: string;
     messageElement: string;
   }>({ message: "", messageElement: "" });
-
+  const handleClientErrorRedirect = useRedirectOnError();
   useEffect(() => {
     if (
       !userForm ||
@@ -24,6 +25,9 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       let response: any;
       try {
         response = await checkForUser(userForm.value);
+        console.log("response:", response);
+
+        handleClientErrorRedirect(response);
 
         if (response.softError) {
           setResponseError({
@@ -35,10 +39,10 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
         }
       } catch (error) {
         console.error("Error getting data:", error);
+        handleClientErrorRedirect({ message: error as string, redirect: true });
       }
-
-      redirectOnError(response as { redirect: boolean });
     })();
   }, [userForm]);
+
   return { responseError };
 };

@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
-import { DbResponse } from "../interfaces/api";
+import { DbResponse } from "../interfaces/response";
 import { FitPlan } from "../interfaces/fitness-plan";
 import { fitPlanGuard } from "./fitPlanGuard";
 
-export const isDbResponse = (plan: any): plan is DbResponse => {
+export const isDbResponse = (plan: any): plan is Partial<DbResponse> => {
   // const fitPlan: FitPlan = plan?.reduxState?.user?.userFitnessPlan;
   // console.log("fitPlan:::::::::::", plan.reduxState.user.user);
   return (

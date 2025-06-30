@@ -1,5 +1,3 @@
-// lib/server-functions/getErrorLog.ts
-
 import fs from "fs/promises";
 import path from "path";
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
@@ -14,7 +12,7 @@ export const getLastErrorMessage = async (): Promise<string> => {
     ]);
 
     if (!sessionCookie) {
-      return "No session cookie found.";
+      return "No session found.";
     }
 
     const content = await fs.readFile(errorLogPath, "utf-8");
@@ -24,7 +22,10 @@ export const getLastErrorMessage = async (): Promise<string> => {
       .reverse()
       .find((line) => line.startsWith(sessionCookie));
 
-    return lastMatch?.replace(sessionCookie, "") || "No matching error found.";
+    return (
+      lastMatch?.replace(sessionCookie, "") ||
+      "There has been an unexpected error."
+    );
   } catch (err) {
     console.error("Error reading log:", err);
     return "Could not read error log.";
