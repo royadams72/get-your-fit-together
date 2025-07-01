@@ -38,8 +38,6 @@ export const setRedisUser = async (
       sessionMeta,
     };
 
-    console.log("setRedisUser:: updatedSession", updatedSession);
-
     await redis.set(
       `session:${sessionId}`,
       JSON.stringify(updatedSession),

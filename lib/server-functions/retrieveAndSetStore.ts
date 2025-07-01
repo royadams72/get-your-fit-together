@@ -6,7 +6,7 @@ import { DbResponse, ResponseObj } from "@/types/interfaces/response";
 import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
 import { createPlan } from "@/lib/server-functions/createPlan/createPlan";
 import { verifySession } from "@/lib/actions/verifySession";
-import { isDbResponse } from "@/types/guards/isDbResponse";
+import { isStoreInDbResponse } from "@/types/guards/isStoreInDbResponse";
 import { setRedisUser } from "../actions/setRedisUser";
 import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
@@ -34,16 +34,15 @@ export default async function retrieveAndSetStore() {
 
     // Retrieve full state if needed
     if (userName && userPassword && isRetrieving) {
-      const retrievedState:
-        | Partial<DbResponse>
-        | { redirect: boolean }
-        | ResponseObj = await getPlanFromDB({
-        userName,
-        userPassword,
-      });
+      const dbResponse: Partial<DbResponse> | ResponseObj = await getPlanFromDB(
+        {
+          userName,
+          userPassword,
+        }
+      );
 
-      if (isDbResponse(retrievedState)) {
-        const { reduxState, _id } = retrievedState;
+      if (isStoreInDbResponse(dbResponse)) {
+        const { reduxState, _id } = dbResponse;
 
         const {
           uiData: {
@@ -58,12 +57,9 @@ export default async function retrieveAndSetStore() {
           ...(reduxState as Partial<RootState>),
         };
       } else {
-        const result: ResponseObj = {
-          message: "Could not retreive your plan please try again",
-          redirect: true,
-        };
+        console.log("dbResponse::", dbResponse);
 
-        await redirectOnError(result);
+        await redirectOnError(dbResponse);
       }
     }
 
@@ -84,8 +80,6 @@ export default async function retrieveAndSetStore() {
     // console.error("An error occurred in retrieveAndSetStore:", error);
     let result: ResponseObj = {};
     if (error instanceof AppError) {
-      console.log("error instanceof AppError::", error instanceof AppError);
-
       result = {
         redirect: error.action === ResponseType.redirect,
         softError: error.action === ResponseType.softError,
@@ -97,7 +91,7 @@ export default async function retrieveAndSetStore() {
         message: `Unexpected error: ${error}`,
       };
     }
-
+    console.log("result error::", result);
     await redirectOnError(result);
   }
   console.log(savedState);

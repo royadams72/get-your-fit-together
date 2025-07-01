@@ -23,7 +23,7 @@ const cookieAction = async (
     }
   }
 
-  return undefined; // In case nothing
+  return undefined;
 };
 
 export default cookieAction;

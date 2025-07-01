@@ -1,13 +1,14 @@
 import { connectToDB } from "@/lib/db/mongodb";
 
 import { DbResponse } from "@/types/interfaces/response";
-import { isDbResponse } from "@/types/guards/isDbResponse";
+import { isStoreInDbResponse } from "@/types/guards/isStoreInDbResponse";
 import { ResponseType } from "@/types/enums/response.enum";
 import { isEmpty } from "@/lib/utils/isEmpty";
 import { UserFormType } from "@/types/interfaces/form";
 
 import { response } from "@/lib/services/response.service";
 import { verifySession } from "../actions/verifySession";
+import bcrypt from "bcryptjs";
 
 export async function getPlanFromDB(userData: UserFormType) {
   try {
@@ -24,11 +25,10 @@ export async function getPlanFromDB(userData: UserFormType) {
     }
 
     const userName = userData.userName || undefined;
-    const userPassword = userData.userPassword || undefined;
+    const inputPassword = userData.userPassword || undefined;
 
     const documentFilter = {
       "reduxState.user.user.userName": userName,
-      "reduxState.user.user.userPassword": userPassword,
     };
 
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(
@@ -37,13 +37,29 @@ export async function getPlanFromDB(userData: UserFormType) {
 
     if (!plan) {
       return response(
-        "A plan with that user name and password combination was not found",
+        "A plan with that user name was not found",
         ResponseType.softError
       );
     }
 
-    if (isDbResponse(plan)) {
+    if (isStoreInDbResponse(plan)) {
       const { reduxState, _id } = plan;
+      const isMatch = bcrypt.compareSync(
+        inputPassword as string,
+        reduxState.user.user.userPassword
+      );
+      console.log(
+        "isStoreInDbResponse::",
+        reduxState.user.user.userPassword,
+        inputPassword
+      );
+      console.log("isMatch::", isMatch);
+      if (!isMatch) {
+        return response(
+          "A plan with that password was not found",
+          ResponseType.redirect
+        );
+      }
 
       return { reduxState, _id };
     } else {
@@ -52,6 +68,6 @@ export async function getPlanFromDB(userData: UserFormType) {
       );
     }
   } catch (error) {
-    return response(`DB error: ${error}`, ResponseType.redirect);
+    return response(`DB error ${error}`, ResponseType.redirect);
   }
 }

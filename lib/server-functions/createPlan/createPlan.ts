@@ -54,9 +54,6 @@ export async function createPlan(state: RootState) {
 
     return json.fitnessPlan;
   } catch (error) {
-    return response(
-      `Could not retrieve plan from DB, ${error}`,
-      ResponseType.redirect
-    );
+    return response(`Create plan failure, ${error}`, ResponseType.redirect);
   }
 }

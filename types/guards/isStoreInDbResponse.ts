@@ -3,7 +3,7 @@ import { DbResponse } from "../interfaces/response";
 import { FitPlan } from "../interfaces/fitness-plan";
 import { fitPlanGuard } from "./fitPlanGuard";
 
-export const isDbResponse = (plan: any): plan is Partial<DbResponse> => {
+export const isStoreInDbResponse = (plan: any): plan is Partial<DbResponse> => {
   // const fitPlan: FitPlan = plan?.reduxState?.user?.userFitnessPlan;
   // console.log("fitPlan:::::::::::", plan.reduxState.user.user);
   return (

@@ -5,6 +5,7 @@ import { Cookie } from "@/types/enums/cookie.enum";
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { defaultState, setStore } from "@/lib/store/store";
 import Button from "@/components/Button";
+import { PATHS } from "@/routes.config";
 
 interface ErrorProps {
   error: string;
@@ -25,6 +26,13 @@ const Error = ({ error }: ErrorProps) => {
 
       <Button href="/" style={{ maxWidth: "300px", margin: "1rem auto 0" }}>
         Home page
+      </Button>
+      <Button
+        href={PATHS.RETRIEVE_PLAN}
+        style={{ maxWidth: "300px", margin: "1rem auto 0" }}
+        inverted
+      >
+        Retrieve Plan
       </Button>
     </div>
   );

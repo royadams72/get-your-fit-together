@@ -22,7 +22,6 @@ export const fetchHelper = async <T = Record<string, unknown>>(
     const res: any = await fetch(url, options);
 
     const response = await res.json();
-    console.log("fetchHelper", response);
 
     if (response.redirect && isNotEmpty(response.error)) {
       return {
