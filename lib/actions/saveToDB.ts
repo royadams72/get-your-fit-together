@@ -1,6 +1,7 @@
 "use server";
 import { UpdateFilter, Document } from "mongodb";
 import { connectToDB } from "@/lib/db/mongodb";
+import bcrypt from "bcryptjs";
 
 import { RootState } from "@/types/interfaces/store";
 import { ResponseType } from "@/types/enums/response.enum";
@@ -36,14 +37,22 @@ export async function saveToDB(
       );
     }
 
-    const reduxState = {
-      ...restOfState,
-      user: { user: { ...restOfState.user.user, userPassword, userName } },
-    };
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(userPassword as string, salt);
 
     const documentFilter = {
       "reduxState.user.user.userName": userName,
-      "reduxState.user.user.userPassword": userPassword,
+    };
+
+    const reduxState = {
+      ...restOfState,
+      user: {
+        user: {
+          ...restOfState.user.user,
+          userName,
+          userPassword: hashedPassword,
+        },
+      },
     };
 
     const updatePayload: UpdateFilter<Document> = {

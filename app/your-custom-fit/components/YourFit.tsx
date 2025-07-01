@@ -50,7 +50,6 @@ const YourFit = () => {
 
   const savePlan = async (userData: UserFormType, isForm = true) => {
     const response = await saveToDB(savedState, userData);
-    console.log("YourFit", response);
 
     redirectOnError(response as any);
     if ("success" in response && response.success && isForm) {
