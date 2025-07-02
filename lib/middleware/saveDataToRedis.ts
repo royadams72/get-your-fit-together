@@ -1,5 +1,11 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { API } from "@/routes.config";
+import { saveStateToRedis } from "../actions/saveStateToRedis";
+import { response } from "../services/response.service";
+import { ResponseType } from "@/types/enums/response.enum";
+import { AppError } from "../utils/appError";
+import { redirectOnError } from "../server-functions/redirectOnError";
+import { writeError } from "../actions/writeError";
+import { PATHS } from "@/routes.config";
 
 const persistStoreClientSide = (state: any) => {
   if (typeof window !== "undefined") {
@@ -32,23 +38,21 @@ saveDataToRedis.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
     try {
-      const res = await fetch(API.SET_REDIS, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ state }),
-        credentials: "include",
-      });
+      const res = await saveStateToRedis(state);
+      // console.log("Redux middleware::", res);
 
-      if (!res.ok) {
-        console.error(`HTTP error! Status: ${res.status}`);
-        throw new Error(`HTTP error! Status: ${res.status}`);
+      if (!res || res.redirect) {
+        throw new Error(res.message || "Unknown error");
       }
     } catch (error) {
-      Response.json(`There was an error persist middleware: ${error}`, {
-        status: 500,
-      });
+      const message =
+        typeof error === "string"
+          ? error
+          : error instanceof Error
+          ? error.message
+          : "There was an error persist middleware";
+      await writeError(message);
+      window.location.href = PATHS.ERROR;
     }
   },
 });

@@ -8,7 +8,6 @@ const createOrRefreshSession = async () => {
     Cookie.sessionCookie,
   ]);
   let newCookie = "";
-  console.log("createOrRefreshSession running");
 
   const setCookie = async (cookie: string) => {
     return await cookieAction(

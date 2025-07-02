@@ -18,9 +18,16 @@ export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
-    const sessionResult = await verifySession(false);
+    // throw new AppError("this is a test", ResponseType.redirect);
+    // const sessionResult = await verifySession();
+    const sessionResult = await verifySession();
+    // console.log("sessionResult::", sessionResult);
 
-    const { userSessionState } = sessionResult as UserCache;
+    let userSessionState: RootState | undefined;
+    if (sessionResult && "userSessionState" in sessionResult) {
+      userSessionState = (sessionResult as { userSessionState: RootState })
+        .userSessionState;
+    }
     savedState = userSessionState;
 
     const {

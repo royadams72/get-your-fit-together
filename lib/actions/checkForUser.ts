@@ -8,8 +8,7 @@ import { verifySession } from "./verifySession";
 
 export async function checkForUser(userName: string) {
   try {
-    // throw new Error("CheckUser: ");
-    await verifySession(false);
+    await verifySession();
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
     const plan: DbResponse | null = await collection.findOne<DbResponse | null>(

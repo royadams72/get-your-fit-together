@@ -12,7 +12,7 @@ import bcrypt from "bcryptjs";
 
 export async function getPlanFromDB(userData: UserFormType) {
   try {
-    await verifySession(false);
+    await verifySession();
 
     const db = await connectToDB();
     const collection = db.collection("reduxStates");
@@ -48,12 +48,12 @@ export async function getPlanFromDB(userData: UserFormType) {
         inputPassword as string,
         reduxState.user.user.userPassword
       );
-      console.log(
-        "isStoreInDbResponse::",
-        reduxState.user.user.userPassword,
-        inputPassword
-      );
-      console.log("isMatch::", isMatch);
+      // console.log(
+      //   "isStoreInDbResponse::",
+      //   reduxState.user.user.userPassword,
+      //   inputPassword
+      // );
+      // console.log("isMatch::", isMatch);
       if (!isMatch) {
         return response(
           "A plan with that password was not found",

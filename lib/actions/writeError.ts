@@ -10,32 +10,32 @@ import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 
 export const writeError = async (message: string, suppressFailure = true) => {
   try {
-    const sessionResult: UserCache | ResponseObj | null = await verifySession(
-      false
-    );
+    const sessionResult: UserCache | ResponseObj | null = await verifySession();
+    console.log("writeError sessionResult:::::::", sessionResult);
 
-    if (!sessionResult || isRedirectResponse(sessionResult)) {
+    if (
+      !sessionResult ||
+      isRedirectResponse(sessionResult) ||
+      !("userSessionState" in sessionResult)
+    ) {
       throw new Error("Could not verify session");
     }
 
-    const { userSessionState } = sessionResult as UserCache;
-
-    if (!userSessionState) {
-      throw new Error("No user cache could be retrieved");
-    }
-
+    // Ensure sessionResult is of type UserCache before accessing userSessionState
     const {
-      user: {
-        user: { userName },
+      userSessionState: {
+        user: {
+          user: { userName },
+        },
       },
-      uiData: {
-        uiData: { sessionId },
-      },
-    } = userSessionState as RootState;
+      sessionMeta: { sessionId },
+    } = sessionResult;
 
     const timestamp = formatDate(undefined, true);
     const errorStr = `${sessionId} ${userName} ${message} ${timestamp}`;
     const errorPath = path.resolve(process.cwd(), "error-log.txt");
+    console.log("errorStr", errorStr);
+
     await fs.appendFile(errorPath, `${errorStr}\n`);
   } catch (error) {
     /* suppressing failure by default, don't need to redirect,
