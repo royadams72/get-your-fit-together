@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { useAppDispatch } from "@/lib/hooks/storeHooks";
-import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 import { PATHS } from "@/routes.config";
 
@@ -25,8 +24,6 @@ const RetrievePlan = () => {
   const router = useRouter();
   const methods = useForm();
   const { reset } = methods;
-
-  useSetSessionToStore();
 
   const onSubmit = async (user: UserFormType) => {
     dispatch(setUiDataForRetreive());

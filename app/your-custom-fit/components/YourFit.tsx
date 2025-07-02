@@ -44,6 +44,7 @@ const YourFit = () => {
   const isRetrieving = useAppSelector(getIsRetrieving);
   const isSignedIn = useAppSelector(getIsSignedIn);
   const userInfoFromState = useAppSelector(getUserInfo);
+  console.log();
 
   const methods = useForm();
   const { reset } = methods;

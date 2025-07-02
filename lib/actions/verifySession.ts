@@ -20,11 +20,11 @@ export async function verifySession(): Promise<UserCache | null | ResponseObj> {
     const INACTIVITY_LIMIT_MS = 30 * 60 * 1000;
 
     const lastActivityTime = parseInt(lastActivity ?? "");
-    console.log(
-      "verifySession lastActivityTime, lastActivity",
-      lastActivityTime,
-      lastActivity
-    );
+    // console.log(
+    //   "verifySession lastActivityTime, lastActivity",
+    //   lastActivityTime,
+    //   lastActivity
+    // );
 
     const isExpired =
       !lastActivity ||

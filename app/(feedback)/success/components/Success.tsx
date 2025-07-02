@@ -22,8 +22,6 @@ const Success = ({ message, mode }: SuccessProps) => {
   useEffect(() => {
     dispatch(setStore(defaultState));
     sessionStorage.removeItem("redux-store");
-    sessionStorage.removeItem("sessionId");
-    console.log(sessionStorage.getItem("sessionId"));
     (async () => {
       cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
     })();

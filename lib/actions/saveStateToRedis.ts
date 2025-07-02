@@ -5,7 +5,6 @@ import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { CookieAction, Cookie } from "@/types/enums/cookie.enum";
 import cookieAction from "./cookie.action";
-import { verifySession } from "./verifySession";
 
 export async function saveStateToRedis(data: any) {
   const sessionTTL = 86400;

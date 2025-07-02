@@ -1,6 +1,5 @@
-import { RootState, State } from "@/types/interfaces/store";
+import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
-import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 import { DbResponse, ResponseObj } from "@/types/interfaces/response";
 
 import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
@@ -8,11 +7,12 @@ import { createPlan } from "@/lib/server-functions/createPlan/createPlan";
 import { verifySession } from "@/lib/actions/verifySession";
 import { isStoreInDbResponse } from "@/types/guards/isStoreInDbResponse";
 import { setRedisUser } from "../actions/setRedisUser";
-import { response } from "../services/response.service";
+
 import { ResponseType } from "@/types/enums/response.enum";
 import { redirectOnError } from "./redirectOnError";
 import { AppError } from "../utils/appError";
-import { UserCache } from "@/types/interfaces/redis";
+import { SessionMeta } from "@/types/interfaces/redis";
+import { isEmpty } from "../utils/isEmpty";
 
 export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
@@ -24,9 +24,14 @@ export default async function retrieveAndSetStore() {
     // console.log("sessionResult::", sessionResult);
 
     let userSessionState: RootState | undefined;
-    if (sessionResult && "userSessionState" in sessionResult) {
-      userSessionState = (sessionResult as { userSessionState: RootState })
-        .userSessionState;
+    let sessionMeta: SessionMeta | undefined;
+    if (
+      sessionResult &&
+      "userSessionState" in sessionResult &&
+      "sessionMeta" in sessionResult
+    ) {
+      userSessionState = sessionResult.userSessionState as RootState;
+      sessionMeta = sessionResult.sessionMeta;
     }
     savedState = userSessionState;
 
@@ -51,11 +56,7 @@ export default async function retrieveAndSetStore() {
       if (isStoreInDbResponse(dbResponse)) {
         const { reduxState, _id } = dbResponse;
 
-        const {
-          uiData: {
-            uiData: { sessionId },
-          },
-        } = savedState as State;
+        const sessionId = sessionMeta?.sessionId;
 
         setRedisUser(sessionId as string, _id);
 
@@ -69,8 +70,10 @@ export default async function retrieveAndSetStore() {
         await redirectOnError(dbResponse);
       }
     }
+    console.log("!isRetrieving && isEditing", isRetrieving, isEditing);
 
     if (!isRetrieving && isEditing) {
+      console.log("savedState for plan", savedState);
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
       if (
         savedState &&
@@ -82,6 +85,14 @@ export default async function retrieveAndSetStore() {
       ) {
         savedState.user.user.userFitnessPlan = fitnessPlanFromAI as FitPlan;
       }
+    }
+
+    if (
+      !savedState ||
+      isEmpty(savedState) ||
+      isEmpty(savedState.user.user.userFitnessPlan)
+    ) {
+      throw new AppError("this is a test", ResponseType.redirect);
     }
   } catch (error) {
     // console.error("An error occurred in retrieveAndSetStore:", error);
@@ -101,7 +112,6 @@ export default async function retrieveAndSetStore() {
     console.log("result error::", result);
     await redirectOnError(result);
   }
-  console.log(savedState);
 
   return savedState;
 }

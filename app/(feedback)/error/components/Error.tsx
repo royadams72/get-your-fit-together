@@ -11,14 +11,14 @@ interface ErrorProps {
   error: string;
 }
 const Error = ({ error }: ErrorProps) => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(setStore(defaultState));
-  //   sessionStorage.removeItem("redux-store");
-  //   sessionStorage.removeItem("sessionId");
-  //   document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(setStore(defaultState));
+    sessionStorage.removeItem("redux-store");
+    sessionStorage.removeItem("sessionId");
+    document.cookie = `${Cookie.sessionCookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+  }, [dispatch]);
 
   return (
     <div>

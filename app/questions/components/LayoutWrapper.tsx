@@ -5,7 +5,6 @@ import { config } from "@/app/questions/preferences/form-configs/config";
 import { PATHS } from "@/routes.config";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
 
