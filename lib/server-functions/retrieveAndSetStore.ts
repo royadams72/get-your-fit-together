@@ -21,7 +21,7 @@ export default async function retrieveAndSetStore() {
     // throw new AppError("this is a test", ResponseType.redirect);
     // const sessionResult = await verifySession();
     const sessionResult = await verifySession();
-    // console.log("sessionResult::", sessionResult);
+    console.log("sessionResult::", sessionResult);
 
     let userSessionState: RootState | undefined;
     let sessionMeta: SessionMeta | undefined;
@@ -87,13 +87,13 @@ export default async function retrieveAndSetStore() {
       }
     }
 
-    if (
-      !savedState ||
-      isEmpty(savedState) ||
-      isEmpty(savedState.user.user.userFitnessPlan)
-    ) {
-      throw new AppError("this is a test", ResponseType.redirect);
-    }
+    // if (
+    //   !savedState ||
+    //   isEmpty(savedState) ||
+    //   isEmpty(savedState.user.user.userFitnessPlan)
+    // ) {
+    //   throw new AppError("this is a test", ResponseType.redirect);
+    // }
   } catch (error) {
     // console.error("An error occurred in retrieveAndSetStore:", error);
     let result: ResponseObj = {};

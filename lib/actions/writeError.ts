@@ -11,7 +11,7 @@ import { isRedirectResponse } from "@/types/guards/isRedirectResponse";
 export const writeError = async (message: string, suppressFailure = true) => {
   try {
     const sessionResult: UserCache | ResponseObj | null = await verifySession();
-    console.log("writeError sessionResult:::::::", sessionResult);
+    // console.log("writeError sessionResult:::::::", sessionResult);
 
     if (
       !sessionResult ||

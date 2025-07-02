@@ -43,11 +43,11 @@ export async function verifySession(): Promise<UserCache | null | ResponseObj> {
     }
 
     const session = JSON.parse(raw);
+    console.log("verifySession session: ", session);
 
     const userId = session?.userId;
     const anonymous = session?.anonymous;
     const reduxState = session;
-    // console.log("verifySession:", "session: ", session);
 
     return {
       userSessionState: reduxState ?? {},
