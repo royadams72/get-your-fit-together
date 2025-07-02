@@ -12,7 +12,7 @@ export const getLastErrorMessage = async (): Promise<string> => {
     ]);
 
     if (!sessionCookie) {
-      return "No session found.";
+      return "Your session has timed out.";
     }
 
     const content = await fs.readFile(errorLogPath, "utf-8");

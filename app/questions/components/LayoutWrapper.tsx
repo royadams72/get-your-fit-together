@@ -16,7 +16,7 @@ import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
-import createSessionIfNeeded from "@/lib/actions/createSessionIfNeeded";
+import createOrRefreshSession from "@/lib/actions/createOrRefreshSession";
 
 export default function LayoutWrapper({
   children,
@@ -47,7 +47,7 @@ export default function LayoutWrapper({
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
 
       if (isPreferencesPage) {
-        await createSessionIfNeeded();
+        await createOrRefreshSession();
       }
 
       router.push(nextRoute);
