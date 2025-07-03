@@ -11,8 +11,9 @@ export const useResetStore = () => {
   useEffect(() => {
     dispatch(setStore(defaultState));
     sessionStorage.removeItem(Storage.reduxStore);
-    (async () => {
+
+    setTimeout(async () => {
       await cookieAction(CookieAction.set, [Cookie.sessionCookie]);
-    })();
+    }, 4000);
   }, []);
 };
