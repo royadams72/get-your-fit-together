@@ -30,6 +30,11 @@ export default async function retrieveAndSetStore() {
       sessionMeta = sessionResult.sessionMeta;
     }
     savedState = userSessionState;
+    console.log("first savedState from verifySession()::", savedState);
+
+    if (!savedState) {
+      throw new AppError("No saved state found", ResponseType.redirect);
+    }
 
     const {
       user: {
