@@ -22,7 +22,7 @@ export async function saveToDB(
   userData: UserFormType
 ): Promise<SaveToDBResult> {
   try {
-    await verifySession(false);
+    await verifySession();
     const db = await connectToDB();
     const collection = db.collection<Document>("reduxStates");
 

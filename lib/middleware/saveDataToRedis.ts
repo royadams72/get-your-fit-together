@@ -1,11 +1,15 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { API } from "@/routes.config";
+import { Storage } from "@/types/enums/cookie.enum";
+import { PATHS } from "@/routes.config";
+
+import { saveStateToRedis } from "@/lib/actions/saveStateToRedis";
+import { writeError } from "@/lib/actions/writeError";
 
 const persistStoreClientSide = (state: any) => {
   if (typeof window !== "undefined") {
     try {
       const serializedState = JSON.stringify(state);
-      sessionStorage.setItem("redux-store", serializedState);
+      sessionStorage.setItem(Storage.reduxStore, serializedState);
     } catch (error) {
       console.error("Error saving to session storage:", error);
     }
@@ -32,23 +36,21 @@ saveDataToRedis.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
     try {
-      const res = await fetch(API.SET_REDIS, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ state }),
-        credentials: "include",
-      });
+      console.log("Redux middleware::", state);
+      const res = await saveStateToRedis(state);
 
-      if (!res.ok) {
-        console.error(`HTTP error! Status: ${res.status}`);
-        throw new Error(`HTTP error! Status: ${res.status}`);
+      if (!res || res.redirect) {
+        throw new Error(res.message || "Unknown error");
       }
     } catch (error) {
-      Response.json(`There was an error persist middleware: ${error}`, {
-        status: 500,
-      });
+      const message =
+        typeof error === "string"
+          ? error
+          : error instanceof Error
+          ? error.message
+          : "There was an error persist middleware";
+      await writeError(message);
+      window.location.href = PATHS.ERROR;
     }
   },
 });

@@ -4,8 +4,7 @@ import redis from "@/lib/db/redisClient";
 import { response } from "@/lib/services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { RootState } from "@/types/interfaces/store";
-
-const sessionTTL = 86400;
+import { setRedis } from "./setRedis";
 
 interface SessionMeta {
   userId?: string;
@@ -38,12 +37,7 @@ export const setRedisUser = async (
       sessionMeta,
     };
 
-    await redis.set(
-      `session:${sessionId}`,
-      JSON.stringify(updatedSession),
-      "EX",
-      sessionTTL
-    );
+    await setRedis(sessionId, updatedSession);
 
     return { message: "Redis session updated" };
   } catch (error) {

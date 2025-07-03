@@ -16,7 +16,7 @@ import {
 import { aiPrompt } from "@/lib/server-functions/createPlan/ai-prompt";
 
 export async function createPlan(state: RootState) {
-  await verifySession(false);
+  await verifySession();
   const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
   const mappedState = extractState(state);

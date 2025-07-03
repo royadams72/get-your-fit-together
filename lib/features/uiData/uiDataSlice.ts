@@ -9,7 +9,6 @@ export const uiDataInitialState: UiDataState = {
     [UiData.isSignedIn]: false,
     [UiData.isRetrieving]: false,
     [UiData.isEditing]: false,
-    [UiData.sessionId]: "",
   },
 };
 
@@ -31,12 +30,11 @@ export const uiDataSlice = createAppSlice({
   selectors: {
     getUiDataState: (state: UiDataState) => state.uiData,
     getIsSignedIn: (state: UiDataState) => state.uiData.isSignedIn,
-    getSessionId: (state: UiDataState) => state.uiData.sessionId,
     getIsRetrieving: (state: UiDataState) => state.uiData.isRetrieving,
   },
 });
 
 export const { setUiData, setUiDataForRetreive } = uiDataSlice.actions;
 export const uiDataReducer = uiDataSlice.reducer;
-export const { getUiDataState, getIsSignedIn, getSessionId, getIsRetrieving } =
+export const { getUiDataState, getIsSignedIn, getIsRetrieving } =
   uiDataSlice.selectors;

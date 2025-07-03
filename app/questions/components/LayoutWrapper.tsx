@@ -5,7 +5,6 @@ import { config } from "@/app/questions/preferences/form-configs/config";
 import { PATHS } from "@/routes.config";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-import useSetSessionToStore from "@/lib/hooks/useSetSessionToStore";
 
 import { getRoutes, navigate } from "@/lib/features/journey/journeySlice";
 
@@ -16,7 +15,7 @@ import { useRedirectIfInvalidStep } from "@/lib/hooks/useRedirectIfInvalidStep";
 
 import FormProvider from "@/context/FormProvider";
 import JourneyNavigation from "@/components/journeyNav/JourneyNavigation";
-import createSessionIfNeeded from "@/lib/actions/createSessionIfNeeded";
+import createOrRefreshSession from "@/lib/actions/createOrRefreshSession";
 
 export default function LayoutWrapper({
   children,
@@ -31,7 +30,7 @@ export default function LayoutWrapper({
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
 
-  useSetSessionToStore();
+  // useSetSessionToStore();
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
 
@@ -47,7 +46,7 @@ export default function LayoutWrapper({
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
 
       if (isPreferencesPage) {
-        await createSessionIfNeeded();
+        await createOrRefreshSession();
       }
 
       router.push(nextRoute);

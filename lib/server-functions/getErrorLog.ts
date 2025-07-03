@@ -12,7 +12,7 @@ export const getLastErrorMessage = async (): Promise<string> => {
     ]);
 
     if (!sessionCookie) {
-      return "No session found.";
+      return "Your session has timed out.";
     }
 
     const content = await fs.readFile(errorLogPath, "utf-8");
@@ -23,8 +23,7 @@ export const getLastErrorMessage = async (): Promise<string> => {
       .find((line) => line.startsWith(sessionCookie));
 
     return (
-      lastMatch?.replace(sessionCookie, "") ||
-      "There has been an unexpected error."
+      lastMatch?.replace(sessionCookie, "") || "Your session has timed out."
     );
   } catch (err) {
     console.error("Error reading log:", err);

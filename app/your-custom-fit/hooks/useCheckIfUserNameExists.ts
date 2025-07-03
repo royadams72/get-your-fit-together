@@ -4,7 +4,6 @@ import { User } from "@/types/enums/user.enum";
 import { FormValue } from "@/types/interfaces/form";
 
 import { checkForUser } from "@/lib/actions/checkForUser";
-import { redirectOnError } from "@/lib/server-functions/redirectOnError";
 import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
 
 export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
