@@ -3,28 +3,21 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
-
-import { PATHS } from "@/routes.config";
-
-import { setUserInfo } from "@/lib/features/user/userSlice";
-import { setCanNavigateTrue } from "@/lib/features/journey/journeySlice";
-import { setUiDataForRetreive } from "@/lib/features/uiData/uiDataSlice";
-
+import { useAppDispatch } from "@/lib/hooks/storeHooks";
 import { UserFormType } from "@/types/interfaces/form";
 
+import { PATHS } from "@/routes.config";
 import { config } from "@/lib/form-configs/userConfig";
 
-import FormProvider from "@/context/FormProvider";
-import UserForm from "@/components/form/UserForm";
-import Button from "@/components/Button";
 import {
   asyncSetUserInfo,
   asyncSetUiDataForRetreive,
   asyncSetCanNavigateTrue,
 } from "@/lib/store/thunks";
-import { saveStateToRedis } from "@/lib/actions/saveStateToRedis";
-import { selectState } from "@/lib/store/store";
+
+import FormProvider from "@/context/FormProvider";
+import UserForm from "@/components/form/UserForm";
+import Button from "@/components/Button";
 
 const RetrievePlan = () => {
   const dispatch = useAppDispatch();

@@ -1,17 +1,15 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { saveStateToRedis } from "../actions/saveStateToRedis";
-import { response } from "../services/response.service";
-import { ResponseType } from "@/types/enums/response.enum";
-import { AppError } from "../utils/appError";
-import { redirectOnError } from "../server-functions/redirectOnError";
-import { writeError } from "../actions/writeError";
+import { Storage } from "@/types/enums/cookie.enum";
 import { PATHS } from "@/routes.config";
+
+import { saveStateToRedis } from "@/lib/actions/saveStateToRedis";
+import { writeError } from "@/lib/actions/writeError";
 
 const persistStoreClientSide = (state: any) => {
   if (typeof window !== "undefined") {
     try {
       const serializedState = JSON.stringify(state);
-      sessionStorage.setItem("redux-store", serializedState);
+      sessionStorage.setItem(Storage.reduxStore, serializedState);
     } catch (error) {
       console.error("Error saving to session storage:", error);
     }

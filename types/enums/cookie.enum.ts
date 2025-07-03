@@ -7,3 +7,6 @@ export enum CookieAction {
   set = "set",
   get = "get",
 }
+export enum Storage {
+  reduxStore = "redux-store",
+}

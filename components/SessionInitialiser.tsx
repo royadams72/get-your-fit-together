@@ -4,16 +4,37 @@ import { usePathname } from "next/navigation";
 import { PATHS } from "@/routes.config";
 import createOrRefreshSession from "@/lib/actions/createOrRefreshSession";
 import { setRedis } from "@/lib/actions/setRedis";
+import { verifySession } from "@/lib/actions/verifySession";
+
+import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
 
 const SessionInitialiser = () => {
   const pageName = usePathname();
+  const handleClientErrorRedirect = useRedirectOnError();
   useEffect(() => {
     if (pageName === PATHS.YOUR_FIT) return;
-    (async () => {
-      const sessionId = await createOrRefreshSession();
-      console.log("SessionInitialiser called");
 
-      await setRedis(sessionId);
+    (async () => {
+      try {
+        const shouldSetCookie =
+          pageName === "/" ||
+          pageName === PATHS.ABOUT_YOU ||
+          pageName === PATHS.RETRIEVE_PLAN
+            ? true
+            : false;
+        const sessionId = await createOrRefreshSession(shouldSetCookie);
+
+        await setRedis(sessionId);
+        const verifyResponse = await verifySession();
+        console.log("pageName::", pageName);
+
+        if (verifyResponse && "redirect" in verifyResponse) {
+          console.log("Redirecting due to session error:", verifyResponse);
+          handleClientErrorRedirect(verifyResponse);
+        }
+      } catch (error) {
+        handleClientErrorRedirect({ message: error as string, redirect: true });
+      }
     })();
   }, [pageName]);
   return null;

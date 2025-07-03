@@ -3,11 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 import { CookieAction, Cookie } from "@/types/enums/cookie.enum";
 import cookieAction from "./cookie.action";
 
-const createOrRefreshSession = async () => {
+const createOrRefreshSession = async (shouldCreateNew = true) => {
   const sessionCookie = await cookieAction(CookieAction.get, [
     Cookie.sessionCookie,
   ]);
-  let newCookie = "";
 
   const setCookie = async (cookie: string) => {
     return await cookieAction(
@@ -18,14 +17,17 @@ const createOrRefreshSession = async () => {
     );
   };
 
-  if (!sessionCookie) {
-    newCookie = uuidv4();
-    await setCookie(newCookie);
+  let sessionId = sessionCookie;
+
+  if (!sessionCookie && shouldCreateNew) {
+    sessionId = uuidv4();
+    console.log("No session cookie found. Creating new:", sessionId);
   } else {
-    await setCookie(sessionCookie);
+    console.log("Existing session cookie found. Refreshing:", sessionId);
   }
 
-  return sessionCookie || newCookie;
+  await setCookie(sessionId ?? "");
+  return sessionId ?? "";
 };
 
 export default createOrRefreshSession;

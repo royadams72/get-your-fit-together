@@ -1,6 +1,4 @@
 "use server";
-
-import redis from "@/lib/db/redisClient";
 import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { CookieAction, Cookie } from "@/types/enums/cookie.enum";
@@ -16,7 +14,6 @@ export async function saveStateToRedis(data: any) {
     if (!sessionId) {
       throw new Error("Missing sessionId");
     }
-    console.log("saveStateToRedis", data);
 
     const redisResponse = await setRedis(sessionId, data);
 

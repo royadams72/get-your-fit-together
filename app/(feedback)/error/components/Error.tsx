@@ -7,7 +7,7 @@ interface ErrorProps {
   error: string;
 }
 const Error = ({ error }: ErrorProps) => {
-  // useResetStore();
+  useResetStore();
 
   return (
     <div>

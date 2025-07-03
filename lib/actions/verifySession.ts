@@ -7,7 +7,9 @@ import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { ResponseObj } from "@/types/interfaces/response";
 
-export async function verifySession(): Promise<UserCache | null | ResponseObj> {
+export async function verifySession(
+  strict = false
+): Promise<UserCache | null | ResponseObj> {
   try {
     const sessionId = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
@@ -39,14 +41,24 @@ export async function verifySession(): Promise<UserCache | null | ResponseObj> {
 
     const raw = await redis.get(`session:${sessionId}`);
     if (!raw) {
-      throw new Error("Invalid session");
+      if (strict) {
+        throw new Error("No session data found");
+      }
+      return {
+        userSessionState: {},
+        sessionMeta: {
+          userId: null,
+          anonymous: true,
+          sessionId,
+        },
+      } as UserCache;
     }
 
-    const session = JSON.parse(raw);
+    const session = JSON.parse(raw || "{}");
     console.log("verifySession session: ", session);
 
-    const userId = session?.userId;
-    const anonymous = session?.anonymous;
+    const userId = session?.userId ?? null;
+    const anonymous = session?.anonymous ?? true;
     const reduxState = session;
 
     return {

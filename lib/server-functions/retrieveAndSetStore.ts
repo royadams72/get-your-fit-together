@@ -12,16 +12,12 @@ import { ResponseType } from "@/types/enums/response.enum";
 import { redirectOnError } from "./redirectOnError";
 import { AppError } from "../utils/appError";
 import { SessionMeta } from "@/types/interfaces/redis";
-import { isEmpty } from "../utils/isEmpty";
 
 export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
-    // throw new AppError("this is a test", ResponseType.redirect);
-    // const sessionResult = await verifySession();
     const sessionResult = await verifySession();
-    console.log("sessionResult::", sessionResult);
 
     let userSessionState: RootState | undefined;
     let sessionMeta: SessionMeta | undefined;
@@ -65,8 +61,6 @@ export default async function retrieveAndSetStore() {
           ...(reduxState as Partial<RootState>),
         };
       } else {
-        console.log("dbResponse::", dbResponse);
-
         await redirectOnError(dbResponse);
       }
     }
@@ -81,9 +75,11 @@ export default async function retrieveAndSetStore() {
         "user" in savedState &&
         savedState.user &&
         "user" in savedState.user &&
-        savedState.user.user
+        savedState?.user?.user
       ) {
-        savedState.user.user.userFitnessPlan = fitnessPlanFromAI as FitPlan;
+        if (savedState.user && savedState.user.user) {
+          savedState.user.user.userFitnessPlan = fitnessPlanFromAI as FitPlan;
+        }
       }
     }
 
@@ -95,7 +91,6 @@ export default async function retrieveAndSetStore() {
     //   throw new AppError("this is a test", ResponseType.redirect);
     // }
   } catch (error) {
-    // console.error("An error occurred in retrieveAndSetStore:", error);
     let result: ResponseObj = {};
     if (error instanceof AppError) {
       result = {
@@ -109,7 +104,7 @@ export default async function retrieveAndSetStore() {
         message: `Unexpected error: ${error}`,
       };
     }
-    console.log("result error::", result);
+
     await redirectOnError(result);
   }
 
