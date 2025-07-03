@@ -25,7 +25,10 @@ saveDataToRedis.startListening({
       action.type.includes("uiData/") ||
       (currState.user !== prevState.user && action.type.includes("user/")) ||
       (currState.journey !== prevState.journey &&
-        action.type === "journey/setCanNavigateTrue")
+        action.type === "journey/setCanNavigateTrue") ||
+      action.type === "uiData/asyncSetCanNavigateTrue" ||
+      action.type === "uiData/asyncSetUiDataForRetreive" ||
+      action.type === "user/asyncSetUserInfo"
     ) {
       persistStoreClientSide(currState);
       return true;

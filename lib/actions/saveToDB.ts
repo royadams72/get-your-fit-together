@@ -19,7 +19,8 @@ type SaveToDBResult = {
 
 export async function saveToDB(
   savedState: RootState,
-  userData: UserFormType
+  userData: UserFormType,
+  isForm: boolean
 ): Promise<SaveToDBResult> {
   try {
     await verifySession();
@@ -30,7 +31,7 @@ export async function saveToDB(
     const userName = userData?.userName || undefined;
     const userPassword = userData?.userPassword || undefined;
 
-    if (!userPassword && !userName) {
+    if (!userPassword || !userName) {
       return response(
         "Please provide a username and password",
         ResponseType.softError
@@ -38,7 +39,9 @@ export async function saveToDB(
     }
 
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(userPassword as string, salt);
+    const hashedPassword = isForm
+      ? bcrypt.hashSync(userPassword, salt)
+      : userPassword;
 
     const documentFilter = {
       "reduxState.user.user.userName": userName,
