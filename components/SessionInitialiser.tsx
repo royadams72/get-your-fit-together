@@ -26,10 +26,8 @@ const SessionInitialiser = () => {
 
         await setRedis(sessionId);
         const verifyResponse = await verifySession();
-        console.log("pageName::", pageName);
 
         if (verifyResponse && "redirect" in verifyResponse) {
-          console.log("Redirecting due to session error:", verifyResponse);
           handleClientErrorRedirect(verifyResponse);
         }
       } catch (error) {

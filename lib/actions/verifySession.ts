@@ -55,8 +55,6 @@ export async function verifySession(
     }
 
     const session = JSON.parse(raw || "{}");
-    console.log("verifySession session: ", session);
-
     const userId = session?.userId ?? null;
     const anonymous = session?.anonymous ?? true;
     const reduxState = session;

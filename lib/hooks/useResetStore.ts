@@ -13,7 +13,7 @@ export const useResetStore = () => {
     sessionStorage.removeItem(Storage.reduxStore);
 
     setTimeout(async () => {
-      await cookieAction(CookieAction.set, [Cookie.sessionCookie]);
+      await cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
     }, 4000);
   }, []);
 };
