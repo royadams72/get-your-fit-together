@@ -31,7 +31,7 @@ const RetrievePlan = () => {
     await dispatch(asyncSetUiDataForRetreive());
     await dispatch(asyncSetCanNavigateTrue());
 
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     console.log("setUserInfo(user)", user);
 

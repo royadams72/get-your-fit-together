@@ -44,18 +44,16 @@ export async function getPlanFromDB(userData: UserFormType) {
 
     if (isStoreInDbResponse(plan)) {
       const { reduxState, _id } = plan;
-      const isMatch = bcrypt.compareSync(
-        inputPassword as string,
-        reduxState.user.user.userPassword
-      );
-      console.log("for DB:::::", reduxState.user.user.userPassword);
 
-      console.log(
-        "isStoreInDbResponse::",
-        reduxState.user.user.userPassword,
-        inputPassword
-      );
-      console.log("isMatch::", isMatch);
+      if (typeof inputPassword !== "string") {
+        return response(
+          "No password was provided, please try again",
+          ResponseType.softError
+        );
+      }
+      const hash = reduxState.user.user.userPassword;
+      const isMatch = bcrypt.compareSync(inputPassword, hash);
+
       if (!isMatch) {
         return response(
           "A plan with that password was not found",
