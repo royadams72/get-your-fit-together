@@ -26,13 +26,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "20"
+          node-version: "22.15.0"
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
-      # - name: Run tests
-      #   run: npm test
+      - name: Run tests
+        run: npm test
 
       - name: Build project
         run: npm run build

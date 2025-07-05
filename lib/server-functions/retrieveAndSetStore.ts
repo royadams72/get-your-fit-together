@@ -17,10 +17,11 @@ export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
 
   try {
-    const sessionResult = await verifySession();
+    const sessionResult = await verifySession(true);
 
     let userSessionState: RootState | undefined;
     let sessionMeta: SessionMeta | undefined;
+
     if (
       sessionResult &&
       "userSessionState" in sessionResult &&

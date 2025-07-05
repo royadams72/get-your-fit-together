@@ -8,3 +8,4 @@ process.env.MONGODB_URI = "mongodb/api/url";
 process.env.OPENAI_API_KEY = "openapiKey1234";
 process.env.MONGODB_DB_NAME = "MONGODB_DB_NAME";
 process.env.GYFT_REDIS_URL = "localhost:6379";
+process.env.REDIS_KEY_PREFIX = "GYFTapp:";
