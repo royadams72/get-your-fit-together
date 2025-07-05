@@ -5,14 +5,31 @@
 import { checkForUser } from "./checkForUser";
 import { connectToDB } from "@/lib/db/mongodb";
 
-jest.mock("@/lib/db/mongodb");
+// ✅ Fully mock the DB module
+jest.mock("@/lib/db/mongodb", () => ({
+  connectToDB: jest.fn(),
+}));
+
+const mockConnectToDB = connectToDB as jest.Mock;
 
 const mockFindOne = jest.fn();
+jest.mock("@/lib/db/redisClient", () => ({
+  default: {
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+  },
+}));
+beforeEach(() => {
+  mockConnectToDB.mockResolvedValue({
+    collection: jest.fn().mockReturnValue({
+      findOne: mockFindOne,
+    }),
+  });
+});
 
-(connectToDB as jest.Mock).mockResolvedValue({
-  collection: jest.fn().mockReturnValue({
-    findOne: mockFindOne,
-  }),
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe("Check for user", () => {
