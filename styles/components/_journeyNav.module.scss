@@ -1,11 +1,37 @@
+@use "../abstracts/mixins" as *;
+
 .journeyNav {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15rem;
+
+  @include breakpoint("sm", "max") {
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: unset;
+    gap: 2rem;
+    .nextBtn {
+      order: 1;
+    }
+    .prevBtn {
+      order: 2;
+    }
+  }
+
+  @include breakpoint("sm") {
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column-reverse;
+    grid-template-rows: unset;
+    gap: 8rem;
+    .nextBtn {
+      order: 2;
+    }
+    .prevBtn {
+      order: 1;
+    }
+  }
 }
 
 .journeyNavSingle {
   grid-template-columns: 1fr;
+  grid-template-rows: auto;
   justify-items: end;
   button,
   a {
