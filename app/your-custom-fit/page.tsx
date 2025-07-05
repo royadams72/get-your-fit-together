@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { State } from "@/types/interfaces/store";
 import retrieveAndSetStore from "@/lib/server-functions/retrieveAndSetStore";
 import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";

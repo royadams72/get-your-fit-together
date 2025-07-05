@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Error from "./components/Error";
 
 import { getLastErrorMessage } from "@/lib/server-functions/getErrorLog";
