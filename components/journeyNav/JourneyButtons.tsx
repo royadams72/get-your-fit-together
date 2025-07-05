@@ -29,12 +29,12 @@ export const JourneyButtons = ({
       }`}
     >
       {prevRoute && (
-        <Button href={prevRoute} aux={true}>
+        <Button className={styles.prevBtn} href={prevRoute} aux={true}>
           Back
         </Button>
       )}
       {nextRoute && (
-        <Button type="button" onClick={handleSubmit}>
+        <Button className={styles.nextBtn} type="button" onClick={handleSubmit}>
           {nextBtn}
         </Button>
       )}
