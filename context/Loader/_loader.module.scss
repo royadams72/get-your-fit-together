@@ -1,7 +1,6 @@
-@mixin animateCopy($delay, $playOut: false) {
-  // visibility: visible;
-  // max-height: 100px;
+@use "/styles/abstracts/mixins" as *;
 
+@mixin animateCopy($delay, $playOut: false) {
   @if $playOut {
     animation: delayedShow 0.5s ease-in $delay forwards,
       delayedHide 0.5s ease-in calc($delay + 5000ms) forwards;
@@ -61,6 +60,16 @@
   background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
   background-size: calc(100% / 3) 100%;
   animation: l7 1s infinite ease-out;
+}
+
+.mainCopy {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  text-align: center;
+
+  @include breakpoint("md") {
+    padding: 0;
+  }
 }
 
 @keyframes delayedShow {

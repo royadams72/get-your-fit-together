@@ -1,10 +1,13 @@
 export const dynamic = "force-dynamic";
-import { State } from "@/types/interfaces/store";
-import retrieveAndSetStore from "@/lib/server-functions/retrieveAndSetStore";
-import YourFitWrapper from "@/app/your-custom-fit/components/YourFitWrapper";
+
+import { Suspense } from "react";
+import YourFitContainer from "./components/YourFitContainer";
+import Loader from "@/context/Loader/Loader";
 
 export default async function YourCustomFitPage() {
-  const result = await retrieveAndSetStore();
-
-  return <YourFitWrapper preloadedState={result as State}></YourFitWrapper>;
+  return (
+    <Suspense fallback={<Loader />}>
+      <YourFitContainer></YourFitContainer>
+    </Suspense>
+  );
 }

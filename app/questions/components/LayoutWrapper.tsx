@@ -30,7 +30,6 @@ export default function LayoutWrapper({
   let formErrors = {};
   const isPreferencesPage = pageName === PATHS.PREFERENCES;
 
-  // useSetSessionToStore();
   const isInvalidStep = useRedirectIfInvalidStep();
   useMarkAsEditingUntilYourFit();
 

@@ -13,7 +13,7 @@ const Loader = ({ isGeneric }: { isGeneric?: boolean }) => {
         )}
         <div className={styles.loaderAnim}></div>
         {!isGeneric && (
-          <h4 style={{ marginTop: "10px" }}>
+          <h4 className={styles.mainCopy}>
             Plan creation can take a while, so please be patient.
           </h4>
         )}
