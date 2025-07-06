@@ -48,7 +48,7 @@
       var(--tertiary-colour),
       var(--app-body-font),
       normal,
-      0 0 1rem 2rem
+      0 0 1rem 1.5rem
     );
   }
 }
@@ -71,8 +71,7 @@
       var(--app-body-font),
       normal
     );
-    margin-left: 2rem;
-    margin-bottom: 1rem;
+    margin: 1.5rem;
   }
 
   &Error {
