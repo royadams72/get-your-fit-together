@@ -1,17 +1,16 @@
 import { RootState } from "@/types/interfaces/store";
 import { FitPlan } from "@/types/interfaces/fitness-plan";
 import { DbResponse, ResponseObj } from "@/types/interfaces/response";
+import { isStoreInDbResponse } from "@/types/guards/isStoreInDbResponse";
+import { ResponseType } from "@/types/enums/response.enum";
+import { SessionMeta } from "@/types/interfaces/redis";
 
 import { getPlanFromDB } from "@/lib/server-functions/getPlanFromDB";
 import { createPlan } from "@/lib/server-functions/createPlan/createPlan";
 import { verifySession } from "@/lib/actions/verifySession";
-import { isStoreInDbResponse } from "@/types/guards/isStoreInDbResponse";
-import { setRedisUser } from "../actions/setRedisUser";
-
-import { ResponseType } from "@/types/enums/response.enum";
-import { redirectOnError } from "./redirectOnError";
-import { AppError } from "../utils/appError";
-import { SessionMeta } from "@/types/interfaces/redis";
+import { redirectOnError } from "@/lib/server-functions/redirectOnError";
+import { setRedisUser } from "@/lib/actions/setRedisUser";
+import { AppError } from "@/lib/utils/appError";
 
 export default async function retrieveAndSetStore() {
   let savedState: RootState | ResponseObj | Partial<DbResponse> | undefined;
@@ -31,7 +30,6 @@ export default async function retrieveAndSetStore() {
       sessionMeta = sessionResult.sessionMeta;
     }
     savedState = userSessionState;
-    console.log("first savedState from verifySession()::", savedState);
 
     if (!savedState) {
       throw new AppError("No saved state found", ResponseType.redirect);
@@ -70,10 +68,9 @@ export default async function retrieveAndSetStore() {
         await redirectOnError(dbResponse);
       }
     }
-    console.log("!isRetrieving && isEditing", isRetrieving, isEditing);
 
     if (!isRetrieving && isEditing) {
-      console.log("savedState for plan", savedState);
+      // console.log("savedState for plan", savedState);
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
       if (
         savedState &&
@@ -88,14 +85,6 @@ export default async function retrieveAndSetStore() {
         }
       }
     }
-
-    // if (
-    //   !savedState ||
-    //   isEmpty(savedState) ||
-    //   isEmpty(savedState.user.user.userFitnessPlan)
-    // ) {
-    //   throw new AppError("this is a test", ResponseType.redirect);
-    // }
   } catch (error) {
     let result: ResponseObj = {};
     if (error instanceof AppError) {

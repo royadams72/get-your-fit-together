@@ -45,7 +45,7 @@ export default function LayoutWrapper({
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
 
       if (isPreferencesPage) {
-        await createOrRefreshSession();
+        await createOrRefreshSession(false);
       }
 
       router.push(nextRoute);

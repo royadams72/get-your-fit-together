@@ -39,7 +39,7 @@ saveDataToRedis.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
     try {
-      console.log("Redux middleware::", state);
+      // console.log("Redux middleware::", state);
       const res = await saveStateToRedis(state);
 
       if (!res || res.redirect) {

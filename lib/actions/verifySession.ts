@@ -1,11 +1,14 @@
 "use server";
 import redis from "@/lib/db/redisClient";
+
 import { Cookie, CookieAction } from "@/types/enums/cookie.enum";
-import cookieAction from "@/lib/actions/cookie.action";
 import { UserCache } from "@/types/interfaces/redis";
-import { response } from "../services/response.service";
 import { ResponseType } from "@/types/enums/response.enum";
 import { ResponseObj } from "@/types/interfaces/response";
+import { SESSION_TTL_MS, SESSION_TTL_SECONDS } from "@/lib/constants/session";
+
+import cookieAction from "@/lib/actions/cookie.action";
+import { response } from "@/lib/services/response.service";
 
 export async function verifySession(
   strict = false
@@ -14,24 +17,15 @@ export async function verifySession(
     const sessionId = await cookieAction(CookieAction.get, [
       Cookie.sessionCookie,
     ]);
-    if (!sessionId) {
-      throw new Error("Session has expired");
-    }
+    if (!sessionId) throw new Error("Session has expired");
 
     const lastActivity = await redis.get(`session:${sessionId}:lastActivity`);
-    const INACTIVITY_LIMIT_MS = 30 * 60 * 1000;
-
     const lastActivityTime = parseInt(lastActivity ?? "");
-    // console.log(
-    //   "verifySession lastActivityTime, lastActivity",
-    //   lastActivityTime,
-    //   lastActivity
-    // );
 
     const isExpired =
       !lastActivity ||
       isNaN(lastActivityTime) ||
-      Date.now() - lastActivityTime > INACTIVITY_LIMIT_MS;
+      Date.now() - lastActivityTime > SESSION_TTL_MS;
 
     if (isExpired) {
       await redis.del(`session:${sessionId}`);
@@ -39,11 +33,17 @@ export async function verifySession(
       throw new Error("Session expired due to inactivity");
     }
 
+    // Refresh lastActivity
+    await redis.set(
+      `session:${sessionId}:lastActivity`,
+      Date.now().toString(),
+      "EX",
+      SESSION_TTL_SECONDS
+    );
+
     const raw = await redis.get(`session:${sessionId}`);
     if (!raw) {
-      if (strict) {
-        throw new Error("No session data found");
-      }
+      if (strict) throw new Error("No session data found");
       return {
         userSessionState: {},
         sessionMeta: {
@@ -54,16 +54,12 @@ export async function verifySession(
       } as UserCache;
     }
 
-    const session = JSON.parse(raw || "{}");
-    const userId = session?.userId ?? null;
-    const anonymous = session?.anonymous ?? true;
-    const reduxState = session;
-
+    const session = JSON.parse(raw);
     return {
-      userSessionState: reduxState ?? {},
+      userSessionState: session ?? {},
       sessionMeta: {
-        userId,
-        anonymous,
+        userId: session?.userId ?? null,
+        anonymous: session?.anonymous ?? true,
         sessionId,
       },
     };
