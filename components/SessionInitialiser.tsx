@@ -24,7 +24,9 @@ const SessionInitialiser = () => {
             : false;
         const sessionId = await createOrRefreshSession(shouldSetCookie);
 
-        await setRedis(sessionId);
+        if (sessionId) {
+          await setRedis(sessionId);
+        }
         const verifyResponse = await verifySession();
 
         if (verifyResponse && "redirect" in verifyResponse) {
