@@ -8,10 +8,10 @@ export const API = {
 };
 
 export const JOURNEY_PATHS = [
-  "/questions/about-you",
-  "/questions/injuries",
-  "/questions/your-goals",
-  "/questions/preferences",
+  "/about-you",
+  "/injuries",
+  "/your-goals",
+  "/preferences",
   "/your-custom-fit",
 ];
 

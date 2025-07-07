@@ -1,11 +1,11 @@
 import { AboutYou } from "@/types/enums/about-you.enum";
 import { Radio, Select } from "@/types/interfaces/form";
-import { heightTogglgOptions } from "@/app/questions/about-you/form-configs/options/height";
-import { weightTogglgOptions } from "@/app/questions/about-you/form-configs/options/weight";
+import { heightTogglgOptions } from "@/app/(questions)/about-you/form-configs/options/height";
+import { weightTogglgOptions } from "@/app/(questions)/about-you/form-configs/options/weight";
 import {
   experienceLevelOptions,
   bodyTypeOptions,
-} from "@/app/questions/about-you/form-configs/options/aboutYou";
+} from "@/app/(questions)/about-you/form-configs/options/aboutYou";
 
 export const yesNoRadioOptions = [
   { value: "yes", label: "Yes", id: "yes" },

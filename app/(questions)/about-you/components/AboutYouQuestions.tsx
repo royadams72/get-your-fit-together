@@ -7,7 +7,7 @@ import {
   setAboutYou,
 } from "@/lib/features/about-you/aboutYouSlice";
 
-import { config } from "@/app/questions/about-you/form-configs/config";
+import { config } from "@/app/(questions)/about-you/form-configs/config";
 
 import SelectComponent from "@/components/form/SelectComponent";
 import RadioComponent from "@/components/form/RadioComponent";

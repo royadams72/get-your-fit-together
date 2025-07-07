@@ -1,11 +1,28 @@
 @use "./commonStyles.module" as *;
 
-$afterHeight: 2rem;
 $afterWidth: 1.4rem;
+$afterHeight: 1.4rem;
 
 .selectDiv {
   position: relative;
   width: 100%;
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    height: 5rem;
+    padding: 0 4rem 0 2rem; // space for arrow
+
+    background-color: var(--white);
+    background-image: url("/downArrow.png");
+    background-repeat: no-repeat;
+    background-position: right 1.7rem center;
+    background-size: $afterWidth $afterHeight;
+
+    cursor: pointer;
+  }
 
   ul {
     display: grid;
@@ -25,30 +42,5 @@ $afterWidth: 1.4rem;
       background-color: var(--senary-colour);
       color: var(--white);
     }
-  }
-}
-
-.selectDiv:after {
-  content: "";
-  background-image: url("/downArrow.png");
-  background-size: $afterHeight $afterWidth;
-  background-repeat: no-repeat;
-  width: $afterHeight;
-  height: $afterWidth;
-  top: 5.3rem;
-  right: 1.7rem;
-  position: absolute;
-  pointer-events: none;
-}
-
-.selectDiv select {
-  appearance: none;
-  display: block;
-  width: 100%;
-  height: 5rem;
-  padding: 0px 4rem 0 2rem;
-  word-break: break-all;
-  &::-ms-expand {
-    display: none;
   }
 }

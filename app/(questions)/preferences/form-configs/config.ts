@@ -7,7 +7,7 @@ import {
   timeOptions,
   workoutCheckboxes,
   workoutTimeOptions,
-} from "@/app/questions/preferences/form-configs/options/options";
+} from "@/app/(questions)/preferences/form-configs/options/options";
 
 export const config = {
   workoutType: <CheckBoxGroup>{

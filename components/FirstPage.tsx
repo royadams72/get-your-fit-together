@@ -1,6 +1,7 @@
 import { KeyValueMap } from "@/types/interfaces/KeyValueMap";
 import Button from "./Button";
 import CopyComponent from "./CopyComponent";
+import { PATHS } from "@/routes.config";
 
 const FirstPage = ({ copy }: { copy: KeyValueMap[] }) => {
   return (
@@ -9,10 +10,10 @@ const FirstPage = ({ copy }: { copy: KeyValueMap[] }) => {
         <CopyComponent copy={copy} />
       </div>
       <div className="btnContainer">
-        <Button href={"questions/about-you"}>
+        <Button href={PATHS.ABOUT_YOU}>
           Get Started With Your Fitness Plan
         </Button>
-        <Button inverted={true} href={"retrieve-plan"}>
+        <Button inverted={true} href={PATHS.RETRIEVE_PLAN}>
           Retrieve Your Fitness Plan
         </Button>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 
-import { config } from "@/app/questions/preferences/form-configs/config";
+import { config } from "../preferences/form-configs/config";
 import { PATHS } from "@/routes.config";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/storeHooks";
