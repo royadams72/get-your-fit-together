@@ -1,7 +1,9 @@
+"use client";
 import { KeyValueMap } from "@/types/interfaces/KeyValueMap";
 import Button from "./Button";
 import CopyComponent from "./CopyComponent";
 import { PATHS } from "@/routes.config";
+import Modal from "./Modal";
 
 const FirstPage = ({ copy }: { copy: KeyValueMap[] }) => {
   return (
@@ -18,6 +20,20 @@ const FirstPage = ({ copy }: { copy: KeyValueMap[] }) => {
         </Button>
       </div>
       <div className="coach-image"></div>
+      <Modal>
+        <Modal.Open opens="example">
+          <Button>Open Modal</Button>
+        </Modal.Open>
+
+        <Modal.Window name="example">
+          {({ onCloseModal }) => (
+            <div>
+              <h2>Hello from the modal</h2>
+              <Button onClick={onCloseModal}>Close</Button>
+            </div>
+          )}
+        </Modal.Window>
+      </Modal>
     </>
   );
 };
