@@ -4,15 +4,7 @@ import { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 
-const Modal = ({
-  children,
-  name,
-  open,
-}: {
-  children: ReactNode;
-  name: string;
-  open: boolean;
-}) => {
+const Modal = ({ children, open }: { children: ReactNode; open: boolean }) => {
   const ref = useOutsideClick(close) as React.RefObject<HTMLDialogElement>;
 
   if (!open) return null;

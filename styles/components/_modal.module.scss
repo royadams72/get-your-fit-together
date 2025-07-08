@@ -8,17 +8,26 @@
   backdrop-filter: blur(0.6rem);
   z-index: 100000;
   transition: all 0.5s;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .modal {
+  all: unset;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--tertiary-colour);
   border-radius: var(--border-radius-large);
-  border-width: 0.2rem;
-  border-color: var(--quaternary-colour);
-  padding: 3.2rem 4rem;
+  border: 0.2rem solid var(--quaternary-colour);
+  width: calc(100% - 10rem);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem;
   transition: all 0.5s;
+  text-align: center;
+  Button {
+    margin: 2rem auto 0 auto;
+  }
 }

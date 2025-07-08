@@ -3,8 +3,9 @@ import { useRouter } from "next/navigation";
 import { SESSION_TTL_MS } from "@/lib/constants/session";
 import { useState, useCallback, useEffect } from "react";
 import { getLastActivity } from "@/lib/actions/getLastActivity";
-import Modal2 from "./Modal2";
+import Modal from "./Modal";
 import { JOURNEY_PATHS } from "@/routes.config";
+import createOrRefreshSession from "@/lib/actions/createOrRefreshSession";
 
 export default function HandleSessionTimeout({
   pageName,
@@ -13,7 +14,7 @@ export default function HandleSessionTimeout({
 }) {
   const router = useRouter();
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [sessionTimeout, setSessionTimeout] = useState(false);
 
   const handleSetShowModal = (isVisible: boolean) => {
@@ -22,16 +23,13 @@ export default function HandleSessionTimeout({
 
   // Polls session TTL and sets remaining
   const pollSession = useCallback(async () => {
-    console.log(
-      "JOURNEY_PATHS.includes(pageName)",
-      JOURNEY_PATHS.includes(pageName)
-    );
-
     if (!JOURNEY_PATHS.includes(pageName)) return;
+
     const last = await getLastActivity();
     if (last) {
       const elapsed = Date.now() - last;
       const left = Math.max(SESSION_TTL_MS - elapsed, 0);
+      console.log("left", left);
       setRemaining(left);
 
       if (left <= 60_000 && !showModal) {
@@ -42,19 +40,23 @@ export default function HandleSessionTimeout({
     }
   }, [showModal, pageName]);
 
+  const resetSession = () => {
+    (async () => {
+      await createOrRefreshSession(false);
+
+      pollSession();
+      handleSetShowModal(false);
+    })();
+  };
   // Initial polling and scheduling
   useEffect(() => {
     if (!JOURNEY_PATHS.includes(pageName)) return;
     let timeoutId: NodeJS.Timeout;
-
+    console.log("schedule::");
     const schedule = async () => {
       const next = await pollSession();
       if (next === undefined || next <= 0) {
         setSessionTimeout(true);
-        // console.log("pageName schedule use effect", pageName);
-        // setShowModal(false);
-        // console.log("schedule use effect", sessionTimeout);
-        // router.push("/error");
       } else {
         timeoutId = setTimeout(schedule, next);
       }
@@ -72,12 +74,6 @@ export default function HandleSessionTimeout({
         if (rem === null) return rem;
         const next = rem - 1000;
         if (next <= 0) {
-          console.log("tick use effect", sessionTimeout);
-          // router.push("/error");
-          setSessionTimeout((prev) => {
-            console.log("setting sessionTimeout in tick, prev =", prev);
-            return true;
-          });
           clearInterval(tick);
           return 0;
         }
@@ -88,11 +84,10 @@ export default function HandleSessionTimeout({
   }, [showModal, pageName]);
 
   useEffect(() => {
-    console.log("sessionTimeout use effect", sessionTimeout);
-
     if (sessionTimeout) {
       setShowModal(false);
       router.push("/error");
+      setSessionTimeout(false);
     }
   }, [sessionTimeout, router]);
 
@@ -100,21 +95,15 @@ export default function HandleSessionTimeout({
 
   const seconds = Math.ceil(remaining / 1000);
   return (
-    <Modal2 name="session" open={showModal}>
+    <Modal open={showModal}>
       <div>
         <h2>Session expiring!</h2>
+        <h2>Are you still there?</h2>
         <p style={{ color: "black" }}>
           Redirecting in {seconds} second{seconds !== 1 ? "s" : ""}…
         </p>
-        <Button
-          onClick={() => {
-            pollSession();
-            handleSetShowModal(false);
-          }}
-        >
-          Stay Logged In
-        </Button>
+        <Button onClick={resetSession}>Yes!</Button>
       </div>
-    </Modal2>
+    </Modal>
   );
 }
