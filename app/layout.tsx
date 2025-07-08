@@ -7,6 +7,9 @@ import RootUIComponent from "@/components/RootUIComponent";
 export const metadata: Metadata = {
   title: "Get Your Fit Together",
   description: "Fitness app",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 const RootLayout = async ({
