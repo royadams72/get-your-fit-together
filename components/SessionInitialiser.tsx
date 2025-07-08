@@ -1,12 +1,12 @@
 "use client";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { PATHS } from "@/routes.config";
+
+import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
+
 import createOrRefreshSession from "@/lib/actions/createOrRefreshSession";
 import { setRedis } from "@/lib/actions/setRedis";
 import { verifySession } from "@/lib/actions/verifySession";
-
-import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
 
 const SessionInitialiser = ({ pageName }: { pageName: string }) => {
   const handleClientErrorRedirect = useRedirectOnError();

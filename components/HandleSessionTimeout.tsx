@@ -14,7 +14,7 @@ export default function HandleSessionTimeout({
 }) {
   const router = useRouter();
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState(false);
 
   const handleSetShowModal = (isVisible: boolean) => {
@@ -29,7 +29,6 @@ export default function HandleSessionTimeout({
     if (last) {
       const elapsed = Date.now() - last;
       const left = Math.max(SESSION_TTL_MS - elapsed, 0);
-      console.log("left", left);
       setRemaining(left);
 
       if (left <= 60_000 && !showModal) {
@@ -52,7 +51,6 @@ export default function HandleSessionTimeout({
   useEffect(() => {
     if (!JOURNEY_PATHS.includes(pageName)) return;
     let timeoutId: NodeJS.Timeout;
-    console.log("schedule::");
     const schedule = async () => {
       const next = await pollSession();
       if (next === undefined || next <= 0) {

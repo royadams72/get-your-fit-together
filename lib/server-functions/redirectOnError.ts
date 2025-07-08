@@ -9,7 +9,6 @@ export const redirectOnError = async ({
   redirect,
   softError,
 }: ResponseObj) => {
-  console.log("redirect && message", redirect, message);
   if (redirect && message) {
     await writeError(message);
     redirectTo(PATHS.ERROR as string);
