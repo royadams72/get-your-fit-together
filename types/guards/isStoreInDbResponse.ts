@@ -5,7 +5,6 @@ import { fitPlanGuard } from "./fitPlanGuard";
 
 export const isStoreInDbResponse = (plan: any): plan is Partial<DbResponse> => {
   // const fitPlan: FitPlan = plan?.reduxState?.user?.userFitnessPlan;
-  // console.log("fitPlan:::::::::::", plan.reduxState.user.user);
   return (
     plan !== null &&
     typeof plan === "object" &&

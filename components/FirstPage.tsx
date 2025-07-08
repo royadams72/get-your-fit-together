@@ -1,3 +1,4 @@
+"use client";
 import { KeyValueMap } from "@/types/interfaces/KeyValueMap";
 import Button from "./Button";
 import CopyComponent from "./CopyComponent";

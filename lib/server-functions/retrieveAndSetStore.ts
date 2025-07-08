@@ -70,7 +70,6 @@ export default async function retrieveAndSetStore() {
     }
 
     if (!isRetrieving && isEditing) {
-      // console.log("savedState for plan", savedState);
       const fitnessPlanFromAI = await createPlan(savedState as RootState);
       if (
         savedState &&

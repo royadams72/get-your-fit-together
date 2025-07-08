@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import styles from "@/styles/components/_rootLayout.module.scss";
 import Header from "./Header";
 import SessionInitialiser from "@/components/SessionInitialiser";
+import HandleSessionTimeout from "./HandleSessionTimeout";
 
 const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
   const pageName = usePathname();
@@ -15,7 +16,8 @@ const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main>
-      <SessionInitialiser />
+      <HandleSessionTimeout pageName={pageName} />
+      <SessionInitialiser pageName={pageName} />
       <Header
         isFirstPage={isFirstPage}
         centrePageLayout={centrePageLayout}

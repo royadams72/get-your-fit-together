@@ -33,7 +33,6 @@ export const writeError = async (message: string, suppressFailure = true) => {
     const timestamp = formatDate(undefined, true);
     const errorStr = `${sessionId} ${userName} ${message} ${timestamp}`;
     const errorPath = path.resolve(process.cwd(), "error-log.txt");
-    console.log("errorStr", errorStr);
 
     await fs.appendFile(errorPath, `${errorStr}\n`);
   } catch (error) {

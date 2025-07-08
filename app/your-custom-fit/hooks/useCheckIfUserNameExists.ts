@@ -24,7 +24,6 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
       let response: any;
       try {
         response = await checkForUser(userForm.value);
-        // console.log("response:", response);
 
         handleClientErrorRedirect(response);
 

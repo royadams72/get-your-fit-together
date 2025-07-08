@@ -33,8 +33,6 @@ const RetrievePlan = () => {
 
     await new Promise((resolve) => setTimeout(resolve, 600));
 
-    console.log("setUserInfo(user)", user);
-
     router.push(PATHS.YOUR_FIT);
 
     reset();
