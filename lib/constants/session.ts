@@ -1,2 +1,2 @@
-export const SESSION_TTL_SECONDS = 15 * 60;
+export const SESSION_TTL_SECONDS = 1.5 * 60;
 export const SESSION_TTL_MS = SESSION_TTL_SECONDS * 1000;
