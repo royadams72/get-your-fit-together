@@ -5,7 +5,7 @@ import styles from "@/styles/components/_button.module.scss";
 import { Url } from "next/dist/shared/lib/router/router";
 
 export interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   disabled?: boolean;
   href?: Url | undefined;
   type?: any;

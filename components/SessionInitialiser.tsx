@@ -8,8 +8,7 @@ import { verifySession } from "@/lib/actions/verifySession";
 
 import { useRedirectOnError } from "@/lib/hooks/useRedirectOnError";
 
-const SessionInitialiser = () => {
-  const pageName = usePathname();
+const SessionInitialiser = ({ pageName }: { pageName: string }) => {
   const handleClientErrorRedirect = useRedirectOnError();
   useEffect(() => {
     if (pageName === PATHS.YOUR_FIT) return;
