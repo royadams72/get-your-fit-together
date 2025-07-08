@@ -44,9 +44,9 @@ export default function LayoutWrapper({
     if (isEmpty(formErrors)) {
       dispatch(navigate({ route: pageName, isFormSubmit: true }));
 
-      if (isPreferencesPage) {
-        await createOrRefreshSession(false);
-      }
+      // if (isPreferencesPage) {
+      //   await createOrRefreshSession(false);
+      // }
 
       router.push(nextRoute);
     } else {
@@ -55,7 +55,6 @@ export default function LayoutWrapper({
   };
 
   const getErrorElement = (error: any): HTMLElement | null => {
-    // TODO: handle error type
     if (error == null) return null;
 
     if (error?.ref?.type === "radio")
