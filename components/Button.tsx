@@ -46,7 +46,7 @@ const Button = ({
 
   if (href) {
     return (
-      <Link role="button" {...props}>
+      <Link role="button" {...props} prefetch={false}>
         {children}
       </Link>
     );
