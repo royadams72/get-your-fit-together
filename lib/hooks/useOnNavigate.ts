@@ -29,7 +29,6 @@ export function useOnNavigate() {
       if (Date.now() - clickTime > 1000) return;
 
       const url = toURL(data.fetchUrl);
-      console.log("url?.search", url?.search, "data.dest", data.dest);
       if (url?.search.startsWith("?_rsc=") && data.dest === "") {
         clickTime = 0;
         setLoading(true);
@@ -41,7 +40,6 @@ export function useOnNavigate() {
     const onClick = (e: MouseEvent) => {
       clickTime = Date.now();
       pathWhenClicked = location.pathname;
-      console.log("pathWhenClicked::", pathWhenClicked);
     };
     addEventListener("click", onClick, true);
 
