@@ -33,7 +33,7 @@ export const reduxMock = {
   },
   preferences: {
     preferences: {
-      workoutType: "Boxing|Basketball",
+      workoutType: ["Boxing", "Basketball"],
       equipmentAvailability: "Basic Home Gym",
       timePerSession: "45 - 60 minutes",
       daysPerWeek: "3 days per week",

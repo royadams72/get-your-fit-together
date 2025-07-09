@@ -19,7 +19,7 @@ const CheckBoxGroupComponent = ({
   config: CheckBoxGroup;
   required: boolean;
   dispatchEvent: ActionCreatorWithPayload<any, string>;
-  defaultValue?: string;
+  defaultValue?: string[];
 }) => {
   const dispatch = useAppDispatch();
   const {
@@ -55,7 +55,7 @@ const CheckBoxGroupComponent = ({
   );
   const { checkboxArray } = useSetFieldsToEven(fields, config, columns);
 
-  config.checkboxes = useSetChecked(defaultValue || "", config, setValue);
+  config.checkboxes = useSetChecked(defaultValue || [], config, setValue);
 
   const handleCheckboxChange = async (
     e: React.ChangeEvent<HTMLInputElement>,

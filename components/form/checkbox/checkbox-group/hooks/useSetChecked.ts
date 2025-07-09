@@ -4,14 +4,14 @@ import { useEffect } from "react";
 import { UseFormSetValue, FieldValues } from "react-hook-form";
 
 const useSetChecked = (
-  defaultValue: string,
+  defaultValue: string[],
   config: CheckBoxGroup,
   setValue: UseFormSetValue<FieldValues>
 ) => {
   useEffect(() => {
     if (defaultValue) {
       const defaultChecked = config.checkboxes.map((checkbox) => {
-        defaultValue.split("|").map((value) => {
+        defaultValue.map((value) => {
           if (value.trim() === checkbox.label) {
             checkbox.value = true;
           }
