@@ -18,8 +18,8 @@ const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <main>
       <NavigationLoader />
-      <HandleSessionTimeout pageName={pageName} />
       <SessionInitialiser pageName={pageName} />
+      <HandleSessionTimeout pageName={pageName} />
       <Header
         isFirstPage={isFirstPage}
         centrePageLayout={centrePageLayout}
