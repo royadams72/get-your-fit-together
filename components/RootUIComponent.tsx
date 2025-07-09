@@ -5,6 +5,7 @@ import styles from "@/styles/components/_rootLayout.module.scss";
 import Header from "./Header";
 import SessionInitialiser from "@/components/SessionInitialiser";
 import HandleSessionTimeout from "./HandleSessionTimeout";
+import NavigationLoader from "./NavigationLoader";
 
 const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
   const pageName = usePathname();
@@ -16,6 +17,7 @@ const RootUIComponent = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main>
+      <NavigationLoader />
       <HandleSessionTimeout pageName={pageName} />
       <SessionInitialiser pageName={pageName} />
       <Header

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import "./injectAtRoot.js";
 import "./_globals.scss";
 
 import RootUIComponent from "@/components/RootUIComponent";
