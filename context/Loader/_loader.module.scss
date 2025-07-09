@@ -60,6 +60,9 @@
   background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
   background-size: calc(100% / 3) 100%;
   animation: l7 1s infinite ease-out;
+  &Gen {
+    margin-bottom: 3.5rem;
+  }
 }
 
 .mainCopy {

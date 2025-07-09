@@ -80,7 +80,7 @@ export const setContent = async (store: SessionStore) => {
   - Other Sensitivities: ${otherSensitivities}`;
 
   const preferences = `Preferences:
-  - Workout Type: ${workoutType}
+  - Types of prefered workouts: ${workoutType.join(",")}
   - Days per Week: ${daysPerWeek}
   - Time per Session: ${timePerSession} minutes
   - Equipment Availability: ${equipmentAvailability}`;

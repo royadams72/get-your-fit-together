@@ -11,7 +11,11 @@ const Loader = ({ isGeneric }: { isGeneric?: boolean }) => {
             <h3 className={styles.loaderCopy3}>Nearly there</h3>
           </>
         )}
-        <div className={styles.loaderAnim}></div>
+        <div
+          className={`${styles.loaderAnim} ${
+            isGeneric && styles.loaderAnimGen
+          }`}
+        ></div>
         {!isGeneric && (
           <h4 className={styles.mainCopy}>
             Plan creation can take a while, so please be patient.

@@ -9,7 +9,7 @@ export const preferencesSliceName = "preferences";
 
 export const preferencesInitialState: PreferencesState = {
   preferences: {
-    [Preferences.preferredWorkoutType]: "",
+    [Preferences.preferredWorkoutType]: [],
     [Preferences.equipmentAvailability]: "",
     [Preferences.timePerSession]: "",
     [Preferences.daysPerWeek]: "",
@@ -31,17 +31,7 @@ export const preferencesSlice = createAppSlice({
         value: string;
       } = action.payload;
       if (name === Preferences.preferredWorkoutType) {
-        const inState = state.preferences[name].indexOf(value) != -1;
-
-        if (inState) {
-          state.preferences[name] = state.preferences[name].replace(
-            new RegExp(`(^|\\|)${value}(|\\|$|$)`, "g"),
-            ""
-          );
-        } else {
-          const val = state.preferences[name] === "" ? value : `|${value}`;
-          state.preferences[name] += val;
-        }
+        togglePreference(state, name, value);
       } else {
         state.preferences[name] = value;
       }
@@ -55,3 +45,18 @@ export const preferencesSlice = createAppSlice({
 export const { setPreference } = preferencesSlice.actions;
 export const preferencesReducer = preferencesSlice.reducer;
 export const { getPreferencesState } = preferencesSlice.selectors;
+
+function togglePreference(
+  state: PreferencesState,
+  name: keyof PreferencesStore,
+  value: string
+) {
+  const arr = state.preferences[name] as string[];
+  const index = arr.indexOf(value);
+
+  if (index !== -1) {
+    arr.splice(index, 1);
+  } else {
+    arr.push(value);
+  }
+}
