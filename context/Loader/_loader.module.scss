@@ -45,6 +45,8 @@
 }
 
 .mainCopy {
+  text-align: center;
+
   @include anim-hidden;
   animation: anim-show-default 0.5s ease-in 500ms forwards;
 
