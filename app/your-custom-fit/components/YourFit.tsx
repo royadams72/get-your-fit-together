@@ -32,6 +32,8 @@ import JourneyButtons from "@/components/journeyNav/JourneyButtons";
 import { saveToDB } from "@/lib/actions/saveToDB";
 import { redirectOnError } from "@/lib/server-functions/redirectOnError";
 
+import styles from "@/styles/components/_your-fit.module.scss";
+
 const YourFit = () => {
   const [userForm, setUserForm] = useState<FormValue>();
 
@@ -90,8 +92,7 @@ const YourFit = () => {
   };
 
   return (
-    // TODO: fade in Accordion & better anim for the dropdown
-    <div>
+    <div className={styles.yourFitContainer}>
       {userFitnessPlan && (
         <Accordion plan={userFitnessPlan as FitPlan}></Accordion>
       )}

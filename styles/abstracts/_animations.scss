@@ -1,0 +1,64 @@
+@use "sass:math";
+
+@mixin anim-hidden() {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+}
+
+@mixin anim-visible($maxHeight: 1000px) {
+  opacity: 1;
+  visibility: visible;
+  max-height: $maxHeight;
+  overflow: visible;
+}
+
+@keyframes anim-show-default {
+  from {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+    max-height: 3000px;
+    overflow: visible;
+  }
+}
+
+@keyframes anim-hide-default {
+  from {
+    opacity: 1;
+    visibility: visible;
+    max-height: 3000px;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+  }
+}
+
+@mixin anim-fade-timed(
+  $delay,
+  $hideAfter: false,
+  $duration: 0.5s,
+  $wait: 5000ms,
+  $maxHeight: 3000px
+) {
+  $delayNum: math.div($delay, 1ms);
+  $waitNum: math.div($wait, 1ms);
+  $totalNum: $delayNum + $waitNum;
+
+  $total: $totalNum * 1ms;
+
+  @if $hideAfter {
+    animation: anim-show-default $duration ease-in $delay forwards,
+      anim-hide-default $duration ease-in $total forwards;
+  } @else {
+    animation: anim-show-default $duration ease-in $delay forwards;
+  }
+}
