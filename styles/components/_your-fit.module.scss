@@ -1,0 +1,8 @@
+@use "/styles/abstracts/animations" as *;
+
+.yourFit {
+  &Container {
+    @include anim-hidden;
+    animation: anim-show-default 0.5s ease-in 0.3s forwards;
+  }
+}

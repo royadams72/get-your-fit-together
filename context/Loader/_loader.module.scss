@@ -1,24 +1,5 @@
 @use "/styles/abstracts/mixins" as *;
-
-@mixin animateCopy($delay, $playOut: false) {
-  @if $playOut {
-    animation: delayedShow 0.5s ease-in $delay forwards,
-      delayedHide 0.5s ease-in calc($delay + 5000ms) forwards;
-  } @else {
-    animation: delayedShow 0.5s ease-in $delay forwards;
-  }
-}
-
-@mixin copyAnimInit {
-  opacity: 0;
-  visibility: hidden;
-  max-height: 0;
-}
-@mixin copyAnimEnd {
-  opacity: 1;
-  visibility: visible;
-  max-height: 100px;
-}
+@use "/styles/abstracts/animations" as *;
 
 .loader {
   position: fixed;
@@ -35,20 +16,18 @@
   z-index: 99999;
 
   &Copy1 {
-    opacity: 1;
-    visibility: visible;
-    max-height: 100px;
-    animation: delayedHide 0.5s ease-in 5000ms forwards;
+    @include anim-visible(100px);
+    @include anim-fade-timed(0ms, true, 0.5s, 5000ms, 100px);
   }
 
   &Copy2 {
-    @include copyAnimInit;
-    @include animateCopy(5500ms, true);
+    @include anim-hidden;
+    @include anim-fade-timed(5500ms, true, 0.5s, 5000ms, 100px);
   }
 
   &Copy3 {
-    @include copyAnimInit;
-    @include animateCopy(11000ms, false);
+    @include anim-hidden;
+    @include anim-fade-timed(11000ms, false, 0.5s, 100px);
   }
 }
 
@@ -59,41 +38,22 @@
     radial-gradient(circle closest-side, var(--quaternary-colour) 90%, #0000);
   background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
   background-size: calc(100% / 3) 100%;
-  animation: l7 1s infinite ease-out;
+  animation: loader-bounce-dots 1s infinite ease-out;
   &Gen {
-    margin-bottom: 3.5rem;
+    margin-bottom: 3.8rem;
   }
 }
 
 .mainCopy {
-  padding: 0 1rem;
-  margin-top: 1rem;
-  text-align: center;
+  @include anim-hidden;
+  animation: anim-show-default 0.5s ease-in 500ms forwards;
 
   @include breakpoint("md") {
     padding: 0;
   }
 }
 
-@keyframes delayedShow {
-  from {
-    @include copyAnimInit;
-  }
-  to {
-    @include copyAnimEnd;
-  }
-}
-
-@keyframes delayedHide {
-  from {
-    @include copyAnimEnd;
-  }
-  to {
-    @include copyAnimInit;
-  }
-}
-
-@keyframes l7 {
+@keyframes loader-bounce-dots {
   33% {
     background-size: calc(100% / 3) 0%, calc(100% / 3) 100%, calc(100% / 3) 100%;
   }
