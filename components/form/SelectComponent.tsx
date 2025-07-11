@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -88,18 +88,21 @@ const SelectComponent = ({
   const setToOtherToggleIndex = (index: number): number =>
     index === 0 ? 1 : 0;
 
-  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setSelectedOption(value);
-    setValue(name, value);
+  const handleChange = useCallback(
+    async (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const { name, value } = e.target;
+      setSelectedOption(value);
+      setValue(name, value);
 
-    const isFieldValid = await trigger(name);
-    if (isFieldValid) {
-      dispatch(dispatchEvent({ name, value }));
-    }
+      const isFieldValid = await trigger(name);
+      if (isFieldValid) {
+        dispatch(dispatchEvent({ name, value }));
+      }
 
-    config?.eventHandlers?.onChange?.(e);
-  };
+      config?.eventHandlers?.onChange?.(e);
+    },
+    [setSelectedOption, setValue]
+  );
 
   return (
     <div className={`${className + " " || ""} ${styles.selectDiv}`}>
