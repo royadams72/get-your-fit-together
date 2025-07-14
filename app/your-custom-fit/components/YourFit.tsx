@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -50,39 +50,42 @@ const YourFit = () => {
   const methods = useForm();
   const { reset } = methods;
 
-  const savePlan = async (userData: UserFormType, isForm = true) => {
-    const response = await saveToDB(savedState, userData, isForm);
+  const savePlan = useCallback(
+    async (userData: UserFormType, isForm = true) => {
+      const response = await saveToDB(savedState, userData, isForm);
 
-    redirectOnError(response as any);
-    if ("success" in response && response.success && isForm) {
-      reset();
+      redirectOnError(response as any);
+      if ("success" in response && response.success && isForm) {
+        reset();
 
-      router.push(
-        `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
-          "Your plan has been saved"
-        )}`
-      );
-    }
-  };
+        router.push(
+          `${PATHS.SUCCESS}?mode=plan&message=${encodeURIComponent(
+            "Your plan has been saved"
+          )}`
+        );
+      }
+    },
+    [reset, router, savedState]
+  );
 
   const { responseError } = useCheckIfUserNameExists(userForm);
 
   useEffect(() => {
     dispatch(setNavOnLastPage());
     dispatch(setUiData({ name: UiData.isEditing, value: false }));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isRetrieving) {
       dispatch(setUiData({ name: UiData.isRetrieving, value: false }));
     }
-  }, []);
+  }, [dispatch, isRetrieving]);
 
   useEffect(() => {
     if (isSignedIn) {
       savePlan(userInfoFromState, false);
     }
-  }, []);
+  }, [isSignedIn, savePlan, userInfoFromState]);
 
   const inputVal = (val: FormValue) => {
     setUserForm(val);

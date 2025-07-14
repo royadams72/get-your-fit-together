@@ -37,7 +37,7 @@ export function useOnNavigate() {
 
     navigator.serviceWorker.addEventListener("message", onMessage);
 
-    const onClick = (e: MouseEvent) => {
+    const onClick = () => {
       clickTime = Date.now();
       pathWhenClicked = location.pathname;
     };

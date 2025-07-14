@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -71,7 +71,7 @@ const SelectComponent = ({
       // The button to the other toggle option
       setToggleOptionBtn(formOptions[setToOtherToggleIndex(optionIndex)]);
     }
-  }, []);
+  }, [config.toggleOptions, defaultValue, optionIndex]);
 
   useEffect(() => {
     if (!config?.toggleOptions) return;
@@ -83,26 +83,22 @@ const SelectComponent = ({
       formOptions?.[setToOtherToggleIndex(optionIndex)];
     setToggleOptionBtn(toggleButtonIndexValue);
     setOptionList(optionList);
-  }, [optionIndex]);
+  }, [optionIndex, setToggleOptionBtn, config]);
 
   const setToOtherToggleIndex = (index: number): number =>
     index === 0 ? 1 : 0;
 
-  const handleChange = useCallback(
-    async (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const { name, value } = e.target;
-      setSelectedOption(value);
-      setValue(name, value);
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setSelectedOption(value);
+    setValue(name, value);
+    const isFieldValid = await trigger(name);
+    if (isFieldValid) {
+      dispatch(dispatchEvent({ name, value }));
+    }
 
-      const isFieldValid = await trigger(name);
-      if (isFieldValid) {
-        dispatch(dispatchEvent({ name, value }));
-      }
-
-      config?.eventHandlers?.onChange?.(e);
-    },
-    [setSelectedOption, setValue]
-  );
+    config?.eventHandlers?.onChange?.(e);
+  };
 
   return (
     <div className={`${className + " " || ""} ${styles.selectDiv}`}>
@@ -113,7 +109,7 @@ const SelectComponent = ({
         value={selectedOption}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         aria-describedby={
           errors[config.name]
             ? `${config.name}-error ${config.name}-hint`

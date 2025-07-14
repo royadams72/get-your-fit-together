@@ -35,7 +35,7 @@ const SessionInitialiser = ({ pageName }: { pageName: string }) => {
         handleClientErrorRedirect({ message: error as string, redirect: true });
       }
     })();
-  }, [pageName]);
+  }, [handleClientErrorRedirect, pageName]);
   return null;
 };
 export default SessionInitialiser;

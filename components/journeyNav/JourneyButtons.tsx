@@ -14,6 +14,7 @@ export const JourneyButtons = ({
 }) => {
   const { nextRoute, prevRoute } = useAppSelector(getRoutes);
   const [nextBtn, setNextBtn] = useState("Next");
+
   useEffect(() => {
     const routeBeforeLastPage = JOURNEY_PATHS[JOURNEY_PATHS.length - 1];
     if (nextRoute === routeBeforeLastPage) {
@@ -22,6 +23,7 @@ export const JourneyButtons = ({
       setNextBtn("Next");
     }
   }, [nextRoute]);
+
   return (
     <nav
       className={`${styles.journeyNav}  ${

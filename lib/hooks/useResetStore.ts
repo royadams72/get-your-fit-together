@@ -15,5 +15,5 @@ export const useResetStore = () => {
     setTimeout(async () => {
       await cookieAction(CookieAction.delete, [Cookie.sessionCookie]);
     }, 4000);
-  }, []);
+  }, [dispatch]);
 };

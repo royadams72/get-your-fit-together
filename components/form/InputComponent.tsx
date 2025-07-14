@@ -60,9 +60,7 @@ const InputComponent = ({
         placeholder={config.placeHolder}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
-        onChange={(e) => {
-          handleChange(e);
-        }}
+        onChange={handleChange}
       />
       {config.hint && (
         <div
