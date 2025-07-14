@@ -14,7 +14,7 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      "react-hooks/exhaustive-deps": "off",
+      // "react-hooks/exhaustive-deps": "off",
       "@typescript-eslint/no-explicit-any": "off",
       // TODO: Remove this rule once the project is ready
       "@typescript-eslint/no-unused-vars": [

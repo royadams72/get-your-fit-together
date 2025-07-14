@@ -14,7 +14,7 @@ const JourneyNavigation = ({
 
   useEffect(() => {
     getFormErrors(formState.errors);
-  }, [formState]);
+  }, [formState, getFormErrors]);
 
   return <JourneyButtons handleSubmit={handleSubmit}></JourneyButtons>;
 };

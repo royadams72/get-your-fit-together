@@ -19,5 +19,5 @@ export const useMarkAsEditingUntilYourFit = () => {
     if (paths.includes(currentRoute)) {
       dispatch(setUiData({ name: UiData.isEditing, value: true }));
     }
-  }, [currentRoute]);
+  }, [currentRoute, dispatch]);
 };

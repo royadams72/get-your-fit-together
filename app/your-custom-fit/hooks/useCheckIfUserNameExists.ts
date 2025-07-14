@@ -11,7 +11,9 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
     message: string;
     messageElement: string;
   }>({ message: "", messageElement: "" });
+
   const handleClientErrorRedirect = useRedirectOnError();
+
   useEffect(() => {
     if (
       !userForm ||
@@ -40,7 +42,7 @@ export const useCheckIfUserNameExists = (userForm: FormValue | undefined) => {
         handleClientErrorRedirect({ message: error as string, redirect: true });
       }
     })();
-  }, [userForm]);
+  }, [userForm, handleClientErrorRedirect]);
 
   return { responseError };
 };

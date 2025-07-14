@@ -71,7 +71,7 @@ const SelectComponent = ({
       // The button to the other toggle option
       setToggleOptionBtn(formOptions[setToOtherToggleIndex(optionIndex)]);
     }
-  }, []);
+  }, [config.toggleOptions, defaultValue, optionIndex]);
 
   useEffect(() => {
     if (!config?.toggleOptions) return;
@@ -83,7 +83,7 @@ const SelectComponent = ({
       formOptions?.[setToOtherToggleIndex(optionIndex)];
     setToggleOptionBtn(toggleButtonIndexValue);
     setOptionList(optionList);
-  }, [optionIndex]);
+  }, [optionIndex, setToggleOptionBtn, config]);
 
   const setToOtherToggleIndex = (index: number): number =>
     index === 0 ? 1 : 0;
@@ -92,7 +92,6 @@ const SelectComponent = ({
     const { name, value } = e.target;
     setSelectedOption(value);
     setValue(name, value);
-
     const isFieldValid = await trigger(name);
     if (isFieldValid) {
       dispatch(dispatchEvent({ name, value }));
@@ -110,7 +109,7 @@ const SelectComponent = ({
         value={selectedOption}
         {...register(config.name, config.validation)}
         {...config.eventHandlers}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         aria-describedby={
           errors[config.name]
             ? `${config.name}-error ${config.name}-hint`
