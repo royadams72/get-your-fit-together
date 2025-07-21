@@ -27,6 +27,7 @@ export async function saveToDB(
     const db = await connectToDB();
     const collection = db.collection<Document>("reduxStates");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { uiData, journey, ...restOfState } = savedState as RootState;
     const userName = userData?.userName || undefined;
     const userPassword = userData?.userPassword || undefined;
