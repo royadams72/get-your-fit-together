@@ -1,31 +1,31 @@
 @use "sass:math";
 
 @mixin anim-hidden() {
-  opacity: 0;
-  visibility: hidden;
   max-height: 0;
+  opacity: 0;
   overflow: hidden;
+  visibility: hidden;
 }
 
 @mixin anim-visible($maxHeight: 1000px) {
-  opacity: 1;
-  visibility: visible;
   max-height: $maxHeight;
+  opacity: 1;
   overflow: visible;
+  visibility: visible;
 }
 
 @keyframes anim-show-default {
   from {
-    opacity: 0;
-    visibility: hidden;
     max-height: 0;
+    opacity: 0;
     overflow: hidden;
+    visibility: hidden;
   }
   to {
-    opacity: 1;
-    visibility: visible;
     max-height: 3000px;
+    opacity: 1;
     overflow: visible;
+    visibility: visible;
   }
 }
 

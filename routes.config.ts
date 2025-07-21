@@ -1,12 +1,3 @@
-export const API = {
-  RETRIEVE: "api/retrieve-plan",
-  GET_PLAN: "/api/get-plan",
-  SAVE_PLAN: "/api/save-plan",
-  CHECK_USER: "/api/check-for-user",
-  SET_REDIS: "/api/set-redis",
-  GET_REDIS: "/api/get-redis",
-};
-
 export const JOURNEY_PATHS = [
   "/about-you",
   "/injuries",
